@@ -1,0 +1,225 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card-header caded-innder-head-box">
+
+      <div class="col-md-3">
+        <input type="hidden" id="recdate" (click)="filterFromToDateLeads()">
+
+        <label style="color:#000; font-weight: 500;">From Date</label>
+        <input id="FromDate" class="form-control" type="text" style="cursor: pointer;" placeholder="dd-mm-yyyy"
+          autocomplete="off" readonly>
+      </div>
+      <div class="col-md-3">
+        <label style="color:#000; font-weight: 500;">To Date</label>
+        <input id="ToDate" class="form-control" type="text" style="cursor: pointer;" placeholder="dd-mm-yyyy"
+          autocomplete="off" readonly>
+      </div>
+
+      <div class="col-sm-2">
+        <label style="color:#000; font-weight: 500;">Status</label>
+        <select class="wide form-control" (change)="changeStatusFilter()" [(ngModel)]="statusFilter"  [ngModelOptions]="{standalone: true}">
+          <option value="All">All</option>
+          <option value="Pending">Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+
+      <div class="col-sm-2"></div>
+
+      <div class="col-sm-2 text-right">
+        <a data-placement="top" class="btn btn-user btn-round btn-primary btn-primary-Add-Roles-btn"
+          (click)="openAddCompOffRequestModal()" style="margin-top: 28px;">Add Request</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12 mrg-top-0 mrg-bot-25">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="sub-title-inn-box View-Roles-list-outer-box"> All Comp-Off Requests</h4>
+      </div>
+      <div class="card-body padd-bot-0 padd-top-0">
+        <div class="row">
+          <div class="col-md-12 padd-top-0">
+            <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+              <table class="table user-list">
+                <thead>
+                  <tr>
+                    <th>Date Worked</th>
+                    <th>Reason</th>
+                    <th>Working Hours</th>
+                    <th>Comp-off leave</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let compoff of compOffRequests; let i = index" [ngClass]="{'pending': compoff?.approval_status == 'Pending', 'approved': compoff?.approval_status == 'Approved', 'rejected': compoff?.approval_status == 'Rejected'}">
+                    <td>{{ compoff?.comp_off_applied_date }}</td>
+                    <td>{{ compoff?.compoff_description }}</td>
+                    <td>
+                      {{ compoff?.working_hours }}
+                      <!-- {{ compoff?.start_time }} - {{ compoff?.end_time }} -->
+                    </td>
+                    <td > <span  *ngIf="compoff?.approval_status=='Approved'">{{ compoff?.comp_off_days }}</span></td>
+                    <td>{{ compoff?.approval_status }}</td>
+                    <td>
+                      <ng-container *ngIf="compoff?.attachemnt_url"> <a href="{{compoff?.attachemnt_url}}"
+                          target="_blank" title="Click to view file">
+                          <i class="fa fa-lg fa-file"></i></a> &nbsp;
+                      </ng-container>
+
+                      <ng-container *ngIf="compoff?.approval_status == 'Pending'; else elseBlock1">
+                        <a (click)="openUpdateCompOffRequestModal(compoff)" title="Click to update">
+                          <i class="fa fa-lg fa-edit"></i></a>
+                        &nbsp;
+                        <a (click)="openRejectCompOffRequestModal(compoff)" title="Click to remove" style="color:red;">
+                          <i class="fa fa-lg fa-times"></i></a>
+                      </ng-container>
+                      <ng-template #elseBlock1>
+                        <a title="Click to view" (click)="viewCompOffRequest(compoff)">
+                          <i class="fa fa-eye"></i>
+                        </a>
+                      </ng-template>
+                    </td>
+                  </tr>
+                  <tr *ngIf="compOffRequests.length == 0">
+                    <td colspan="5" style="text-align: center; font-weight: 500">No Data Found</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Add Comp-off Request Modal -->
+<div id="addCompOffModal" class="modal fade add-address-form-box in">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form [formGroup]="addCompOffForm">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">{{comp_off_title}} Comp-Off Request</h4>
+          <button type="button" class="close" (click)="hideAddCompOffRequestModal()">×</button>
+        </div>
+
+        <div class="modal-body" [ngClass]="{ 'view-only': isViewCompOff }">
+          <div class="form-group">
+            <label class="control-label col-sm-4">Date Worked <span style="color: red;">*</span></label>
+            <div class="col-sm-8" [ngClass]="{ 'view-only': comp_off_title != 'Add' }">
+              <input type="text" id="date_worked" class="form-control" placeholder="dd-mm-yyyy" autocomplete="off" readonly>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Reason <span style="color: red;">*</span></label>
+            <div class="col-sm-8">
+              <textarea class="form-control" formControlName="reason" rows="4"
+                style="height:8rem !important;"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Working Hours <span style="color: red;">*</span></label>
+            <!-- <div class="col-sm-4">
+              <input type="text" class="form-control" formControlName="working_hours" pattern="^[0-9]+:[0-5][0-9]$"
+                placeholder="HH:MM (e.g., 48:00)">
+            </div> -->
+
+            <div class="col-sm-8">
+              <div class="input-group">
+                <input type="radio" id="timeOption1" name="timeOption" value="specificTime" formControlName="timeOption"
+                  (change)="onTimeOptionChange()">
+                <label for="timeOption1">Specify Start/End Time</label>
+                <input type="radio" id="timeOption2" name="timeOption" value="workingHours" formControlName="timeOption"
+                  (change)="onTimeOptionChange()">
+                <label for="timeOption2">Enter Working Hours</label>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="addCompOffForm.get('timeOption')?.value === 'specificTime'">
+            <div class="form-group">
+              <label class="control-label col-sm-4"></label>
+              <div class="col-sm-4">
+                <label>Start Time:</label>
+                <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr">
+                  <input id="startTime" type="text" class="form-control" placeholder="00:00"
+                    formControlName="start_time" readonly>
+                  <span class="input-group-addon" (click)="togglePopover(popoverStart);" #popoverStart="bs-popover"
+                    [popover]="popoverContentStart" triggers="manual" [outsideClick]="true">
+                    <i class="fa fa-clock-o"></i>
+                  </span>
+                </div>
+                <ng-container
+                  *ngIf="addCompOffForm.get('start_time').errors && addCompOffForm.get('start_time').touched"
+                  class="text-danger">
+                  <p class="text-danger">Start time is required</p>
+                </ng-container>
+                <ng-template #popoverContentStart>
+                  <timepicker [(ngModel)]="startTime" (ngModelChange)="onStartTimeChange($event)" [showMeridian]="false"
+                    [ngModelOptions]="{standalone: true}"></timepicker>
+                </ng-template>
+              </div>
+
+              <div class="col-sm-4">
+                <label>End Time:</label>
+                <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr">
+                  <input id="endTime" type="text" class="form-control" placeholder="00:00" formControlName="end_time"
+                    readonly>
+                  <span class="input-group-addon" (click)="togglePopover(popoverEnd);" #popoverEnd="bs-popover"
+                    [popover]="popoverContentEnd" triggers="manual" [outsideClick]="true">
+                    <i class="fa fa-clock-o"></i>
+                  </span>
+                </div>
+              </div>
+
+              <ng-container *ngIf="addCompOffForm.get('end_time').errors && addCompOffForm.get('end_time').touched"
+                class="text-danger">
+                <p class="text-danger">End time is required</p>
+              </ng-container>
+
+              <ng-template #popoverContentEnd>
+                <timepicker [(ngModel)]="endTime" (ngModelChange)="onEndTimeChange($event)" [showMeridian]="false"
+                  [ngModelOptions]="{standalone: true}"></timepicker>
+              </ng-template>
+
+            </div>
+          </div>
+
+          <div *ngIf="addCompOffForm.get('timeOption')?.value === 'workingHours'">
+            <div class="form-group">
+              <label class="control-label col-sm-4"></label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" formControlName="working_hours" pattern="^[0-9]+:[0-5][0-9]$"
+                  placeholder="HH:MM (e.g., 48:00)">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Supporting Document</label>
+            <div class="col-sm-6">
+              <input id="compoff_doc" type="file" class="form-control" (change)="readFile($event)">
+            </div>
+            <div class="col-sm-2" style="margin-top:5px;" *ngIf="addCompOffForm.value.attachment_url">
+              <a href="{{addCompOffForm.value.attachment_url}}" target="_blank" title="Click to view file">
+                <i class="fa fa-lg fa-file"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button *ngIf="comp_off_title != 'View'" type="button" class="btn btn-primary" (click)="uploadCompOffDocument()">{{comp_off_title}}</button>
+          <button type="button" class="btn btn-secondary" (click)="hideAddCompOffRequestModal()">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

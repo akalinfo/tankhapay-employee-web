@@ -1,0 +1,196 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+<div id="wrapper" [ngClass]="{'active': showSidebar == true}">
+  <div class="fakeLoader"></div>
+
+  <div class="loader-overlay" *ngIf="!isDataLoaded">
+    <div class="loader"></div>
+  </div>
+  <div id="page-wrapper" style="margin-left: 5px;">
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Add WFH Request</h3>
+      </div>
+      <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="['/dashboard']">Home</a></li>
+          <li class="breadcrumb-item active">Add WFH Request</li>
+        </ol>
+      </div>
+    </div>
+
+  
+<div class="row" style="margin-left: 10px; margin-right: 10px;">
+  <div class="col-md-12">
+    <div class="card-header caded-innder-head-box">
+
+      <div class="col-md-3">
+        <input type="hidden" id="recdate" (click)="filterFromToDateRequests('FromDate', 'ToDate')">
+
+        <label style="color:#000; font-weight: 500;">From Date</label>
+        <input id="FromDate" class="form-control" type="text" style="cursor: pointer;" placeholder="dd-mm-yyyy"
+          autocomplete="off" readonly>
+      </div>
+      <div class="col-md-3">
+        <label style="color:#000; font-weight: 500;">To Date</label>
+        <input id="ToDate" class="form-control" type="text" style="cursor: pointer;" placeholder="dd-mm-yyyy"
+          autocomplete="off" readonly>
+      </div>
+
+      <div class="col-sm-2">
+        <label style="color:#000; font-weight: 500;">Status</label>
+        <select class="wide form-control" (change)="changeStatusFilter()" [(ngModel)]="statusFilter"  [ngModelOptions]="{standalone: true}">
+          <option value="All">All</option>
+          <option value="Pending">Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+
+      <div class="col-sm-2"></div>
+
+      <div class="col-sm-2 text-right">
+        <a data-placement="top" class="btn btn-user btn-round btn-primary btn-primary-Add-Roles-btn"
+          (click)="openAddWFHRequestModal()" style="margin-top: 28px;">Create Request</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="col-md-12 mrg-top-0 mrg-bot-25">
+    <div class="card">
+      <div class="card-header" style="padding: 10px;">
+        <h4 class="sub-title-inn-box View-Roles-list-outer-box"> All WFH Requests</h4>
+      </div>
+      <div class="card-body padd-bot-0 padd-top-0">
+        <div class="row">
+          <div class="col-md-12 padd-top-0">
+            <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+              <table class="table user-list">
+                <thead>
+                  <tr>
+                    <th>S No.</th>
+                    <th>From Date</th>
+                    <th>To Date</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let wfh of wfhRequests; let i = index" [ngClass]="{'pending': wfh?.approval_status == 'Pending', 'approved': wfh?.approval_status == 'Approved', 'rejected': wfh?.approval_status == 'Rejected'}">
+                    <td style="color: rgb(80, 77, 77);">{{ i+1 }}</td>
+                    <td>{{ wfh?.fromdate }}</td>
+                    <td>{{ wfh?.todate }}</td>
+                    <td>{{ wfh?.wfh_description }}</td>
+                    <td>{{ wfh?.approval_status }}</td>
+                    <td>
+                      <ng-container *ngIf="wfh?.attachemnt_url"> 
+                        <a href="{{wfh?.attachemnt_url}}" target="_blank" title="Click to view file">
+                          <i class="fa fa-lg fa-file"></i>
+                        </a> &nbsp;
+                      </ng-container>
+
+                      <ng-container *ngIf="wfh?.approval_status == 'Pending'; else elseBlock1">
+                        <!-- <a (click)="openUpdateWFHRequestModal(wfh)" title="Click to update">
+                          <i class="fa fa-lg fa-edit"></i>
+                        </a> &nbsp; -->
+                        <a (click)="openRemoveWFHRequestModal(wfh)" title="Click to remove" style="color:red;">
+                          <i class="fa fa-lg fa-times"></i>
+                        </a>
+                      </ng-container>
+                      
+                      <ng-template #elseBlock1>
+                        <a title="Click to view" (click)="viewWFHRequest(wfh)">
+                          <i class="fa fa-eye"></i>
+                        </a>
+                      </ng-template>
+                    </td>
+                  </tr>
+                  <tr *ngIf="wfhRequests.length == 0">
+                    <td colspan="5" style="text-align: center; font-weight: 500">No Data Found</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add WFH Request Modal -->
+<div id="addWFHModal" class="modal fade add-address-form-box in">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form [formGroup]="addWFHForm">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">{{wfh_title}} WFH Request</h4>
+          <button type="button" class="close" (click)="hideAddWFHRequestModal()">×</button>
+        </div>
+
+        <div class="modal-body" [ngClass]="{ 'view-only': isViewWFH }">
+          
+          <input type="hidden" id="wfhdates" (click)="filterFromToDateRequests('wfh_fromDate','wfh_toDate')">
+          <div class="form-group">
+            <label class="control-label col-sm-4">From Date<span style="color: red;">*</span></label>
+            <div class="col-sm-8" [ngClass]="{ 'view-only': wfh_title != 'Add' }">
+              <input type="text" id="wfh_fromDate" class="form-control" formControlName="wfh_fromDate" placeholder="dd-mm-yyyy" autocomplete="off" readonly>
+              <ng-container *ngIf="addWFHForm.get('wfh_fromDate').errors && addWFHForm.get('wfh_fromDate').touched"
+									class="text-danger">
+									<p class="text-danger">From Date is required</p>
+							</ng-container>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">To Date<span style="color: red;">*</span></label>
+            <div class="col-sm-8" [ngClass]="{ 'view-only': wfh_title != 'Add' }">
+              <input type="text" id="wfh_toDate" class="form-control" formControlName="wfh_toDate" placeholder="dd-mm-yyyy" autocomplete="off" readonly>
+              <ng-container *ngIf="addWFHForm.get('wfh_toDate').errors && addWFHForm.get('wfh_toDate').touched"
+              class="text-danger">
+              <p class="text-danger">To Date is required</p>
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Reason <span style="color: red;">*</span></label>
+            <div class="col-sm-8">
+              <textarea class="form-control" formControlName="reason" rows="4"
+                style="height:8rem !important;"></textarea>
+              <ng-container *ngIf="addWFHForm.get('reason').errors && addWFHForm.get('reason').touched"
+              class="text-danger">
+              <p class="text-danger">Reason is required</p>
+              </ng-container>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Supporting Document</label>
+            <div class="col-sm-6">
+              <input id="compoff_doc" type="file" class="form-control" (change)="readFile($event)">
+            </div>
+            <div class="col-sm-2" style="margin-top:5px;" *ngIf="addWFHForm.value.attachment_url">
+              <a href="{{addWFHForm.value.attachment_url}}" target="_blank" title="Click to view file">
+                <i class="fa fa-lg fa-file"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button *ngIf="wfh_title != 'View'" type="button" class="btn btn-primary" (click)="uploadWFHDocument()">{{wfh_title}}</button>
+          <button type="button" class="btn btn-secondary" (click)="hideAddWFHRequestModal()">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+</section>
+
+<app-footer></app-footer>

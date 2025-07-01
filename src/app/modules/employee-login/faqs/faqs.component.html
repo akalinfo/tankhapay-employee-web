@@ -1,0 +1,80 @@
+<div class="container-fluid">
+    
+    <div class="row">
+       <div class="col-md-12 col-md-offset-0 mrg-top-2512 mrg-bot-25 employees-details-outer-box">
+
+       
+         <div class="row">
+              
+             <div class="col-md-12 mrg-bot-25">
+             <div class="main-tab-outer-box">
+             
+                       <ul class="nav nav-tabs">
+                         <li class="active"><a data-toggle="tab" href="#home" (click)="get_faq_category('TP-GEN-FAQ')">General FAQs</a></li>
+                         <li><a data-toggle="tab" href="#menu1" (click)="get_faq_category('TP-SOCIAL-SEC-FAQ')">Social Security FAQs</a></li>
+              
+                       </ul>
+
+                <div class="tab-content">
+
+                    <div id="home" class="tab-pane fade1 in active">
+
+                        <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                            
+                            <div class="card" *ngFor="let faq of faqList;let i=index;">
+                                    
+                                    <div class="panel-heading panel_heading_gray card-header" role="tab" (click)="toggleAccordion(i)">
+                                        <h4 [innerHtml]="getSanitizedHtml(faq.question)"> </h4><i class="fa fa-angle-down"></i>
+                                    </div>
+                                    <div class="panel-collapse collapse card-body" role="tabpanel"
+                                    [ngClass]="{'show': faq.isOpen, 'collapse': !faq.isOpen}" [id]="'collapse' + i" >
+                                        <div class="row">
+                                        
+                                        <div class="col-md-12 padd-bot-15 padd-top-15">
+                                        
+                                        <p [innerHtml]="getSanitizedHtml(faq.answer)"></p>
+                                        
+                                        </div>
+                                        
+                                        
+                                        </div>
+                                    </div>
+                            </div>
+                            
+                        </div>
+
+                    </div>
+                    <div id="menu1" class="tab-pane fade1 in active">
+
+                        <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                            
+                            <div class="card" *ngFor="let faq of faqList;let i=index;">
+                                    
+                                    <div class="panel-heading panel_heading_gray card-header" role="tab" (click)="toggleAccordion(i)">
+                                        <h4 [innerHtml]="getSanitizedHtml(faq.question)"> </h4><i class="fa fa-angle-down"></i>
+                                    </div>
+                                    <div class="panel-collapse collapse card-body" role="tabpanel"
+                                    [ngClass]="{'show': faq.isOpen, 'collapse': !faq.isOpen}" [id]="'collapse' + i" >
+                                        <div class="row">
+                                        
+                                        <div class="col-md-12 padd-bot-15 padd-top-15">
+                                        
+                                        <p [innerHtml]="getSanitizedHtml(faq.answer)"></p>
+                                        
+                                        </div>
+                                        
+                                        
+                                        </div>
+                                    </div>
+                            </div>
+                            
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+             </div>
+         </div>
+       </div>
+    </div>
+</div>

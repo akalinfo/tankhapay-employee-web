@@ -1,0 +1,28 @@
+a.btn-primary-Add-Roles-btn {
+    color: #fff;
+    background-color: #1194f7 !important;
+    border-color: #1194f7;
+    border-radius: 10px !important;
+}
+.btn.btn-user {
+    background: transparent;
+    text-transform: uppercase;
+    font-size: 12px;
+    border-radius: 50px;
+    padding: 6px 20px;
+    min-width: 110px;
+    margin-left: 5px;
+}
+span.multiselect-native-select button.multiselect.dropdown-toggle.btn-block.text-left.btn.btn-default {
+    border: 1px solid #dde6ef;
+    margin-bottom: 0px;
+    box-shadow: none;
+    border-radius: 0;
+    background: #fbfdff;
+    font-size: 15px;
+    color: #6b7c8a;
+    font-weight: 400;
+}
+.save-btn {
+    margin-right: 10px; /* You can adjust this value as needed */
+}

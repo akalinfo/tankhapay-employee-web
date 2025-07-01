@@ -1,0 +1,70 @@
+[type="radio"] {
+    display: inline !important
+}
+
+
+.light-skyblue {
+    background: lightblue;
+}
+
+.white {
+    background: white;
+}
+
+.export-button {
+    background-color: rgb(114, 238, 116);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  .dropdown.float-right-box ul#menu3 {
+    left: -52px;
+}
+.top-right-outer-box {
+    display: flex;
+    justify-content: flex-start;
+}
+.form-check {
+    padding-top: 10px;
+}
+.form-check .form-check-input {
+    height: 20px;
+    width: 20px;
+    vertical-align: text-bottom;
+    margin: 3px 5px 0 0;
+}
+.table-responsive.reports-new-table-outer-box thead {
+    color: #ffffff !important;
+    background: #6fbbdb!important;
+    vertical-align: top;
+}
+
+  .table-bordered {
+    border: 1px solid #e8edef !important;
+}
+
+form.form-lwf-box label {
+    padding: 15px 10px 0 0;
+}
+form.form-lwf-box input[type="radio"] {
+    height: 20px;
+    width: 20px;
+    vertical-align: middle;
+    margin: 0;
+}
+form.form-lwf-box span {
+    font-size: 14px;
+    margin-right: 5px;
+}
+.top-right-outer-box {
+    display: flex;
+    justify-content: flex-end;
+}

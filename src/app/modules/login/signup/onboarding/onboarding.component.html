@@ -1,0 +1,566 @@
+<app-header></app-header>
+<section>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 signup-accordion-outer-box" style="margin-top: 2rem;">
+        <div class="logo-panel-heading-box"><img src="assets/img/logo.png" alt="" class="img-responsive" style="width: 220px;"></div>
+        <alert></alert>
+        <h3 class="com-you-onbor-outer-box">Complete Your Onboarding</h3>
+
+
+        <div class="login-panel panel padd-top-0 mrg-top-0 employees-details-outer-box">
+
+
+          <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+
+
+
+            <div class="card12">
+
+              <div class="panel-heading panel_heading_gray card-header" [ngClass]="{'collapsed': signup_flag!='AV'}"
+                data-toggle="collapse" data-parent="#accordion6" href="#collapseOne6" aria-expanded="true"
+                aria-controls="collapseOne" role="tab" id="headingOne6">
+                <h4>Select the product you are interested in <i class="fa fa-plus plus-box" aria-hidden="true"></i><i
+                    class="fa fa-minus minus-box" aria-hidden="true"></i></h4>
+              </div>
+              <div [ngClass]="{'read-only': signup_flag=='AV' ? false:true, 'in': signup_flag=='AV'}" id="collapseOne6"
+                class="panel-collapse collapse card-body  padd-bot-0" role="tabpane6">
+                <div class="row">
+
+                  <div class="padd-top-15">
+
+                    <div class="Appointment-outer-box Salary-Details-outer-box">
+                      <div class="table-responsive">
+
+                        <!-- <form novalidate="" autocomplete="off" class="ng-touched ng-pristine ng-invalid"> -->
+                        <div class="col-sm-12">
+                          <!-- <label>Subledger</label> -->
+                          <select class="wide form-control" (change)="changeProductType($event)">
+                            <option value="">Select Option</option>
+                            <option *ngFor="let a of product_type_master" [selected]="product_type==a.product_id"
+                              [value]="a.product_id">{{ a.product_name }}</option>
+                          </select>
+
+                        </div>
+
+                        <form [formGroup]="EPF_ESI_form">
+                          <div class="col-md-12" *ngIf="this.product_type=='2'">
+                            <div class="alert alert-success" role="alert" *ngIf="this.product_type=='2'">
+                              <strong>{{ selected_product_data.messages }}</strong>
+                            </div>
+                            <div class="form-group">
+                              <div class="inline-span-container">
+                                <span> <strong><span class="text-danger">*</span> Is Your Company Registered On
+                                    EPF?</strong> </span>&nbsp;&nbsp;
+                              </div>
+
+                              <div class="row-container">
+                                <div class="col-md-3">
+                                  <label>
+                                    <input id="epf_Y" type="radio" formControlName="is_epf_registered" value="Y"> Yes
+                                  </label>
+                                </div>
+
+                                <div class="col-md-3">
+                                  <label>
+                                    <input id="epf_N" type="radio" formControlName="is_epf_registered" value="N"> No
+                                  </label>
+                                </div>
+                              </div>
+
+                              <input type="text" class="wide form-control" formControlName="epf_registration_number"
+                                maxlength="22" *ngIf="this.eps.is_epf_registered.value=='Y'"
+                                placeholder="Enter Employee EPF Number">
+
+                              <div *ngIf="payrollsubmitted && eps.epf_registration_number.value==''
+                                  && eps.is_epf_registered.value=='Y'" class="inline-pos1">
+                                <small *ngIf="eps.epf_registration_number.value==''" class="text-danger">
+                                  EPF number is reqd</small>
+                              </div>
+
+                            </div>
+                          </div>
+
+                          <br /> <br />
+
+                          <div class="col-md-12" *ngIf="this.product_type=='2'">
+                            <div class="form-group">
+
+                              <div class="inline-span-container">
+                                <span> <strong><span class="text-danger">*</span> Is Your Company Registered On
+                                    ESI?</strong></span>&nbsp;&nbsp;
+                              </div>
+
+                              <div class="row-container">
+                                <div class="col-md-3">
+                                  <label>
+                                    <input id="esi_Y" type="radio" formControlName="is_esi_registered" value="Y"> Yes
+                                  </label>
+                                </div>
+
+                                <div class="col-md-3">
+                                  <label>
+                                    <input id="esi_N" type="radio" formControlName="is_esi_registered" value="N"> No
+                                  </label>
+                                </div>
+                              </div>
+
+                              <input type="text" class="wide form-control" formControlName="esi_registration_number"
+                                maxlength="17" *ngIf="this.eps.is_esi_registered.value=='Y'"
+                                placeholder="Enter Employee ESI Number">
+
+                              <div *ngIf="payrollsubmitted && eps.esi_registration_number.value==''
+                                  && eps.is_esi_registered.value=='Y'" class="inline-pos1">
+                                <small *ngIf="eps.esi_registration_number.value==''" class="text-danger">
+                                  ESI number is reqd</small>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+
+                        <div class="col-md-12" *ngIf="this.product_type=='1' || this.product_type=='3'">
+                          <div class="alert alert-success" role="alert">
+                            <strong>{{ selected_product_data?.messages }}</strong>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12 submit-btn" *ngIf="this.signup_flag=='AV'" (click)="update_ProductType()">
+                          <button class="btn btn-primary">Submit</button>
+                        </div>
+
+                        <!-- </form> -->
+
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="login-panel panel padd-top-0 mrg-top-0 employees-details-outer-box">
+
+
+          <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+
+
+
+            <div class="card12">
+
+              <div class="panel-heading panel_heading_gray collapsed card-header"
+                [ngClass]="{'collapsed': signup_flag!='PT'}" data-toggle="collapse" data-parent="#accordion7"
+                href="#collapseOne7" aria-expanded="false" aria-controls="collapseOne" role="tab" id="headingOne7">
+                <h4>Add Billing Address <i class="fa fa-plus plus-box" aria-hidden="true"></i><i
+                    class="fa fa-minus minus-box" aria-hidden="true"></i></h4>
+              </div>
+              <div [ngClass]="{'read-only': signup_flag=='PT' ? false:true, 'in': signup_flag=='PT'}" id="collapseOne7"
+                class="panel-collapse collapse card-body padd-bot-0" role="tabpane7">
+                <div class="row">
+                  <span [ngStyle]="{'display': (signup_flag=='AV') ? 'block' : 'none'}" class="text-danger" style="margin-left: 16px;">* Please first complete the previous step</span>
+
+                  <div class="Salary-Details-outer-box">
+
+                    <div class="padd-top-15">
+                      <div class="Appointment-outer-box Salary-Details-outer-box">
+
+                        <div class="table-responsive">
+                          <div class="col-lg-121">
+                            <div class="form-group">
+                              <form [formGroup]="companyForm">
+
+                                <div class="state-city-box">
+
+                                  <div class="col-md-9">
+                                    <div class="form-group state-city-box-inner">
+                                      <input type="text" class="form-control" formControlName="acGstinNo"
+                                        placeholder="GSTIN (Optional)" (keyup)="change_GST()">
+
+                                      <!-- <div *ngIf="companySubmitted && cf.acGstinNo.errors" class="inline-pos1">
+                                        <small *ngIf="cf.acGstinNo.errors.required" class="text-danger">GST is
+                                          required</small>
+                                        <small *ngIf="cf.acGstinNo.errors.pattern" class="text-danger">GST Pattern
+                                          incorrect</small>
+                                      </div> -->
+                                    </div>
+                                  </div>
+
+                                  <div class="col-md-3" style="top:-1rem;">
+                                    <button *ngIf="signup_flag=='PT' && show_gst_verify" class="btn btn-primary"
+                                      (click)="gst_verify_without_otp()">Verify</button>
+
+                                    <span class="text-success" style="font-weight: 500;"
+                                      *ngIf="(show_gst_verify==false)">
+                                      <i class="fa fa-check" aria-hidden="true"></i> Verified</span>
+                                  </div>
+
+
+                                </div>
+
+                                <div class="state-city-box">
+                                  <div class="col-md-12">
+                                    <div class="form-group state-city-box-inner">
+                                      <input type="text" formControlName="company_name" class="form-control"
+                                        placeholder="*Company Name">
+
+                                      <div *ngIf="companySubmitted && cf.company_name.errors" class="inline-pos1">
+                                        <small *ngIf="cf.company_name.errors.required" class="text-danger">Name is
+                                          required</small>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="state-city-box">
+                                  <div class="col-md-12">
+                                    <div class="form-group state-city-box-inner">
+                                      <textarea type="text" formControlName="company_address" class="form-control"
+                                        placeholder="*Billing Address" autocomplete="off"
+                                        style="height:8rem !important;">
+                                        </textarea>
+
+                                      <div *ngIf="companySubmitted && cf.company_address.errors" class="inline-pos1">
+                                        <small *ngIf="cf.company_address.errors.required" class="text-danger">Address
+                                          is required</small>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+
+                                <div class="state-city-box">
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <!-- <input type="text" class="form-control" formControlName="company_state"
+                                          placeholder="*State"> -->
+                                      <select class="form-control" (change)="change_state($event)">
+                                        <option value="">Select State</option>
+                                        <option *ngFor="let sm of state_master;" value="{{sm | json}}"
+                                          [selected]="cf.company_state.value.toUpperCase() == sm.state.toUpperCase()">
+                                          {{sm.state}}
+                                        </option>
+                                      </select>
+
+                                      <div *ngIf="companySubmitted && cf.company_state.errors" class="inline-pos1">
+                                        <small *ngIf="cf.company_state.errors.required" class="text-danger">State is
+                                          required</small>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="col-md-6">
+                                    <div class="form-group state-city-box-inner mrg-bot-0">
+                                      <input type="text" formControlName="company_town_city" class="form-control"
+                                        placeholder="*City">
+                                      <!-- <select class="form-control" (change)="change_district($event)">
+                                        <option value="">Select District</option>
+                                        <option *ngFor="let dm of district_master;" value="{{dm | json}}"
+                                          [selected]="cf.company_town_city.value == dm.district">{{dm.district}}
+                                        </option>
+                                      </select> -->
+
+                                      <div *ngIf="companySubmitted && cf.company_town_city.errors" class="inline-pos1">
+                                        <small *ngIf="cf.company_town_city.errors.required" class="text-danger">City
+                                          is required</small>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                </div>
+
+
+
+                                <div class="state-city-box">
+                                  <div class="col-md-6">
+
+
+                                    <div class="form-group state-city-box-inner mrg-bot-0">
+                                      <input type="text" class="form-control" formControlName="company_pincode"
+                                        placeholder="*Pin Code" maxlength="6"
+                                        onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+
+                                      <div *ngIf="companySubmitted && cf.company_pincode.errors" class="inline-pos1">
+                                        <small *ngIf="cf.company_pincode.errors.required" class="text-danger">Pin Code
+                                          is required</small>
+                                      </div>
+                                    </div>
+
+
+                                  </div>
+
+                                  <div class="col-md-6">
+
+                                  </div>
+
+                                </div>
+
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="submit-btn" *ngIf="signup_flag=='PT'">
+                    <button class="btn btn-primary" (click)="updateEmployerBillingCompany()">Submit</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="login-panel panel padd-top-0 mrg-top-0 employees-details-outer-box">
+
+          <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+
+            <div class="card12">
+              <div class="panel-heading panel_heading_gray collapsed card-header"
+                [ngClass]="{'collapsed': signup_flag!='CD'}" data-toggle="collapse" data-parent="#accordion8"
+                href="#collapseOne8" aria-expanded="false" aria-controls="collapseOne" role="tab" id="headingOne8">
+                <h4>Accept Terms and Conditions <i class="fa fa-plus plus-box" aria-hidden="true"></i><i
+                    class="fa fa-minus minus-box" aria-hidden="true"></i></h4>
+              </div>
+              <div id="collapseOne8" class="panel-collapse collapse card-body padd-bot-0"
+                [ngClass]="{'in': signup_flag=='CD', 'read-only': (signup_flag=='CD' || signup_flag=='SPI' || signup_flag=='EA') ? false:true}"
+                role="tabpanel">
+                <div class="row">
+
+                  <span [ngStyle]="{'display': (signup_flag=='AV' || signup_flag=='PT') ? 'block' : 'none'}" class="text-danger" style="margin-left: 16px;">* Please first complete the previous step</span>
+
+                  <div class="col-md-12 padd-top-15">
+
+                    <div class="Appointment-outer-box Salary-Details-outer-box">
+                      <form [formGroup]="agreementForm" novalidate="" autocomplete="off"
+                        class="ng-touched ng-pristine ng-invalid">
+
+                        <div class="form-group">
+                          <div class="payment-box payment-box-listing cur-ptr" (click)="openAgreementPopup()">
+
+                            <div class="form-group Reciept-No-box mrg-top-0 mrg-bot-0">
+
+                              <span>Click to view Terms and Conditions <i class="fa fa-eye"></i></span>
+
+                              <!-- <span [innerHTML]="agreement_master"></span> -->
+
+                            </div>
+
+                          </div>
+
+                        </div>
+
+
+                        <div class="form-group mrg-top-10" *ngIf="signup_flag=='CD'">
+                          <div class="tacbox-I-agree-box">
+                            <input id="checkbox1" type="checkbox" formControlName="accept_term_conditions_y_n">
+                            <label for="checkbox1"> I have read and agree to the <a>Terms and
+                                Conditions </a> of TankhaPay. </label>
+                          </div>
+                          <!--<br>
+
+                          <div class="tacbox-I-agree-box">
+                            <input id="checkbox2" type="checkbox" formControlName="accept_onboarded_akal_y_n">
+                            <label for="checkbox2"> I accept that my employees will be contracted and paid through the
+                              TankhaPay App. </label>
+
+                          </div>
+                          <br>
+
+                          <div class="tacbox-I-agree-box">
+                            <input id="checkbox3" type="checkbox" formControlName="accept_additional_charges_y_n">
+                            <label for="checkbox3"> I accept to pay service charges to TankhaPay for contracting and
+                              processing employee wages. </label>
+
+                          </div>
+                          <br>
+
+                          <div class="tacbox-I-agree-box">
+                            <input id="checkbox4" type="checkbox" formControlName="accept_pf_esic_y_n">
+                            <label for="checkbox4"> I accept to pay Social security benefits to my contracted employees.
+                            </label>
+                          </div> -->
+
+
+                        </div>
+
+
+
+                      </form>
+
+                    </div>
+
+                  </div>
+
+                  <div class="submit-btn" *ngIf="signup_flag=='CD'">
+                    <button class="btn btn-primary" (click)="accept_terms_conditions()">Accept Terms &
+                      Conditions</button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="login-panel panel padd-top-0 mrg-top-0 employees-details-outer-box">
+
+          <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+
+            <div class="card12">
+              <div class="panel-heading panel_heading_gray collapsed card-header"
+                [ngClass]="{'collapsed': signup_flag!='EA' && signup_flag!='SPI'}" data-toggle="collapse"
+                data-parent="#accordion1" href="#collapseOne1" aria-expanded="false" aria-controls="collapseOne"
+                role="tab" id="headingOne1">
+                <h4>Activation / Starting Balance <i class="fa fa-plus plus-box" aria-hidden="true"></i><i
+                    class="fa fa-minus minus-box" aria-hidden="true"></i></h4>
+              </div>
+              <div id="collapseOne1" class="panel-collapse collapse card-body padd-bot-0"
+                [ngClass]="{'read-only': signup_flag!='EA' && signup_flag!='SPI','in': signup_flag=='EA' || signup_flag=='SPI'}"
+                role="tabpanel">
+                <div class="row">
+                  <span [ngStyle]="{'display': (signup_flag=='AV' || signup_flag=='PT' || signup_flag=='CD') ? 'block' : 'none'}" class="text-danger" style="margin-left: 16px;">* Please first complete the previous step</span>
+
+                  <div class="padd-top-15">
+
+                    <div class="Appointment-outer-box Salary-Details-outer-box">
+                      <form novalidate="" autocomplete="off" class="ng-touched ng-pristine ng-invalid cls-pay-now">
+
+                        <div class="form-group">
+                          <div class="payment-box payment-box-listing">
+
+                            <div class="form-group Reciept-No-box mrg-top-0 mrg-bot-0">
+                              <div class="col-md-12">
+                                <div class=" row">
+                                  <div class="col-md-6">
+                                    <h4>Product Name</h4>
+                                  </div>
+
+                                  <div class="col-md-6 text-right">
+                                    <h4>Starting Balance</h4>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <h3> {{product_type_name}}</h3>
+                                  </div>
+
+                                  <div class="col-md-6 text-right">
+                                    <h3>&#8377; {{starting_pay_amt}}</h3>
+                                  </div>
+
+                                </div>
+                              </div>
+
+                              <!-- <div class="col-md-12">
+                                <div class=" row">
+                                  <div class="col-md-6">
+                                    <h4>Payroll Management</h4>
+                                  </div>
+                                  <div class="col-md-6 text-right">
+                                    <h4>₹ 5000</h4>
+                                  </div>
+
+                                </div>
+                              </div> -->
+
+
+                            </div>
+
+
+                          </div>
+                          <div>
+                            <p class=" balance-message-box">Starting balance is adjustable in your future
+                              billings</p>
+                          </div>
+
+                        </div>
+
+
+
+                        <!-- <div class="form-group mrg-top-10">
+                          <div class="tacbox-I-agree-box">
+                            <input id="checkbox" type="checkbox">
+                            <label for="checkbox">I have read and agree to the <a href="#">Terms and
+                                Conditions </a> of tankhapay. </label>
+                          </div>
+                        </div> -->
+
+
+                        <a [ngStyle]="{'display': signup_flag!='EA' && signup_flag!='SPI' ? 'none': 'block'}" (click)="pay_starting_balance()" class="btn btn-primary btn-lg" style="width: 100%;">Pay
+                          Now</a>
+
+                        <!-- <p class="Signup-now-text-box">Already have an account? <a [routerLink]="['/login']">Signin
+                            now</a></p> -->
+                      </form>
+
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+
+</section>
+<app-footer></app-footer>
+
+<!-- <div class="login-panel panel panel-default">
+       <div class="modal-footer text-center">
+          <div class="col-md-12"> © 2023 TankhaPay. Akal Information Systems Ltd. All Rights Reserved. </div>
+       </div>
+    </div> -->
+
+
+<!--------Agreement Popup-------->
+<div [@grooveState]="showAgreementPopup?'active':'inactive'" id="agreement" class="modal">
+  <div [@dongleState]="showAgreementPopup?'active':'inactive'" class="modal-dialog modal-xl"
+    style="margin:auto auto auto auto;  width: 80%;">
+    <div class="modal-content" style="height:100%;margin-top:50px;">
+      <form>
+        <div class="modal-header theme-bg">
+          <h2 class="modal-title">Terms and Conditions</h2>
+          <button type="button" class="close" (click)="closeAgreementPopup()" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="row agg-cust">
+
+            <span [innerHTML]="agreement_master"></span>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button class="btn btn-info" (click)="saveAgreement()">save</button> -->
+          <button class="btn btn-cancel" (click)="closeAgreementPopup()">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!--------Agreement Popup-------->

@@ -1,0 +1,140 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+    <div id="wrapper" [ngClass]="{'active': showSidebar == false}">
+        <div class="fakeLoader"></div>
+
+
+        <div id="page-wrapper">
+                    <div class="row page-titles">
+                        <div class="col-md-5 align-self-center">
+                            <h3 class="text-themecolor">OT Rules</h3>
+                        </div>
+                        <div class="col-md-7 align-self-center">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item" title="Dashboard"><a [routerLink]="['/dashboard']">Home</a></li>
+                                <li class="breadcrumb-item active">OT Rules</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <!-- /row -->
+                        <div class="row">
+                        
+                        
+                        <div class="col-md-12 mrg-top-0 mrg-bot-25">
+                        
+                        
+                        <div class="card">
+                            
+                           <div class="card-header"> 
+                              <h4 class="sub-title-inn-box View-Roles-list-outer-box" >Rules listing
+
+                          <div class="col-lg-2 col-md-2 text-right" style="float: right;">
+                              <a class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn"
+                                 style="margin: 8px 0 0 0;" (click)="showAddOtRuleModal('add','')">+ Add OT Rule </a>
+      
+                           </div>
+                          
+                          </h4>
+                    
+                   </div>	     
+                                <div class="card-body padd-bot-10 padd-top-0">
+                                
+                                    <div class="row">
+                                    
+                                    <div class="col-md-12 padd-top-0">
+                                    
+                                    <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+                        
+                                        <table class="table" >
+                                           <thead>
+                                              <tr>
+                                                 <th id="ember1089" class="sortable ember-view">
+                                                    Name
+                                                    <!---->
+                                                 </th>
+                                                
+                                                 
+                                                 
+                                                 <th class="header-actions text-center">Action</th>
+                                              </tr>
+                                           </thead>
+                                           <tbody>
+                                              <tr id="ember1092" class="ember-view" *ngFor="let otrule of otRulesList;let i=index;">
+                                                 <td>
+                                                    <div class="media">
+                                                       
+                                                       <div class="media-right" style="max-width: 300px;">
+                                                          <div class="media-heading font-sm text-overflow">
+                                                             <a (click)="showAddOtRuleModal('edit',otrule)" class="ember-view">{{otrule.ot_rule_name}}</a>
+                                                          </div>
+                                                          
+                                                       </div>
+                                                    </div>
+                                                 </td>
+                                                 
+                                                 <td class="user-item">
+                                                    <div class="job-buttons action-btn-outer-box">
+                                
+                                                    <a class="btn btn-shortlist manage-btn" title="Edit" (click)="editOt(otrule)"
+                                                    ><i class="ti-pencil-alt"></i></a>	
+                                                    <a class="btn btn-shortlist manage-btn" title="delete" (click)="showAddOtRuleModal('delete',otrule)"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                        
+                                                    </div>
+                                                 </td>
+                                              </tr>
+                                                                                            
+                                              </tbody>
+                                        </table>	
+                                    </div>	
+                                        
+                                    </div>
+                                    
+                                    </div>		
+                                </div>
+                            </div>
+                        
+                        </div>
+                        
+                        
+                        </div>
+                        <!-- /row -->
+                    </div>	
+
+                </div>
+    </div>
+</section>
+<!-- Add New OT Rules popup -->
+
+<div class="modal add-address-form-box" [@grooveState]="isAddOt?'active':'inactive'">
+   <div class="modal-dialog" [@dongleState]="isAddOt?'active':'inactive'">
+      <div class="modal-content">
+         <form>
+            <div class="modal-header theme-bg">						
+               <h4 class="modal-title">{{otModalHeading =='add' ? 'Add OT Rule' : (otModalHeading =='edit'?'Edit OT Rule' 
+                  :'Delete OT Rule')}}</h4>
+               <button type="button" class="close" (click)="hideOTRule()">&times;</button>
+            </div>
+            <div class="modal-body" [formGroup]="otRuleForm">					
+               <div class="form-group" *ngIf="otModalHeading=='add' || otModalHeading=='edit'">
+                  <label>Name</label>
+                  <input type="text" formControlName="ot_rule_name"  class="form-control" placeholder="Enter OT Rule Name">
+               </div>
+               <div class="form-group" *ngIf="otModalHeading=='delete'">
+                  <label>Remarks</label>
+                  <input type="text" formControlName="remarks"  class="form-control" placeholder="Enter Remarks">
+               </div>
+               
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-default" (click)="hideOTRule()">Cancel</a>
+               <a  type="button" class="btn btn-default" (click)="submitOtRule()"
+               [ngClass]="{'btn-danger': otModalHeading=='delete'}"> {{(otModalHeading =='add' || otModalHeading=='edit') ? 'Save' : 'Delete'}}</a>
+               
+               
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+<app-footer></app-footer>

@@ -1,0 +1,665 @@
+<div id="page-wrapper">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Income Tax Calculator</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a (click)="goBack()">Home</a></li>
+                <li class="breadcrumb-item active">Income Tax Calculator</li>
+            </ol>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <!-- /row -->
+        <div class="row">
+            <div class="col-md-12 col-md-offset-0 mrg-top-2512 mrg-bot-25 employees-details-outer-box">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="period-toggler-container">
+                            <!-- <table class="plan-period-toggler">
+                                <tbody>
+                                    <tr class="plan-table">
+                                        <td class="plan-period-toggle previous-fy"
+                                            [class.active]="selectedFY === currentFY" (click)="toggleFY('previous')">
+                                            Current FY ({{ currentFY }})
+                                        </td>
+                                        <td class="plan-period-toggle current-fy" [class.active]="selectedFY === nextFY"
+                                            (click)="toggleFY('current')">
+                                            Next FY ({{ nextFY }})
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table> -->
+                            <table class="plan-period-toggler">
+                                <tbody>
+                                    <tr class="plan-table">
+                                        <!-- Show Previous & Current FY from April to February -->
+                                        <ng-container *ngIf="!showCurrentAndNext">
+                                            <td class="plan-period-toggle previous-fy"
+                                                [class.active]="selectedFY === previousFY"
+                                                (click)="toggleFY('previous')">
+                                                Previous FY ({{ previousFY }})
+                                            </td>
+                                            <td class="plan-period-toggle current-fy"
+                                                [class.active]="selectedFY === currentFY" (click)="toggleFY('current')">
+                                                Current FY ({{ currentFY }})
+                                            </td>
+                                        </ng-container>
+
+                                        <!-- Show Current & Next FY in March -->
+                                        <ng-container *ngIf="showCurrentAndNext">
+                                            <td class="plan-period-toggle current-fy"
+                                                [class.active]="selectedFY === currentFY" (click)="toggleFY('current')">
+                                                Current FY ({{ currentFY }})
+                                            </td>
+                                            <td class="plan-period-toggle next-fy"
+                                                [class.active]="selectedFY === nextFY" (click)="toggleFY('next')">
+                                                Next FY ({{ nextFY }})
+                                            </td>
+                                        </ng-container>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+                    <div class="col-md-12 mrg-bot-25">
+                        <div class="card">
+                            <div class="card-body padd-bot-0">
+                                <div class="input-form-container">
+                                    <form [formGroup]="taxForm" (ngSubmit)="onSubmit()" *ngIf="!isCalculated">
+                                        <div class="row line-inputs">
+                                            <div class="col-md-9 col-sm-9 col-xs-12"
+                                                style="color: #004899; font-weight: 800; font-size:18px;">
+                                                Yearly income from salary <span class="text-danger">*</span>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 input-field text-right added-placeholder">
+                                                <input class="form-control" type="text" id="grossEarnings"
+                                                    formControlName="grossEarnings" required
+                                                    (keypress)="restrictToNumbers($event)"
+                                                    (paste)="restrictToNumbers($event)">
+                                                <span class="error-message" style="float: left;"
+                                                    *ngIf="isSubmitted && taxForm.get('grossEarnings')?.invalid">
+                                                    Gross Earning is required.
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <!-- comment by ak 27-03-2025 -->
+                                        <!-- <div class="row line-inputs">
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                Age <span class="text-danger">*</span>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 input-field text-right">
+                                                <select id="age" formControlName="age"
+                                                    class="age-field form-control">
+                                                    <option value="">-- Select Age group --</option>
+                                                    <option value="0">Less than 60</option>
+                                                    <option value="1">60 - 80</option>
+                                                    <option value="2">Above 80</option>
+                                                </select>
+                                                <span class="error-message" style="float: left;"
+                                                    *ngIf="isSubmitted && taxForm.get('age')?.invalid">
+                                                    Please Select Age Group
+                                                </span>
+                                            </div>
+                                        </div> -->
+                                        <!-- <div class="other-earnings-table">
+                                            <div class="row line-inputs">
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    Interest from savings bank accounts / FD accounts
+                                                </div>
+                                                <div class="col-md-3 col-sm-3 input-field text-right">
+                                                    <input class="form-control" type="text" id="savingsInterest"
+                                                        formControlName="savingsInterest" (keypress)="restrictToNumbers($event)"
+                                                        (paste)="restrictToNumbers($event)">
+                                                </div>
+                                            </div>
+                                            <div class="row line-inputs">
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    Rental income received <small>(Let-out property)</small>
+                                                </div>
+                                                <div class="col-md-3 col-sm-3 input-field text-right">
+                                                    <input class="form-control" type="text" id="rentalIncome"
+                                                        formControlName="rentalIncome" (keypress)="restrictToNumbers($event)"
+                                                        (paste)="restrictToNumbers($event)">
+                                                </div>
+                                            </div>
+                                            <div class="row line-inputs">
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    Municipal tax paid <small>(Let-out property)</small>
+                                                </div>
+                                                <div class="col-md-3 col-sm-3 input-field text-right">
+                                                    <input class="form-control" type="text" id="municipalTax"
+                                                        formControlName="municipalTax" (keypress)="restrictToNumbers($event)"
+                                                        (paste)="restrictToNumbers($event)">
+                                                </div>
+                                            </div>
+                                            <div class="row line-inputs">
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    Interest paid on housing loan <small>(Let-out property)</small>
+                                                </div>
+                                                <div class="col-md-3 col-sm-3 input-field text-right">
+                                                    <input class="form-control" type="text" id="homeLoanInterest"
+                                                        formControlName="homeLoanInterest" (keypress)="restrictToNumbers($event)"
+                                                        (paste)="restrictToNumbers($event)">
+                                                </div>
+                                            </div>
+                                            <div class="row line-inputs">
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    Other income, if any
+                                                </div>
+                                                <div class="col-md-3 col-sm-3 input-field text-right">
+                                                    <input class="form-control" type="text" id="otherIncome"
+                                                        formControlName="otherIncome" (keypress)="restrictToNumbers($event)"
+                                                        (paste)="restrictToNumbers($event)">
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                        <!-- <div class="section-header">
+                                            Exemption details
+                                            <button type="button" class="btn btn-secondary" data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="Exemptions cannot be availed in the new tax regime. The exemption details collected here will be used to calculate tax under the old regime and compared with the tax calculated under new regime.">
+                                                <i class="fa fa-info-circle"></i>
+                                            </button>
+                                            <div class="tooltip-entity">
+                                            </div>
+                                        </div> -->
+                                        <div class="section-header">
+                                            Exemption details
+                                            <button type="button" class="btn btn-secondary tooltip-container">
+                                                <i class="fa fa-info-circle"></i>
+                                                <span class="tooltip-text">
+                                                    Exemptions cannot be availed in the new tax regime. The exemption
+                                                    details collected here will be used to calculate tax under the old
+                                                    regime and compared with the tax calculated under new regime.
+                                                </span>
+                                            </button>
+                                        </div>
+                                        <div class="row line-inputs" style="padding-top: 24px;">
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                HRA and other exemptions
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 input-field text-right">
+                                                <input class="form-control" type="text" id="hraExemption"
+                                                    formControlName="hraExemption"
+                                                    (keypress)="restrictToNumbers($event)"
+                                                    (paste)="restrictToNumbers($event)">
+                                            </div>
+                                        </div>
+                                        <div class="row line-inputs">
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                Interest paid on housing loan
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 input-field text-right">
+                                                <input class="form-control" type="text" id="homeLoanExemption"
+                                                    formControlName="homeLoanExemption"
+                                                    (keypress)="restrictToNumbers($event)"
+                                                    (paste)="restrictToNumbers($event)"
+                                                    (input)="enforceLimit($event, 200000)">
+                                                <div class="hint">Exemption Limit : ₹2,00,000</div>
+                                            </div>
+                                        </div>
+                                        <div class="row line-inputs">
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                80C <small>(PF, PPF, insurance premium)</small>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 input-field text-right">
+                                                <input class="form-control" type="text" id="deduction80c"
+                                                    formControlName="deduction80c"
+                                                    (keypress)="restrictToNumbers($event)"
+                                                    (paste)="restrictToNumbers($event)"
+                                                    (input)="enforceLimit($event, 150000)">
+                                                <div class="hint">Exemption Limit : ₹1,50,000</div>
+                                            </div>
+                                        </div>
+                                        <div class="row line-inputs">
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                80CCD <small>(Employee's contribution to NPS)</small>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 input-field text-right">
+                                                <input class="form-control" type="text" id="deduction80ccdEmployee"
+                                                    formControlName="deduction80ccdEmployee"
+                                                    (keypress)="restrictToNumbers($event)"
+                                                    (paste)="restrictToNumbers($event)"
+                                                    (input)="enforceLimit($event, 150000)">
+                                                <div class="hint">Exemption Limit : ₹1,50,000</div>
+                                            </div>
+                                        </div>
+                                        <div class="row line-inputs">
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                80CCD() <small>(Additional contribution to NPS)</small>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 input-field text-right">
+                                                <input class="form-control" type="text" id="deduction80ccd1b"
+                                                    formControlName="deduction80ccd1b"
+                                                    (keypress)="restrictToNumbers($event)"
+                                                    (paste)="restrictToNumbers($event)"
+                                                    (input)="enforceLimit($event, 50000)">
+                                                <div class="hint">Exemption Limit : ₹50,000</div>
+                                            </div>
+                                        </div>
+                                        <div class="row line-inputs">
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                80D <small>(Medical insurance premium)</small>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 input-field text-right">
+                                                <input class="form-control" type="text" id="deduction80dMediclaim"
+                                                    formControlName="deduction80dMediclaim"
+                                                    (keypress)="restrictToNumbers($event)"
+                                                    (paste)="restrictToNumbers($event)">
+                                            </div>
+                                        </div>
+                                        <div class="row line-inputs">
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                80E <small>(Interest paid on education loan)</small>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 input-field text-right">
+                                                <input class="form-control" type="text" id="deduction80eEduLoanInterest"
+                                                    formControlName="deduction80eEduLoanInterest"
+                                                    (keypress)="restrictToNumbers($event)"
+                                                    (paste)="restrictToNumbers($event)">
+                                            </div>
+                                        </div>
+                                        <div class="row line-inputs">
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                80EEA <small>(Interest paid on home loan for affordable housing)</small>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 input-field text-right">
+                                                <input class="form-control" type="text" id="deduction80eeaHomeLoan"
+                                                    formControlName="deduction80eeaHomeLoan"
+                                                    (keypress)="restrictToNumbers($event)"
+                                                    (paste)="restrictToNumbers($event)"
+                                                    (input)="enforceLimit($event, 150000)">
+                                                <div class="hint">Exemption Limit : ₹1,50,000</div>
+                                            </div>
+                                        </div>
+                                        <div class="row line-inputs">
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                80EEB <small>(Interest paid on loan for purchase of electrical
+                                                    vehicle)</small>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 input-field text-right">
+                                                <input class="form-control" type="text" id="deduction80eebEvLoan"
+                                                    formControlName="deduction80eebEvLoan"
+                                                    (keypress)="restrictToNumbers($event)"
+                                                    (paste)="restrictToNumbers($event)"
+                                                    (input)="enforceLimit($event, 150000)">
+                                                <div class="hint">Exemption Limit : ₹1,50,000</div>
+                                            </div>
+                                        </div>
+                                        <div class="row line-inputs">
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                80G <small>(Donations to charity)</small>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 input-field text-right">
+                                                <input class="form-control" type="text" id="deduction80gDonations"
+                                                    formControlName="deduction80gDonations"
+                                                    (keypress)="restrictToNumbers($event)"
+                                                    (paste)="restrictToNumbers($event)">
+                                            </div>
+                                        </div>
+                                        <div class="row line-inputs">
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                Professional Tax
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 input-field text-right">
+                                                <input class="form-control" type="text" id="proffesionalTax"
+                                                    formControlName="proffesionalTax"
+                                                    (keypress)="restrictToNumbers($event)"
+                                                    (paste)="restrictToNumbers($event)">
+                                            </div>
+                                        </div>
+                                        <!-- add by ak 29-05-2025 start -->
+                                        <div class="row line-inputs">
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                Magazine Allowance
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 input-field text-right">
+                                                <input class="form-control" type="text" id="magazineAllowance"
+                                                    formControlName="magazineAllowance"
+                                                    (keypress)="restrictToNumbers($event)"
+                                                    (paste)="restrictToNumbers($event)"
+                                                    (input)="enforceLimit($event, 72000)">
+                                                <div class="hint">Exemption Limit : ₹72,000</div>
+                                            </div>
+                                        </div>
+                                        <div class="row line-inputs">
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                Uniform Allowance
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 input-field text-right">
+                                                <input class="form-control" type="text" id="uniformAllowance"
+                                                    formControlName="uniformAllowance"
+                                                    (keypress)="restrictToNumbers($event)"
+                                                    (paste)="restrictToNumbers($event)"
+                                                    (input)="enforceLimit($event, 60000)">
+                                                <div class="hint">Exemption Limit : ₹60,000</div>
+                                            </div>
+                                        </div>
+                                        <div class="row line-inputs">
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                Driver Allowance
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 input-field text-right">
+                                                <input class="form-control" type="text" id="driverAllowance"
+                                                    formControlName="driverAllowance"
+                                                    (keypress)="restrictToNumbers($event)"
+                                                    (paste)="restrictToNumbers($event)"
+                                                    (input)="enforceLimit($event, 10800)">
+                                                <div class="hint">Exemption Limit : ₹10,800</div>
+                                            </div>
+                                        </div>
+                                        <div class="row line-inputs">
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                Fuel Allowance
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 input-field text-right">
+                                                <input class="form-control" type="text" id="fuelAllowance"
+                                                    formControlName="fuelAllowance"
+                                                    (keypress)="restrictToNumbers($event)"
+                                                    (paste)="restrictToNumbers($event)"
+                                                    (input)="enforceLimit($event, 21600)">
+                                                <div class="hint">Exemption Limit : ₹21,600</div>
+                                            </div>
+                                        </div>
+                                        <div class="row line-inputs">
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                Education Allowance
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 input-field text-right">
+                                                <input class="form-control" type="text" id="educationAllowance"
+                                                    formControlName="educationAllowance"
+                                                    (keypress)="restrictToNumbers($event)"
+                                                    (paste)="restrictToNumbers($event)"
+                                                    (input)="enforceLimit($event, 2400)">
+                                                <div class="hint">Exemption Limit : ₹2,400</div>
+                                            </div>
+                                        </div>
+                                        <div class="row line-inputs">
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                LTA <small> (1 Months Basic Salary upto 75000) </small>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 input-field text-right">
+                                                <input class="form-control" type="text" id="lta" formControlName="lta"
+                                                    (keypress)="restrictToNumbers($event)"
+                                                    (paste)="restrictToNumbers($event)"
+                                                    (input)="enforceLimit($event, 75000)">
+                                                <div class="hint">Exemption Limit : ₹75,000</div>
+                                            </div>
+                                        </div>
+                                        <div class="row line-inputs">
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                One Month Basic
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 input-field text-right">
+                                                <input class="form-control" type="text" id="oneMonthBasic"
+                                                    formControlName="oneMonthBasic"
+                                                    (keypress)="restrictToNumbers($event)"
+                                                    (paste)="restrictToNumbers($event)">
+                                            </div>
+                                        </div>
+                                        <!-- add by ak 29-05-2025 end -->
+                                        <hr>
+                                        <button type="submit" class="btn btn-primary">Calculate income tax</button>
+                                        <!-- <button type="submit" class="button-primary submit-btn btn btn-primary"
+                                            onclick="javascript:onSubmit()">Calculate income tax</button> -->
+                                    </form>
+                                    <div *ngIf="isCalculated">
+                                        <div class="desktop-view">
+                                            <div class="summary-section">
+                                                <div class="tax-summary-section">
+                                                    <div>Here is the tax summary based on your input</div>
+                                                    <div class="tax-compare-section">
+                                                        <div class="tax-value-section">
+                                                            <small>Old Tax Regime</small>
+                                                            <div class="tax-value taxByOldRegime">₹ {{
+                                                                old_regime_data?.[0]?.balancetax | number:'1.0-2'}}
+                                                            </div>
+                                                        </div>
+                                                        <div class="tax-value-section">
+                                                            <small>New Tax Regime</small>
+                                                            <div class="tax-value taxByNewRegime">₹
+                                                                {{new_regime_data?.[0]?.balancetax | number:'1.0-2'}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="comparison-result-section text-center desktop">
+                                                    <small>You will save</small>
+                                                    <div class="saved-value">₹ {{ (+old_regime_data?.[0]?.balancetax) -
+                                                        (+new_regime_data?.[0]?.balancetax) | number:'1.0-2' }}</div>
+                                                    <small>under the <b><span class="best-regime">New Tax
+                                                                Regime</span></b></small>
+                                                </div> -->
+                                                <div class="comparison-result-section text-center desktop">
+                                                    <small>You will save</small>
+
+                                                    <div class="saved-value">
+                                                        ₹ {{ taxDifference | number:'1.0-2' }}
+                                                    </div>
+
+                                                    <small>
+                                                        under the <b><span class="best-regime">{{ bestRegime }} Tax
+                                                                Regime</span></b>
+                                                    </small>
+                                                </div>
+
+                                                <div class="both-equal hide">
+                                                    Tax charges are the same under both regimes
+                                                </div>
+                                            </div>
+                                            <div class="result-subheader">Summary Breakdown</div>
+                                            <table class="results-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-uppercase">Components</th>
+                                                        <th class="text-right old-tax-values text-uppercase">Old Tax
+                                                            Regime</th>
+                                                        <th class="text-right text-uppercase">New Tax Regime</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Total Gross Income</td>
+                                                        <td class="text-right old-tax-values oldTaxRegime.grossPay">
+                                                            ₹ {{old_regime_data?.[0]?.totalincome | number:'1.0-2'}}
+                                                        </td>
+                                                        <td class="text-right newTaxRegime.grossPay">₹
+                                                            {{new_regime_data?.[0]?.totalincome | number:'1.0-2'}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Total Eligible Deductions</td>
+                                                        <td class="text-right old-tax-values oldTaxRegime.excemptions">
+                                                            ₹ {{old_regime_data?.[0]?.totalsavings | number:'1.0-2'}}
+                                                        </td>
+                                                        <td class="text-right newTaxRegime.excemptions">₹
+                                                            {{new_regime_data?.[0]?.totalsavings | number:'1.0-2' }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Taxable Income</td>
+                                                        <td
+                                                            class="text-right old-tax-values oldTaxRegime.taxableIncome">
+                                                            ₹ {{old_regime_data?.[0]?.taxableincome | number:'1.0-2' }}
+                                                        </td>
+                                                        <td class="text-right newTaxRegime.taxableIncome">₹
+                                                            {{new_regime_data?.[0]?.taxableincome | number:'1.0-2'}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tax on Taxable Income</td>
+                                                        <td class="text-right old-tax-values">
+                                                            <div class="oldTaxRegime.totalTaxableAmount">₹
+                                                                {{old_regime_data?.[0]?.taxonincome | number:'1.0-2' }}
+                                                            </div>
+                                                            <!-- <div class="breakup t-bold old-tax-slab"
+                                                                (click)="toggleBreakUp('old-tax')">
+                                                                Show BreakUp
+                                                                <div class="old-tax-popover" *ngIf="isVisibleOldTax">
+                                                                    <div class="arrow"></div>
+                                                                    <table class="tax-slab" id="old-tax-slab-details">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th width="50%">Income Tax Slab</th>
+                                                                                <th width="20%">Tax Rate</th>
+                                                                                <th width="30%" class="text-right">Tax
+                                                                                    Amount</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>₹0 to ₹2,50,000.00</td>
+                                                                                <td>Nil</td>
+                                                                                <td>₹0.00</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>₹2,50,001 to ₹5,00,000.00</td>
+                                                                                <td>5%</td>
+                                                                                <td>₹12,500.00</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>₹5,00,001 to ₹7,17,992.00</td>
+                                                                                <td>20%</td>
+                                                                                <td>₹43,598.40</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                        <tfoot>
+                                                                            <tr>
+                                                                                <td colspan="2" class="text-right">Total
+                                                                                    Tax Amount</td>
+                                                                                <td
+                                                                                    class="text-right oldTaxRegime.totalTaxableAmount">
+                                                                                    ₹56,098.40</td>
+                                                                            </tr>
+                                                                        </tfoot>
+                                                                    </table>
+                                                                </div>
+                                                            </div> -->
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <div class="newTaxRegime.totalTaxableAmount">₹
+                                                                {{new_regime_data?.[0]?.taxonincome | number:'1.0-2' }}
+                                                            </div>
+                                                            <!-- <div class="breakup t-bold new-tax-slab"
+                                                                (click)="toggleBreakUp('new-tax')">
+                                                                Show BreakUp
+                                                                <div class="new-tax-popover" *ngIf="isVisibleNewTax">
+                                                                    <div class="arrow"></div>
+                                                                    <table id="new-tax-slab-details" class="tax-slab">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th width="50%">Income Tax Slab</th>
+                                                                                <th width="20%">Tax Rate</th>
+                                                                                <th width="30%" class="text-right">Tax
+                                                                                    Amount</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>₹0 to ₹3,00,000.00</td>
+                                                                                <td>Nil</td>
+                                                                                <td>₹0.00</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>₹3,00,001 to ₹7,00,000.00</td>
+                                                                                <td>5%</td>
+                                                                                <td>₹20,000.00</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>₹7,00,001 to ₹7,00,992.00</td>
+                                                                                <td>10%</td>
+                                                                                <td>₹99.20</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                        <tfoot>
+                                                                            <tr>
+                                                                                <td colspan="2" class="text-right">Total
+                                                                                    Tax Amount</td>
+                                                                                <td
+                                                                                    class="text-right newTaxRegime.totalTaxableAmount">
+                                                                                    ₹20,099.20</td>
+                                                                            </tr>
+                                                                        </tfoot>
+                                                                    </table>
+                                                                </div>
+                                                            </div> -->
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Less: Rebate Under Section 87A(a) </td>
+                                                        <td class="text-right old-tax-values oldTaxRegime.rebate">₹
+                                                            {{old_regime_data?.[0]?.us_87_a | number:'1.0-2'}}
+                                                        </td>
+                                                        <td class="text-right newTaxRegime.rebate">₹
+                                                            {{new_regime_data?.[0]?.us_87_a | number:'1.0-2'}}</td>
+                                                    </tr>
+                                                    <tr style="display: none;">
+                                                        <td>Less: Relief Under Section 87A(b) </td>
+                                                        <td class="text-right old-tax-values oldTaxRegime.relief">₹ 0
+                                                        </td>
+                                                        <td class="text-right newTaxRegime.relief">₹ 0</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Total Tax on Income</td>
+                                                        <td class="text-right old-tax-values oldTaxRegime.tax">
+                                                            ₹ {{old_regime_data?.[0]?.pre_tax_on_income |
+                                                            number:'1.0-2'}}</td>
+                                                        <td class="text-right newTaxRegime.tax">
+                                                            ₹{{new_regime_data?.[0]?.pre_tax_on_income |
+                                                            number:'1.0-2'}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Surcharge</td>
+                                                        <td class="text-right old-tax-values oldTaxRegime.surcharge">
+                                                            ₹ {{old_regime_data?.[0]?.surcharge | number:'1.0-2'}}</td>
+                                                        <td class="text-right newTaxRegime.surcharge">₹
+                                                            {{new_regime_data?.[0]?.surcharge | number:'1.0-2'}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            Health and Education Cess
+                                                            <div class="hint">(4% of Tax on taxable Income + Surcharge)
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-right old-tax-values oldTaxRegime.cess">
+                                                            ₹ {{old_regime_data?.[0]?.health_edu_cess | number:'1.0-2'}}
+                                                        </td>
+                                                        <td class="text-right newTaxRegime.cess">₹
+                                                            {{new_regime_data?.[0]?.health_edu_cess | number:'1.0-2'}}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>Total Tax to be Paid</th>
+                                                        <th
+                                                            class="text-right old-tax-values oldTaxRegime.totalTaxPayable">
+                                                            ₹ {{old_regime_data?.[0]?.netpayabletax | number:'1.0-2'}}
+                                                        </th>
+                                                        <th class="text-right newTaxRegime.totalTaxPayable">₹
+                                                            {{new_regime_data?.[0]?.netpayabletax | number:'1.0-2'}}
+                                                        </th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                        <div class="backdrop"></div>
+                                        <div class="button-toolbar">
+                                            <button class="btn btn-primary" (click)="backToEdit()">Edit Data</button>
+                                            <button class="btn btn-secondary" (click)="resetPage()">Start Over</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+    </div>
+    <footer class="footer"> © 2023 TankhaPay. Akal Information Systems Ltd. All Rights Reserved. </footer>
+</div>

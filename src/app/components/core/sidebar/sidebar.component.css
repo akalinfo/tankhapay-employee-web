@@ -1,0 +1,74 @@
+.arrow {
+    float: right;
+    line-height: 1.42857;
+}
+
+.fa {
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.fa, .fa-stack, [data-icon]:before {
+    display: inline-block;
+}
+
+.nav {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+#sidebar-id.show-hide {
+  left: 250px;
+  width: 60px;
+  /* left:0; */
+}
+#sidebar-id.show-hide span.hide-text-box {
+  display: none !important;
+}
+#sidebar-id.show-hide ul#side-menu li:hover a, #sidebar-id.show-hide ul#side-menu li:hover ul {
+  display: block !important;
+}
+
+#sidebar-id.show-hide .sidebar-nav.navbar-collapse > .nav > li > a:hover {
+  padding: 10px 10px 10px 20px;
+}
+.navbar-default.sidebar:hover {
+  overflow: visible;
+}
+/* <span class="hide-text-box">Onboarding Assistant</span> */
+
+/* ul {
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+} */
+
+ul#side-menu span.hide-text-box {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 175px;
+  display: inline-block;
+  line-height: 16px;
+}
+#side-menu i.ti, #side-menu i.fa {
+  margin-right: 8px !important;
+  font-size: 18px;
+  text-align: center;
+  border-radius: 50%;
+}
+.nav-second-level li a {
+   
+  padding: 6px 15px 6px 45px !important;
+  font-size: 13px;
+}
+ul.nav.nav-second-level-1 li a {
+  background: #fbecec !important;
+  padding: 6px 15px 6px 55px !important;
+  font-size: 12px;
+  border-bottom: 1px solid #ffffff !important;
+}

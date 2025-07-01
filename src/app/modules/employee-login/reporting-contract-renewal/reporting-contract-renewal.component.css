@@ -1,0 +1,10 @@
+.scrollable-modal-body {
+    max-height: 60vh;
+    /* adjust height as needed */
+    overflow-y: auto;
+}
+.inline-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

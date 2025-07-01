@@ -1,0 +1,526 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+
+  <div id="page-wrapper" style="min-height: 596px;">
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Daily Attendance Status</h3>
+      </div>
+      <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="['/reports']">Report</a></li>
+
+          <li class="breadcrumb-item active">Daily Attendance Status</li>
+        </ol>
+      </div>
+    </div>
+    <div class="container-fluid element" id="element">
+
+
+
+      <!-- /row -->
+      <div class="row">
+
+
+
+        <div class="col-md-3 ">
+          <div class="manage-list-row manage-pay-select clearfix list_view_de-box">
+
+            <div class="net-pay-section">
+              <div class="title-inn_box">
+                <span class="font-semibold font-mm">Total Users <strong>20</strong></span>
+
+              </div>
+
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="col-md-3 ">
+          <div class="manage-list-row manage-pay-select clearfix list_view_de-box">
+
+            <div class="net-pay-section">
+              <div class="title-inn_box">
+                <span class="font-semibold font-mm">Present <strong>0</strong></span>
+
+              </div>
+
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="col-md-3 ">
+          <div class="manage-list-row manage-pay-select clearfix list_view_de-box">
+
+            <div class="net-pay-section">
+              <div class="title-inn_box">
+                <span class="font-semibold font-mm">On Duty <strong>20</strong></span>
+
+              </div>
+
+
+            </div>
+
+          </div>
+
+        </div>
+        <div class="col-md-3 ">
+          <div class="manage-list-row manage-pay-select clearfix list_view_de-box">
+
+            <div class="net-pay-section">
+              <div class="title-inn_box">
+                <span class="font-semibold font-mm">Paid Leave <strong>1</strong></span>
+
+              </div>
+
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="col-md-3 ">
+          <div class="manage-list-row manage-pay-select clearfix list_view_de-box">
+
+            <div class="net-pay-section">
+              <div class="title-inn_box">
+                <span class="font-semibold font-mm">Absent <strong>19</strong></span>
+
+              </div>
+
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="col-md-3 ">
+          <div class="manage-list-row manage-pay-select clearfix list_view_de-box">
+
+            <div class="net-pay-section">
+              <div class="title-inn_box">
+                <span class="font-semibold font-mm">Unpaid Leave <strong>0</strong></span>
+
+              </div>
+
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="col-md-3 ">
+          <div class="manage-list-row manage-pay-select clearfix list_view_de-box">
+
+            <div class="net-pay-section">
+              <div class="title-inn_box">
+                <span class="font-semibold font-mm">Holidays <strong>0</strong></span>
+
+              </div>
+
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="col-md-3 ">
+          <div class="manage-list-row manage-pay-select clearfix list_view_de-box">
+
+            <div class="net-pay-section">
+              <div class="title-inn_box">
+                <span class="font-semibold font-mm">Weekend <strong>0</strong></span>
+
+              </div>
+
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="col-md-12">
+          <div class="card-header caded-innder-head-box">
+            <div class="col-sm-7 text-left">
+              <h3 class="list-name-text">Users - Attendance Status</h3>
+            </div>
+            <div class="col-sm-2 text-right">
+              <label style="font-size:14px;padding-top:14px; text-align:right;">Filter</label>
+
+            </div>
+            <div class="col-sm-3 ">
+
+
+              <select class="wide form-control">
+
+                <option value="1" selected="">All</option>
+                <option value="2">Total Users</option>
+                <option value="3">Present</option>
+
+                <option value="4">On Duty</option>
+                <option value="5">Paid Leave</option>
+                <option value="6">Absent</option>
+                <option value="7">Unpaid Leave</option>
+                <option value="8">Holidays</option>
+                <option value="9">Weekend</option>
+
+
+              </select>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-md-12 mrg-top-0 mrg-bot-25">
+
+
+          <div class="card">
+
+
+            <div class="card-body padd-bot-0 padd-top-0">
+
+
+
+              <div class="row">
+
+
+
+                <div class="col-md-12 padd-top-0">
+
+                  <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box"
+                    id="leaveBalanceReport">
+
+
+                    <table class="table table-hover table_fixed" id="attendanceDailyReportTable">
+                      <thead id="attendanceDailyReportHead">
+                        <tr class="ZPLHRow">
+                          <th>
+                            <div><span>Employee</span> <i class="sort-img CP" id="attendanceDailyReportEmp"
+                                data-toggle="tooltip" data-placement="bottom"
+                                data-container="body" data-original-title="Sort"></i></div>
+                          </th>
+                          <th>First In</th>
+                          <th>Last Out</th>
+                          <th>Total Hours</th>
+                          <th style="" id="ZPAtt_showHidePaidBreakDailyReport">Paid break</th>
+                          <th style="display:none;" id="ZPAtt_showHideUnpaidBreakDailyReport">Unpaid break</th>
+                          <th style="display:none;" id="ZPAtt_showHidePermissionDailyReport">Permission</th>
+                          <th>Status</th>
+                          <th>Shift(s)</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody id="attendanceDailyReportBody">
+                        <tr class="ZPLRow">
+                          <td><span class="ellipsis W200 CP"
+                              data-toggle="tooltip" data-placement="top" data-container="body" title=""
+                              data-original-title="1 Andy ">1 Andy </span></td>
+                          <td></td>
+                          <td></td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td><span class="ellipsis W200" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Absent">Absent</span></td>
+                          <td><span class="ellipsis" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Evening (02:30PM - 10:30PM)">Evening</span></td>
+                          <td></td>
+                        </tr>
+                        <tr class="ZPLRow">
+                          <td><span class="ellipsis W200 CP"
+                              data-toggle="tooltip" data-placement="top" data-container="body" title=""
+                              data-original-title="S2 Lilly Williams">S2 Lilly Williams</span></td>
+                          <td></td>
+                          <td></td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td><span class="ellipsis W200" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Absent">Absent</span></td>
+                          <td><span class="ellipsis" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Evening (02:30PM - 10:30PM)">Evening</span></td>
+                          <td></td>
+                        </tr>
+                        <tr class="ZPLRow">
+                          <td><span class="ellipsis W200 CP"
+                              data-toggle="tooltip" data-placement="top" data-container="body" title=""
+                              data-original-title="S4 Ethen Anderson">S4 Ethen Anderson</span></td>
+                          <td></td>
+                          <td></td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td><span class="ellipsis W200" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Absent">Absent</span></td>
+                          <td><span class="ellipsis" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Evening (02:30PM - 10:30PM)">Evening</span></td>
+                          <td></td>
+                        </tr>
+                        <tr class="ZPLRow">
+                          <td><span class="ellipsis W200 CP"
+                              data-toggle="tooltip" data-placement="top" data-container="body" title=""
+                              data-original-title="S5 Andrew Turner">S5 Andrew Turner</span></td>
+                          <td></td>
+                          <td></td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td><span class="ellipsis W200" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Absent">Absent</span></td>
+                          <td><span class="ellipsis" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="General (09AM - 06PM)">General</span></td>
+                          <td></td>
+                        </tr>
+                        <tr class="ZPLRow">
+                          <td><span class="ellipsis W200 CP"
+                              data-toggle="tooltip" data-placement="top" data-container="body" title=""
+                              data-original-title="S6 Ember Johnson">S6 Ember Johnson</span></td>
+                          <td></td>
+                          <td></td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td><span class="ellipsis W200" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Absent">Absent</span></td>
+                          <td><span class="ellipsis" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="General (09AM - 06PM)">General</span></td>
+                          <td></td>
+                        </tr>
+                        <tr class="ZPLRow">
+                          <td><span class="ellipsis W200 CP"
+                              data-toggle="tooltip" data-placement="top" data-container="body" title=""
+                              data-original-title="S7 Hazel Carter">S7 Hazel Carter</span></td>
+                          <td></td>
+                          <td></td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td><span class="ellipsis W200" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Absent">Absent</span></td>
+                          <td><span class="ellipsis" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="General (09AM - 06PM)">General</span></td>
+                          <td></td>
+                        </tr>
+                        <tr class="ZPLRow">
+                          <td><span class="ellipsis W200 CP"
+                              data-toggle="tooltip" data-placement="top" data-container="body" title=""
+                              data-original-title="S8 Asher Miller">S8 Asher Miller</span></td>
+                          <td></td>
+                          <td></td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td><span class="ellipsis W200" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Absent">Absent</span></td>
+                          <td><span class="ellipsis" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="General (09AM - 06PM)">General</span></td>
+                          <td></td>
+                        </tr>
+                        <tr class="ZPLRow">
+                          <td><span class="ellipsis W200 CP"
+                              data-toggle="tooltip" data-placement="top" data-container="body" title=""
+                              data-original-title="S9 Caspian Jones">S9 Caspian Jones</span></td>
+                          <td></td>
+                          <td></td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td><span class="ellipsis W200" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Absent">Absent</span></td>
+                          <td><span class="ellipsis" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="General (09AM - 06PM)">General</span></td>
+                          <td></td>
+                        </tr>
+                        <tr class="ZPLRow">
+                          <td><span class="ellipsis W200 CP"
+                              data-toggle="tooltip" data-placement="top" data-container="body" title=""
+                              data-original-title="S10 Lindon Smith">S10 Lindon Smith</span></td>
+                          <td></td>
+                          <td></td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td><span class="ellipsis W200" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Absent">Absent</span></td>
+                          <td><span class="ellipsis" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Evening (02:30PM - 10:30PM)">Evening</span></td>
+                          <td></td>
+                        </tr>
+                        <tr class="ZPLRow">
+                          <td><span class="ellipsis W200 CP"
+                              data-toggle="tooltip" data-placement="top" data-container="body" title=""
+                              data-original-title="S11 Olivia Smith">S11 Olivia Smith</span></td>
+                          <td></td>
+                          <td></td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td><span class="ellipsis W200" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Absent">Absent</span></td>
+                          <td><span class="ellipsis" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Evening (02:30PM - 10:30PM)">Evening</span></td>
+                          <td></td>
+                        </tr>
+                        <tr class="ZPLRow">
+                          <td><span class="ellipsis W200 CP"
+                              data-toggle="tooltip" data-placement="top" data-container="body" title=""
+                              data-original-title="S12 Sofia Rodriguez">S12 Sofia Rodriguez</span></td>
+                          <td></td>
+                          <td></td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td><span class="ellipsis W200" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Absent">Absent</span></td>
+                          <td><span class="ellipsis" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Evening (02:30PM - 10:30PM)">Evening</span></td>
+                          <td></td>
+                        </tr>
+                        <tr class="ZPLRow">
+                          <td><span class="ellipsis W200 CP"
+                              data-toggle="tooltip" data-placement="top" data-container="body" title=""
+                              data-original-title="S13 Isabella Lopez">S13 Isabella Lopez</span></td>
+                          <td></td>
+                          <td></td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td><span class="ellipsis W200" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Absent">Absent</span></td>
+                          <td><span class="ellipsis" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="General (09AM - 06PM)">General</span></td>
+                          <td></td>
+                        </tr>
+                        <tr class="ZPLRow">
+                          <td><span class="ellipsis W200 CP"
+                              data-toggle="tooltip" data-placement="top" data-container="body" title=""
+                              data-original-title="S14 Emily Jones">S14 Emily Jones</span></td>
+                          <td></td>
+                          <td></td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td><span class="ellipsis W200" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Absent">Absent</span></td>
+                          <td><span class="ellipsis" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="General (09AM - 06PM)">General</span></td>
+                          <td></td>
+                        </tr>
+                        <tr class="ZPLRow">
+                          <td><span class="ellipsis W200 CP"
+                              data-toggle="tooltip" data-placement="top" data-container="body" title=""
+                              data-original-title="S15 Aparna Acharya">S15 Aparna Acharya</span></td>
+                          <td></td>
+                          <td></td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td><span class="ellipsis W200" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Absent">Absent</span></td>
+                          <td><span class="ellipsis" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="General (09AM - 06PM)">General</span></td>
+                          <td></td>
+                        </tr>
+                        <tr class="ZPLRow">
+                          <td><span class="ellipsis W200 CP"
+                              data-toggle="tooltip" data-placement="top" data-container="body" title=""
+                              data-original-title="S16 Andrea Garcia">S16 Andrea Garcia</span></td>
+                          <td></td>
+                          <td></td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td><span class="ellipsis W200" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Absent">Absent</span></td>
+                          <td><span class="ellipsis" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="General (09AM - 06PM)">General</span></td>
+                          <td></td>
+                        </tr>
+                        <tr class="ZPLRow">
+                          <td><span class="ellipsis W200 CP"
+                              data-toggle="tooltip" data-placement="top" data-container="body" title=""
+                              data-original-title="S17 Amardeep Banjeet">S17 Amardeep Banjeet</span></td>
+                          <td></td>
+                          <td></td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td><span class="ellipsis W200" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Absent">Absent</span></td>
+                          <td><span class="ellipsis" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="General (09AM - 06PM)">General</span></td>
+                          <td></td>
+                        </tr>
+                        <tr class="ZPLRow">
+                          <td><span class="ellipsis W200 CP"
+                              data-toggle="tooltip" data-placement="top" data-container="body" title=""
+                              data-original-title="S18 William Smith">S18 William Smith</span></td>
+                          <td></td>
+                          <td></td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td><span class="ellipsis W200" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Absent">Absent</span></td>
+                          <td><span class="ellipsis" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="General (09AM - 06PM)">General</span></td>
+                          <td></td>
+                        </tr>
+                        <tr class="ZPLRow">
+                          <td><span class="ellipsis W200 CP"
+                              data-toggle="tooltip" data-placement="top" data-container="body" title=""
+                              data-original-title="S19 Michael Johnson">S19 Michael Johnson</span></td>
+                          <td></td>
+                          <td></td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td><span class="ellipsis W200" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Absent">Absent</span></td>
+                          <td><span class="ellipsis" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="General (09AM - 06PM)">General</span></td>
+                          <td></td>
+                        </tr>
+                        <tr class="ZPLRow">
+                          <td><span class="ellipsis W200 CP"
+                              data-toggle="tooltip" data-placement="top" data-container="body" title=""
+                              data-original-title="S20 Christopher Brown">S20 Christopher Brown</span></td>
+                          <td></td>
+                          <td></td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td><span class="ellipsis W200" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="Absent">Absent</span></td>
+                          <td><span class="ellipsis" data-toggle="tooltip" data-placement="left" title=""
+                              data-original-title="General (09AM - 06PM)">General</span></td>
+                          <td></td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                  </div>
+
+                </div>
+
+
+
+
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+
+
+
+
+
+
+
+      </div>
+
+
+
+    </div>
+  </div>
+
+</div>

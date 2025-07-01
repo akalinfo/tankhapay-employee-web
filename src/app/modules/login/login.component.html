@@ -1,0 +1,147 @@
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="logo-panel-heading-box">
+          <img src="{{is_show_client_path}}" class="img-responsive" alt="" style="height: 50px;" />
+        </div>
+        <alert></alert>
+        <div class="login-panel panel panel-default">
+          <!-- <div class="panel-heading">
+            <h3 class="panel-title" style="text-align: center;">Please Sign In</h3>
+          </div> -->
+          <div class="panel-body">
+            <!-- <div class="login-with-email-phone-box" style="margin-bottom: 20px;">
+              <button class="btn btn-info btn-sm" (click)="toggleLoginMethod()" [ngClass]="{
+                        'active-button': isActiveButton === 'button1',
+                        'active': isEmailLogin
+                      }" (click)="setActiveButton('button1')" [disabled]="isButtonDisabled">Login with
+                Password</button>
+              <button class="btn btn-info btn-sm" (click)="toggleLoginMethod()"
+                [ngClass]="{'active-button': isActiveButton === 'button2', 'active': !isEmailLogin}"
+                (click)="setActiveButton('button2')">Login with OTP</button>
+            </div> -->
+
+            <div class="login-with-email-phone-box" style="margin-bottom: 20px;">
+
+
+              <h3 class="login-text-top-box main-logo-user-box">Log in
+                <span class="main-logo-user-img" *ngIf="is_show_client_logo"><img
+                    src="https://www.tankhapay.com/images/logo-01.png" alt="" class="img-responsive"></span>
+              </h3>
+
+
+            </div>
+            <div>
+              <div class="form-group" *ngIf="isEmailLogin">
+                <form [formGroup]="loginForm_Email" autocomplete="off">
+                  <div class="form-group">
+                    <label for="email">Username:</label>
+                    <input type="text" formControlName="email" class="form-control" id="email"
+                      placeholder="Enter your registered email / mobile number"
+                      (keyup)="checkUsername($event.target.value)" (keydown)="checkUsername($event.target.value)"
+                      (blur)="checkUsername($event.target.value)">
+                    <!-- (keypress)="keyPress($event)" -->
+                    <!-- <input type="email"  formControlName="email" class="form-control" maxlength="100"
+                      placeholder="Enter your registered email address"> -->
+                  </div>
+
+                  <div class="form-group">
+                    <label for="password">Password:</label>
+                    <div class="input-icons">
+                      <i *ngIf="pass_type == 'password'" style="right: 0; margin-top: 1.5rem;" (click)="viewpass()"
+                        class="fa fa-eye icon" aria-hidden="true"></i>
+                      <i *ngIf="pass_type != 'password'" style="margin-left: 46rem; margin-top: 1.5rem;"
+                        (click)="viewpass()" class="fa fa-eye-slash icon" aria-hidden="true"></i>
+
+
+                      <input type="{{pass_type}}" formControlName="password" class="form-control" placeholder="Password"
+                        maxlength="200" placeholder="*********">
+                      <p class="text-right forgot-password-link"> <a [routerLink]="['forgot-password']">Forgot
+                          Password</a></p>
+
+                    </div>
+                  </div>
+
+                  <div ngx-recaptcha3="'tpayRecaptcha'"></div>
+
+                  <button class="btn btn-primary btn-lg" style="width: 100%;" (click)="login()"
+                    [disabled]="!loginForm_Email.valid">Login</button>
+
+                  <!-- <div class="combined-container">
+
+                    <p class="Signup-now-text-box">Not a Member? <a [routerLink]="['/login/signup']">Signup now</a></p>
+
+                    <p class="Signup-now-text-box text-right">  <a (click)="toggleLoginMethod()" style="cursor: pointer;"
+                    [ngClass]="{'active-button': isActiveButton === 'button2', 'active': !isEmailLogin}"
+                    (click)="setActiveButton('button2')">Login with OTP</a>
+                    </p>
+                  </div> -->
+
+                  <div class="Signup_login-password-box">
+                    <p class="Signup-now-text-box">Not a Member? <a [routerLink]="['/login/signup']">Signup now</a></p>
+                    <p class="Login-with-OTP-text-box"> <a (click)="toggleLoginMethod()" style="cursor: pointer;"
+                        [ngClass]="{'active-button': isActiveButton === 'button2', 'active': !isEmailLogin}"
+                        (click)="setActiveButton('button2')">Login with OTP</a></p>
+                  </div>
+
+                </form>
+              </div>
+
+
+              <div class="form-group" *ngIf="!isEmailLogin">
+                <form [formGroup]="loginForm_otp" autocomplete="off">
+                  <div class="form-group">
+                    <label for="mobile">Registered Mobile:</label>
+                    <input type="text" formControlName="mobile" class="form-control" maxlength="10"
+                      placeholder="Enter your registered Mobile number (10 digit)" pattern="^[6-9]{1}[0-9]{9}$"
+                      (input)="sanitizeInput()" (keypress)="keyPress($event)">
+                  </div>
+                  <div class="form-group" *ngIf="showOTPInput">
+                    <label for="otp">Enter OTP (4 Digit)</label>
+                    <span *ngIf="formattedTime!=''" style="float:right;color:red;">&nbsp;{{formattedTime}}</span>
+                    <a [ngClass]="{'read-only':formattedTime!=''}" *ngIf="showOTPInput" class="cur-ptr"
+                      style="float:right" (click)="Otp_Sent()">Resend OTP</a>
+                    <input type="password" formControlName="mobile_otp" class="form-control" maxlength="4"
+                      placeholder="xxxx">
+                  </div>
+                  <button class="btn btn-primary btn-lg" style="width: 100%;" *ngIf="!showOTPInput"
+                    [disabled]="!loginForm_otp.valid" (click)="Otp_Sent()">Send OTP</button>
+                  <button class="btn btn-primary btn-lg" style="width: 100%;" *ngIf="showOTPInput"
+                    (click)="Verify_OTP()">Verify OTP</button>
+
+                  <div class="Signup_login-password-box">
+                    <p class="Signup-now-text-box">Not a Member? <a [routerLink]="['/login/signup']">Signup now</a></p>
+                    <p class="Login-with-OTP-text-box"> <a (click)="toggleLoginMethod()" style="cursor: pointer;"
+                        [ngClass]="{
+                        'active-button': isActiveButton === 'button1',
+                        'active': isEmailLogin}" (click)="setActiveButton('button1')">Login with
+                        Password</a></p>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer text-center">
+            <div class="col-md-12"><a class="navbar-brand footer-logo-box" href="javascript:void()"><img src="assets/img/logo.png"
+                  class="img-responsive" alt="Logo"></a></div>
+            <div class="col-md-12"> © 2025 TankhaPay. Akal Information Systems Ltd. All Rights Reserved. </div>
+            <div class="col-md-12">
+
+              <ul class="bottom-footer-list">
+
+
+                <li class="first-li"><a href="https://www.tankhapay.com/terms-of-use.html" target="_blank">Terms of
+                    Use</a></li>
+                <li><a href="https://www.tankhapay.com/privacy-policy.html" target="_blank">Privacy Policy</a></li>
+
+
+              </ul>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,299 @@
+<div class="row">
+
+  <div class="col-md-12">
+    <div class="card-header caded-innder-head-box">
+
+      <div class="col-sm-3 text-left">
+        <h3 class="list-name-text" style="margin-top: 10px;">
+          {{view_emp_data.basicDetails?.emp_name}}
+          [{{view_emp_data.basicDetails?.orgempcode ? view_emp_data.basicDetails?.orgempcode :
+          view_emp_data.basicDetails?.cjcode}}]
+        </h3>
+      </div>
+
+      <div class="col-md-2 col-sm-2">
+        <!-- <label style="font-size:14px;font-weight:500">Status</label> &nbsp; -->
+        <span style="color:#000;">Status</span>
+        <select style="margin-top: 0px;" class="wide form-control" (change)="changeStatusFilter($event.target.value)">
+          <option value="All">All</option>
+          <option value="Pending">Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+      <div class="col-sm-4">
+        <div class="col-md-6">
+          <input type="hidden" id="recdate" (click)="filterFromToDateLeads()">
+
+          <span style="color:#000;">From Date</span>
+          <input id="FromDate" class="form-control" type="text" style="cursor: pointer;" placeholder="dd-mm-yyyy"
+            autocomplete="off" readonly>
+        </div>
+        <div class="col-md-6">
+          <span style="color:#000;">To Date</span>
+          <input id="ToDate" class="form-control" type="text" style="cursor: pointer;" placeholder="dd-mm-yyyy"
+            autocomplete="off" readonly>
+        </div>
+      </div>
+
+      <div class="col-sm-2 text-right">
+        <a data-placement="top" title="Add New Request"
+          class="btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn" (click)="openAddLeaveRequestModal()"
+          style=" margin-top: 23px;">Add Request</a>
+        <!-- href="#SendMessage198" -->
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <div class="col-md-4 " *ngFor="let lbd of leave_balance_data.balance_txt; let i=index;">
+    <div class="manage-list-row manage-pay-select clearfix list_view_de-box">
+
+      <div class="net-pay-section">
+        <div class="title-inn_box">
+          <span class="font-semibold font-mm">{{lbd.type_name}}</span>
+          <!-- <span class="font-mm"><i class="fa fa-calendar"></i> </span> -->
+        </div>
+        <div class="row net-pay-data-without-bt">
+          <div class="col-md-6">
+            <div class="text-uppercase font-ms payrun-label">Available : <strong>{{lbd.cur_bal}}</strong></div>
+
+
+          </div>
+          <div class="col-md-6">
+
+            <div class="text-uppercase font-ms payrun-label">Booked : <strong>{{lbd.leave_taken}}</strong></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="col-md-12 mrg-top-0 mrg-bot-25">
+
+
+    <div class="card">
+
+      <div class="card-header">
+        <h4 class="sub-title-inn-box View-Roles-list-outer-box"> All Leaves</h4>
+      </div>
+
+      <div class="card-body padd-bot-0 padd-top-0">
+
+        <div class="row">
+
+          <div class="col-md-12 padd-top-0">
+
+            <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+
+              <table class="table user-list">
+
+                <thead>
+                  <tr>
+                    <th>Date Start / End</th>
+                    <th>Subject</th>
+                    <th>Reason</th>
+                    <th>Date of Request</th>
+                    <th class="text-right">Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+
+
+                <tbody>
+                  <tr *ngFor="let leave of leaveRequests;let i=index;">
+                    <td width="17%"><strong>{{leave.fromdate.replaceAll('-','/')}} -
+                        {{leave.todate.replaceAll('-','/')}}</strong></td>
+
+                    <td width="23%">
+                      <div class="Dtyps ZPBC10"><span class="DB" data-toggle="tooltip" data-placement="bottom" title=""
+                          data-original-title="Earned Leave">
+                          {{leave.leave_subject}}
+                        </span>
+                      </div>
+                    </td>
+
+                    <td>{{leave.leave_description}} </td>
+                    <td>{{leave.leave_detail_data[0].leave_applied_date}}</td>
+                    <td class="text-right">
+                      <a type="button" class="btn btn-sm Generate-Bill-btn-inner" [ngClass]="{'btn-success': leave.approval_status=='Approved',
+                      'btn-warning' : leave.approval_status=='Pending',
+                      'btn-danger' :  leave.approval_status=='Rejected'
+                    }">{{leave.approval_status}}</a>
+
+                    </td>
+                    <td>
+                      <a (click)="viewLeaveRequest(leave)" class=" btn btn-round  btn-primary btn-primary-Add-Roles-btn"
+                        data-placement="top" style=" margin-top: 10px;">
+                        <i class="fa fa-eye" aria-hidden="true"></i></a>
+
+                    </td>
+                  </tr>
+                  <tr *ngIf="leaveRequests.length==0">
+                    <td colspan="100%" style="text-align:center;font-weight:500"> No Data Found</td>
+
+                  </tr>
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!--------------Add leave request modal---------------------->
+<div id="SendMessage198" class="modal fade add-address-form-box in">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+
+      <form [formGroup]="addLeaveRequstForm">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Leave Request</h4>
+          <button type="button" class="close" (click)="hideAddLeaveRequestModal()">×</button>
+        </div>
+        <div class="modal-body" [ngClass]="{'view-only': isViewLeave}">
+
+          <div class="form-group" *ngIf="leave_balance_data.balance_txt">
+            <label class="control-label col-sm-4">Subject <span style="color: red;">*</span></label>
+            <div class="col-sm-8">
+              <select class="wide form-control" (change)="setLeavetypeCode($event.target.value)">
+                <option value="">-- Select Leave Subject --</option>
+                <option [value]="leave | json" *ngFor="let leave of leave_balance_data.balance_txt"
+                  [selected]="leave.type_code==al.leavetypecode.value" [disabled]="leave.cur_bal==0">{{leave.type_name}}
+                  ({{leave.cur_bal}} Left)</option>
+              </select>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Start Date <span style="color: red;">*</span></label>
+            <div class="col-sm-8">
+
+              <input type="date" class="form-control" value="2024-12-20" placeholder="Select From Date"
+                formControlName="fromdate" (change)="onDateChange();">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">End Date <span style="color: red;">*</span></label>
+            <div class="col-sm-8">
+
+              <input type="date" class="form-control" value=" 0" placeholder="Select From Date" formControlName="todate"
+                (change)="onDateChange()">
+            </div>
+          </div>
+
+          <!-- Dynamic Leave Day Types -->
+          <div formArrayName="leave_detail_data" *ngIf="selectedSubject.is_spacial=='N'">
+            <div *ngFor="let leaveDetail of leaveDetailData.controls; let i = index" [formGroupName]="i"
+              class="leave-type-inbox" style="flex-wrap: wrap;">
+              <div class="form-group">
+                <label class="control-label col-sm-4" style="font-weight:500">{{
+                  leaveDetail.get('leave_applied_date')?.value }}</label>
+                <div class="col-sm-8">
+                  <select class="form-control" formControlName="leave_day_type" (change)="setLeaveDayType($event, i)">
+                    <option value="Full Day">Full Day</option>
+                    <option value="Half Day">Half Day</option>
+                    <option value="Short Leave">Short Leave</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Half Day Select -->
+              <div class="form-group">
+                <label for="" class="control-label col-sm-4"></label>
+                <div class="col-sm-8" *ngIf="leaveDetail.get('leave_day_type')?.value === 'Half Day'">
+                  <select class="form-control" formControlName="leave_day_half_type">
+
+                    <option value="1st Half">1st Half</option>
+                    <option value="2nd Half">2nd Half</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Short Leave Time Inputs -->
+              <div class="form-group" *ngIf="leaveDetail.get('leave_day_type')?.value === 'Short Leave'">
+                <!-- Start Time -->
+                <label for="" class="control-label col-sm-4"></label>
+                <div class="col-md-4">
+                  <label class="control-label">Start Time</label>
+                  <input type="time" class="form-control" id="leave_starttime{{i}}"
+                    (change)="convertTimeInput(i, 'leave_starttime')">
+                  <small *ngIf="leaveDetail.get('leave_starttime')?.value">
+                    {{ leaveDetail.get('leave_starttime')?.value }}
+                  </small>
+                </div>
+
+                <!-- End Time -->
+                <div class="col-md-4">
+                  <label class="control-label">End Time</label>
+                  <input type="time" class="form-control" id="leave_endtime{{i}}"
+                    (change)="convertTimeInput(i, 'leave_endtime')">
+                  <small *ngIf="leaveDetail.get('leave_endtime')?.value">
+                    {{ leaveDetail.get('leave_endtime')?.value }}
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Reason </label>
+            <div class="col-sm-8">
+
+              <textarea class="form-control" id="w3review" name="w3review" rows="4" cols="40"
+                style="height: 93px;width: 355px;" formControlName="leave_description"></textarea>
+            </div>
+          </div>
+
+
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Upload Document</label>
+            <div class="col-sm-8">
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="inputGroupFile01" (change)="readFile($event)"
+                  style="border: 1px solid #cccc;padding: 5px;">
+                <!-- <label class="custom-file-label" for="inputGroupFile01">Choose file</label> -->
+              </div>
+
+
+            </div>
+          </div>
+
+
+
+        </div>
+        <div class="modal-footer">
+          <a class=" btn btn-default" data-placement="top" (click)="saveLeaveRequest()" *ngIf="!isViewLeave">Create
+            Leave </a>
+          <a class=" btn btn-default" data-placement="top" (click)="cancelLeaveRequest()"
+            *ngIf="isViewLeave && approvalStatus=='Pending'">Cancel Leave Request</a>
+
+
+
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+<!--------------Add leave request modal---------------------->

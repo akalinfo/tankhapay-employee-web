@@ -1,0 +1,248 @@
+.main-tab-outer-box .tab-pane .card {
+  border: none;
+}
+.main-tab-outer-box .tab-pane .card .card-body {
+  padding: 15px 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  border: 1px solid #d3e7f5;
+}
+
+.collapse.in {
+  display: block;
+}
+
+h4.sub-title-inn-box.View-Roles-list-outer-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.btn.btn-user {
+  background: transparent;
+  text-transform: uppercase;
+  font-size: 12px;
+  border-radius: 50px;
+  padding: 6px 20px;
+  min-width: 110px;
+}
+a.btn-primary-Add-Roles-btn {
+  color: #fff;
+  background-color: #1194f7 !important;
+  border-color: #1194f7;
+  border-radius: 10px !important;
+}
+
+.table-responsive.Reimbursements-outer-box .table tr td {
+  padding: 0.2rem 1rem !important;
+  font-size: 12px;
+}
+.table-responsive.Reimbursements-outer-box .table tr td h5 {
+  margin: 2px 0;
+}
+
+.table-responsive.Reimbursements-outer-box tfoot tr th {
+  background: #f6f6f6;
+}
+.table-responsive.bulk-attendance-outer-box.Reimbursements-outer-box
+  table.table
+  tr
+  th {
+  padding: 0.8rem 1rem;
+  font-weight: 600;
+}
+
+.table-responsive.bulk-attendance-outer-box.Reimbursements-outer-box
+  table
+  tr
+  td {
+  vertical-align: middle !important;
+  position: relative;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  font-size: 12px;
+  border-bottom: 1px solid #d1e2f3  !important;
+  border-top: none;
+}
+
+.table-responsive.bulk-attendance-outer-box.Reimbursements-outer-box
+  table
+  tr
+  td
+  .Dtyps {
+  border-left-width: 3px;
+  height: 35px;
+  padding-left: 10px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -moz-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -moz-box-orient: vertical;
+  -moz-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  max-width: 200px;
+}
+.ZPBC10 {
+  border-color: #96bc42 !important;
+}
+.Dtyps {
+  border-left: 4px solid;
+  max-width: 150px;
+  height: 30px;
+  margin-right: 20px;
+  float: left;
+  padding-left: 5px;
+  display: flex;
+  flex-direction: column;
+}
+.Dtyps span {
+  padding-bottom: 4px;
+  display: inline-block;
+}
+.Dtyps span {
+  width: 100%;
+  float: left;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: left;
+  padding-bottom: 4px;
+  line-height: 14px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: #000;
+}
+small.dgry {
+  color: #4e4e4e;
+  font-size: 12px;
+}
+
+.table-responsive.bulk-attendance-outer-box.Reimbursements-outer-box
+  .btn-success {
+  color: #000;
+  background-color: #b3f3b3;
+  border-color: #ffffff;
+}
+
+.table-responsive.bulk-attendance-outer-box.Reimbursements-outer-box
+  .btn-warning {
+  color: #000;
+  background-color: #ffdeae;
+  border-color: #ffffff;
+}
+
+.table-responsive.bulk-attendance-outer-box.Reimbursements-outer-box table tr {
+  background-color: #fbfbfb !important;
+}
+p.to-btn {
+  margin: 0;
+  color: #999;
+  padding-left: 27px;
+}
+
+h3.list-name-text {
+  color: #3c3c3c;
+  font-weight: 500;
+  font-size: 18px;
+  margin: 0;
+  line-height: 52px;
+}
+.card-header.caded-innder-head-box {
+  display: flex;
+  margin-bottom: 20px;
+  padding: 0;
+}
+.card-header.caded-innder-head-box select {
+  margin: 8px 0;
+  height: 35px;
+}
+
+.take-picture-box img.img-responsive {
+  height: 100%;
+  margin: 0 auto;
+  border: 10px solid #dfdfdf;
+  border-radius: 20px;
+}
+.job-img {
+  border-radius: 2px;
+  float: left;
+  margin-right: 10px;
+  width: 30px;
+}
+.job-img img {
+  display: block;
+  max-width: 30px;
+  border-radius: 50%;
+  border: 1px solid #c5c5c5;
+}
+.table-responsive.Reimbursements-outer-box .table tr td {
+  padding: 0.5rem 1rem !important;
+  font-size: 12px;
+}
+.table-responsive.Reimbursements-outer-box tr th {
+  background: #fafcfd;
+  font-weight: 600;
+}
+a.print-button-box i {
+  font-size: 20px;
+}
+
+span.close-print-box i {
+  font-size: 20px;
+  color: #fff;
+  margin: 0 11px 0 0;
+}
+span.close-print-box {
+  float: right;
+}
+span.close-print-box a {
+  cursor: pointer;
+}
+.header-left-logo img {
+  margin: 0;
+}
+.table-responsive.top-table-date-box tr th,
+.table-responsive.top-table-date-box tr td {
+  border: none;
+  font-size: 14px;
+  vertical-align: middle;
+  padding: 5px 10px;
+}
+.card-sales-split tr th {
+  border: none !important;
+}
+.card-sales-split table {
+  margin-bottom: 0;
+}
+.table-responsive hr {
+  margin: 0;
+}
+
+.table-responsive.Documents-listing-table-box tr td {
+  padding: 4px 8px;
+}
+.table-responsive.Documents-listing-table-box tr th {
+  background: #f3f3f3;
+}
+
+
+/*  */
+
+.search-filter-box {
+  width: 30rem;
+  margin-left: -18rem;
+}
+

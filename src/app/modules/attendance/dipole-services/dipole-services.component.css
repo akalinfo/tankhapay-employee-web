@@ -1,0 +1,13 @@
+.pending-row {
+    background-color: #fff3cd !important; /* light yellow */
+  }
+  .processed-row {
+    background-color: #d4edda !important; /* light green */
+  }
+
+  .badge-wrap {
+    white-space: normal;
+    word-wrap: break-word;
+    display: inline-block;
+    max-width: 150px; /* adjust as needed */
+  }

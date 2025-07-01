@@ -1,0 +1,72 @@
+<!-- ======================= Start Navigation ===================== -->
+<app-header></app-header>
+<!-- ======================= End Navigation ===================== -->
+<div class="page-title">
+    <div class="container">
+        <div class="page-caption">
+            <!-- <h4>{{page_title}}</h4> -->
+        </div>
+    </div>
+</div>
+
+
+<!-- ====================== Start Job Detail 2 ================ -->
+<section class="gray">
+    <div class="container">
+        <button (click)="printCardContent()" class="print-button">
+            <i class="fa fa-print" aria-hidden="true"></i>
+            Print
+        </button>
+        <div class="page-container">
+            <div class="card" id="printableCard">
+               
+                <div class="card-header" style="border-bottom: none;">
+                    <table class="salary-slip-header-box">
+                        <tr>
+                            <td class="salary-slip-logo-box">
+                                <img src="{{ employer_profile.header  }}" class="img-responsive" alt="user"
+                                    style="width: 100%;" *ngIf="employer_profile.header">
+                            </td>
+
+                            <!-- <div class="img-responsive img-circle txt" *ngIf="(salary_data[0]?.companylogo == '' || salary_data[0]?.companylogo == null)" alt="user">
+                            {{salary_data[0]?.emp_name.charAt(0)}}{{salary_data[0]?.emp_name.charAt(salary_data[0]?.emp_name.indexOf('
+                            ') + 1)}}</div> -->
+
+                        </tr>
+
+                    </table>
+                </div>
+                <div class="card-body row" style=" margin-right: 0rem;">
+                    <div class="col-md-12 text-center">
+
+                        <div class="container-outer-box" id="dynamicTemplate">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-sm-12" style="text-decoration: initial !important;">
+                                        <div [innerHtml]="safeTemplateData"></div> <!-- style="bottom: 10px;"-->
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div style="position: fixed;bottom:0;width: 100%;left:0;">
+                    <img src="{{employer_profile.footer}}" class="img-responsive" alt="template footer"
+                        style="width: 100%;height:auto" *ngIf="employer_profile.footer">
+
+                </div>
+                <!-- <div class="row">
+                    <div class="col-md-12">
+                        <img src="assets/img/template_footer.png" alt="" style="width: 100%;">
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ================= footer start ========================= -->
+<app-footer></app-footer>

@@ -1,0 +1,142 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<section>
+  <div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+    <div class="fakeLoader"></div>
+    <!-- Navigation -->
+    <div id="page-wrapper">
+      <div class="row page-titles">
+        <div class="col-lg-5 col-md-6 col-sm-12 align-self-center">
+          <h3 class="text-themecolor" style="margin-left: 20px;">List Employee</h3>
+        </div>
+        <div class="col-lg-7 col-md-6 col-sm-12 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item" title="Home">
+              <a [routerLink]="['/dashboard']">Home</a>
+            </li>
+            <li class="breadcrumb-item active">List Employee</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="container-fluid">
+        <!-- row -->
+        <div class="row">
+          <div class="col-md-12 col-sm-12">
+            <div class="card">
+              <div class="card-header">
+                <div class="row row-head">
+                  <div class="col-md-9 col-sm-12">
+                    <!-- You could move your search here if desired -->
+                  </div>
+                  <div class="col-md-3 col-sm-12">
+                    <!-- extra header‐controls if needed -->
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-body">
+                <!-- === YOUR SEARCH & TABLE GOES HERE === -->
+                <div  class="search-container mb-3">
+                  <input 
+                    type="text" 
+                    [(ngModel)]="searchText"
+                    placeholder="Search employees..." 
+                    class="search-input"
+                  />
+                </div>
+               
+
+
+                <div *ngIf="employeeListForTable.length > 0" class="employees-table-container">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Contact Number</th>
+                        <th>Check-in Time</th>
+                        <th>Check-out Time</th>
+                        <th>Battery Status</th>
+                        <th>GPS Status</th>
+                        <th>Location Marker</th>
+                        <th>View</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let employee of filteredEmployeeList(); let i = index">
+                        <td>{{ employee.emp_name }}</td>
+                        <td>{{ employee.mobile }}</td>
+                        <td>{{ employee.emp_checkIn }}</td>
+                        <td>{{ employee.emp_checkOut }}</td>
+                        <td> {{ employee.emp_batteryStatus ? employee.emp_batteryStatus + ' %' : '' }}</td>
+                        <td>{{ employee.emp_gpsStatus }}</td>
+                        <td>
+                          <button 
+                            class="location-btn" 
+                            title="View Location" 
+                            (click)="onLocationBtnClick(employee)"
+                          >
+                            <i class="fas fa-map-marker-alt"></i>
+                          </button>
+                        </td>
+                        <td>
+                          <button 
+                            class="view-btn" 
+                            title="View" 
+                            (click)="viewTracking(employee)"
+                          >
+                            View
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                 <!-- View Popup Modal -->
+
+              <div #modalContainer class="custom-modal-backdrop" *ngIf="showModal && selectedEmployee">
+                  <div class="custom-modal">
+                      <button class="close-button" (click)="closeModal()">×</button>
+                    <div class="custom-modal-body">
+                      <div class = "heading-for-report"><h8>Today CheckIn/CheckOut Report</h8></div>
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr >
+                            <th>Name</th>
+                            <th>CheckIn Time</th>
+                            <th>CheckIn Location</th>
+                            <th>CheckOut Time</th>
+                            <th>CheckOut Location</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                               <tr *ngFor="let event of selectedEmployee.event_details">
+                                <td>{{ selectedEmployee.emp_name }}</td>
+                                <td>{{ event.check_in_time }}</td>
+                                <td>{{ event.check_in_location }}</td>
+                                <td>{{ event.check_out_time}}</td>
+                                <td>{{ event.check_out_location}}</td>
+                              </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="employeeListForTable.length === 0 ">
+                  <!-- Loading spinner -->
+                  <div *ngIf="isLoading" class="loading-overlay">
+                    <!-- Your spinner or loading animation goes here -->
+                    <div class="spinner"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

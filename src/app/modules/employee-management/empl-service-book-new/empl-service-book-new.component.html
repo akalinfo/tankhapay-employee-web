@@ -1,0 +1,267 @@
+<div id="menu7" class="tab-pane fade1 active">
+  <div class="timeline-employee-box">
+
+
+    <ng-container *ngFor="let ays of all_years_service_book_data; let i=index;">
+      <h4>{{ays.year}}</h4>
+      <ul class="timeline">
+
+        <li *ngIf="ays.Joining_Details.length > 0">
+          <div class="direction-r">
+            <div class="flag-wrapper">
+              <span class="flag">Joining Date and Initial
+                Posting</span>
+
+            </div>
+            <ng-container *ngFor="let jdt of ays.Joining_Details;">
+              <div class="desc" [innerHTML]="sanitizeHtml(jdt.joining_details)"> </div>
+              <!-- <span class="time-wrapper"><span class="time">Thu Jan - 26 -
+                    2024 01:54</span></span> -->
+
+            </ng-container>
+          </div>
+        </li>
+
+        <li *ngIf="ays.Promotion_Details.length > 0">
+          <div class="direction-r">
+            <div class="flag-wrapper">
+              <span class="flag">Promotion</span>
+
+            </div>
+            <ng-container *ngFor="let pdt of ays.Promotion_Details;">
+              <div class="desc" [innerHTML]="sanitizeHtml(pdt.promotion_message)"> </div>
+              <!-- <span class="time-wrapper"><span class="time">Thu Jan - 26 -
+                    2024 01:54</span></span> -->
+            </ng-container>
+          </div>
+        </li>
+
+        <li *ngIf="ays.Increment_Details.length > 0">
+          <div class="direction-r">
+            <div class="flag-wrapper">
+              <span class="flag">Salary Increment</span>
+
+            </div>
+            <ng-container *ngFor="let idt of ays.Increment_Details">
+              <div class="desc" [innerHTML]="sanitizeHtml(idt.salary_increment_message)"> </div>
+              <!-- <span class="time-wrapper"><span class="time">Thu Jan - 26 -
+                    2024 01:54</span></span> -->
+
+            </ng-container>
+          </div>
+        </li>
+
+        <li *ngIf="ays.Training_Details.length > 0">
+          <div class="direction-r">
+            <div class="flag-wrapper">
+              <span class="flag">Training Details</span>
+
+            </div>
+            <ng-container *ngFor="let tdr of ays.Training_Details;">
+              <div class="desc" [innerHTML]="sanitizeHtml(tdr.training_completion_details)"></div>
+              <!-- <span class="time-wrapper"><span class="time">Thu Jan - 26 -
+                    2024 01:54</span></span> -->
+
+            </ng-container>
+          </div>
+        </li>
+
+
+        <li *ngIf="ays.Leave_Summary.length > 0">
+          <div class="direction-r">
+            <div class="flag-wrapper">
+              <span class="flag">Leave Record</span>
+
+            </div>
+            <ng-container *ngFor="let lsu of ays.Leave_Summary;">
+              <div class="desc" [innerHTML]="sanitizeHtml(formatLeaveSummary(lsu))"> </div>
+              <!-- <span class="time-wrapper"><span class="time">Thu Jan - 26 -
+                  2024 01:54</span></span> -->
+
+            </ng-container>
+          </div>
+        </li>
+
+        <li *ngIf="ays.Disciplinary_Actions_Details.length > 0">
+          <div class="direction-r">
+            <div class="flag-wrapper">
+              <span class="flag">Disciplinary Action</span>
+
+            </div>
+            <ng-container *ngFor="let dis of ays.Disciplinary_Actions_Details;">
+              <div class="desc" [innerHTML]="sanitizeHtml(dis.action_message)"> </div>
+              <!-- <span class="time-wrapper"><span class="time">Thu Jan - 26 -
+                  2024 01:54</span></span> -->
+
+            </ng-container>
+          </div>
+        </li>
+
+
+
+        <li *ngIf="ays.Reward_Details.length > 0">
+          <div class="direction-r">
+            <div class="flag-wrapper">
+              <span class="flag">Award/Recognition</span>
+
+            </div>
+            <ng-container *ngFor="let rdt of ays.Reward_Details;">
+              <div class="desc" [innerHTML]="sanitizeHtml(rdt.reward_message)"> </div>
+              <!-- <span class="time-wrapper"><span class="time">Thu Jan - 26 -
+                  2024 01:54</span></span> -->
+
+            </ng-container>
+          </div>
+        </li>
+
+        <li *ngIf="ays.Separation_Resignation.length > 0">
+          <div class="direction-r">
+            <div class="flag-wrapper">
+              <span class="flag">Separation/Resignation</span>
+
+            </div>
+            <ng-container *ngFor="let spr of ays.Separation_Resignation;">
+              <div class="desc" [innerHTML]="sanitizeHtml(spr.exit_message)"> </div>
+              <!-- <span class="time-wrapper"><span class="time">Thu Jan - 26 -
+                  2024 01:54</span></span> -->
+
+            </ng-container>
+          </div>
+        </li>
+
+
+
+      </ul>
+
+    </ng-container>
+
+
+
+    <!-- <li>
+        <div class="direction-r">
+          <div class="flag-wrapper">
+            <span class="flag">Promotion</span>
+
+          </div>
+          <div class="desc">Promoted to <b>Senior Engineer</b> on
+            <b>1st July 2021</b>.
+          </div>
+          <span class="time-wrapper"><span class="time">Thu Jan - 26 -
+              2024 01:54</span></span>
+        </div>
+      </li>
+
+      <li>
+        <div class="direction-r">
+          <div class="flag-wrapper">
+            <span class="flag">Salary Increment</span>
+
+          </div>
+          <div class="desc">Received a salary increment effective from
+            <b>1st January 2023</b>. New salary: <b>INR 75,000</b>
+            per month.
+          </div>
+          <span class="time-wrapper"><span class="time">Thu Jan - 26 -
+              2024 01:54</span></span>
+        </div>
+      </li>
+
+
+
+      <li>
+        <div class="direction-r">
+          <div class="flag-wrapper">
+            <span class="flag">Training Completed</span>
+
+          </div>
+          <div class="desc">Completed <b>Advanced Network Security
+              Training</b> on <b>5th May 2023</b>.</div>
+          <span class="time-wrapper"><span class="time">Thu Jan - 26 -
+              2024 01:54</span></span>
+        </div>
+      </li>
+      <li>
+        <div class="direction-r">
+          <div class="flag-wrapper">
+            <span class="flag">Leave Record</span>
+
+          </div>
+          <div class="desc">Availed <b>Annual Leave</b> from <b>15th
+              August 2023</b> to <b>22nd August 2023</b>. Total
+            days: <b>7</b>. Leave balance updated accordingly.</div>
+          <span class="time-wrapper"><span class="time">Thu Jan - 26 -
+              2024 01:54</span></span>
+        </div>
+      </li>
+
+
+
+      <li>
+        <div class="direction-r">
+          <div class="flag-wrapper">
+            <span class="flag">Disciplinary Action</span>
+
+          </div>
+          <div class="desc">Issued a formal warning on <b>10th October
+              2021</b> for <b>unauthorized absence</b> for 3
+            consecutive days. </div>
+          <span class="time-wrapper"><span class="time">Thu Jan - 26 -
+              2024 01:54</span></span>
+        </div>
+      </li>
+      <li>
+        <div class="direction-r">
+          <div class="flag-wrapper">
+            <span class="flag">Award/Recognition</span>
+
+          </div>
+          <div class="desc">Awarded <b>Employee of the Month</b> in
+            <b>December 2022</b> for exceptional performance in
+            handling the network upgrade project.
+          </div>
+          <span class="time-wrapper"><span class="time">Thu Jan - 26 -
+              2024 01:54</span></span>
+        </div>
+      </li>
+
+
+      <li>
+        <div class="direction-r">
+          <div class="flag-wrapper">
+            <span class="flag">Role Change</span>
+
+          </div>
+          <div class="desc">Role changed from <b>Senior Engineer</b>
+            to <b>Project Lead</b> on <b>1st June 2023</b>. Rakesh
+            Singh is now responsible for overseeing large-scale IT
+            projects and managing cross-functional teams.</div>
+          <span class="time-wrapper"><span class="time">Thu Jan - 26 -
+              2024 01:54</span></span>
+        </div>
+      </li>
+
+      <li>
+        <div class="direction-r">
+          <div class="flag-wrapper">
+            <span class="flag">Separation/Resignation</span>
+
+          </div>
+          <div class="desc">Resigned on <b>1st August 2024</b>, with
+            the last working day on <b>31st August 2024</b>. Reason
+            for leaving: <b>Pursuing further education</b>. Exit
+            formalities completed on <b>31st August 2024</b>.</div>
+          <span class="time-wrapper"><span class="time">Thu Jan - 26 -
+              2024 01:54</span></span>
+        </div>
+      </li> -->
+
+
+
+
+
+
+
+
+
+  </div>
+</div>

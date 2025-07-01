@@ -1,0 +1,347 @@
+<div id="menu6" class="tab-pane fade1 active">
+    <div class="accordion" id="accordion" role="tablist"
+      aria-multiselectable="true">
+  
+        <div class="card panel">
+           <div class="col-md-12">
+                
+
+            <div class="row" style="display:none;">
+
+                <div class="col-md-4 col-sm-6">
+                    <div class="widget standard-widget widget-Employee-box">
+                        <div class="row">
+                            <div class="widget-caption info">
+                                <div class="col-xs-4 no-pad">
+                                    <div class="up-arrow-outer-box">
+                                     <img src="assets/img/support-ticket.png" class="img-responsive " alt="user"> 
+                                      
+                                     </div>
+                                    
+                                </div>
+                                <div class="col-xs-8 no-pad">
+                                    <div class="widget-detail">
+                                        <span>Open</span>
+                                        <h3>0</h3>
+                                        
+                                    </div>
+                                </div>
+                                 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 col-sm-6">
+                    <div class="widget standard-widget widget-Employee-box">
+                        <div class="row">
+                            <div class="widget-caption danger">
+                                <div class="col-xs-4 no-pad">
+                                    <div class=" down-arrow-outer-box">
+                                    <img src="assets/img/support-ticket1.png" class="img-responsive " alt="user"> 
+                                     
+                                     </div>
+                                </div>
+                                <div class="col-xs-8 no-pad">
+                                    <div class="widget-detail">
+                                        <span>In progress</span>
+                                        <h3>0</h3>
+                                        
+                                    </div>
+                                </div>
+                                 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 col-sm-6">
+                    <div class="widget standard-widget widget-Employee-box">
+                        <div class="row">
+                            <div class="widget-caption success">
+                                <div class="col-xs-4 no-pad">
+                                    <div class="up-arrow-outer-box">
+                                     <img src="assets/img/decision-making.png" class="img-responsive " alt="user"> 
+                                      
+                                     </div>
+                                </div>
+                                <div class="col-xs-8 no-pad">
+                                    <div class="widget-detail">
+                                    <span>Pending</span>
+                                        <h3>0</h3>
+                                        
+                                    </div>
+                                </div>
+                                 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 col-sm-6">
+                    <div class="widget standard-widget widget-Employee-box">
+                        <div class="row">
+                            <div class="widget-caption warning">
+                                <div class="col-xs-4 no-pad">
+                                    <div class=" up-arrow-outer-box">
+                                    <img src="assets/img/ticket.png" class="img-responsive " alt="user"> 
+                                     
+                                     </div>
+                                </div>
+                                <div class="col-xs-8 no-pad">
+                                    <div class="widget-detail">
+                                    <span>On Hold</span>
+                                        <h3>0</h3>
+                                        
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 col-sm-6">
+                    <div class="widget standard-widget widget-Employee-box">
+                        <div class="row">
+                            <div class="widget-caption warning">
+                                <div class="col-xs-4 no-pad">
+                                    <div class=" up-arrow-outer-box">
+                                    <img src="assets/img/tickets.png" class="img-responsive " alt="user"> 
+                                     
+                                     </div>
+                                </div>
+                                <div class="col-xs-8 no-pad">
+                                    <div class="widget-detail">
+                                    <span>Closed</span>
+                                        <h3>0</h3>
+                                        
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            
+            <div class="row">
+            
+            
+            <div class="col-md-12 mrg-top-0 mrg-bot-25">
+            
+            
+            <div class="card">
+                
+                        
+                    <div class="card-header"> 
+                        <div class="col-md-12" style="text-align:right;">
+                            <button class="btn btn-primary btn-xs" (click)="openCreateTicket()"><i class="fa fa-plus"></i>&nbsp;Create Ticket</button>
+                        </div>
+                <div class="row">
+                    
+                <form [formGroup]="Ticket_Form">
+                   <!-- <div class="col-md-2" style="display: flex; align-items: center;">
+                        <span style="margin: 1.5rem; font-weight: 500;" class="">Select Date:</span>
+                      </div>
+  
+                      <div class="col-md-2">
+                        <input id="FromDate2" #rd class="form-control" type="text" style="cursor: pointer;"
+                          formControlName="FromDate" placeholder="dd-mm-yyyy" autocomplete="off" readonly>
+                      </div>
+  
+                      <div class="col-md-2">
+                        <input id="ToDate2" #rd class="form-control" type="text" style="cursor: pointer;"
+                          formControlName="ToDate" placeholder="dd-mm-yyyy" autocomplete="off" readonly>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="save-button ">
+                          <button class="btn btn-primary">Search</button>&nbsp;
+                        </div>
+                      </div>
+                     
+                    
+                      <div class="col-md-3" style="display: flex; align-items: center; float: right;">
+                        <label style="font-size: 14px; font-weight: 500; color: #000;">Filter</label>&nbsp;
+                        <select  class="form-control" formControlName="ticketStatus">
+                          <option *ngFor="let status of ticketStatusMaster" [value]="status.shortCode" >{{status.Description}}</option>
+                        </select>
+                      </div>
+                       -->
+                     </form>
+                
+                    </div>
+
+                     </div>	
+                    
+                    <div class="card-body padd-bot-10 padd-top-0">
+                    
+                    
+                    
+                        <div class="row">
+                        
+                        <div class="col-md-12 padd-top-0">
+                            <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+                                <table class="table" id="otherDeductionTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Ticket Id</th>
+                                        <th>Ticket Type</th>
+                                        <th>Created Date</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let ticket of ticketsDetails; let i = index">
+                                        <tr>
+                                            <td>{{i+1}}</td>
+                                            <td>{{ticket.query_master_id}}</td>
+                                            <td>{{ticket.subject}}</td>
+                                            <td>{{ticket.createdon}}</td>
+                                            <td>{{ticket.status}}</td>
+                                            <td>
+                                                <span class="btn btn-primary btn-xs" (click)="getQueryTrail(ticket.query_master_id)">View</span>
+                                                
+                                            </td>
+                                        </tr>
+                                    
+                                    </ng-container>
+                                
+                                    
+                                </tbody>
+                                </table>	
+                            </div>
+                        </div>
+                        </div>		
+                    </div>
+                </div>
+            
+             
+            
+            </div>
+            
+            
+            </div>
+
+           </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="SendMessage" class="modal  add-address-form-box singal-help-box" [ngStyle]="{'display':trailModalStatus?'block':'none'}">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <form>
+                <div class="modal-body">
+                    <div id="frame">
+                            <div class="content">
+                                <div class="contact-profile">
+                                    <img src="assets/img/user-5.jpg" alt="">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onClose()">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="messages">
+                                  <ul>
+                                    <li *ngFor="let item of ticket_trail_data" [ngClass]="{'sent': item.usertype === 'Employee', 'replies': item.usertype === 'Employer'}">
+                                        <img src="assets/img/No img.png" alt="No img" *ngIf="item.usertype === 'Employee' || item.usertype === 'Employer'">
+                                      <div class="message-content">
+                                        <p *ngIf="item.query_comment">{{ item.query_comment }}</p>
+                                        <p *ngIf="!item.query_comment && item.usertype === 'Employee' && item.document_path == ''">No Conversation From Employee End</p>
+
+                                        <div *ngIf="item.document_name" class="document-link" [ngClass]="{'left-side': item.usertype === 'Employee', 'right-side': item.usertype === 'Employer'}">
+                                            <a [href]="item.document_path" target="_blank">
+                                              <i [ngClass]="getIconForDocumentType(item.document_type)" style="font-size:20px;"></i>
+                                            </a>
+                                        </div>
+
+
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                                
+                                
+
+                                  <div class="message-input" *ngIf="status !== 'Closed' && status !== 'On-hold'">
+                                    <form [formGroup]="queryTrailForm">
+                                      <div class="wrap">
+                                        <input type="text" placeholder="Write your message..." formControlName="ticketQueryComment">
+                                        <input type="file" #fileInput accept=".jpeg,.jpg,.png" (change)="onFileQueryTrailSelected($event)" style="display: none;">
+                                        <i class="fa fa-paperclip attachment" aria-hidden="true" (click)="fileInput.click()"></i>
+                                        <button class="submit" type="button" (click)="creatQueryTrail()"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                                      </div>
+                                      <!-- 
+                                      <div class="attached-image-container" *ngIf="base64Data">
+                                        <div class="attached-image">
+                                          <img [src]="'data:image/' + documentType + ';base64,' + base64Data" alt="Attachment">
+                                          <i class="fa fa-times remove" (click)="removeImage()"></i>
+                                        </div>
+                                      </div>
+                                      -->
+
+                                    </form>
+                                  </div>
+                                  
+                                  
+                            </div>
+                        </div>
+                    
+                    
+                </div>
+                 
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal"  [ngStyle]="{'display':createModalStatus?'block':'none'}">
+    <div class="modal-dialog modal-md ">
+        <div class="modal-content " >
+            <div class="modal-header">
+                    <h4 class="modal-title">Create Ticket</h4>
+                    <button type="button" class="close modal-close-btn" data-dismiss="modal" aria-label="Close"
+                        data-bs-dismiss="modal" (click)="closeCreateTicket()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+             <form [formGroup]="createTicketForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                        <label>Type<span style="color: red;">*</span></label>
+                        <select class="form-control" formControlName="categortType" (change)="getSelectedText($event)">
+                            <option value="">Select Type</option>
+                            <option *ngFor="let tick of ticketCategory" [value]="tick.ticket_id">
+                                {{ tick.ticket_name }}
+                            </option>
+                        </select>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label>Message<span style="color: red;">*</span></label>
+                            <textarea class="form-control" formControlName="ticketComment"></textarea>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label>Attach Image (Optional)</label>
+                            <input type="file" class="form-control" (change)="onFileTicketSelected($event)" accept="image/*" formControlName="attachImage">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer" style="background-color: #fff;">
+                    <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal" aria-hidden="true" (click)="closeCreateTicket()">Cancel</button>
+                    <button class="btn btn-success btn-xs"  data-dismiss="modal" (click)="saveTicketDetail()">Create</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
+  

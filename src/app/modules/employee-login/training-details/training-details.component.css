@@ -1,0 +1,109 @@
+.img-responsive{
+    display: block;
+    max-width: 100%;
+    object-fit: cover !important;
+    height: 258px !important;
+    width: 100%;
+}
+
+.training-content-box{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding: 17px;
+}
+
+.status-complete{
+    border: 1px dashed #26c333;
+    padding: 2px 5px;
+    color: #26c333 !important;
+    text-decoration: none !important;
+}
+.status-pending{
+    border: 1px dashed #c38426;
+    padding: 2px 5px;
+    color: #c38426 !important;
+    text-decoration: none !important;
+}
+.status-expired{
+    border: 1px dashed #e22121;
+    padding: 2px 5px;
+    color: #e22121 !important;
+    text-decoration: none !important;
+}
+
+.project-name{
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.card-innder-head-box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.attendance-content-box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.date-container {
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+  
+  .date {
+    font-size: 24px;
+    font-weight: bold;
+    display: block;
+    color: rgb(41, 139, 219);
+  }
+  
+  .month-year {
+    font-size: 14px;
+    color: #555;
+  }
+
+  .attendance-body{
+    box-shadow: inset 0px -2px 2px rgb(26 139 255 / 50%);
+    padding: 9px 20px;
+  }
+  
+  .btns a{
+    border: 1px solid rgb(24, 123, 216);
+    cursor: pointer;
+    padding: 4px 6px;
+    text-decoration: none;
+  }
+
+  .attn-p{
+    border: 1px solid #2689c3;
+    border-radius: 4px;
+    background-color: #2689c3;
+    padding: 2px 5px;
+    color: #FFF !important;
+    text-decoration: none !important;
+    cursor: pointer;
+  }
+
+  .attn-a{
+    border: 1px solid #555555;
+    border-radius: 4px;
+    background-color: #555555;
+    padding: 2px 5px;
+    color: #fff !important;
+    text-decoration: none !important;
+    cursor: pointer;
+  }
+
+  .attn-exp{
+    border: 1px solid gainsboro !important;
+    border-radius: 4px;
+    background-color: gainsboro !important;
+    padding: 2px 5px;
+    color: #FFF !important;
+    text-decoration: none !important;
+    pointer-events: none;
+  }

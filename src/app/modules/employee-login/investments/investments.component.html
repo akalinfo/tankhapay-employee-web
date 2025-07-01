@@ -1,0 +1,1839 @@
+<div id="menu2" class="tab-pane fade1"
+  *ngIf="this.empDataFromParent.joiningStatus == 'JOINED' || this.empDataFromParent.joiningStatus == 'RELIEVED'">
+  <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+
+
+    <div class="card">
+      <div class="card-header" style="border: none!important;">
+        <div class="row">
+
+          <form [formGroup]="bankDetailsForm">
+
+            <div class="col-md-3 col-sm-9 col-xs-9 padd-0">
+              <label>Financial Year</label>
+
+              <!-- <span for="SearchByEmployeeCode">Financial Year</span> -->
+              <select class="form-control" name="financialyear" placeholder="Enter Financial Year"
+                formControlName="financialyear">
+                <option value=""> Select Financial Year</option>
+                <ng-container *ngFor="let year of fiscalYears">
+                  <option [value]="year" [selected]="bankDetailsForm.get('financialyear').value === year">{{ year
+                    }}</option>
+                </ng-container>
+              </select>
+              
+            </div>
+
+            <div class="col-md-3 col-sm-3 col-md-3 col-xs-3" style="text-align: right;">
+              <div class="row" style="margin-top: 26px;">
+                <div class="col-md-4">
+                  <div class="save-button">
+                    <button class="btn btn-primary" (click)="InvestmentReport(this.filterStatus)">Search</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </form>
+
+        </div>
+      </div>
+
+      <!-- Tax Report table by Arpit-->
+      <div *ngIf="this.filterStatus== 'taxreport'">
+
+        <div class="table-responsive reports-table-outer-box reports-new-table-outer-box ">
+          <table class="table table-striped table-bordered ">
+            <thead style="background: skyblue;">
+              <tr>
+                <th>S.No</th>
+                <th>Action</th>
+                <th>Employee Name</th>
+                <th>TP / Org Emp Code</th>
+                <th>PAN Card</th>
+                <th style="width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Fields
+                </th>
+                <th>Apr</th>
+                <th>May</th>
+                <th>Jun</th>
+                <th>Jul</th>
+                <th>Aug</th>
+                <th>Sept</th>
+                <th>Oct</th>
+                <th>Nov</th>
+                <th>Dec</th>
+                <th>Jan</th>
+                <th>Feb</th>
+                <th>Mar</th>
+                <th>Cumulative</th>
+              </tr>
+            </thead>
+            <tbody style="background: aliceblue;">
+              <ng-container *ngFor="let taxByMonth_data of data; let i = index">
+                <tr>
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                    <a (click)="GetTaxProjection(taxByMonth_data)" href="#taxProjectionModal" data-toggle="modal">
+                      View Tax
+                      <i class="fa fa-eye getRegime"></i>
+                    </a>
+                  </td>
+                  <td><span [innerHTML]="taxByMonth_data.emp_name"></span></td>
+                  <!-- <td><span [innerHTML]="taxByMonth_data.emp_code"></span></td> -->
+                  <td>
+                    <span
+                      [innerHTML]="taxByMonth_data.orgempcode !== '' && taxByMonth_data.orgempcode != null && taxByMonth_data.orgempcode != undefined ? taxByMonth_data.orgempcode : taxByMonth_data.tpcode"></span>
+                  </td>
+
+                  <td><span [innerHTML]="taxByMonth_data.pancard"></span></td>
+                  <td style="width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    <span [innerHTML]="taxByMonth_data.fields"></span>
+                  </td>
+                  <td
+                    *ngFor="let month of ['apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec', 'jan', 'feb', 'mar']">
+                    <span [innerHTML]="taxByMonth_data[month]"></span>
+                  </td>
+                  <td><span [innerHTML]="taxByMonth_data.totalgrossearning"></span></td>
+                </tr>
+              </ng-container>
+
+            </tbody>
+          </table>
+          <alert></alert>
+        </div>
+
+      </div>
+      <!-- Tax Report table by Arpit-->
+    </div>
+
+
+
+    <!-- Tax Projection Modal Start made by Arpit-->
+    <!-- <div class="modal fade" id="taxProjectionModal" tabindex="-1" role="dialog" aria-labelledby="taxProjectionModal">
+      <div class="modal-dialog modal-lg" style="width: 95%;"> -->
+    <div [@grooveState]="showTaxPopup?'active':'inactive'" id="allowanceDeduct" class="modal">
+      <div [@dongleState]="showTaxPopup?'active':'inactive'" class="modal-dialog modal-xl"
+        style="width: 95%;margin:auto;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" (click)="closeTaxProjection()" data-dismiss="modal"
+              style="font-size: 27px;">&times;</button>
+            <!-- <button (click)="printPage()" class="btn btn-primary">Print</button> -->
+            <h4 class="modal-title" id="taxProjectionModalLabel">Tax Projection For Financial Year-{{this.viewFinYear}}
+            </h4>
+            <br>
+
+            <div class="row">
+              <div class="col-md-12">
+                <iframe 
+    src="https://crmstagingstorage.blob.core.windows.net/tankha-pay/Form_16/2025_06/660620250625095928512_20250625T095928718.pdf" 
+    width="100%" 
+    height="600px">
+</iframe>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <span class="emp-name-heading"> Name: {{this.Employee_name}}({{this.orgempCode}})</span>
+                &nbsp;&nbsp;&nbsp;
+                <div class="regime-wrapper">
+                  <form [formGroup]="saveRegime_Form">
+                  <input type="radio" formControlName="taxRegime" value="New" [checked]="regimetype=='New'" [attr.disabled]="!isopenDeclarationProof ? true : null"> New Regime
+                  &nbsp;&nbsp;&nbsp;
+                  <input type="radio" formControlName="taxRegime" value="Old" [checked]="regimetype=='Old'" [attr.disabled]="!isopenDeclarationProof ? true : null"> Old Regime
+                    &nbsp;
+                  <ng-container *ngIf="isopenDeclarationProof">
+                    <button id="saveRegime" type="button" class="btn btn-success"
+                    (click)="updateRegimeStatus()">Submit</button>
+                  </ng-container>
+                  </form>
+                  &nbsp;&nbsp;&nbsp;
+                  <span class="information" *ngIf="declarationmessage">{{declarationmessage}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-body" style="max-height: 360px; overflow-y: auto;">
+            <div class="row">
+              <div class="col-sm-12">
+                <h4 class="text-center">Tax By Month</h4>
+                <div class="Appointment-outer-box">
+                  <div class="table-responsive reports-table-outer-box reports-new-table-outer-box">
+                    <table class="table table-striped table-bordered">
+                      <thead style="background: #1194f7">
+                        <tr>
+                          <th>Fields</th>
+                          <th>Apr</th>
+                          <th>May</th>
+                          <th>Jun</th>
+                          <th>Jul</th>
+                          <th>Aug</th>
+                          <th>Sep</th>
+                          <th>Oct</th>
+                          <th>Nov</th>
+                          <th>Dec</th>
+                          <th>Jan</th>
+                          <th>Feb</th>
+                          <th>Mar</th>
+                          <th>Cumulative</th>
+                        </tr>
+                      </thead>
+                      <!-- *ngFor="let report of taxByMonth_data;let i=index;" -->
+                      <tbody id="taxbymonthtbody">
+
+                        <tr style="background: aliceblue">
+                          <td><span [innerHTML]="taxByMonth_data?.fields"></span>
+                          </td>
+                          <td
+                            *ngFor="let month of ['apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec', 'jan', 'feb', 'mar']">
+                            <span [innerHTML]="taxByMonth_data[month]"></span>
+                          </td>
+                          <td><span [innerHTML]="taxByMonth_data?.totalgrossearning"></span>
+                          </td>
+
+                        </tr>
+                      </tbody>
+                    </table>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <h4 class="text-center">Tax Projection</h4>
+                <div class="Appointment-outer-box">
+                  <div class="table-responsive reports-table-outer-box reports-new-table-outer-box">
+                    <table class="table table-striped table-bordered">
+                      <thead style="background: #1194f7">
+                        <tr>
+                          <th>Total Income</th>
+                          <th>Total Savings</th>
+                          <th>Taxable Income</th>
+                          <th>Net Payable Tax</th>
+                          <th>Tax Deducted</th>
+                          <th>Balance Tax</th>
+                          <th>Tax Slab</th>
+                        </tr>
+                      </thead>
+                      <tbody id="taxProjectionResult" style="background: aliceblue">
+                        <!-- taxprojection_data -->
+                        <td>{{taxprojection_data.totalincome}}</td>
+                        <td>{{taxprojection_data.totalsavings}}</td>
+                        <td>{{taxprojection_data.taxableincome}}</td>
+                        <td>{{taxprojection_data.netpayabletax}}</td>
+                        <td>{{taxprojection_data.taxdeducted}}</td>
+                        <td>{{taxprojection_data.balancetax}}</td>
+                        <td>{{taxprojection_data.taxslab}}</td>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <h4>Total Income</h4>
+                <div class="Appointment-outer-box">
+                  <div class="table-responsive reports-table-outer-box reports-new-table-outer-box">
+                    <table class="table table-striped table-bordered">
+                      <thead style="background: #1194f7">
+                        <tr>
+                          <th>Income Head</th>
+                          <th>Income</th>
+                        </tr>
+                      </thead>
+                      <!-- totalincome_data -->
+                      <tbody id="totalIncomeResult" style="background: aliceblue">
+                        <tr *ngFor="let income of totalincome_data; let i = index;">
+                          <td>{{ income.incomehead }}</td>
+                          <td>{{ income.income }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <h4>
+                  Total Saving
+                  <a data-target='#uploadProof' data-toggle='modal' style='display:none;'
+                    class='btn btn-info btn-sm upload_proof'>Upload Proofs
+                  </a>
+
+                  <!-- <a data-target='#invProofModal' data-toggle='modal' id='verifyProofs' style='margin-left: 1rem;'
+                    class='btn btn-success btn-sm' (click)="GetInvestmentsProof()">Verify Proofs
+                  </a> -->
+                  <!-- <a style="margin-left:2rem;" class="btn btn-success" id="notification">Send Notification</a> -->
+                </h4>
+                <div class="Appointment-outer-box">
+                  <div class="table-responsive reports-table-outer-box reports-new-table-outer-box">
+                    <table class="table table-striped table-bordered">
+                      <thead style="background: #1194f7">
+                        <tr>
+                          <th>Saving Head</th>
+                          <th>Saving</th>
+                          <th>Status</th>
+                          <th>{{ declaration_or_proof === 'D' ? "Add Declaration" : (declaration_or_proof === 'P' ?
+                            "Upload Proof" : "Action") }}</th>
+                        </tr>
+                      </thead>
+                      <tbody id="totalSavingResult" style="background: aliceblue">
+                        <!-- totalsaving_data -->
+                        <tr *ngFor="let income of totalsaving_data; let i = index;">
+                          <td>
+                            <div [innerHTML]="decodeHtmlContent(income.savinghead)"></div>
+                          </td>
+                          <td>{{ income.saving }}</td>
+                          <td>{{ income.approval_status }}</td>
+                          <td>
+                            <ng-container
+                              *ngIf="income.headid == 4 && declaration_or_proof === 'P' && regime_type === 'Old'">
+                              <a *ngIf="isopenDeclarationProof"
+                                (click)="Upload_Homeloan_popup(income,taxByMonth_data)"><i class="fa fa-upload"
+                                  aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;
+                              <a (click)="view_proof(income,emp_code)"><i class="fa fa-file" aria-hidden="true"></i></a>
+                            </ng-container>
+                            <ng-container
+                              *ngIf="income.headid == 5 && declaration_or_proof === 'P' && regime_type === 'Old'">
+                              <a *ngIf="isopenDeclarationProof"
+                                (click)="Upload_HRAproof_popup(income,taxByMonth_data)"><i class="fa fa-upload"
+                                  aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;
+                              <a (click)="view_proof(income,emp_code)"><i class="fa fa-file" aria-hidden="true"></i></a>
+                            </ng-container>
+                            <ng-container
+                              *ngIf="income.headid == 4 && declaration_or_proof === 'D' && regime_type === 'Old'">
+                              <a *ngIf="isopenDeclarationProof"
+                                (click)="OpenHomeLoanDeclarationPopup(income,taxByMonth_data)"><i class="fa fa-save"
+                                  aria-hidden="true"></i></a>
+                            </ng-container>
+
+                            <ng-container
+                              *ngIf="income.headid == 5 && declaration_or_proof === 'D' && regime_type === 'Old' && isopenDeclarationProof">
+                              <a *ngIf="income.saving == 0 || income.saving == ''" (click)="HRADeclarationPopup(income,taxByMonth_data)"><i class="fa fa-save"
+                                  aria-hidden="true"></i></a>
+                                  &nbsp;&nbsp;
+                                  <!-- *ngIf="income.saving > 0" -->
+                                  <span (click)="viewRentDetails()" class="">
+                                    <i class="fa fa-eye"></i>
+                                  </span>
+
+                            </ng-container>
+
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <h4>Chapter VI Components <a data-target='#chsixmodal' data-toggle='modal'></a></h4>
+
+                <!-- add by ak 09-04-2025 start -->
+                <div class="row">
+                  <div class="col-sm-4 text-center">
+                    <input type="checkbox" [(ngModel)]="parentSeniorCitizenChecked"><br>
+                    <span style="font-size: 12px;"> Parents senior Citizen (Claim Under 80D)</span>
+                  </div>
+                  <div class="col-sm-4 text-center">
+                    <input type="checkbox" [(ngModel)]="disabilityMoreThan80Checked"><br>
+                    <span style="font-size: 12px;">Disability More then 80% with Dependent (80DD)</span>
+                  </div>
+                  <div class="col-sm-4 text-center">
+                    <input type="checkbox" [(ngModel)]="employeeWithSevereDisabilityChecked"><br>
+                    <span style="font-size: 12px;">Employee with Severe Disability</span>
+                  </div>
+                </div>
+                <!-- add by ak 09-04-2025 end -->
+
+                <input type="hidden" id="ch6id" name="ch6id" value="1">
+
+                <div class="Appointment-outer-box">
+                  <div class="table-responsive reports-table-outer-box reports-new-table-outer-box">
+                    <table class="table table-striped table-bordered">
+                      <thead style="background: #1194f7">
+                        <tr>
+                          <th>Component Name</th>
+                          <th>Max Limit</th>
+                          <th>Component Value(Declaration)</th>
+                          <th>Component Value(Proof)</th>
+                          <th>Status</th>
+                          <th>{{ declaration_or_proof === 'D' ? "Add Declaration" : (declaration_or_proof === 'P' ?
+                            "Proof" : "Action") }}</th>
+                        </tr>
+                      </thead>
+                      <tbody id="chapterSixCompResult" style="background: aliceblue">
+                        <tr *ngFor="let income of chaptersixcomp_data; let i = index;">
+                          <ng-container *ngIf="shouldDisplay(income)">
+                            <td>{{ income.componentname }}</td>
+                            <td>{{ income.max_limit }}</td>
+                            <td>{{ income.declr_amount }}</td>
+                            <td>{{ income.componentvalue }}</td>
+                            <td>{{ income.approval_status }}</td>
+                            <td>
+                              <ng-container
+                                *ngIf="income.investment_id != 5 && declaration_or_proof === 'P' && regime_type === 'Old'">
+                                <a *ngIf="isopenDeclarationProof && income.approval_status != 'A'"
+                                  (click)="Upload_proof_popup(income,taxByMonth_data)"><i class="fa fa-upload"
+                                    aria-hidden="true" title="Upload Proof"></i></a>
+                                <i *ngIf="income.approval_status === 'A'" class="fa fa-check" aria-hidden="true"
+                                  style="color: green;" title="Approved"></i>&nbsp;&nbsp;&nbsp;
+                                <a *ngIf="income.componentvalue" (click)="view_proof(income,emp_code)"
+                                  title="View Proof"><i class="fa fa-file" aria-hidden="true"></i></a>
+                              </ng-container>
+                              <ng-container
+                                *ngIf="income.investment_id != 5 && declaration_or_proof === 'D' && regime_type === 'Old'">
+                                <a *ngIf="isopenDeclarationProof && income.approval_status != 'A'"
+                                  (click)="InvestmentDeclarationPopup(income,taxByMonth_data)"><i class="fa fa-save"
+                                    aria-hidden="true" title="Investment Declaraiotn"></i></a>
+                                <i *ngIf="income.approval_status === 'A'" class="fa fa-check" aria-hidden="true"
+                                  style="color: green;" title="Approved"></i>
+                              </ng-container>
+                            </td>
+                          </ng-container>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <h4>U/S 80C Components <a data-target='#us80cmodal' data-toggle='modal' style="display: none;"
+                    class='btn btn-info btn-sm us80c' rel_headid='2'>Upload U/S 80c Proofs</a></h4>
+                <input type="hidden" id="80cid" name="80cid" value="2">
+                <div class="Appointment-outer-box">
+                  <div class="table-responsive reports-table-outer-box reports-new-table-outer-box">
+                    <table class="table table-striped table-bordered">
+                      <thead style="background: #1194f7">
+                        <tr>
+                          <th>Component Name</th>
+                          <th>Max Limit</th>
+                          <th>Component Value(Declaration)</th>
+                          <th>Component Value(Proof)</th>
+                          <th>Status</th>
+                          <th>{{ declaration_or_proof === 'D' ? "Add Declaration" : (declaration_or_proof === 'P' ?
+                            "Proof" : "Action") }}</th>
+                        </tr>
+                      </thead>
+                      <tbody id="us80cCompResult" style="background: aliceblue">
+                        <!-- us80ccomp_data -->
+                        <tr *ngFor="let income of us80ccomp_data; let i = index;">
+                          <td>{{ income.componentname }}</td>
+                          <td>{{ income.max_limit }}</td>
+                          <td>{{ income.declr_amount }}</td>
+                          <td>{{ income.componentvalue }}</td>
+                          <td>{{ income.approval_status }}</td>
+                          <td>
+                            <ng-container
+                              *ngIf="income.investment_id != 25 && income.investment_id != 26 && declaration_or_proof === 'P' && regime_type === 'Old'">
+                              <a *ngIf="isopenDeclarationProof && income.approval_status != 'A'"
+                                (click)="Upload_proof_popup(income,taxByMonth_data)"><i class="fa fa-upload"
+                                  aria-hidden="true" title="Upload Proof"></i></a>
+                              <i *ngIf="income.approval_status === 'A'" class="fa fa-check" aria-hidden="true"
+                                style="color: green;" title="Approved"></i>&nbsp;&nbsp;&nbsp;
+                              <a *ngIf="income.componentvalue" (click)="view_proof(income,emp_code)"
+                                title="View Proof"><i class="fa fa-file" aria-hidden="true"></i></a>
+                            </ng-container>
+                            <ng-container
+                              *ngIf="income.investment_id != 25 && income.investment_id != 26 && declaration_or_proof === 'D' && regime_type === 'Old'">
+                              <a *ngIf="isopenDeclarationProof && income.approval_status != 'A'"
+                                (click)="InvestmentDeclarationPopup(income,taxByMonth_data)"><i class="fa fa-save"
+                                  aria-hidden="true" title="Investment Declaraiotn"></i></a>
+                              <i *ngIf="income.approval_status === 'A'" class="fa fa-check" aria-hidden="true"
+                                style="color: green;" title="Approved"></i>
+                            </ng-container>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <h4>Flexi Allowance Components </h4>
+                <!-- <input type="hidden" id="flexiallowanceid" name="flexiallowanceid" value="2"> -->
+                <div class="Appointment-outer-box">
+                  <div class="table-responsive reports-table-outer-box reports-new-table-outer-box">
+                    <table class="table table-striped table-bordered">
+                      <thead style="background: skyblue">
+                        <tr>
+                          <th>Component Name</th>
+                          <th>Max Limit</th>
+                          <th>Component Value(Declaration)</th>
+                          <th>Component Value(Proof)</th>
+                          <th>Status</th>
+                          <th>{{ declaration_or_proof === 'D' ? "Add Declaration" : (declaration_or_proof === 'P' ?
+                            "Proof" : "Action") }}</th>
+                        </tr>
+                      </thead>
+                      <tbody id="flexiallowanceCompResult" style="background: aliceblue">
+                        <!-- flexiallowancecomp_data -->
+                        <tr *ngFor="let income of flexiallowancecomp_data; let i = index;">
+                          <td>{{ income.componentname }}</td>
+                          <td>{{ income.max_limit }}</td>
+                          <td>{{ income.declr_amount }}</td>
+                          <td>{{ income.componentvalue }}</td>
+                          <td>{{ income.approval_status }}</td>
+                          <td>
+                            <ng-container *ngIf="declaration_or_proof === 'P' && regime_type === 'Old'">
+                              <a *ngIf="income && income.approval_status !== 'A' && isopenDeclarationProof"
+                                (click)="Upload_proof_popup(income,taxByMonth_data)"><i class="fa fa-upload"
+                                  aria-hidden="true" title="Upload Proof"></i></a>
+                              <i *ngIf="income && income.approval_status === 'A'" class="fa fa-check" aria-hidden="true"
+                                style="color: green;" title="Approved"></i>
+                              &nbsp;&nbsp;&nbsp;
+                              <a *ngIf="income && income.componentvalue" (click)="view_proof(income,emp_code)"
+                                title="View Proof"><i class="fa fa-file" aria-hidden="true"></i></a>
+                            </ng-container>
+                            <ng-container *ngIf="declaration_or_proof === 'D' && regime_type === 'Old'">
+                              <a *ngIf="income && income.approval_status !== 'A' && isopenDeclarationProof"
+                                (click)="InvestmentDeclarationPopup(income,taxByMonth_data)"><i class="fa fa-save"
+                                  aria-hidden="true" title="Investment Declaraiotn"></i></a>
+                              <i *ngIf="income && income.approval_status === 'A'" class="fa fa-check" aria-hidden="true"
+                                style="color: green;" title="Approved"></i>
+                            </ng-container>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <!--Chandra sssss-->
+                <ng-container *ngIf="declaration_or_proof === 'D'; else declarationProofClosed">
+                  <div class="col-md-6" >
+                    <div class="Appointment-outer-box" [style.visibility]="(tp_account_id == '981' || tp_account_id=='6148' || tp_account_id == '3088') ? 'visible' : 'hidden'">
+                      <div class="table-responsive reports-table-outer-box reports-new-table-outer-box">
+                        <div style="border: 1px solid #ccc; border-radius: 5px; overflow: hidden;">
+                          <div style="background: skyblue; padding: 10px; font-weight: bold;">
+                            Declaration
+                          </div>
+                          <div style="padding: 10px; border-top: 1px solid #ccc;">
+                            I hereby declare that the particulars given on pre-page/above are correct and complete in all
+                            respect. I may be allowed appropriate tax rebate while calculating my tax liability of Financial
+                            Year {{this.viewFinYear}} (Assessment Year {{this.start}} - {{this.end}}).
+                          </div>
+                          <div style="padding: 10px; ">
+                            <b>The self-attested documentary proof for claiming the benefits of various savings / investments already made or likely to
+                            be made, will be submitted by 15th January {{this.start}} failing which the tax may be recovered from me by nullifying the
+                            savings / investments stated in declaration form.</b>
+                          </div>
+                          <div style="padding: 10px; ">
+                            I hereby state that the claim of deduction shown above is in my name and if it is in joint account then it is declared herewith
+                            that the other claimant will not claim it in his/her ITR.
+                          </div>
+                          <div style="padding: 10px; ">
+                            In case of payment/ contribution/ investments, I will produce the original document for verification,
+                            whenever it will be asked for.
+                          </div>
+                        </div>
+                        
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-template #declarationProofClosed>
+                  <div class="col-md-6" ></div>
+                </ng-template>
+                <!--Chandra eeee-->
+                <!--Chandra eeee-->
+                <div class="col-md-6">
+                  <div class="Appointment-outer-box">
+                    <div class="table-responsive reports-table-outer-box reports-new-table-outer-box">
+                      <table class="table table-striped table-bordered">
+                        <thead style="background: skyblue">
+                          <tr>
+                            <th colspan="2">Note</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td style="padding: 8px;">1</td>
+                            <td style="padding: 8px;">
+                              All employees are requested to keep the bills/Tax Invoice etc. on a monthly basis at their
+                              end to avail exemption under Flexi Allowances.
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding: 8px;">2</td>
+                            <td style="padding: 8px;">
+                              In case of Uniform Allowance, exemption is limited to the purchase of formal clothes by the
+                              employee for himself/herself only.
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding: 8px;">3</td>
+                            <td style="padding: 8px;">
+                              For claiming exemption under Driver/Fuel allowance, the vehicle should be in the name of the
+                              employee.
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding: 8px;">4</td>
+                            <td style="padding: 8px;">
+                              If purchases are made online, then the bills/invoices must be supported by a delivery
+                              challan.
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding: 8px;">5</td>
+                            <td style="padding: 8px;">
+                              No COD transactions will be accepted. Further, any purchases made in cash exceeding Rs.
+                              10,000/- will not be considered.
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding: 8px;">6</td>
+                            <td style="padding: 8px;">
+                              Only Bills/Invoices depicting proper particulars of items purchased will be accepted.
+                              Particulars mentioning only codes will not be accepted for exemption.
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding: 8px;">7</td>
+                            <td style="padding: 8px;">
+                              All POS transactions should be supported by proper receipts. It is further requested that
+                              photocopies of such invoices be kept beforehand.
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding: 8px;">8</td>
+                            <td style="padding: 8px;">
+                              LTA exemption is restricted to two times in a block of four years. The current block is
+                              2022-2025.
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding: 8px;">9</td>
+                            <td style="padding: 8px;">
+                              The LTA Form should be supported by the original boarding pass if the journey is undertaken
+                              by Air.
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding: 8px;">10</td>
+                            <td style="padding: 8px;">
+                              While purchasing, please ensure to collect Tax invoices and proof of payment.
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <!-- <button type="button" class="btn btn-default" (click)="closeTaxProjection()"
+              data-dismiss="modal">Close</button> -->
+             <span *ngIf="!isopenDeclarationProof && ['P', 'D'].includes(declaration_or_proof)">
+              <strong>Final Submission Date : </strong> {{ finalSubmissionDate }}
+            </span>    
+            <span *ngIf="!isopenDeclarationProof && ['P', 'D'].includes(declaration_or_proof)">
+              <a href="javascript:void(0)" (click)="exportToPDF(emp_code)" class="btn btn-info btn-xs">Download PDF</a>
+            </span>  
+            <button  *ngIf="isopenDeclarationProof && ['P', 'D'].includes(declaration_or_proof)"  type="button" class="btn btn-default" data-dismiss="modal"
+                (click)="submitUpdateRegimeStatus()">Final Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Tax Projection Modal End made by Arpit-->
+
+    <!-- Start Verify Proof by Akchhaya-->
+    <div [@grooveState]="verify_Popup?'active':'inactive'" id="allowanceDeduct" class="modal">
+      <div [@dongleState]="verify_Popup?'active':'inactive'" class="modal-dialog" style="margin:auto auto auto auto;">
+        <div class="modal-content" style="height:80%;width: 160%;">
+          <form>
+            <div class="modal-header theme-bg">
+              <h4 class="modal-title">Verify Docs: {{this.emp_name}}-{{this.emp_code}} </h4>
+              <button type="button" class="close" (click)="close_popup()" data-dismiss="modal"
+                aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 370px; overflow-y: auto;">
+              <div class="Appointment-outer-box">
+                <div id="invProofTableVerify_filter" class="dataTables_filter" style="margin-left: 70% ">
+                  <label>Search:<input type="search" class="form-control" placeholder=""
+                      aria-controls="invProofTableVerify" (keyup)="search($event)"></label>
+                </div>
+                <div class="table-responsive reports-table-outer-box reports-new-table-outer-box">
+
+                  <table class="table table-striped table-bordered" id="invProofTableVerify">
+                    <thead style="background: #ceedff!important;">
+                      <th>S.No</th>
+                      <th style="text-align: center;">
+                        <input type="checkbox" style="transform: scale(1.5)" name="header_checkbox"
+                          [(ngModel)]="header_checkbox" (change)="selectAll($event)">
+                      </th>
+                      <th>View Doc</th>
+                      <th>Head Type</th>
+                      <th>Status</th>
+                      <th>Interest Amount</th>
+                      <th>Receipt Amount</th>
+                      <th>Receipt Number</th>
+                      <th style="min-width: 150px;">Is First Time Buyer</th>
+                      <th style="min-width: 150px;">Is Before 1st Apr 1999</th>
+                      <th>Landlord Address</th>
+                      <th>Landlord City</th>
+                      <th>Landlord Name</th>
+                      <th>Landlord Pan</th>
+                      <th>Landlord State</th>
+                      <th>Lender Name</th>
+                      <th style="min-width: 153px;">Lender Pancard 1</th>
+                      <th style="min-width: 153px;">Lender Pancard 2</th>
+                      <th style="min-width: 153px;">Lender Pancard 3</th>
+                      <th style="min-width: 153px;">Lender Pancard 4</th>
+                      <th>Loan Amount</th>
+                      <th style="min-width: 150px;">Loan Holder Name</th>
+                      <th style="min-width: 150px;">Loan Holder Type</th>
+                      <th>Loan No</th>
+                      <th style="min-width: 150px;">Loan Sanction Date</th>
+                      <th>Loan Type</th>
+                      <th style="min-width: 150px;">Name Of Owner</th>
+                      <th>Principal Amount</th>
+                      <th>Property Value</th>
+                      <th>Remark</th>
+                    </thead>
+                    <tbody style="background: aliceblue;">
+                      <ng-container *ngFor="let report of filtered_data;let i=index;">
+                        <tr [ngClass]="{'light-skyblue': i % 2 == 0, 'white': i % 2 != 0}">
+                          <td>{{i+1}}</td>
+
+                          <td style="text-align: center;">
+                            <ng-container *ngIf="report.status === 'pending'">
+                              <input type="checkbox" style="transform: scale(1.5)" name="yourCheckboxName"
+                                [checked]="report.isSelected" (change)="onCheckbox_Change($event, report,i)">
+                            </ng-container>
+                            <ng-container *ngIf="report.status === 'Accepted'">
+                              <span style="color: green;">✔</span>
+                            </ng-container>
+                            <ng-container *ngIf="report.status === 'Rejected'">
+                              <span style="color: red;">✘</span>
+                            </ng-container>
+                          </td>
+
+                          <td>
+                            <a *ngIf="report.documentpath" [href]="report.documentpath" target="_blank">View</a>
+                          </td>
+
+                          <td>{{report.headtype}}</td>
+                          <td>{{report.status}}</td>
+                          <td>{{report.interest_amount}}</td>
+                          <td>{{report.receipt_amount}}</td>
+                          <td>{{report.receipt_number}}</td>
+                          <td>{{report.is_firsttymebuyer}} </td>
+                          <td>{{report.isbefore01apr1999}}</td>
+                          <td>{{report.landlord_address}}</td>
+                          <td>{{report.landlord_city}}</td>
+                          <td>{{report.landlord_name}}</td>
+                          <td>{{report.landlord_pan}}</td>
+                          <td>{{report.landlord_state}}</td>
+                          <td>{{report.lender_name}}</td>
+                          <td>{{report.lender_pannumber1}}</td>
+                          <td>{{report.lender_pannumber2}}</td>
+                          <td>{{report.lender_pannumber3}}</td>
+                          <td>{{report.lender_pannumber4}}</td>
+                          <td>{{report.loan_amount}}</td>
+                          <td>{{report.loan_holder_name}}</td>
+                          <td>{{report.loan_holder_type}}</td>
+                          <td>{{report.loan_no}}</td>
+                          <td>{{report.loan_sanction_date}}</td>
+                          <td>{{report.loan_type }}</td>
+                          <td>{{report.name_of_owner}}</td>
+                          <td>{{report.principal_amount}}</td>
+                          <td>{{report.property_value}}</td>
+                          <td>{{report.remarks}}</td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="row" style="margin-top: 2rem;">
+                  <div class="col-sm-12 text-center">
+                    <form [formGroup]="Remark_Form">
+                      <div class="col-sm-4 text-center">
+                        <input name="textbox1" formControlName="Remarks" class="form-control remarks" type="text"
+                          placeholder="Remarks" style="margin-right: 15px;">
+                      </div>
+                      <div class="col-sm-4 text-center">
+                        <button id="approveSelectedBtn" type="button" class="btn btn-success"
+                          (click)="VerifyInvestmentProof('A',this.emp_code)"
+                          [disabled]="!header_checkbox && !isAnyCheckboxChecked()">Approve</button>
+
+                        <button id="rejectSelectedBtn" style="margin-left: 1rem;" type="button" class="btn btn-danger"
+                          (click)="VerifyInvestmentProof('R',this.emp_code)"
+                          [disabled]="!header_checkbox && !isAnyCheckboxChecked()">
+                          Reject
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal" (click)="close_popup()">Close</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- End Verify Proof by Akchhaya -->
+
+    <!-- Start Upload Proof by Akchhaya-->
+    <div [@grooveState]="upload_Popup?'active':'inactive'" id="allowanceDeduct1" class="modal">
+      <div [@dongleState]="upload_Popup?'active':'inactive'" class="modal-dialog" style="margin:auto auto auto auto;">
+        <div class="modal-content">
+          <form [formGroup]="UploadInvestmentProof_Form">
+            <div class="modal-header theme-bg">
+              <h4 class="modal-title">Upload Investment Proof: {{get_investment_type(head_id)}} </h4>
+              <button type="button" class="close" (click)="close_proof_popup()" data-dismiss="modal"
+                aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+              <h5>{{this.component_name}}</h5>
+              <div class="Appointment-outer-box">
+                <div class="row" style="margin-top: 1.2rem;">
+                  <div class="col-sm-12 text-center">
+                    <input formControlName="headId" id="headId" class="form-control" type="hidden">
+                    <input formControlName="investmentId" id="investmentId" class="form-control" type="hidden">
+                    <input formControlName="enc_empCode" id="enc_empCode" class="form-control" type="hidden">
+                    <input formControlName="max_limit" id="max_limit" class="form-control" type="hidden">
+                    <ng-container *ngIf="head_id === 1">
+                      <div class="row">
+                        <div class="col-sm-4 text-center">
+                          <input type="checkbox" formControlName="parentSeniorCitizen"><br>
+                          <span style="font-size: 12px;"> Parents senior Citizen (Claim Under 80D)</span>
+                        </div>
+                        <div class="col-sm-4 text-center">
+                          <input type="checkbox" formControlName="disabilityMoreThan80"><br>
+                          <span style="font-size: 12px;">Disability More then 80% with Dependent (80DD)</span>
+                        </div>
+                        <div class="col-sm-4 text-center">
+                          <input type="checkbox" formControlName="employeeWithSevereDisability"><br>
+                          <span style="font-size: 12px;">Employee with Severe Disability</span>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <div class="row" style="margin-top: 1.2rem;">
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Receipt No <span class="text-danger">*</span></label>
+                        <input type="text" formControlName="receiptNumber" class="form-control" placeholder="Receipt No"
+                          required>
+                        <span class="error-message"
+                          *ngIf="submitted && UploadInvestmentProof_Form.get('receiptNumber')?.invalid">
+                          Receipt Number is required.
+                        </span>
+                      </div>
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Receipt Date <span class="text-danger">*</span></label>
+                        <input type="date" formControlName="receiptDate" id="receiptDate" class="form-control"
+                          placeholder="Receipt Date" required>
+                        <span class="error-message"
+                          *ngIf="submitted && UploadInvestmentProof_Form.get('receiptDate')?.invalid">
+                          Receipt Date is required.
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Receipt Amount <span class="text-danger">*</span></label>
+                        <input type="text" formControlName="receiptAmount" id="receiptAmount" class="form-control"
+                          placeholder="Receipt Amount" required (keypress)="restrictToNumbers($event)">
+                        <span class="error-message"
+                          *ngIf="submitted && UploadInvestmentProof_Form.get('receiptAmount')?.invalid">
+                          Receipt Amount is required.
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top: 1.2rem;">
+                      <div class="col-sm-12 text-center">
+                        <div class="file-upload-container">
+                          <label class="custom-file-upload">
+                            <input type="file" id="receiptDoc"
+                              (change)="onFileSelected($event, 'UploadInvestmentProof_Form')"
+                              accept=".pdf,.png,.jpg,.jpeg" required>
+                            <i class="fa fa-upload"></i> Choose File
+                          </label>
+                          <span *ngIf="selectedFile"> {{ selectedFile.name }} </span>
+                          <span class="error-message" *ngIf="submitted && !selectedFile">
+                            Upload the document.
+                          </span>
+                          <span class="error-message" *ngIf="fileError">{{ fileError }}</span>
+                        </div>
+                        <span style="float: left; font-size: 10px;">Note: Document size must be less than 1 mb and <br>
+                          use the pdf, png, jpg, jprg</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button id="approveSelectedBtn1" type="button" class="btn btn-success"
+                (click)="SaveInvestmentProofDocuments()">Save</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal"
+                (click)="close_proof_popup()">Close</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- End Upload Proof by Akchhaya -->
+
+    <!-- Start Verify Proof by Akchhaya-->
+    <div [@grooveState]="view_proof_popup?'active':'inactive'" id="allowanceDeduct" class="modal">
+      <div [@dongleState]="view_proof_popup?'active':'inactive'" class="modal-dialog modal-xl" style="margin:auto">
+        <div class="modal-content">
+          <form>
+            <div class="modal-header theme-bg">
+              <h4 class="modal-title">View Docs: {{this.emp_name}}-{{this.emp_code}} </h4>
+              <button type="button" class="close" (click)="close_view_proof()" data-dismiss="modal"
+                aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+              <div class="Appointment-outer-box">
+                <div id="invProofTableVerify_filter" class="dataTables_filter" style="margin-left: 70% ">
+                  <label>Search:<input type="search" class="form-control" placeholder=""
+                      aria-controls="invProofTableVerify" (keyup)="search($event)"></label>
+                </div>
+                <div class="table-responsive reports-table-outer-box reports-new-table-outer-box">
+
+                  <table class="table table-striped table-bordered" id="invProofTableVerify">
+                    <thead style="background: #ceedff!important;">
+                      <th>S.No</th>
+                      <th> Status</th>
+                      <th>View Doc</th>
+                      <th>Head Type</th>
+                      <th>Status</th>
+                      <th>Interest Amount</th>
+                      <th>Receipt Amount</th>
+                      <th>Receipt Number</th>
+                      <th style="min-width: 150px;">Is First Time Buyer</th>
+                      <th style="min-width: 150px;">Is Before 1st Apr 1999</th>
+                      <th>Landlord Address</th>
+                      <th>Landlord City</th>
+                      <th>Landlord Name</th>
+                      <th>Landlord Pan</th>
+                      <th>Landlord State</th>
+                      <th>Lender Name</th>
+                      <th style="min-width: 153px;">Lender Pancard 1</th>
+                      <th style="min-width: 153px;">Lender Pancard 2</th>
+                      <th style="min-width: 153px;">Lender Pancard 3</th>
+                      <th style="min-width: 153px;">Lender Pancard 4</th>
+                      <th>Loan Amount</th>
+                      <th style="min-width: 150px;">Loan Holder Name</th>
+                      <th style="min-width: 150px;">Loan Holder Type</th>
+                      <th>Loan No</th>
+                      <th style="min-width: 150px;">Loan Sanction Date</th>
+                      <th>Loan Type</th>
+                      <th style="min-width: 150px;">Name Of Owner</th>
+                      <th>Principal Amount</th>
+                      <th>Property Value</th>
+                      <th>Remark</th>
+                    </thead>
+                    <tbody style="background: aliceblue;">
+                      <ng-container *ngFor="let report of filtered_data;let i=index;">
+                        <tr [ngClass]="{'light-skyblue': i % 2 == 0, 'white': i % 2 != 0}">
+                          <td>{{i+1}}</td>
+
+                          <td style="text-align: center;">
+                            <ng-container *ngIf="report.status === 'pending'">
+                              <span style="color: orange;" title="Pending">🕒</span>
+
+                            </ng-container>
+                            <ng-container *ngIf="report.status === 'Accepted'">
+                              <span style="color: green;" title="Accepted">✔</span>
+                            </ng-container>
+                            <ng-container *ngIf="report.status === 'Rejected'">
+                              <span style="color: red;" title="Rejected">✘</span>
+                            </ng-container>
+                          </td>
+
+                          <td>
+                            <a *ngIf="report.documentpath" [href]="report.documentpath" target="_blank">View</a>
+                          </td>
+
+                          <td>{{report.headtype}}</td>
+                          <td>{{report.status}}</td>
+                          <td>{{report.interest_amount}}</td>
+                          <td>{{report.receipt_amount}}</td>
+                          <td>{{report.receipt_number}}</td>
+                          <td>{{report.is_firsttymebuyer}} </td>
+                          <td>{{report.isbefore01apr1999}}</td>
+                          <td>{{report.landlord_address}}</td>
+                          <td>{{report.landlord_city}}</td>
+                          <td>{{report.landlord_name}}</td>
+                          <td>{{report.landlord_pan}}</td>
+                          <td>{{report.landlord_state}}</td>
+                          <td>{{report.lender_name}}</td>
+                          <td>{{report.lender_pannumber1}}</td>
+                          <td>{{report.lender_pannumber2}}</td>
+                          <td>{{report.lender_pannumber3}}</td>
+                          <td>{{report.lender_pannumber4}}</td>
+                          <td>{{report.loan_amount}}</td>
+                          <td>{{report.loan_holder_name}}</td>
+                          <td>{{report.loan_holder_type}}</td>
+                          <td>{{report.loan_no}}</td>
+                          <td>{{report.loan_sanction_date}}</td>
+                          <td>{{report.loan_type }}</td>
+                          <td>{{report.name_of_owner}}</td>
+                          <td>{{report.principal_amount}}</td>
+                          <td>{{report.property_value}}</td>
+                          <td>{{report.remarks}}</td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal"
+                (click)="close_view_proof()">Close</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- End Verify Proof by Akchhaya -->
+
+    <!-- Start Upload Home Loan Proof by Akchhaya-->
+    <div [@grooveState]="uploadHomeLoan_Popup?'active':'inactive'" id="allowanceDeduct2" class="modal">
+      <div [@dongleState]="uploadHomeLoan_Popup?'active':'inactive'" class="modal-dialog"
+        style="margin:auto auto auto auto;">
+        <div class="modal-content">
+          <form [formGroup]="UploadHomeLoan_Form">
+            <div class="modal-header theme-bg">
+              <h4 class="modal-title">Upload Investment Proof: Home Loan Interest </h4>
+              <button type="button" class="close" (click)="closeHomeload_popup()" data-dismiss="modal"
+                aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+              <h5>{{this.component_name}}</h5>
+              <div class="Appointment-outer-box">
+                <div class="row" style="margin-top: 1.2rem;">
+                  <div class="col-sm-12 text-center">
+                    <!-- <input formControlName="headId" id="headId" class="form-control" type="hidden">
+                    <input formControlName="investmentId" id="investmentId" class="form-control" type="hidden"> -->
+                    <input formControlName="enc_empCode" id="enc_empCode" class="form-control" type="hidden">
+
+                    <div class="row">
+                      <div class="col-sm-7 text-center">
+                        <span style="font-size: 12px;"> Acquisition of the house before 01/04/1999</span>&nbsp;&nbsp;
+                        <input type="checkbox" formControlName="isBefore01Apr1999">
+                      </div>
+                      <div class="col-sm-5 text-center">
+                        <span style="font-size: 12px;">First Time Buyer</span>&nbsp;&nbsp; <input type="checkbox"
+                          formControlName="isFirstTimeBuyer">
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top: 1.2rem;">
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Loan No <span class="text-danger">*</span></label>
+                        <input type="text" formControlName="loanNo" id="loanNo" class="form-control"
+                          placeholder="Loan No" required>
+                        <span class="error-message" *ngIf="submitted && UploadHomeLoan_Form.get('loanNo')?.invalid">
+                          Loan Number is required.
+                        </span>
+                      </div>
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Loan Sanction Date <span class="text-danger">*</span></label>
+                        <input type="date" formControlName="loanSanctionDate" id="loanSanctionDate" class="form-control"
+                          placeholder="Loan Sanction Date" required>
+                        <span class="error-message"
+                          *ngIf="submitted && UploadHomeLoan_Form.get('loanSanctionDate')?.invalid">
+                          Loan Sanction Date is required.
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top: 1.2rem;">
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Loan Amount <span class="text-danger">*</span></label>
+                        <input type="text" formControlName="loanAmount" class="form-control" placeholder="Loan Amount"
+                          required (keypress)="restrictToNumbers($event)">
+                        <span class="error-message" *ngIf="submitted && UploadHomeLoan_Form.get('loanAmount')?.invalid">
+                          Loan Amount is required.
+                        </span>
+                      </div>
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Property Value <span class="text-danger">*</span></label>
+                        <input type="text" formControlName="propertyValue" id="propertyValue" class="form-control"
+                          placeholder="Property Value" required (keypress)="restrictToNumbers($event)">
+                        <span class="error-message"
+                          *ngIf="submitted && UploadHomeLoan_Form.get('propertyValue')?.invalid">
+                          Property Value is required.
+                        </span>
+                        <!-- <div *ngIf="submitted && UploadHomeLoan_Form.errors?.propertyLessThanLoan">
+                          <p style="color: red;">Property value must be greater than or equal to the loan amount.</p>
+                        </div> -->
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top: 1.2rem;">
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Principal Amount <span class="text-danger">*</span></label>
+                        <input type="text" formControlName="principalAmount" id="principalAmount" class="form-control"
+                          placeholder="Principal Amount" required (keypress)="restrictToNumbers($event)">
+                        <span class="error-message"
+                          *ngIf="submitted && UploadHomeLoan_Form.get('principalAmount')?.invalid">
+                          Principal Amount is required.
+                        </span>
+                      </div>
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Interest Amount <span class="text-danger">*</span></label>
+                        <input type="text" formControlName="interestAmount" id="interestAmount" class="form-control"
+                          placeholder="Interest Amount" required (keypress)="restrictToNumbers($event)">
+                        <span class="error-message"
+                          *ngIf="submitted && UploadHomeLoan_Form.get('interestAmount')?.invalid">
+                          Interest Amount is required.
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top: 1.2rem;">
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Name of Owner <span class="text-danger">*</span></label>
+                        <input type="text" formControlName="nameOfOwner" id="nameOfOwner" class="form-control"
+                          placeholder="Name of Owner" required>
+                        <span class="error-message"
+                          *ngIf="submitted && UploadHomeLoan_Form.get('nameOfOwner')?.invalid">
+                          Name of Owner is required.
+                        </span>
+                      </div>
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Loan Type <span class="text-danger">*</span></label>
+                        <select class="form-control" id="dropdown" formControlName="loanType">
+                          <option value="Personal">Personal</option>
+                          <option value="Other">Other</option>
+                        </select>
+                        <span class="error-message" *ngIf="submitted && UploadHomeLoan_Form.get('loanType')?.invalid">
+                          Loan Type is required.
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top: 1.2rem;">
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Loan Holder Name<span class="text-danger">*</span></label>
+                        <input type="text" formControlName="loanHolderName" id="loanHolderName" class="form-control"
+                          placeholder="Loan Holder Name" required>
+                        <span class="error-message"
+                          *ngIf="submitted && UploadHomeLoan_Form.get('loanHolderName')?.invalid">
+                          Loan Holder Name is required.
+                        </span>
+                      </div>
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Loan Holder Type <span class="text-danger">*</span></label>
+                        <select class="form-control" id="dropdown" formControlName="loanHolderType">
+                          <option value="Personal">Personal</option>
+                          <option value="Other">Other</option>
+                        </select>
+                        <span class="error-message"
+                          *ngIf="submitted && UploadHomeLoan_Form.get('loanHolderType')?.invalid">
+                          Loan Holder Type is required.
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top: 1.2rem;">
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Lender Name <span class="text-danger">*</span></label>
+                        <input type="text" formControlName="lenderName" id="lenderName" class="form-control"
+                          placeholder="Lender Name" required>
+                        <span class="error-message" *ngIf="submitted && UploadHomeLoan_Form.get('lenderName')?.invalid">
+                          Lender Name is required.
+                        </span>
+                      </div>
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Lender PAN 1<span class="text-danger">*</span></label>
+                        <input type="text" formControlName="lenderPannumber1" id="lenderPannumber1" class="form-control"
+                          placeholder="Lender PAN 1" required
+                          (input)="UploadHomeLoan_Form.get('lenderPannumber1')?.setValue(UploadHomeLoan_Form.get('lenderPannumber1')?.value.toUpperCase(), { emitEvent: false })">
+                        <span class="error-message"
+                          *ngIf="submitted && UploadHomeLoan_Form.get('lenderPannumber1')?.hasError('required')">
+                          PAN is required.
+                        </span>
+                        <span class="error-message"
+                          *ngIf="submitted && UploadHomeLoan_Form.get('lenderPannumber1')?.hasError('pattern')">
+                          Invalid PAN format! (e.g., ABCDE1234F)
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top: 1.2rem;">
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Lender PAN 2</label>
+                        <input type="text" formControlName="lenderPannumber2" id="lenderPannumber2" class="form-control"
+                          placeholder="Lender PAN 2"
+                          (input)="UploadHomeLoan_Form.get('lenderPannumber1')?.setValue(UploadHomeLoan_Form.get('lenderPannumber1')?.value.toUpperCase(), { emitEvent: false })">
+                        <span class="error-message"
+                          *ngIf="submitted && UploadHomeLoan_Form.get('lenderPannumber2')?.hasError('pattern')">
+                          Invalid PAN format! (e.g., ABCDE1234F)
+                        </span>
+                      </div>
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Lender PAN 3 </label>
+                        <input type="text" formControlName="lenderPannumber3" id="lenderPannumber3" class="form-control"
+                          placeholder="Lender PAN 3"
+                          (input)="UploadHomeLoan_Form.get('lenderPannumber1')?.setValue(UploadHomeLoan_Form.get('lenderPannumber1')?.value.toUpperCase(), { emitEvent: false })">
+                        <span class="error-message"
+                          *ngIf="submitted && UploadHomeLoan_Form.get('lenderPannumber3')?.hasError('pattern')">
+                          Invalid PAN format! (e.g., ABCDE1234F)
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Lender PAN 4</label>
+                        <input type="text" formControlName="lenderPannumber4" id="lenderPannumber4" class="form-control"
+                          placeholder="Lender PAN 4">
+                        <span class="error-message"
+                          *ngIf="submitted && UploadHomeLoan_Form.get('lenderPannumber4')?.hasError('pattern')">
+                          Invalid PAN format! (e.g., ABCDE1234F)
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top: 1.2rem;">
+                      <div class="col-sm-12 text-center">
+                        <div class="file-upload-container">
+                          <label class="custom-file-upload">
+                            <input type="file" id="receiptDoc" (change)="onFileSelected($event, 'UploadHomeLoan_Form')"
+                              accept=".pdf,.png,.jpg,.jpeg" required>
+                            <i class="fa fa-upload"></i> Choose File
+                          </label>
+                          <span *ngIf="selectedFile"> {{ selectedFile.name }} </span>
+                          <span class="error-message" *ngIf="submitted && !selectedFile">
+                            Upload the document.
+                          </span>
+                          <span class="error-message" *ngIf="fileError">{{ fileError }}</span>
+                        </div>
+                        <span style="float: left; font-size: 10px;">Note: Document size must be less than 1 mb and <br>
+                          use the pdf, png, jpg, jprg</span>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button id="approveSelectedBtn1" type="button" class="btn btn-success"
+                (click)="SaveHomeLoanDocuments()">Save</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal"
+                (click)="closeHomeload_popup()">Close</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- End Upload Home Loan Proof by Akchhaya -->
+
+    <!-- Start Upload HRA Proof by Akchhaya-->
+    <div [@grooveState]="uploadHRA_Popup?'active':'inactive'" id="allowanceDeduct2" class="modal">
+      <div [@dongleState]="uploadHRA_Popup?'active':'inactive'" class="modal-dialog"
+        style="margin:auto auto auto auto;">
+        <div class="modal-content">
+          <form [formGroup]="UploadHRA_Form">
+            <div class="modal-header theme-bg">
+              <h4 class="modal-title">Upload Investment Proof: HRA Exemption </h4>
+              <button type="button" class="close" (click)="close_HRAproof_popup()" data-dismiss="modal"
+                aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+              <h5>{{this.component_name}}</h5>
+              <div class="Appointment-outer-box">
+                <div class="row" style="margin-top: 1.2rem;">
+                  <div class="col-sm-12 text-center">
+                    <input formControlName="headId" id="headId" class="form-control" type="hidden">
+                    <!-- <input formControlName="investmentId" id="investmentId" class="form-control" type="hidden"> -->
+                    <input formControlName="enc_empCode" id="enc_empCode" class="form-control" type="hidden">
+
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <label for="dropdown">Select an option:</label>
+                        <select class="form-control" id="dropdown" formControlName="tenureId">
+                          <option value="">&nbsp;&nbsp; Select Tenure &nbsp;&nbsp;</option>
+                          <option *ngFor="let opt of tenureOptions" [value]="opt.value">{{ opt.label }}</option>
+                        </select>
+                        <span class="error-message" *ngIf="submitted && UploadHRA_Form.get('tenureId')?.invalid">
+                          Please Select Tenure.
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top: 1.2rem;">
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">From Date<span class="text-danger">*</span></label>
+                        <input type="date" formControlName="fromDate" id="fromDate" class="form-control"
+                          placeholder="Loan No" required>
+                        <span class="error-message" *ngIf="submitted && UploadHRA_Form.get('fromDate')?.invalid">
+                          From Date is required.
+                        </span>
+                      </div>
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">To Date <span class="text-danger">*</span></label>
+                        <input type="date" formControlName="toDate" id="toDate" class="form-control" required>
+                        <span class="error-message" *ngIf="submitted && UploadHRA_Form.get('toDate')?.invalid">
+                          To Date is required.
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top: 1.2rem;">
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Receipt No <span class="text-danger">*</span></label>
+                        <input type="text" formControlName="receiptNo" id="receiptNo" class="form-control"
+                          placeholder="Receipt No" required>
+                        <span class="error-message" *ngIf="submitted && UploadHRA_Form.get('receiptNo')?.invalid">
+                          Receipt No is required.
+                        </span>
+                      </div>
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Receipt Date <span class="text-danger">*</span></label>
+                        <input type="date" formControlName="receiptDate" id="receiptDate" class="form-control" required>
+                        <span class="error-message" *ngIf="submitted && UploadHRA_Form.get('receiptDate')?.invalid">
+                          Receipt Date is required.
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top: 1.2rem;">
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Rent Amount <span class="text-danger">*</span></label>
+                        <input type="text" formControlName="rentAmount" id="rentAmount" class="form-control"
+                          placeholder="Rent Amount" required>
+                        <span class="error-message" *ngIf="submitted && UploadHRA_Form.get('rentAmount')?.invalid">
+                          Rent Amount is required.
+                        </span>
+                      </div>
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">LandLord Name <span class="text-danger">*</span></label>
+                        <input type="text" formControlName="landLordName" id="landLordName" class="form-control"
+                          placeholder="LandLord Name" required>
+                        <span class="error-message" *ngIf="submitted && UploadHRA_Form.get('landLordName')?.invalid">
+                          LandLord Name is required.
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top: 1.2rem;">
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">LandLord Address <span class="text-danger">*</span></label>
+                        <input type="text" formControlName="landLordAddress" id="landLordAddress" class="form-control"
+                          placeholder="LandLord Address" required>
+                        <span class="error-message" *ngIf="submitted && UploadHRA_Form.get('landLordAddress')?.invalid">
+                          LandLord Address is required.
+                        </span>
+                      </div>
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">LandLord PAN</label>
+                        <input type="text" formControlName="landLordPan" id="landLordPan" class="form-control"
+                          placeholder="PAN Number (Required if yearly rent > 100000)" required maxlength="10"
+                          (input)="UploadHRA_Form.get('landLordPan')?.setValue(UploadHRA_Form.get('landLordPan')?.value.toUpperCase(), { emitEvent: false })">
+                        <span class="error-message"
+                          *ngIf="submitted && UploadHRA_Form.get('landLordPan')?.hasError('required')">
+                          PAN Number (Required if yearly rent > 100000)"
+                        </span>
+                        <span class="error-message"
+                          *ngIf="submitted && UploadHRA_Form.get('landLordPan')?.hasError('pattern')">
+                          Invalid PAN format! (e.g., ABCDE1234F)
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top: 1.2rem;">
+                      <div class="col-sm-12 text-center">
+                        <div class="file-upload-container">
+                          <label class="custom-file-upload">
+                            <input type="file" id="receiptDoc" (change)="onFileSelected($event,'UploadHRA_Form')"
+                              accept=".pdf,.png,.jpg,.jpeg" required>
+                            <i class="fa fa-upload"></i> Choose File
+                          </label>
+                          <span *ngIf="selectedFile"> {{ selectedFile.name }} </span>
+                          <span class="error-message" *ngIf="submitted && !selectedFile">
+                            Upload the document.
+                          </span>
+                          <span class="error-message" *ngIf="fileError">{{ fileError }}</span>
+                        </div>
+                        <span style="float: left; font-size: 10px;">Note: Document size must be less than 1 mb and <br>
+                          use the pdf, png, jpg, jprg</span>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button id="approveSelectedBtn1" type="button" class="btn btn-success"
+                (click)="SaveHRADocuments()">Save</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal"
+                (click)="close_HRAproof_popup()">Close</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- End Upload HRA Proof by Akchhaya -->
+
+    <!-- Start Investment Declaration by Akchhaya-->
+    <div [@grooveState]="declaration_Popup?'active':'inactive'" id="allowanceDeduct11" class="modal">
+      <div [@dongleState]="declaration_Popup?'active':'inactive'" class="modal-dialog"
+        style="margin:auto auto auto auto;">
+        <div class="modal-content">
+          <form [formGroup]="InvestmentDeclaration_Form">
+            <div class="modal-header theme-bg">
+              <h4 class="modal-title">Investment Declaraiotn: {{get_investment_type(head_id)}} </h4>
+              <button type="button" class="close" (click)="close_declaration_popup()" data-dismiss="modal"
+                aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+              <h5>{{this.component_name}}</h5>
+              <div class="Appointment-outer-box">
+                <div class="row" style="margin-top: 1.2rem;">
+                  <div class="col-sm-12 text-center">
+                    <input formControlName="headId" id="headId" class="form-control" type="hidden">
+                    <input formControlName="investment_id" id="investment_id" class="form-control" type="hidden">
+                    <input formControlName="enc_empCode" id="enc_empCode" class="form-control" type="hidden">
+                    <input formControlName="max_limit" id="max_limit" class="form-control" type="hidden">
+                    <!-- <ng-container *ngIf="head_id === 1">
+                      <div class="row">
+                        <div class="col-sm-4 text-center">
+                          <input type="checkbox" formControlName="parentSeniorCitizen"><br>
+                          <span style="font-size: 12px;"> Parents senior Citizen (Claim Under 80D)</span>
+                        </div>
+                        <div class="col-sm-4 text-center">
+                          <input type="checkbox" formControlName="disabilityMoreThan80"><br>
+                          <span style="font-size: 12px;">Disability More then 80% with Dependent (80DD)</span>
+                        </div>
+                        <div class="col-sm-4 text-center">
+                          <input type="checkbox" formControlName="employeeWithSevereDisability"><br>
+                          <span style="font-size: 12px;">Employee with Severe Disability</span>
+                        </div>
+                      </div>
+                    </ng-container> -->
+                    <div class="row" style="margin-top: 1.2rem;">
+                      <div class="col-sm-8">
+                        <div class="custom-inline-group">
+                          <label for="investment_amount">Amount</label>
+                          <input type="text" formControlName="investment_amount" id="investment_amount"
+                            class="form-control" placeholder="Investment Amount" required
+                            (keypress)="restrictToNumbers($event)">
+                        </div>
+                      </div>
+                      <div class="col-sm-4"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-success" (click)="SaveInvestmentDeclaration()">Save</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal"
+                (click)="close_declaration_popup()">Close</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- End Investment Declaration by Akchhaya -->
+
+    <!-- Start Declaration Home Loan Proof by Akchhaya-->
+    <div [@grooveState]="HomeLoanDeclarationPopup?'active':'inactive'" id="allowanceDeduct2" class="modal">
+      <div [@dongleState]="HomeLoanDeclarationPopup?'active':'inactive'" class="modal-dialog xl"
+        style="margin:auto auto auto auto;">
+        <div class="modal-content">
+          <form [formGroup]="HomeLoanDeclaration_Form">
+            <div class="modal-header theme-bg">
+              <h4 class="modal-title">Investment Declaration: Home Loan Interest </h4>
+              <button type="button" class="close" (click)="closeHomeloadDeclaration_popup()" data-dismiss="modal"
+                aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+              <div class="Appointment-outer-box">
+                <div class="row" style="margin-top: 1.2rem;">
+                  <div class="col-sm-12 text-center">
+                    <input formControlName="enc_empCode" id="enc_empCode" class="form-control" type="hidden">
+                    <input formControlName="lenderName" id="lenderName" class="form-control" type="hidden">
+
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <span> Acquisition or Construction of the house before 01/04/1999 </span>&nbsp;&nbsp;
+                        <input type="checkbox" formControlName="isBefore01Apr1999">
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top: 1.2rem;">
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Loss: Interest on Loan (Max. 2 Lac) <span
+                            class="text-danger">*</span></label>
+                        <input type="text" formControlName="interestOnBorrowedCapital" id="interestOnBorrowedCapital"
+                          class="form-control" placeholder="Interest on Loan" required
+                          (keypress)="restrictToNumbers($event)" (keyup)="onInterestChange($event)">
+                        <span class="error-message"
+                          *ngIf="submitted && HomeLoanDeclaration_Form.get('interestOnBorrowedCapital')?.invalid">
+                          Interest on Loan is required.
+                        </span>
+                      </div>
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Total: Loss from house Property <span
+                            class="text-danger">*</span></label>
+                        <input type="text" formControlName="principalOnBorrowedCapital" id="principalOnBorrowedCapital"
+                          class="form-control" placeholder="Loss from house Property" required
+                          (keypress)="restrictToNumbers($event)">
+                        <span class="error-message"
+                          *ngIf="submitted && HomeLoanDeclaration_Form.get('principalOnBorrowedCapital')?.invalid">
+                          Loss from house Property is required.
+                        </span>
+                        <span class="error-message text-danger"
+                          *ngIf="HomeLoanDeclaration_Form.get('principalOnBorrowedCapital')?.errors?.maxLimitExceeded">
+                          The maximum allowed loss is {{ HomeLoanDeclaration_Form.get('isBefore01Apr1999')?.value ?
+                          '₹30,000' : '₹2,00,000' }}.
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <span style="font-size: 12px;">First Time Buyer</span>&nbsp;&nbsp; <input type="checkbox"
+                          formControlName="isFirstTimeBuyer">
+                      </div>
+                      <div class="col-sm-8"></div>
+                    </div>
+                    <div class="row" style="margin-top: 1.2rem;">
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Loan Sanction Date <span class="text-danger">*</span></label>
+                        <input type="date" formControlName="loanSanctionDate" id="loanSanctionDate"
+                          class="form-control">
+                        <span class="error-message"
+                          *ngIf="submitted && HomeLoanDeclaration_Form.get('loanSanctionDate')?.invalid">
+                          Loan Sanction Date is required.
+                        </span>
+                      </div>
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Loan Amount <span class="text-danger">*</span></label>
+                        <input type="text" formControlName="loanAmount" id="loanAmount" class="form-control"
+                          placeholder="Property Value" required (keypress)="restrictToNumbers($event)">
+                        <span class="error-message"
+                          *ngIf="submitted && HomeLoanDeclaration_Form.get('loanAmount')?.invalid">
+                          Property Value is required.
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top: 1.2rem;">
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Property Value <span class="text-danger">*</span></label>
+                        <input type="text" formControlName="propertyValue" id="propertyValue" class="form-control"
+                          placeholder="Property Value" required (keypress)="restrictToNumbers($event)">
+                        <span class="error-message"
+                          *ngIf="submitted && HomeLoanDeclaration_Form.get('propertyValue')?.invalid">
+                          Property Value is required.
+                        </span>
+                      </div>
+                    </div>
+
+
+                    <div class="row" style="margin-top: 1.2rem;">
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Lender PAN 1<span class="text-danger">*</span></label>
+                        <input type="text" formControlName="lenderPannumber1" id="lenderPannumber1" class="form-control"
+                          placeholder="Lender PAN 1" required
+                          (input)="HomeLoanDeclaration_Form.get('lenderPannumber1')?.setValue(HomeLoanDeclaration_Form.get('lenderPannumber1')?.value.toUpperCase(), { emitEvent: false })">
+                        <span class="error-message"
+                          *ngIf="submitted && HomeLoanDeclaration_Form.get('lenderPannumber1')?.hasError('required')">
+                          PAN is required.
+                        </span>
+                        <span class="error-message"
+                          *ngIf="submitted && HomeLoanDeclaration_Form.get('lenderPannumber1')?.hasError('pattern')">
+                          Invalid PAN format! (e.g., ABCDE1234F)
+                        </span>
+                      </div>
+
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Lender PAN 2</label>
+                        <input type="text" formControlName="lenderPannumber2" id="lenderPannumber2" class="form-control"
+                          placeholder="Lender PAN 2"
+                          (input)="HomeLoanDeclaration_Form.get('lenderPannumber2')?.setValue(HomeLoanDeclaration_Form.get('lenderPannumber2')?.value.toUpperCase(), { emitEvent: false })">
+                        <span class="error-message"
+                          *ngIf="submitted && HomeLoanDeclaration_Form.get('lenderPannumber2')?.hasError('pattern')">
+                          Invalid PAN format! (e.g., ABCDE1234F)
+                        </span>
+                      </div>
+
+                    </div>
+                    <div class="row" style="margin-top: 1.2rem;">
+
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Lender PAN 3 </label>
+                        <input type="text" formControlName="lenderPannumber3" id="lenderPannumber3" class="form-control"
+                          placeholder="Lender PAN 3"
+                          (input)="HomeLoanDeclaration_Form.get('lenderPannumber3')?.setValue(HomeLoanDeclaration_Form.get('lenderPannumber3')?.value.toUpperCase(), { emitEvent: false })">
+                        <span class="error-message"
+                          *ngIf="submitted && HomeLoanDeclaration_Form.get('lenderPannumber3')?.hasError('pattern')">
+                          Invalid PAN format! (e.g., ABCDE1234F)
+                        </span>
+                      </div>
+
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Lender PAN 4</label>
+                        <input type="text" formControlName="lenderPannumber4" id="lenderPannumber4" class="form-control"
+                          placeholder="Lender PAN 4"
+                          (input)="HomeLoanDeclaration_Form.get('lenderPannumber4')?.setValue(HomeLoanDeclaration_Form.get('lenderPannumber4')?.value.toUpperCase(), { emitEvent: false })">
+                        <span class="error-message"
+                          *ngIf="submitted && HomeLoanDeclaration_Form.get('lenderPannumber4')?.hasError('pattern')">
+                          Invalid PAN format! (e.g., ABCDE1234F)
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top: 1.2rem;">
+                      <div class="col-sm-6 col-md-6">
+                        <label class="text-left">Address of House in respect
+                          of which interest paid / payable</label>
+                          <textarea formControlName="homeAddress" id="homeAddress" class="form-control" placeholder="Address"></textarea>
+
+                        <!-- <span class="error-message"
+                          *ngIf="submitted && HomeLoanDeclaration_Form.get('homeaddress')?.invalid">
+                          Home Address Value is required.
+                        </span> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button id="approveSelectedBtn1" type="button" class="btn btn-success"
+                (click)="SaveHomeLoanDeclaration()">Save</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal"
+                (click)="closeHomeloadDeclaration_popup()">Close</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- End Declaration Home Loan Proof by Akchhaya -->
+
+  </div>
+</div>
+
+<div class="no-pay-slips-inn-box"
+  *ngIf="this.empDataFromParent.joiningStatus != 'JOINED' && this.empDataFromParent.joiningStatus != 'RELIEVED'">
+
+  <img src="assets/img/no-pay-slip.png" class="img-circle img-responsive" alt="">
+
+  <p>Investment Report hasn't been generated for this employee
+    yet!</p>
+</div> 
+
+
+   <!-- Start Declaration HRA Proof by Akchhaya-->
+   <div [@grooveState]="HRADeclaration_Popup?'active':'inactive'" id="allowanceDeduct2" class="modal">
+    <div [@dongleState]="HRADeclaration_Popup?'active':'inactive'" class="modal-dialog modal-md"
+      style="margin:auto auto auto auto;">
+      <div class="modal-content">
+        <form [formGroup]="addRentDeclarationForm">
+          <div class="modal-header theme-bg">
+            <h4 class="modal-title">Investment Declaration: HRA Exemption </h4>
+            <button type="button" class="close" (click)="closeHRADeclaration_popup()" data-dismiss="modal"
+              aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body" style="max-height: 380px; overflow-y: auto;">
+            <div class="Appointment-outer-box">
+              <div class="net-pay-section12">
+                <div class="row net-pay-data-without-bt">
+                  <div class="col-md-12">
+                    <div class="row Add-Rented-House-outer-box">
+                      <div class="col-sm-12">
+                        <div class="title-inn_box">
+                          <span class="font-mm"> </span> <span class="font-semibold font-mm">House Rent Details</span>
+                        </div>
+                      </div>
+
+                     
+                        <div class="col-md-12">
+                          <label>Rent (Annually)</label>
+                          <input type="text" class="form-control" formControlName="rentAmount" (keyup)="acceptOnlyNumberAmount($event)" maxlength="6">
+                        </div>
+
+                        <div class="col-md-12" [ngClass]="aboveOneLakh ? 'above-lakh' : ''">
+                          <label>LandLord Name</label>
+                          <input type="text" class="form-control" formControlName="landLordName">
+                        </div>
+
+                        <div class="col-md-12" [ngClass]="aboveOneLakh ? 'above-lakh' : ''">
+                          <label>LandLord Pan No.</label>
+                          <input type="text" class="form-control" formControlName="landLordPan" maxlength="10" (keyup)="validatePanNo($event)">
+                        </div>
+
+                        <div class="col-md-12 aboveOneLakh" [ngClass]="aboveOneLakh ? 'above-lakh' : ''">
+                          <label>LandLord Address</label>
+                          <textarea class="form-control" formControlName="landLordAddress"></textarea>
+                        </div>
+
+                        <div class="col-md-12" [ngClass]="aboveOneLakh? 'above-lakh' : ''">
+                          <label>Metro City</label>
+                          <select class="form-control" formControlName="metroCity">
+                              <option value="Y">Yes</option>
+                              <option value="N">No</option>
+                          </select>
+                        </div>
+
+                      </div>
+                    
+                    
+                    
+                  </div>
+                </div>
+              </div>
+
+              <div class="row" style="margin-top: 1.2rem;">
+                <div class="col-sm-12 text-center">
+                  <!-- <input formControlName="headId" id="headId" class="form-control" type="hidden"> -->
+                  <!-- <input formControlName="enc_empCode" id="enc_empCode" class="form-control" type="hidden"> -->
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="approveSelectedBtn1" type="button" class="btn btn-success"
+              (click)="SaveHRADeclaration()">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal"
+              (click)="closeHRADeclaration_popup()">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- End Upload HRA Proof by Akchhaya -->
+
+
+   <!-- Modal -->
+ <div class="modal" id="view-rent-details" role="dialog" [ngStyle]="{'display':viewRentModalStatus?'block':'none'}">
+  <div class="modal-dialog modal-xl">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" (click)="closeViewRentPop()" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">View Rent Details</h4>
+      </div>
+      <div class="modal-body" style="height:380px;overflow-y: scroll;">
+          <div class="row">
+            
+            
+              <ng-container *ngFor="let rent of rentDetails let i = index">
+                <div class="col-md-12" >
+                  <div class="card">
+                    
+                    <table class="rent-view-table">
+                      <tr>
+                        <th colspan="2">
+                          {{ getMonth(rent.rent_month) }}
+                          <span class="edit-rent" (click)="openEditRent(rent,i)"><i class="fa fa-edit"></i></span>
+                          <hr style="margin-top:10px;">
+                        </th>
+                      </tr>
+                      <tr>
+                        <th>Rent paid</th>
+                        <td>{{ rent.rentpaid }}</td>
+                      </tr>
+                      <tr>
+                        <th>Name Of Landlord</th>
+                        <td>{{ rent.landlordname }}</td>
+                      </tr>
+                      <tr>
+                        <th>Landlord Pan No</th>
+                        <td>{{ rent.landlordpancard }}</td>
+                      </tr>
+                      <tr>
+                        <th>Address</th>
+                        <td>{{ rent.address }}</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </ng-container>
+            
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeViewRentPop()">Close</button>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+
+
+<div  [ngStyle]="{'display':editRentModal?'block':'none'}" class="modal">
+  <div  class="modal-dialog modal-md" style="margin:auto auto auto auto;">
+    <div class="modal-content">
+      <form [formGroup]="updateRentDeclarationForm">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Update Rent Details </h4>
+          <button type="button" class="close" (click)="closeUpdateRentPopUp()" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body" style="max-height: 380px; overflow-y: auto;">
+          <div class="Appointment-outer-box">
+            <div class="net-pay-section12">
+              <div class="row net-pay-data-without-bt">
+                <div class="col-md-12">
+                  <div class="row Add-Rented-House-outer-box">
+                    <div class="col-sm-12">
+                      <div class="title-inn_box">
+                        <span class="font-mm"> </span> <span class="font-semibold font-mm">House Rent Details</span>
+                      </div>
+                    </div>
+
+                   
+                      <div class="col-md-12">
+                        <label>Rent (Monthly)</label>
+                        <input type="hidden" formControlName="indexValue">
+                        <input type="text" class="form-control" formControlName="rentAmount" (keyup)="acceptOnlyNumberUpdateAmount($event)" maxlength="6">
+                      </div>
+
+                      <div class="col-md-12" [ngClass]="aboveOneLakh ? 'above-lakh' : ''">
+                        <label>LandLord Name</label>
+                        <input type="text" class="form-control" formControlName="landLordName">
+                      </div>
+
+                      <div class="col-md-12" [ngClass]="aboveOneLakh ? 'above-lakh' : ''">
+                        <label>LandLord Pan No.</label>
+                        <input type="text" class="form-control" formControlName="landLordPan" maxlength="10" (keyup)="validatePanNo($event)">
+                      </div>
+
+                      <div class="col-md-12" [ngClass]="aboveOneLakh ? 'above-lakh' : ''">
+                        <label>LandLord Address</label>
+                        <textarea class="form-control" formControlName="landLordAddress"></textarea>
+                      </div>
+
+                    </div>
+                  
+                  
+                  
+                </div>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top: 1.2rem;">
+              <div class="col-sm-12 text-center">
+                <!-- <input formControlName="headId" id="headId" class="form-control" type="hidden"> -->
+                <!-- <input formControlName="enc_empCode" id="enc_empCode" class="form-control" type="hidden"> -->
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="approveSelectedBtn1" type="button" class="btn btn-success"
+            (click)="updateRentDetail()">Update</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal"
+            (click)="closeUpdateRentPopUp()">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

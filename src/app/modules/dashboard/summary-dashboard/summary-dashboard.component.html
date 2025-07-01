@@ -1,0 +1,682 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+
+  <div id="wrapper" [ngClass]="{'active':showSidebar}">
+    <div class="fakeLoader"></div>
+
+    <div id="page-wrapper" style="min-height: 596px;">
+      <div class="row page-titles" style="    margin-right: 0px;margin-bottom: 0px;
+      margin-left: 0px;">
+        <div class="col-md-5 align-self-center">
+          <h3 class="text-themecolor">Dashboard Summary </h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+          <!-- <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="['/dashboard']">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+
+          </ol> -->
+        </div>
+      </div>
+      <div class="container-fluid">
+        <!-- /row -->
+
+        <div class="row" *ngIf="!dashboard_settings || dashboard_settings?.employee_list || decoded_token?.isEmployer === '1'">
+
+          <div class="col-md-12 col-sm-12">
+            <h3 class="dashboard-employee-title-box">Employees</h3>
+          </div>
+
+          <div class="col-md-3 col-sm-3 cur-ptr" (click)="routeToEmployee('active')" title="Click to view Employee">
+            <div class="widget standard-widget widget-Employee-box">
+              <div class="row">
+                <div class="widget-caption info">
+                  <div class="col-xs-4 no-pad">
+                    <div class="up-arrow-outer-box">
+                      <!-- <img src="../../../../assets/img/up-arrow.png" class="img-responsive " alt="user">-->
+                      <i class="fa fa-users" aria-hidden="true" style="font-size: 50px;color: #0087cc !important;"></i>
+                      <!-- <span>+0%</span>  -->
+                    </div>
+
+                  </div>
+                  <div class="col-xs-8 no-pad">
+                    <div class="widget-detail">
+                      <span>Total Employees<p style="font-size: 10px;">&nbsp;</p></span>
+                      <h3>{{get_employee_list_data.total_employees}}</h3>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3 col-sm-3 cur-ptr" (click)="routeToEmployee('relieved')">
+            <div class="widget standard-widget widget-Employee-box">
+              <div class="row">
+                <div class="widget-caption danger">
+                  <div class="col-xs-4 no-pad">
+                    <div class=" down-arrow-outer-box">
+                      <!-- <img src="../../../../assets/img/down-arrow.png" class="img-responsive " alt="user">
+                      <span>+0%</span> -->
+                      <i class="fa fa-user-times" aria-hidden="true"
+                        style="font-size: 50px; color:#e30b0be8 !important;"></i>
+
+                    </div>
+                  </div>
+                  <div class="col-xs-8 no-pad">
+                    <div class="widget-detail">
+                      <!-- <span>Number Of leave</span>
+                      <h3>{{get_employee_list_data.tot_on_leave}}</h3> -->
+                      <span>Relieved <p style="font-size: 10px;">&nbsp;</p></span>
+                      <h3>{{get_employee_list_data.left_count}}</h3>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3 col-sm-3 cur-ptr" (click)="routeToEmployee('new-joining')"
+            title="Click to view Employee">
+            <div class="widget standard-widget widget-Employee-box">
+              <div class="row">
+                <div class="widget-caption success">
+                  <div class="col-xs-4 no-pad">
+                    <div class="up-arrow-outer-box">
+                      <!-- <img src="../../../../assets/img/up-arrow.png" class="img-responsive " alt="user">
+                      <span>+0%</span> -->
+                      <i class="fa fa-user-plus" aria-hidden="true"
+                        style="font-size: 50px; color:#74ba28 !important;"></i>
+                    </div>
+                  </div>
+                  <div class="col-xs-8 no-pad">
+                    <div class="widget-detail">
+                      <span>New Employees <p style="font-size: 10px;">( {{get_employee_list_data.cur_monthyr}}) </p>
+                      </span>
+                      <h3>{{get_employee_list_data.new_employees}}</h3>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3 col-sm-3 cur-ptr" (click)="routeToEmployee('joining-pending')"
+            title="Click to view Employee">
+            <div class="widget standard-widget widget-Employee-box">
+              <div class="row">
+                <div class="widget-caption success">
+                  <div class="col-xs-4 no-pad">
+                    <div class="up-arrow-outer-box">
+                      <!-- <img src="../../../../assets/img/up-arrow.png" class="img-responsive " alt="user">
+                      <span>+0%</span> -->
+                      <i class="fa fa-id-card" aria-hidden="true"
+                        style="font-size: 50px; color:#cca1a1e8 !important;"></i>
+                    </div>
+                  </div>
+                  <div class="col-xs-8 no-pad">
+                    <div class="widget-detail">
+                      <span>Joining Pending<p style="font-size: 10px;">&nbsp;</p></span>
+                      <h3>{{get_employee_list_data.joining_pending}}</h3>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3 col-sm-6" style="display: none;">
+            <div class="widget standard-widget widget-Employee-box">
+              <div class="row">
+                <div class="widget-caption warning">
+                  <div class="col-xs-4 no-pad">
+                    <div class=" up-arrow-outer-box">
+                      <img src="../../../../assets/img/up-arrow.png" class="img-responsive " alt="user">
+                      <span>+0%</span>
+                    </div>
+                  </div>
+                  <div class="col-xs-8 no-pad">
+                    <div class="widget-detail">
+                      <span>Today's Attendance</span>
+                      <h3>{{get_employee_list_data.today_s_attendance}}</h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mrg-bot-20" *ngIf="!dashboard_settings || dashboard_settings?.attendance || decoded_token?.isEmployer == '1'"> 
+
+          <div class="col-md-12 col-sm-12 mrg-top-20">
+            <h3 class="dashboard-employee-title-box Attendance-title-top-box">Attendance</h3>
+          </div>
+
+          <div class="col-md-12">
+            <div class="card Attendance-listing-outer-box">
+              <div class="row">
+
+                <div class="col-md-3 col-sm-6" (click)="routeToAttReport('')" style="cursor: pointer;">
+                  <div class="widget standard-widget widget-Employee-box widget-Attendance-box success-Attendance-box">
+                    <div class="row">
+                      <div class="widget-caption info ">
+                        <div class="col-xs-9 no-pad">
+                          <i class="icon fa fa-users" aria-hidden="true"></i>
+
+                        </div>
+                        <div class="col-xs-3 no-pad">
+                          <div class="widget-detail">
+                            <h3>{{get_employee_attendance_data.total_employees}}</h3>
+                            <span>Employees</span>
+
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6" (click)="routeToAttReport('Present')" style="cursor: pointer;">
+                  <div class="widget standard-widget widget-Employee-box widget-Attendance-box warning-Attendance-box">
+                    <div class="row">
+                      <div class="widget-caption danger">
+                        <div class="col-xs-9 no-pad">
+                          <i class="icon fa fa-graduation-cap" aria-hidden="true"></i>
+                        </div>
+                        <div class="col-xs-3 no-pad">
+                          <div class="widget-detail">
+
+                            <h3>{{get_employee_attendance_data.cnt_present}}</h3>
+                            <span>Present</span>
+
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6" (click)="routeToAttReport('Absent')" style="cursor: pointer;">
+                  <div class="widget standard-widget widget-Employee-box widget-Attendance-box info-Attendance-box">
+                    <div class="row">
+                      <div class="widget-caption success">
+                        <div class="col-xs-9 no-pad">
+                          <i class="icon fa fa-thumbs-down" aria-hidden="true"></i>
+                        </div>
+                        <div class="col-xs-3 no-pad">
+                          <div class="widget-detail">
+
+                            <h3>{{get_employee_attendance_data.cnt_absent}}</h3>
+                            <span>Absent</span>
+
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6" (click)="routeToAttReport('LateComers')" style="cursor: pointer;">
+                  <div class="widget standard-widget widget-Employee-box widget-Attendance-box danger-Attendance-box">
+                    <div class="row">
+                      <div class="widget-caption warning">
+                        <div class="col-xs-9 no-pad">
+                          <i class="icon fa fa-clock-o" aria-hidden="true"></i>
+                        </div>
+                        <div class="col-xs-3 no-pad">
+                          <div class="widget-detail">
+
+                            <h3>{{get_employee_attendance_data.lete_corner}}</h3>
+                            <span>Late Comers</span>
+
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="row">
+
+          <ng-containter *ngIf="!dashboard_settings || dashboard_settings?.birthday || dashboard_settings?.holidays || dashboard_settings?.leaves || decoded_token?.isEmployer == '1'">
+            <div class="col-md-12 col-sm-12 ">
+              <h3 class="dashboard-employee-title-box">Birthdays / Leaves / Holidays  </h3>
+            </div>
+          </ng-containter>
+
+            <ng-containter *ngIf="!dashboard_settings || dashboard_settings?.birthday || decoded_token?.isEmployer == '1'">
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-header">
+                  <h4>Today's Birthdays</h4>
+                </div>
+                <div class="card-body leave-scroll-outer-box">
+                  <div class="todo-list todo-list-hover todo-list-divided">
+                    <div *ngIf="!get_employee_birthday_data || get_employee_birthday_data.length === 0" class="no-data">
+                      No records
+                    </div>
+
+                    <ng-container *ngFor="let gebd of get_employee_birthday_data; let i=index;">
+                      <div class="todo todo-default">
+                        <div class="sm-avater list-avater">
+                          <!-- src=". -1.jpg" -->
+                          <!-- <img src="{{gebd.employee_photo}}" class="img-responsive img-circle" alt=""> -->
+                          <img src="{{gebd.employee_photo}}" class="img-responsive img-circle" alt="user-images"
+                            *ngIf="(gebd.employee_photo!= '' && gebd.employee_photo != null)">
+                          <div class="img-responsive txt circular-name"
+                            *ngIf="(gebd.employee_photo == '' || gebd.employee_photo == null)" alt="user">
+                            {{gebd?.emp_name.charAt(0)}}{{gel?.emp_name.charAt(gebd?.emp_name.indexOf('') + 1)}}</div>
+                        </div>
+                        <h5 class="ct-title">{{gebd?.emp_name}}<span class="ct-designation">{{gebd.post_offered}}</span>
+                        </h5>
+                        <div class="badge badge-action" [ngClass]="gebd.btn_txt.toLowerCase() =='wished' ? 'read-only' : ''">
+                          <a class="btn btn-user btn-primary btn-round btn-outline" [ngClass]="gebd.btn_txt.toLowerCase() =='wished' ? 'back-color' : ''"
+                            (click)="openBirthdayModal(gebd)">{{gebd.btn_txt}}</a>
+                        </div>
+                      </div>
+                    </ng-container>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </ng-containter>
+
+          <div class="col-md-4">
+            <div class="card">
+
+              <ng-containter *ngIf="!dashboard_settings || dashboard_settings?.leaves || decoded_token?.isEmployer == '1'">
+              <div class="card-header">
+                <h4>Employees on Leave</h4>
+              </div>
+
+
+              <div class="card-body leave-scroll-outer-box">
+                <div class="todo-list todo-list-hover todo-list-divided">
+                  <div *ngIf="!get_employee_leave_data || get_employee_leave_data.length === 0" class="no-data">
+                    No records
+                  </div>
+                  <ng-container *ngFor="let gel of get_employee_leave_data; let i=index;">
+                    <div class="todo todo-default">
+                      <div class="job-img">
+                        <!-- src=". -3.jpg" -->
+                        <!-- <img src="{{gel.employee_photo}}" class="img-responsive img-circle" alt=""> -->
+
+                        <img src="{{gel.employee_photo}}" class="attachment-thumbnail" alt="user-images"
+                          *ngIf="(gel.employee_photo!= '' && gel.employee_photo != null)">
+                        <div class="img-responsive txt circular-name"
+                          *ngIf="(gel.employee_photo == '' || gel.employee_photo == null)" alt="user">
+                          {{gel?.emp_name.charAt(0)}}{{gel?.emp_name.charAt(gel?.emp_name.indexOf('
+                          ') + 1)}}</div>
+
+
+                      </div>
+                      <h5 class="ct-title">{{gel?.emp_name}}<span class="ct-designation">{{gel.post_offered}}</span>
+                      </h5>
+                      <div class="badge badge-action">
+                        <a class="btn btn-user btn-warning btn-round btn-outline">{{gel.fromdate}} to {{gel.todate}}</a>
+                      </div>
+                    </div>
+                  </ng-container>
+
+
+                </div>
+              </div>
+              </ng-containter>
+
+            </div>
+          </div>
+
+
+
+          <div class="col-md-4">
+            <ng-containter *ngIf="!dashboard_settings || dashboard_settings?.holidays || decoded_token?.isEmployer == '1'">
+            <div class="card">
+
+              <div class="card-header">
+                <div class="pull-right holidays-list-box"></div>
+                <h4>Upcoming Holidays 
+                  <span> 
+                    <select style="font-size: 10px;width: 35%;margin-left: 2%;"
+                      class="state-outer-box" [(ngModel)]="sel_state" (change)="changeState($event)">
+                      <option *ngFor="let smd of state_master_data" [value]="smd.state.toUpperCase()">{{smd.state}}
+                      </option>
+                    </select> 
+                  </span>
+                </h4>
+              </div>
+
+
+              <div class="card-body leave-scroll-outer-box">
+                <div class="todo-list todo-list-hover todo-list-divided">
+                  <div *ngIf="!get_employee_holidays_data || get_employee_holidays_data.length === 0" class="no-data">
+                    No records
+                  </div>
+                  <ng-container *ngFor="let gehd of get_employee_holidays_data; let i=index;">
+                    <div class="todo todo-default" [class]="accountClass(gehd)">
+                      <div class="sm-avater list-avater date-month-outer-box">
+
+                        <strong>{{get_holiday_date(gehd.holiday_date)}}</strong>
+                        <b>{{get_holiday_month(gehd.holiday_date)}}</b>
+
+                      </div>
+                      <h5 class="ct-title">{{gehd.holiday_name}}</h5>
+                      <div class="badge badge-action">
+                        <a class="btn btn-user btn-info btn-round btn-outline"
+                          [class]="accountClass(gehd)">{{gehd.holiday_type}}</a>
+                      </div>
+                    </div>
+                  </ng-container>
+
+                </div>
+              </div>
+            </div>
+            </ng-containter>
+          </div>
+
+
+          <ng-containter *ngIf="!dashboard_settings || dashboard_settings?.chart || decoded_token?.isEmployer == '1'">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h4>Department Wise Employee</h4>
+              </div>
+              <!-- <div class="form-group">
+                <label class="control-label col-sm-12">Select Department</label>
+                <div class="col-sm-12 padd-0 userOrgUnit">
+
+
+                  <ng-multiselect-dropdown [placeholder]="'Select Department'" [settings]="deptDropdownSettings"
+                    [data]="deptList" [(ngModel)]="deptName" [ngModelOptions]="{standalone: true}">
+                  </ng-multiselect-dropdown>
+
+                </div>
+              </div> -->
+              <div class="card-header">
+                <div class="pull-right holidays-list-box">
+                  <ngx-charts-pie-chart [view]="view" [scheme]="colorScheme" [results]="dept_and_desg_wisedata"
+                    [legend]="false" [legendPosition]="'below'" [doughnut]="false" [labels]="true"
+                    [tooltipText]="customTooltipText" (select)="onSliceSelect($event)">
+                  </ngx-charts-pie-chart>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h4>Functional Designation (Expertise) Wise Employee</h4>
+              </div>
+              <div class="card-header">
+                <div class="pull-right holidays-list-box">
+                  <div class="col-md-6">
+                    <ngx-charts-pie-chart [view]="view" [scheme]="colorScheme" [results]="funcdesg_wisedata"
+                      [legend]="false" [doughnut]="false" [labels]="true" [legendPosition]="'below'"
+                      [tooltipText]="customTooltipText" (select)="onSliceSelectfuncdesg($event)">
+                    </ngx-charts-pie-chart>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h4>Designation Wise Employee</h4>
+              </div>
+              <div class="card-header">
+                <div class="pull-right holidays-list-box">
+                  <div class="col-md-6">
+                    <ngx-charts-pie-chart [view]="view" [scheme]="colorScheme" [results]="desg_wisedata"
+                      [legend]="false" [doughnut]="false" [labels]="true" [legendPosition]="'below'"
+                      [tooltipText]="customTooltipText" (select)="onSliceSelectdesg($event)">
+                    </ngx-charts-pie-chart>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+          <!-- <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h4>Project Wise Employee</h4>
+              </div>
+              <div class="card-header">
+                <div class="pull-right holidays-list-box">
+                  <div class="col-md-6">
+                    <ngx-charts-pie-chart [view]="view" [scheme]="colorScheme" [results]="proj_wisedata"
+                      [legend]="false" [doughnut]="false" [labels]="true" [legendPosition]="'below'"
+                      [tooltipText]="customTooltipText" (select)="onSliceSelectproj($event)">
+                    </ngx-charts-pie-chart>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+          </ng-containter>
+        </div>
+        <!-- /row -->
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+
+<!-----Birthday Modal------->
+<div [@grooveState]="showBirthdayModal?'active':'inactive'" id="birthdayWishes" class="modal add-address-form-box"
+  style="z-index:1000;" (click)="onOneClick($event)">
+  <div [@dongleState]="showBirthdayModal?'active':'inactive'" class="modal-dialog" style="margin:auto auto auto auto;">
+
+    <form [formGroup]="Save_Notification_Form">
+
+      <div class="modal-content" (click)="$event.stopPropagation()">
+
+        <div class="card-box">
+
+          <div class="audience-box">
+            <label class="audience-box-label">Select Audience :</label>
+            <ng-multiselect-dropdown class="audience-multiselect-dropdown"
+              style="flex:1;margin-left: 10px;color: black;" placeholder="Choose Audience"
+              [settings]="audienceDropdownSettings" [data]="Audience_list_data" (onSelect)="onAudienceSelect($event)"
+              (onSelectAll)="onAudienceSelectAll($event)" (onDeSelectAll)="onAudienceDeSelectAll($event)"
+              (onDeSelect)="onAudienceDeSelect($event)" formControlName="notificationAudienceIds"
+              class="custom-dropdown">
+            </ng-multiselect-dropdown>
+          </div>
+
+          <div class="topBannerBg">
+          
+            <!-- Show uploaded local image (base64) -->
+            <img *ngIf="uploaded_birthday_img_base64 && addImage" [src]="uploaded_birthday_img_base64" class="banner" alt="Uploaded Image"/>
+          
+            <!-- If no local image is uploaded -->
+            <ng-container *ngIf="!uploaded_birthday_img_base64 && addImage">
+          
+              <!-- Show image from saved URLs if one is selected -->
+              <img *ngIf="selected_birthday_img_url_idx !== -1" id="banner" class="banner"
+                [src]="saved_birthday_img_urls[selected_birthday_img_url_idx]" alt="Birthday Banner" />
+          
+              <!-- Placeholder message if no image is selected -->
+              <div *ngIf="selected_birthday_img_url_idx === -1" class="no-image-placeholder">Please upload an image</div>
+          
+              <!-- Change Image button -->
+              <button class="fro-profile_main-pic-change" title="Change Image" (click)="change_birthday_img()">
+                <i class="fa fa-camera"></i>
+              </button>
+          
+              <!-- Upload Image button with hidden file input -->
+              <button class="fro-upload-pic-change" title="Upload Image" (click)="triggerFileInput()" style="margin-left: 5px;">
+                <a>
+                  <i class="fa fa-upload"></i>
+                  <input type="file" #fileInput id="imageUpload" accept=".png, .jpg, .jpeg" (change)="onFileSelected($event)"
+                    style="display: none;" />
+                </a>
+              </button>
+
+            </ng-container>
+
+            <div class="form-control" style="margin-top: 10px;">
+              <input type="checkbox" [(ngModel)]="addImage" id="no_img" [ngModelOptions]="{standalone: true}">
+              <label for="no_img">&nbsp; Add Background Picture</label>
+            </div>
+            
+          
+            <!-- If an image has been uploaded locally -->
+            <ng-container *ngIf="uploaded_birthday_img_base64 && addImage">
+          
+              <!-- Save Image button -->
+              <button class="fro-profile_main-pic-change" title="Save Image" (click)="upload_save_birthday_image()">
+                <i class="fa fa-floppy-o" aria-hidden="true"></i>
+              </button>
+          
+              <!-- Delete Image button -->
+              <button class="fro-profile_main-pic-change" title="Delete Image" (click)="delete_save_birthday_image()" style="margin-left: 5px;">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </button>
+          
+              <!-- Hidden input for alternate upload (if used) -->
+              <input type="file" id="uploadInput" accept="image/*" style="display: none;" onchange="uploadBanner(event)" />
+            </ng-container>
+          
+          </div>
+
+           <!-- Birthday Message -->
+          <h1 style="font-size: 16px;">Happy Birthday!</h1>
+          <textarea class="bday_msg_box form-control" formControlName="birthday_msg" rows="3" cols="25"></textarea>
+          <p> - <strong><span id="designation"> {{Save_Notification_Form.value.company_name}}</span></strong>.</p>
+
+
+          <a *ngIf="selected_birthday_img_url_idx != -1 && Save_Notification_Form.value.notificationAudienceIds && Save_Notification_Form.value.notificationAudienceIds.length > 0"
+            class="btn btn-user btn-primary btn-round btn-outline sendbuttonbtn" (click)="send_call()">Send</a>
+        </div>
+
+      </div>
+    </form>
+
+  </div>
+</div>
+<!-----Birthday Modal------->
+
+
+
+<!-- <div class="modal" [@grooveState]="showSaveNotificationsPopup?'active':'inactive'" aria-labelledby="myModalLabel"
+	style="overflow-x: hidden; overflow-y: auto;">
+	<div [@dongleState]="showSaveNotificationsPopup?'active':'inactive'" class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<form [formGroup]="Save_Notification_Form">
+				<div class="modal-header theme-bg">
+					<h4 class="modal-title">Send Notification</h4>
+					<button type="button" class="close" (click)="close_NotificationPopup()" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<h4 class="top-shif-title-box">Notification</h4>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-3">Campaign Name <span class="text-danger">*</span></label>
+						<div class="col-sm-9">
+							<input type="hidden" formControlName="action" id="action" class="form-control"
+								>
+							<input type="hidden" formControlName="campaignId" id="campaignId" class="form-control"
+								>
+							<input type="text" formControlName="campaignName" id="campaignName" class="form-control"
+								>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-3">Notification Title <span
+								class="text-danger">*</span></label>
+						<div class="col-sm-9">
+							<input type="text" formControlName="notificationTitle" id="notificationTitle"
+								class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-3">
+							Notification Description <span class="text-danger">*</span>
+						</label>
+						<div class="col-sm-9">
+              <div [(ngModel)]="Save_Notification_Form.value.notificationDescription"
+								[ngxSummernote]="config" id="body-editor" formControlName="notificationDescription"
+								(onChange)="onEditorChange($event)" (onKeyup)="limitTextLength()" required>
+							</div>
+							<div class="character-count">
+								Max characters: 500. Remaining: {{ remainingChars }}
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<h4 class="top-shif-title-box">Audience <span class="text-danger">*</span></h4>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-3">Choose </label>
+						<div class="col-sm-8">
+							<ng-multiselect-dropdown placeholder="Choose Audience" [settings]="audienceDropdownSettings"
+								[data]="Audience_list_data" (onSelect)="onAudienceSelect($event)"
+								(onSelectAll)="onAudienceSelectAll($event)" (onDeSelectAll)="onAudienceDeSelectAll($event)"
+								(onDeSelect)="onAudienceDeSelect($event)" formControlName="notificationAudienceIds"
+								class="custom-dropdown">
+							</ng-multiselect-dropdown>
+						</div>
+					</div>
+					<div class="form-group">
+						<h4 class="top-shif-title-box">Schedule <span class="text-danger">*</span></h4>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-3"> </label>
+						<div class="col-sm-1"><span class="oeweek">Start</span></div>
+						<div class="col-sm-3">
+							<div class="form-group">
+								<input class="form-control" type="date" formControlName="startDate" id="startDate"
+									>
+							</div>
+						</div>
+						<div class="col-sm-1"><span class="oeweek">End</span></div>
+						<div class="col-sm-3">
+							<div class="form-group">
+								<input class="form-control" type="date" formControlName="endDate" id="endDate"
+									>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<ng-container>
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Submit"
+							(click)="Save_AddEditPushNotifications()" [disabled]="Save_Notification_Form.invalid"
+							class="btn btn-success">
+					</ng-container>
+					<input type="button" class="btn btn-default" data-dismiss="modal"
+						(click)="close_NotificationPopup()" value="Cancel">
+				</div>
+			</form>
+		</div>
+	</div>
+</div> -->

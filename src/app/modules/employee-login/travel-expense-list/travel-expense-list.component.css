@@ -1,0 +1,380 @@
+a.job_name_tag {
+    font-weight: 500;
+    color: #0047ab;
+	vertical-align: -webkit-baseline-middle;
+}
+		
+		
+		
+
+.element:-webkit-full-screen {
+  background-color: #fff;
+  width: 100vw;
+  height: 100vh;
+  padding-top: 20px!important;
+}
+
+.element:-webkit-full-screen p {
+  visibility: visible;
+}
+
+.element:-moz-full-screen {
+  background-color: #fff;
+  width: 100vw;
+  height: 100vh;
+  padding-top: 20px!important;
+}
+
+.element:-moz-full-screen p {
+  visibility: visible;
+}
+
+.element:-ms-fullscreen {
+  background-color: #fff;
+  width: 100vw;
+  height: 100vh;
+  padding-top: 20px!important;
+}
+
+.element:-ms-fullscreen p {
+  visibility: visible;
+}
+
+.element:fullscreen {
+  background-color: #fff;
+  width: 100vw;
+  height: 100vh;
+  padding-top: 20px!important;
+}
+
+.element:fullscreen p {
+  visibility: visible;
+}
+.punchin-Button-job-company-box {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}	
+.punchin-Button-job-company-box .btn.btn-blue.punchin-Button-box, .punchin-Button-job-company-box .btn.btn-blue.punchout-Button-box {
+    font-size: 12px;
+    padding: 2px 10px;
+    width: auto;
+    margin: 0 10px 0 0;
+}
+.location-addre-box {
+    margin: 0 0 0 10px;
+}
+.location-addre-box i {
+    background: #f6f6f6;
+    padding: 5px;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    font-size: 15px;
+    text-align: center;
+    color: #818181;
+    line-height: 21px;
+}	
+span.hover-location-addre-box {
+    display: none;
+}
+.location-addre-box a:hover span.hover-location-addre-box {
+    display: block;
+    position: absolute;
+    background: #ffffff;
+    padding: 10px;
+    font-size: 12px;
+    max-width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px 0 rgb(0 0 0 / 18%);
+    -webkit-box-shadow: 0 5px 10px 0 rgb(0 0 0 / 18%);
+	color: #000;
+}
+
+.table-responsive.Reimbursements-outer-box .table tr td {
+    padding: 0.2rem 1rem!important;
+    font-size: 12px;
+}
+.table-responsive.Reimbursements-outer-box .table tr td h5 {
+    margin: 2px 0;
+}
+
+.table-responsive.Reimbursements-outer-box tfoot tr th {
+    background: #f6f6f6;
+}
+ 
+.panel-body.Check-In-Check-Out-table-inner-box .box-body {
+    padding: 0;
+}
+.panel-body.Check-In-Check-Out-table-inner-box table.table {
+    margin: 0;
+}
+.panel-body.Check-In-Check-Out-table-inner-box thead tr th {
+    background: #fafdff;
+}
+.panel-body.Check-In-Check-Out-table-inner-box tfoot tr th {
+    background: #fff;
+}
+.panel-body.Check-In-Check-Out-table-inner-box {
+    background: #f8f7f7;
+    padding: 8px;
+	border-left: 4px solid #1194f7;
+ 
+}
+
+ .job-img {
+    border-radius: 2px;
+    float: left;
+    margin-right: 10px;
+    width: 30px;
+}
+ .job-img img {
+    display: block;
+    max-width: 30px;
+    border-radius: 50%;
+    border: 1px solid #c5c5c5;
+}
+.table-responsive.bulk-attendance-outer-box.Reimbursements-outer-box table.table tr th {
+    padding: 0.8rem 1rem;
+    font-weight: 600;
+}	
+
+
+span.appro-btn-ved {
+    color: #10a300;
+}	
+span.appro-btn-ved1 {
+    color: #b90000;
+}
+span.pend-btn-ved1 {
+    color: #dbae00;
+}
+
+
+.card-header.caded-innder-head-box {
+    display: flex;
+    margin-bottom: 8px;
+    padding: 0;
+}
+
+h3.list-name-text {
+    color: #3c3c3c;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 0;
+    line-height: 52px;
+}
+.card-header.caded-innder-head-box select, .card-header.caded-innder-head-box .form-control {
+    margin: 8px 0;
+    height: 35px;
+}
+
+.manage-list-row.manage-pay-select.clearfix.list_view_de-box {
+    padding: 0;
+	margin-bottom: 30px;
+}
+.manage-list-row.manage-pay-select.clearfix.list_view_de-box .net-pay-section {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+	height: auto;
+}
+.manage-list-row.manage-pay-select.clearfix.list_view_de-box .net-pay-section .title-inn_box {
+    padding: 15px;
+	color: #004899;
+}
+.manage-list-row.manage-pay-select.clearfix.list_view_de-box .net-pay-section .title-inn_box span.font-mm {
+    font-size: 18px !important;
+}
+.manage-list-row.manage-pay-select.clearfix.list_view_de-box .net-pay-section .row.net-pay-data-without-bt {
+    margin: 0 0 20px 0;
+}
+.manage-list-row.manage-pay-select.clearfix.list_view_de-box .net-pay-section .row.net-pay-data-without-bt .text-uppercase.font-ms.payrun-label {
+    opacity: inherit;
+    font-size: 16px;
+    text-transform: capitalize;
+}
+
+.table-responsive.bulk-attendance-outer-box.Reimbursements-outer-box table tr td {
+    
+	border-bottom: 1px solid #F3F4F5 !important;
+	border-top: none;
+}
+
+
+.table-responsive.bulk-attendance-outer-box.Reimbursements-outer-box table tr td .Dtyps {
+    border-left-width: 3px;
+    height: 35px;
+    padding-left: 10px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -moz-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -moz-box-orient: vertical;
+    -moz-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    max-width: 200px;
+}
+.ZPBC10 {
+    border-color: #96bc42!important;
+}
+.Dtyps {
+    border-left: 4px solid;
+    max-width: 150px;
+    height: 30px;
+    margin-right: 20px;
+    float: left;
+    padding-left: 5px;
+    display: flex;
+    flex-direction: column;
+}
+ .Dtyps span {
+    padding-bottom: 4px;
+    display: inline-block;
+}
+.Dtyps span {
+    width: 100%;
+    float: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: left;
+    padding-bottom: 4px;
+    line-height: 14px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+	font-size: 13px;
+	color: #000;
+}
+small.dgry {
+    color: #4e4e4e;
+    font-size: 12px;
+}
+
+
+.table-responsive.bulk-attendance-outer-box.Reimbursements-outer-box .btn-success {
+    color: #000;
+    background-color: #b3f3b3;
+    border-color: #ffffff;
+}
+
+.table-responsive.bulk-attendance-outer-box.Reimbursements-outer-box .btn-warning {
+    color: #000;
+    background-color: #ffdeae;
+    border-color: #ffffff;
+}
+
+
+.table-responsive.bulk-attendance-outer-box.Reimbursements-outer-box table tr{background-color: #FBFBFB !important;}
+p.to-btn {
+    margin: 0;
+    color: #999;
+    padding-left: 27px;
+}
+
+h3.list-name-text {
+    color: #3c3c3c;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 0;
+    line-height: 52px;
+}
+.card-header.caded-innder-head-box {
+    display: flex;
+    margin-bottom: 8px;
+    padding: 0;
+}
+.card-header.caded-innder-head-box select {
+    margin: 8px 0;
+    height: 35px;
+}
+svg.icon {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+.dropleft .dropdown-menu {
+    left: auto;
+    right: 32px;
+    padding: 10px 0px;
+	min-width: 100px;
+	font-size: 13px;
+}
+.dropleft .dropdown-menu li {
+    padding: 5px 10px;
+    cursor: pointer;
+    color: #000;
+}
+
+.dropleft .dropdown-menu li:hover {
+    background: #f7f7f7;
+    color: #1d17ff;
+}
+
+.custom-file-input {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: calc(4.25rem + 4px);
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+div#SendMessage1981 label.custom-file-label {
+    right: 15px;
+    left: 13px;
+}
+.custom-file-label::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    display: block;
+    height: calc(calc(3.25rem + 3px) - 1px* 2);
+    padding: .375rem .75rem;
+    line-height: 2.1;
+    color: #495057;
+    content: "Browse";
+    background-color: #e9ecef;
+    border-left: 1px solid #ced4da;
+    border-radius: 0 .25rem .25rem 0;
+    cursor: pointer;
+}
+label.custom-file-label {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    height: calc(3.25rem + 3px);
+    padding: .375rem .75rem;
+    line-height: 2.1;
+    color: #495057;
+    background-color: #fbfdff;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    cursor: pointer;
+}
+div#SendMessage_tickets img.img-responsive, div#SendMessage_bill img.img-responsive {
+    max-width: 100%;
+}
+
+a.job_name_tag {
+    width: 200px;
+    /* display: block; */
+}

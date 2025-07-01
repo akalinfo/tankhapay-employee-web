@@ -1,0 +1,437 @@
+<div id="menu7" class="tab-pane fade1">
+    <div class="timeline-employee-box">
+    
+    <ul class="timeline">
+
+<!-- Item 1 -->
+<li *ngIf="Joining_Details && Joining_Details.length > 0">
+    <div class="direction-r">
+        <div class="flag-wrapper">
+            <span class="flag">Joining Date and Initial Posting</span>
+            
+        </div>
+        <div *ngFor="let promotion of Joining_Details">
+            <div class="desc" [innerHTML]="promotion.joining_details"></div>
+        </div>
+        <!-- <div class="desc">Rakesh Singh joined the company on <b>{{this.Joining_Details[0]?.dateofjoining}}</b> as a <b>{{this.Joining_Details[0]?.job_role}}</b> in the <b>{{this.Joining_Details[0]?.department}}</b>. </div> -->
+        <span class="time-wrapper"><span class="time">{{ formattedDate }}</span></span>
+    </div>
+</li>
+
+
+
+<!-- Item 3 -->
+<li *ngIf="Promotion_Details && Promotion_Details.length > 0">
+    <div class="direction-r">
+    <div class="flag-wrapper">
+        <span class="flag">Promotion</span>
+    </div>
+    <div *ngFor="let promotion of Promotion_Details">
+        <div class="desc" [innerHTML]="promotion.promotion_message"></div>
+    </div>
+    <span class="time-wrapper"><span class="time">{{ formattedDate }}</span></span>
+</div>
+</li>
+
+
+<li *ngIf="Increment_Details && Increment_Details.length > 0">
+  <div class="direction-r">
+    <div class="flag-wrapper">
+      <span class="flag">Salary Increment</span>
+    </div>
+    <div *ngFor="let promotion of Increment_Details" style="display: flex; align-items: center; justify-content: space-between;">
+      <!-- Description -->
+      <div class="desc" [innerHTML]="promotion.salary_increment_message" style="flex: 1;"></div>
+  
+      <!-- <a target="_blank"
+        (click)="getSalaryDetail(promotion, empDataFromParent?.emp_id,empDataFromParent?.emp_name)"
+        style="cursor: pointer; margin-left: 10px; text-align: right;"
+        title="View Annexure">
+        <i class="fa fa-eye" aria-hidden="true"></i> View Annexure
+      </a> -->
+    </div>    
+    <span class="time-wrapper">
+      <span class="time">{{ formattedDate }}</span>
+    </span>
+  </div>
+</li>
+
+<!-- Item 3 -->
+<li *ngIf="Training_Details && Training_Details.length > 0">
+    <div class="direction-r">
+        <div class="flag-wrapper">
+            <span class="flag">Training Completed</span>  
+        </div>
+        <div *ngFor="let promotion of Training_Details">
+            <div class="desc" [innerHTML]="promotion.training_completion_details"></div>
+        </div>
+        <!-- <div class="table-responsive reports-table-outer-box reports-new-table-outer-box" >
+            <table class="table table-striped table-bordered">
+                <thead style="background: skyblue;">
+                    <tr>
+                        <th >S.No</th>                                
+                        <th>Institute</th>                                
+                        <th>Certification</th>
+                        <th >Training Name</th>
+                        <th >Grade/Marks</th>
+                        <th>Completion Date</th>
+                    </tr>
+                </thead>
+                <tbody style="background: aliceblue;"> 
+                    <ng-container *ngFor="let report of Training_Details;let i=index;">
+                        <tr [ngClass]="{'light-skyblue': i % 2 == 0, 'white': i % 2 != 0}">
+                            <td >{{i+1}}</td>
+                            <td >{{report.institute}}</td>
+                            <td >{{report.certification}}</td>
+                            <td >{{report.training_name}}</td>
+                            <td >{{report.grade_or_marks}}</td>
+                            <td >{{report.completion_date}}</td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div> -->
+        <!-- <div class="desc">Completed <b>Advanced Network Security Training</b> on <b>5th May 2023</b>.</div> -->
+        <span class="time-wrapper"><span class="time">{{ formattedDate }}</span></span>
+    </div>
+</li>
+
+   <li *ngIf="Leave_Summary && Leave_Summary.length > 0">
+    <div class="direction-r">
+        <div class="flag-wrapper">
+            <span class="flag">Leave Record</span>
+             
+        </div>
+        <div *ngFor="let leave of formattedLeaveSummary">
+          <div class="desc" [innerHTML]="leave"></div>
+        </div>        
+        <!-- <div class="desc">Availed <b> Leave</b> from <b>15th August 2023</b> to <b>22nd August 2023</b>. Total days: <b>7</b>. Leave balance updated accordingly.</div> -->
+        <span class="time-wrapper"><span class="time">{{ formattedDate }}</span></span>
+    </div>
+</li> 
+
+  <li *ngIf="Disciplinary_Actions_Details && Disciplinary_Actions_Details.length > 0">
+    <div class="direction-r">
+        <div class="flag-wrapper">
+            <span class="flag">Disciplinary Action</span>
+            <!-- <button class="btn btn-primary rewards-btn" (click)="open_disciplinary()">Add Disciplinary</button> -->
+        </div>
+
+          <div class="desc-container" *ngFor="let detail of Disciplinary_Actions_Details; let i = index">
+        <div class="desc" [innerHTML]="formatExitMessage(detail.action_message)"
+        [ngClass]="{'rejected-text': detail.reject_status === 'Rejected'}"></div>
+        <div class="action-buttons">
+          <!-- <button class="edit-icon" (click)="disciplinary_popup(detail)">
+            <i class="fa fa-edit"></i>
+          </button> -->
+     
+          <!-- <button class="delete-icon" (click)="Deletedisciplinary_Details(detail?.action_row_id)">
+            <i class="fa fa-trash"></i>
+          </button> -->
+        </div>
+        <span class="time-wrapper"><span class="time">{{ formattedDate }}</span></span>
+    </div>
+  </div>
+</li>
+ <li *ngIf="Reward_Details && Reward_Details.length > 0">
+    <div class="direction-r" >
+        <div class="flag-wrapper">
+            <span class="flag">Award/Recognition</span>
+            <!-- <button class="btn btn-primary rewards-btn" (click)="open_popup()">Add Rewards</button> -->
+        </div>
+
+            <div class="desc-container" *ngFor="let detail of Reward_Details; let i = index">
+              <div class="desc" [innerHTML]="formatExitMessage(detail.reward_message)"
+              [ngClass]="{'rejected-text': detail.reject_status === 'Rejected'}"></div>
+              <div class="action-buttons">
+              
+                <!-- <button class="edit-icon" (click)="open_edit_popup(detail)">
+                  <i class="fa fa-edit"></i>
+                </button> -->
+              
+                <!-- <button class="delete-icon" (click)="DeleteReward_Details(detail?.reward_row_id)">
+                  <i class="fa fa-trash"></i>
+                </button> -->
+              </div>
+
+            <span class="time-wrapper"><span class="time">{{ formattedDate }}</span></span>
+          </div>
+                 
+</div>
+</li> 
+
+
+<!-- <li>
+    <div class="direction-r">
+        <div class="flag-wrapper">
+            <span class="flag">Role Change</span>
+             
+        </div>
+        <div class="desc">Role changed from <b>Senior Engineer</b> to <b>Project Lead</b> on <b>1st June 2023</b>. Rakesh Singh is now responsible for overseeing large-scale IT projects and managing cross-functional teams.</div>
+        <span class="time-wrapper"><span class="time">{{ formattedDate }}</span></span>
+    </div>
+</li> -->
+
+<li *ngIf="Separation_Resignation && Separation_Resignation.length > 0">
+    <div class="direction-r">
+        <div class="flag-wrapper">
+            <span class="flag">Separation/Resignation</span>
+             
+        </div>
+        <div class="desc" [innerHTML]="formatExitMessage(this.Separation_Resignation[0]?.exit_message)"></div>
+        <!-- <div class="desc">Resigned on <b>{{this.Separation_Resignation[0]?.resignationdate}}</b>, with the last working day on <b>{{this.Separation_Resignation[0]?.agreedrelievingdate}}</b>. Reason for leaving: <b>{{this.Separation_Resignation[0]?.reasonofleaving}}</b>. Exit formalities completed on <b>{{this.Separation_Resignation[0]?.finalduesdate}}</b>.</div> -->
+        <span class="time-wrapper"><span class="time">{{ formattedDate }}</span></span>
+    </div>
+</li>
+
+</ul>
+    
+    
+
+    </div>
+    </div>
+
+    <!-- Add Reward popup by ARPIT -->
+    <div [@grooveState]="open_reward_popup ? 'active' : 'inactive'" id="allowanceDeduct" class="modal"  >
+        <div [@dongleState]="open_reward_popup ? 'active' : 'inactive'" class="modal-dialog" style="margin:auto;">
+          <div class="modal-content" style="height: 100%; margin-top: 100px; max-height: 80vh; overflow-y: auto;">
+            <form *ngIf="open_reward_popup" [formGroup]="reward_form">
+              <div class="modal-header theme-bg">
+                <h4 class="modal-title">Add Reward Details</h4>
+                <button type="button" class="close" data-dismiss="modal" (click)="close_reward_popup()">×</button>
+              </div>
+              <div class="modal-body card-body">
+                <div class="form-group">
+                    <label class="control-label col-sm-4">Reward Name: <span class="text-danger">*</span></label>
+                    <div class="col-sm-8">
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        formControlName="rewardName" 
+                        placeholder="Enter reward name" style="cursor: pointer;"
+                        required>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">Reward Reason: <span class="text-danger">*</span></label>
+                    <div class="col-sm-8">
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        formControlName="rewardReason" style="cursor: pointer;"
+                        placeholder="Enter reward reason" 
+                        required>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">Reward Date: <span class="text-danger">*</span></label>
+                    <div class="col-sm-8">
+                      <div class="custom-file">
+                        <input 
+                          id="reward_Date" 
+                          formControlName="rewardDate" 
+                          class="form-control" 
+                          placeholder="dd-mm-yyyy" style="cursor: pointer;"
+                          autocomplete="off" 
+                          required>
+                      </div>
+                    </div>
+                  </div>                  
+                
+                  <div class="desc">Issued a <b>formal warning </b>on <b>10th October 2021</b> for <b>unauthorized absence</b> for 3 consecutive days. </div>                  
+                  <div class="desc">Here Reward Name is <b>formal warning</b>,Reward Date is <b>10th October 2021</b>, Reward Reason is <b>unauthorized absence</b>  </div>
+              </div>
+        
+              <div class="modal-footer">
+                <input type="button" class="btn btn-default" value="Submit" (click)="Add_reward()">
+                <input type="button" class="btn btn-default" value="Cancel" (click)="close_reward_popup()">
+              </div>
+            </form>
+          </div>
+        </div>
+        </div>
+
+           <!-- Edit Reward popup by ARPIT -->
+           <div [@grooveState]="open_edit_reward_popup ? 'active' : 'inactive'" id="allowanceDeduct" class="modal"  >
+            <div [@dongleState]="open_edit_reward_popup ? 'active' : 'inactive'" class="modal-dialog" style="margin:auto;">
+              <div class="modal-content" style="height: 100%; margin-top: 100px; max-height: 80vh; overflow-y: auto;">
+                <form *ngIf="open_edit_reward_popup" [formGroup]="Reward_Form">
+                  <div class="modal-header theme-bg">
+                    <h4 class="modal-title">Edit Reward Details</h4>
+                    <button type="button" class="close" data-dismiss="modal" (click)="close_edit_reward_popup()">×</button>
+                  </div>
+                  <div class="modal-body card-body">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">Reward Name: <span class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+                          <input 
+                            type="text" 
+                            class="form-control" 
+                            formControlName="reward_Name" style="cursor: pointer;"
+                            placeholder="Enter reward name" 
+                            required>
+                        </div>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label class="control-label col-sm-4">Reward Reason: <span class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+                          <input 
+                            type="text" 
+                            class="form-control" style="cursor: pointer;"
+                            formControlName="reward_Reason" 
+                            placeholder="Enter reward reason" 
+                            required>
+                        </div>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label class="control-label col-sm-4">Reward Date: <span class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+                          <div class="custom-file">
+                            <input 
+                              id="reward_date" 
+                              formControlName="reward_Date" style="cursor: pointer;"
+                              class="form-control" 
+                              placeholder="dd-mm-yyyy"
+                              autocomplete="off" 
+                              required>
+                          </div>
+                        </div>
+                      </div>                  
+                    
+                    
+                  </div>
+            
+                  <div class="modal-footer">
+                    <input type="button" class="btn btn-default" value="Submit" (click)="edit_reward()">
+                    <input type="button" class="btn btn-default" value="Reject" (click)="DeleteReward_Details(this.reward_row_id)">
+                  </div>
+                </form>
+              </div>
+            </div>
+            </div>
+
+           <!-- Add Discipilinary popup by ARPIT -->
+    <div [@grooveState]="open_disciplinary_popup ? 'active' : 'inactive'" id="allowanceDeduct" class="modal"  >
+        <div [@dongleState]="open_disciplinary_popup ? 'active' : 'inactive'" class="modal-dialog" style="margin:auto;">
+          <div class="modal-content" style="height: 100%; margin-top: 100px; max-height: 80vh; overflow-y: auto;">
+            <form *ngIf="open_disciplinary_popup" [formGroup]="disciplinary_form">
+              <div class="modal-header theme-bg">
+                <h4 class="modal-title">Add Discipilinary Details</h4>
+                <button type="button" class="close" data-dismiss="modal" (click)="close_disciplinary()">×</button>
+              </div>
+              <div class="modal-body card-body">
+                <div class="form-group">
+                    <label class="control-label col-sm-4">Action Detail: <span class="text-danger">*</span></label>
+                    <div class="col-sm-8">
+                      <input 
+                        type="text" style="cursor: pointer;"
+                        class="form-control" 
+                        formControlName="actionDetail"
+                        placeholder="Enter action name" 
+                        required>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">Action Reason: <span class="text-danger">*</span></label>
+                    <div class="col-sm-8">
+                      <input 
+                        type="text" style="cursor: pointer;"
+                        class="form-control" 
+                        formControlName="actionReason" 
+                        placeholder="Enter action reason" 
+                        required>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">Action Date: <span class="text-danger">*</span></label>
+                    <div class="col-sm-8">
+                      <div class="custom-file">
+                        <input 
+                          id="actionDate" style="cursor: pointer;"
+                          formControlName="actionDate" 
+                          class="form-control" 
+                          placeholder="dd-mm-yyyy"
+                          autocomplete="off" 
+                          required>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="desc">Issued a <b>formal warning </b>on <b>10th October 2021</b> for <b>unauthorized absence</b> for 3 consecutive days. </div>                  
+                  <div class="desc">Here Action Detail is <b>formal warning</b>,Action Date is <b>10th October 2021</b>, Action Reason is <b>unauthorized absence</b>  </div>
+              </div>
+        
+              <div class="modal-footer">
+                <input type="button" class="btn btn-default" value="Submit" (click)="AddDisciplinary_Action()">
+                <input type="button" class="btn btn-default" value="Cancel" (click)="close_disciplinary()">
+              </div>
+            </form>
+          </div>
+        </div>
+        </div>
+
+             <!-- Edit Disciplinary popup by ARPIT -->
+             <div [@grooveState]="open_edit_disciplinary_popup ? 'active' : 'inactive'" id="allowanceDeduct" class="modal"  >
+              <div [@dongleState]="open_edit_disciplinary_popup ? 'active' : 'inactive'" class="modal-dialog" style="margin:auto;">
+                <div class="modal-content" style="height: 100%; margin-top: 100px; max-height: 80vh; overflow-y: auto;">
+                  <form *ngIf="open_edit_disciplinary_popup" [formGroup]="Disciplinary_Form">
+                    <div class="modal-header theme-bg">
+                      <h4 class="modal-title">Edit Discipilinary Details</h4>
+                      <button type="button" class="close" data-dismiss="modal" (click)="close_disciplinary_popup()">×</button>
+                    </div>
+                    <div class="modal-body card-body">
+                      <div class="form-group">
+                          <label class="control-label col-sm-4">Action Detail:<span class="text-danger">*</span></label>
+                          <div class="col-sm-8">
+                            <input 
+                              type="text" style="cursor: pointer;"
+                              class="form-control" 
+                              formControlName="action_Detail"
+                              placeholder="Enter action name" 
+                              required>
+                          </div>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label class="control-label col-sm-4">Action Reason: <span class="text-danger">*</span></label>
+                          <div class="col-sm-8">
+                            <input 
+                              type="text" style="cursor: pointer;"
+                              class="form-control" 
+                              formControlName="action_Reason" 
+                              placeholder="Enter action reason" 
+                              required>
+                          </div>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label class="control-label col-sm-4">Action Date: <span class="text-danger">*</span></label>
+                          <div class="col-sm-8">
+                            <div class="custom-file">
+                              <input 
+                              id="action_date" style="cursor: pointer;"
+                              formControlName="action_Date" 
+                                class="form-control" 
+                                placeholder="dd-mm-yyyy"
+                                autocomplete="off" 
+                                required>
+                            </div>
+                          </div>
+                        </div>                  
+                      
+                      
+                    </div>
+              
+                    <div class="modal-footer">
+                      <input type="button" class="btn btn-default" value="Submit" (click)="edit_disciplinary()">
+                      <input type="button" class="btn btn-default" value="Reject" (click)="Deletedisciplinary_Details(this.action_row_id)">
+                    </div>
+                  </form>
+                </div>
+              </div>
+              </div>

@@ -1,0 +1,393 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+    <div id="wrapper" [ngClass]="{'active': showSidebar == true}">
+      <div class="fakeLoader"></div>
+  
+      <div id="page-wrapper">
+        <div class="row page-titles">
+        	<div class="col-md-5 align-self-center">
+                <h3 class="text-themecolor">Tickets</h3>
+            </div>
+          <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a [routerLink]="['/dashboard']">Dashboard</a></li>
+  
+              <li class="breadcrumb-item active">Tickets</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="container-fluid">
+					
+					
+            <div class="row">
+             
+            
+                <div class="col-md-4 col-sm-6">
+                    <div class="widget standard-widget widget-Employee-box">
+                        <div class="row">
+                            <div class="widget-caption info">
+                                <div class="col-xs-4 no-pad">
+                                    <div class="up-arrow-outer-box">
+                                     <img src="assets/img/support-ticket.png" class="img-responsive " alt="user"> 
+                                      
+                                     </div>
+                                    
+                                </div>
+                                <div class="col-xs-8 no-pad">
+                                    <div class="widget-detail">
+                                        <span>Open</span>
+                                        <h3>{{this.ticketsDashboardDetails.open_tickets}}</h3>
+                                        
+                                    </div>
+                                </div>
+                                 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 col-sm-6">
+                    <div class="widget standard-widget widget-Employee-box">
+                        <div class="row">
+                            <div class="widget-caption danger">
+                                <div class="col-xs-4 no-pad">
+                                    <div class=" down-arrow-outer-box">
+                                    <img src="assets/img/support-ticket1.png" class="img-responsive " alt="user"> 
+                                     
+                                     </div>
+                                </div>
+                                <div class="col-xs-8 no-pad">
+                                    <div class="widget-detail">
+                                        <span>In progress</span>
+                                        <h3>{{this.ticketsDashboardDetails.in_progress_tickets}}</h3>
+                                        
+                                    </div>
+                                </div>
+                                 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 col-sm-6">
+                    <div class="widget standard-widget widget-Employee-box">
+                        <div class="row">
+                            <div class="widget-caption success">
+                                <div class="col-xs-4 no-pad">
+                                    <div class="up-arrow-outer-box">
+                                     <img src="assets/img/decision-making.png" class="img-responsive " alt="user"> 
+                                      
+                                     </div>
+                                </div>
+                                <div class="col-xs-8 no-pad">
+                                    <div class="widget-detail">
+                                    <span>Pending</span>
+                                        <h3>{{this.ticketsDashboardDetails.pending_tickets}}</h3>
+                                        
+                                    </div>
+                                </div>
+                                 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 col-sm-6">
+                    <div class="widget standard-widget widget-Employee-box">
+                        <div class="row">
+                            <div class="widget-caption warning">
+                                <div class="col-xs-4 no-pad">
+                                    <div class=" up-arrow-outer-box">
+                                    <img src="assets/img/ticket.png" class="img-responsive " alt="user"> 
+                                     
+                                     </div>
+                                </div>
+                                <div class="col-xs-8 no-pad">
+                                    <div class="widget-detail">
+                                    <span>On Hold</span>
+                                        <h3>{{this.ticketsDashboardDetails.hold_tickets}}</h3>
+                                        
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 col-sm-6">
+                    <div class="widget standard-widget widget-Employee-box">
+                        <div class="row">
+                            <div class="widget-caption warning">
+                                <div class="col-xs-4 no-pad">
+                                    <div class=" up-arrow-outer-box">
+                                    <img src="assets/img/tickets.png" class="img-responsive " alt="user"> 
+                                     
+                                     </div>
+                                </div>
+                                <div class="col-xs-8 no-pad">
+                                    <div class="widget-detail">
+                                    <span>Closed</span>
+                                        <h3>{{this.ticketsDashboardDetails.closed_tickets}}</h3>
+                                        
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            
+            <div class="row">
+            
+            
+            <div class="col-md-12 mrg-top-0 mrg-bot-25">
+            
+            
+            <div class="card">
+                
+                        
+                    <div class="card-header"> <h4 class="sub-title-inn-box View-Roles-list-outer-box manage-list-row ">
+
+                <div class="row">
+                <form [formGroup]="Ticket_Form">
+                    <div class="col-md-2" style="display: flex; align-items: center;">
+                        <span style="margin: 1.5rem; font-weight: 500;" class="">Select Date:</span>
+                      </div>
+  
+                      <div class="col-md-2">
+                        <input id="FromDate2" #rd class="form-control" type="text" style="cursor: pointer;"
+                          formControlName="FromDate" placeholder="dd-mm-yyyy" autocomplete="off" readonly>
+                      </div>
+  
+                      <div class="col-md-2">
+                        <input id="ToDate2" #rd class="form-control" type="text" style="cursor: pointer;"
+                          formControlName="ToDate" placeholder="dd-mm-yyyy" autocomplete="off" readonly>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="save-button ">
+                          <button class="btn btn-primary" (click)="Get_Tickets()">Search</button>&nbsp;
+                      
+                        </div>
+                       
+                      
+                      </div>
+                    
+                      <div class="col-md-3" style="display: flex; align-items: center; float: right;">
+                        <label style="font-size: 14px; font-weight: 500; color: #000;">Filter</label>&nbsp;
+                        <select  class="form-control" formControlName="ticketStatus">
+                          <option *ngFor="let status of ticketStatusMaster" [value]="status.shortCode" >{{status.Description}}</option>
+                        </select>
+                      </div>
+                     </form>
+                    </div>
+
+                    </h4> </div>	
+                    
+                    <div class="card-body padd-bot-10 padd-top-0">
+                    
+                    
+                    
+                        <div class="row">
+                        
+                        <div class="col-md-12 padd-top-0">
+                        
+                        
+                        <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+            
+                            <table class="table" id="otherDeductionTable">
+                               <thead>
+                                  <tr>
+                                    <th>#</th>
+                                     <th id="ember1089" class="sortable ember-view">
+                                        Ticket Id
+                                        <!---->
+                                     </th>
+                                     
+                                     <th id="ember1089" class="sortable ember-view">
+                                        Name
+                                        <!---->
+                                     </th>
+
+                                     <th id="ember1089" class="sortable ember-view">
+                                        Employee Code
+                                        <!---->
+                                     </th>
+                                    
+                                     <th id="ember1090" class="sortable header-role ember-view">
+                                        Ticket Type
+                                        <!---->
+                                     </th>
+                                     <th id="ember1090" class="sortable header-role ember-view">
+                                        Created Date
+                                        <!---->
+                                     </th>
+                                      <th id="ember1090" class="sortable header-role ember-view">
+                                        Closing Date
+                                        <!---->
+                                     </th>
+                                     
+                                     <th id="ember1090" class="sortable header-role ember-view">
+                                        Help & Support
+                                     </th>
+                                     
+                                     <th id="ember1091" class="sortable ember-view">
+                                        Status
+                                        <!---->
+                                     </th>
+                                     <th id="ember1091" class="sortable ember-view">
+                                        Action
+                                        <!---->
+                                     </th>
+                                     
+                                  </tr>
+                               </thead>
+                               <tbody>
+                                <ng-container *ngFor="let ticket of ticketsDetails; let i = index">
+                                  <tr >
+                                    <td>{{i+1}}</td>
+                                     <td>{{ticket.ticket_id}}</td>
+                                     <td>{{ticket.emp_name}}</td>
+                                     <td>
+                                        {{ (ticket.orgempcode !== '' && ticket.orgempcode != null && ticket.orgempcode != undefined) ? ticket.orgempcode : ticket.tp_code }}
+                                      </td>
+                                     <td>{{ticket.ticket_type}}</td>
+                                     <td>{{ticket.ticket_created_date}}</td>
+                                      <td>{{ticket.ticket_closure_date}}</td>
+                                      <td><a href="#SendMessage" data-toggle="modal" data-placement="top" class=" btn comment-btn "  (click)="help_support_popup(ticket)"><i class="fa fa-commenting" aria-hidden="true"></i></a></td>
+                                     <td>{{ticket.status}}</td>
+                                     
+                                     <td>
+                                        <div class="dropdown float-right ember-view dropleft">
+                                          <a class="dropdown-toggle no-caret text-muted cursor-pointer ember-view" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <svg width="512" height="512" viewBox="0 0 512 512" class="icon">
+                                              <path d="M162 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32M256 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32M350 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32" id="Path"></path>
+                                              <path d="M256 480c123.712 0 224-100.288 224-224S379.712 32 256 32 32 132.288 32 256s100.288 224 224 224zm0 32C114.615 512 0 397.385 0 256S114.615 0 256 0s256 114.615 256 256-114.615 256-256 256z" id="Oval-1"></path>
+                                            </svg>
+                                          </a>
+                                          <ul class="dropdown-menu ember-view" aria-labelledby="dropdownMenuButton">
+                                            <li *ngFor="let status of filtered_ticket_status" class="dropdown-item" (click)="UpdateTicketstatus(ticket,status)">{{status.Description}}</li>
+                                          </ul>
+                                        </div>
+                                      </td>
+                                      
+                                  </tr>
+                                
+                                </ng-container>
+                                  
+                               </tbody>
+                            </table>	
+                        </div>	
+                            
+                            
+                            
+                        </div>
+                        
+                
+                            
+                            
+                        </div>		
+                    </div>
+                </div>
+            
+             
+            
+            </div>
+            
+            
+            </div>
+      </div>
+      </div>
+    </div>
+
+    <div id="SendMessage" class="modal fade add-address-form-box singal-help-box">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-body">					
+                         
+                         
+                        <div id="frame"> 
+                        
+                                <div class="content">
+                                    <div class="contact-profile">
+                                        <img src="assets/img/user-5.jpg" alt="">
+                                        <p>{{this.emp_name}} ({{this.emp_code}})</p>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onClose()">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="messages">
+                                      <ul>
+                                        <li *ngFor="let item of ticket_trail_data" [ngClass]="{'sent': item.ticket_created_by === 'Employee', 'replies': item.ticket_created_by === 'Employer'}">
+                                          <img src="assets/img/No img.png" alt="No img" *ngIf="item.ticket_created_by === 'Employee' || item.ticket_created_by === 'Employer'">
+                                          <!-- <img src="assets/img/{{ item.ticket_created_by === 'Employee' ? 'user-3.jpg' : 'user-2.jpg' }}" alt=""> -->
+                                          <div class="message-content">
+                                            <p *ngIf="item.ticket_comment">{{ item.ticket_comment }}</p>
+                                            <p *ngIf="!item.ticket_comment && item.ticket_created_by === 'Employee'">No Conversation From Employee End</p>
+                                            <p *ngIf="!item.ticket_comment && item.ticket_created_by === 'Employer'">No Conversation From Employer End</p>
+                                            <div *ngIf="item.document_name" class="document-link" [ngClass]="{'left-side': item.ticket_created_by === 'Employee', 'right-side': item.ticket_created_by === 'Employer'}">
+                                              <a [href]="item.document_path" target="_blank">
+                                                <i [ngClass]="getIconForDocumentType(item.document_type)" style="font-size:14px;"></i>
+                                              </a>
+                                            </div>
+                                          </div>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    
+                                      <!-- <div class="message-input" *ngIf="status !== 'Closed' && status !== 'On-hold'">
+                                        <form [formGroup]="Create_Ticket_Form">
+                                          <div class="wrap">
+                                            <input type="text" placeholder="Write your message..." formControlName="ticketComment">
+                                            <input type="file" #fileInput accept=".jpeg,.jpg,.png" (change)="onFileSelected($event)" style="display: none;">
+                                            <i class="fa fa-paperclip attachment" aria-hidden="true" (click)="fileInput.click()"></i>
+                                            <button class="submit" type="button" (click)="CreateTicket_Trail()"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                                          </div>
+                                          <div class="attached-image-container" *ngIf="base64Data">
+                                            <div class="attached-image">
+                                              <img [src]="'data:image/' + documentType + ';base64,' + base64Data" alt="Attachment">
+                                              <i class="fa fa-times remove" (click)="removeImage()"></i>
+                                            </div>
+                                          </div>
+                                        </form>
+                                      </div> -->
+
+                                      <div class="message-input" *ngIf="status !== 'Closed' && status !== 'On-hold'">
+                                        <form [formGroup]="Create_Ticket_Form">
+                                          <div class="wrap">
+                                            <textarea placeholder="Write your message..." formControlName="ticketComment" class="message-textarea"
+                                              rows="1"></textarea>
+                                            <i class="fa fa-paperclip attachment" aria-hidden="true" (click)="fileInput.click()" style="margin:0px 10px 0px 15px;"></i>
+                                            <input type="file" #fileInput accept=".jpeg,.jpg,.png" (change)="onFileSelected($event)" style="display: none;">
+                                            <button class="submit" type="button" (click)="CreateTicket_Trail()">
+                                              <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                            </button>
+                                          </div>
+                                          <div class="attached-image-container" *ngIf="base64Data">
+                                            <div class="attached-image">
+                                              <img [src]="'data:image/' + documentType + ';base64,' + base64Data" alt="Attachment">
+                                              <i class="fa fa-times remove" (click)="removeImage()"></i>
+                                            </div>
+                                          </div>
+                                        </form>
+                                      </div>
+
+                                      
+                                      
+                                </div>
+                            </div>
+                        
+                        
+                    </div>
+                     
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</section>

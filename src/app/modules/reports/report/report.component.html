@@ -1,0 +1,286 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+  <div id="wrapper" [ngClass]="{'active': showSidebar == false}">
+    <div class="fakeLoader"></div>
+
+    <!-- Sidebar Navigation -->
+
+    <div id="page-wrapper">
+      <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+          <h3 class="text-themecolor">Reports</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="['/dashboard']">Home</a></li>
+            <li class="breadcrumb-item active">Reports</li>
+          </ol>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <!-- /row -->
+
+        <div class="row">
+          <div *ngIf="is_insufficient_fund" class="col-md-12 col-sm-12">
+            <div class="alert-group alert-box">
+              <div class="notice notice-danger alert-dismissable">
+                <strong>Service charge is pending for the month of {{lbl_paymsg}}  </strong> 
+                <a class="Add-balancebtn" title="Click for Pay Now" style="cursor: pointer;" (click)=" CalcReciebaleFromBaseAmount()"><strong>Pay now</strong></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" [ngClass]="{'blur': is_insufficient_fund}">
+
+          <div class="col-md-4 col-sm-6" *ngIf="payroll_report.length!=0;">
+            <div class="freelance-container style-2">
+              <div class="freelance-box report-outer-box">
+                <h4 class="flc-rate67 text-left">Payroll Overview</h4>
+                <div class="freelance-inner-box">
+
+                  <ul class="nav flex-column" *ngFor="let reports of payroll_report">
+
+                    <li class="nav-item">
+                      <a [routerLink]="reports.linkname" class="ember-view nav-link">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i> {{reports.modulename_display}}
+                      </a>
+                    </li>
+
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-6" *ngIf="statutory_report.length!=0;">
+            <div class="freelance-container style-2">
+              <div class="freelance-box report-outer-box">
+                <h4 class="flc-rate67 text-left">Statutory Reports</h4>
+                <div class="freelance-inner-box">
+
+
+                  <ul class="nav flex-column" *ngFor="let reports of statutory_report">
+
+                    <li class="nav-item">
+                      <a [routerLink]="reports.linkname" class="ember-view nav-link">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i> {{reports.modulename_display}}
+                      </a>
+                    </li>
+
+                  </ul>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-6" *ngIf="dec_invstment_report.length!=0">
+            <div class="freelance-container style-2">
+              <div class="freelance-box report-outer-box">
+                <h4 class="flc-rate67 text-left">Declarations & Investments</h4>
+                <div class="freelance-inner-box">
+
+
+                  <ul class="nav flex-column" *ngFor="let reports of dec_invstment_report">
+
+                    <li class="nav-item">
+                      <a [routerLink]="reports.linkname" class="ember-view nav-link">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i> {{reports.modulename_display}}
+                      </a>
+                    </li>
+                    <!-- comment this for prod [routerLink]="['/reports/Proof-of-Investment']"-->
+                    <!-- <li class="nav-item">
+                      <a [routerLink]="['/reports/Proof-of-Investment']"  class="ember-view nav-link" >
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i> Proof of Investment Report
+                      </a>
+                    </li> -->
+                  </ul>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" [ngClass]="{'blur': is_insufficient_fund}">
+          <div class="col-md-4 col-sm-6" *ngIf="attendance_report.length!=0">
+            <div class="freelance-container style-2">
+              <div class="freelance-box report-outer-box">
+                <h4 class="flc-rate67 text-left">Attendance Reports</h4>
+                <div class="freelance-inner-box">
+
+                  <ul class="nav flex-column" *ngFor="let reports of attendance_report">
+
+                    <li class="nav-item">
+                      <a [routerLink]="reports.linkname" class="ember-view nav-link">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i> {{reports.modulename_display}}
+                      </a>
+                    </li>
+
+                  </ul>
+                  <ul class="nav flex-column" *ngIf="this.tp_account_id=='2719'">
+                    <li class="nav-item">
+                      <a [routerLink]="['/reports/dsr-da-report']" id="ember143" class="ember-view nav-link">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i> DSR DA Report
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="col-md-4 col-sm-6" *ngIf="taxes_form_report.length!=0;">
+            <div class="freelance-container style-2">
+              <div class="freelance-box report-outer-box">
+                <h4 class="flc-rate67 text-left">Taxes and Forms</h4>
+                <div class="freelance-inner-box">
+
+
+                  <ul class="nav flex-column" *ngFor="let reports of taxes_form_report">
+
+                    <li class="nav-item">
+                      <a [routerLink]="reports.linkname" class="ember-view nav-link">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i> {{reports.modulename_display}}
+                      </a>
+                    </li>
+
+                  </ul>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <!-- && this.sso_admin_id !=''  show in public as discused with yatin sir-->
+          <div class="col-md-4 col-sm-6" *ngIf="leave_report.length!=0">
+            <div class="freelance-container style-2">
+              <div class="freelance-box report-outer-box">
+                <h4 class="flc-rate67 text-left">Leave Reports</h4>
+                <div class="freelance-inner-box">
+
+
+                  <ul class="nav flex-column" *ngFor="let reports of leave_report">
+
+                    <li class="nav-item">
+                      <a [routerLink]="reports.linkname" class="ember-view nav-link">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i> {{reports.modulename_display}}
+                      </a>
+                    </li>
+
+                  </ul>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+         
+
+          <div class="col-md-4 col-sm-6" *ngIf="(visitor_report.length!=0 && this.sso_admin_id !='')">
+            <div class="freelance-container style-2">
+              <div class="freelance-box report-outer-box">
+                <h4 class="flc-rate67 text-left">Visitor Reports</h4>
+                <div class="freelance-inner-box">
+
+                  <ul class="nav flex-column" *ngFor="let reports of visitor_report">
+
+                    <li class="nav-item">
+                      <a [routerLink]="reports.linkname" class="ember-view nav-link">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i> {{reports.modulename_display}}
+                      </a>
+                    </li>
+
+                  </ul>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 col-sm-6" *ngIf="Esic_and_UAN_report.length!=0">
+            <div class="freelance-container style-2">
+              <div class="freelance-box report-outer-box">
+                <h4 class="flc-rate67 text-left">ESIC & UAN Reports</h4>
+                <div class="freelance-inner-box">
+
+                  <ul class="nav flex-column" *ngFor="let reports of Esic_and_UAN_report">
+
+                    <li class="nav-item">
+                      <a [routerLink]="reports.linkname" class="ember-view nav-link">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i> {{reports.modulename_display}}
+                      </a>
+                    </li>
+                    
+
+                  </ul>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-6" *ngIf="asset_report.length!=0">
+            <div class="freelance-container style-2">
+              <div class="freelance-box report-outer-box">
+                <h4 class="flc-rate67 text-left">Asset Report</h4>
+                <div class="freelance-inner-box">
+
+
+                  <ul class="nav flex-column" *ngFor="let reports of asset_report">
+
+                    <li class="nav-item">
+                      <a [routerLink]="reports.linkname" class="ember-view nav-link">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i> {{reports.modulename_display}}
+                      </a>
+                    </li>
+
+                  </ul>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 col-sm-6" *ngIf="Miscellaneous_report.length!=0">
+            <div class="freelance-container style-2">
+              <div class="freelance-box report-outer-box">
+                <h4 class="flc-rate67 text-left">Miscellaneous Report</h4>
+                <div class="freelance-inner-box">
+
+
+                  <ul class="nav flex-column" *ngFor="let reports of Miscellaneous_report">
+
+                    <li class="nav-item">
+                      <a [routerLink]="reports.linkname" class="ember-view nav-link">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i> {{reports.modulename_display}}
+                      </a>
+                    </li>
+
+                  </ul>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+      <!-- /#page-wrapper -->
+
+
+    </div>
+
+
+  </div>
+</section>
+<app-footer></app-footer>

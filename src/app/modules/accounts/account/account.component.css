@@ -1,0 +1,172 @@
+.btn.btn-m.btn-success.search-btn-box{
+    height: 33px !important;
+}
+
+h1.Payment-due-outer-box1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 24px;
+}
+
+h1.Payment-due-outer-box1 span {
+  width: 100px;
+}
+
+span.payment-due-text-box {
+    font-size: 14px;
+    line-height: 15px;
+    width: 155px!important;
+}
+
+.payment-history-box{
+  border: 1px solid #818181;
+  padding: 10px 10px 0px;
+  background-color: #fafafa;
+}
+
+.summary-inbox{
+  display: flex;
+  justify-content: space-between;
+}
+
+.amount{
+  color: #000;
+  font-weight: 800;
+}
+.amount img{
+  display: inline;
+  position: relative;
+  bottom: 3px;
+}
+
+h6{
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.repeat-btn{
+  color: #199adb;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.payment-img{
+  top: -3px;
+  height: 26px;
+  width: 26px;
+  display: inline;
+  margin: 0;
+  position: relative;
+}
+
+.payment-box {
+  border: 2px dashed #fff;
+  display: inline-block;
+  overflow: hidden;
+  width: 100%;
+  background: #63bdf5!important;
+  border-radius: 30px;
+}
+
+.form-group.signup-form-box {
+  margin-bottom: 0;
+}
+.payment-history-box .form-v10-content .form-detail .form-right {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 30px;
+  margin: 0;
+}
+.payment-history-box .form-v10-content .form-detail .form-right h2 {
+  color: #1a6bb7;
+  padding: 10px 0 0 0;
+  margin-bottom: 15px;
+  font-weight: 500;
+  font-size: 20px;
+  margin: 0 0 10px 0;
+}
+
+.payment-left-box1 {
+  text-align: center;
+  padding: 20px 10px 0px 10px;
+}
+
+.payment-history-box.form-row.form-checkbox.individual-business-box .payment-box img {
+  max-width: 300px;
+  border: 1px dashed #ffffff;
+  padding: 10px;
+  width: 250px;
+  background: #fff;
+}
+
+.payment-history-box .login-panel img {
+  margin: 20px auto 0 auto;
+  max-width: 200px;
+}
+
+.payment-history-box .form-row.form-checkbox.individual-business-box .payment-box h5 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+  text-align: center;
+}
+.payment-history-box .pay-footer-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 290px;
+  margin: 0 auto;
+}
+.payment-history-box .pay-footer-box img {
+  width: 35px;
+margin: 0 10px;
+}
+.payment-history-box p.bhim-upi-box {
+  margin: 0;
+}
+.payment-history-box p.bhim-upi-box img.img-responsive {
+  padding-bottom: 20px;
+  margin: 10px auto 5px auto;
+max-width: 150px;
+}
+.payment-history-box .form-v10-content {
+  box-shadow: none;
+border-radius: 50px;
+}
+.payment-history-box p.Time-Remaining-box {
+  text-align: center;
+  font-size: 14px;
+  color: #000;
+  font-weight: 500;
+}
+.payment-history-box .form-v10-content .form-detail .form-checkbox {
+  margin: 0 auto;
+  padding: 0;
+  width: 325px;
+}
+
+
+.payment-history-box .modal-content {
+  position: relative;
+  background-color: #fff0;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  border: 1px solid #999;
+  border: 1px solid rgba(0,0,0,.2);
+  border-radius: 6px;
+  outline: 0;
+  box-shadow: 0 3px 9px rgba(0,0,0,.5);
+  box-shadow: none!important;
+  border: none;
+}
+
+  @media print {
+    qrcode {
+      display: block !important; /* Ensure the QR code is displayed */
+    }
+  }
+  

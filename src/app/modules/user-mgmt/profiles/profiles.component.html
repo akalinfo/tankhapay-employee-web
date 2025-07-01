@@ -1,0 +1,170 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+
+<div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+  <div class="fakeLoader"></div>
+
+  <div id="page-wrapper">
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">User Management </h3>
+      </div>
+      <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a >Home</a></li>
+          <li class="breadcrumb-item active">Roles </li>
+        </ol>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <!-- /row -->
+      <div class="row">
+
+
+      <div class="col-md-12 mrg-top-0 mrg-bot-25">
+
+
+      <div class="card">
+
+
+          <div class="card-header"> 
+            <h4 class="sub-title-inn-box View-Roles-list-outer-box">Profiles
+              <span>
+                <a (click)="showAddProfileModal()" class=" btn btn-user btn-round btn-success" >Add Profile</a>
+              </span>
+            </h4> 
+          </div>
+          
+
+          <div class="card-body padd-bot-0 padd-top-0">
+
+
+
+            <div class="row">
+
+            <div class="col-md-12 padd-top-0">
+
+
+            <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+
+
+              <table class="table user-list">
+                 <thead>
+                  <tr >
+                   <th id="ember394" class="sortable header-user-role ember-view">
+                    Profile Name
+                    <!---->
+                   </th>
+                   <th id="ember395" class="sortable header-user-role ember-view">
+                    Description
+                    <!---->
+                   </th>
+                   <th class="header-actions">Action</th>
+                  </tr>
+                 </thead>
+                 <tbody>
+                  <tr *ngFor="let profile of allProfile;let i=index;">
+                   <td>
+                    <a data-ember-action="" data-ember-action-396="396">
+                       {{profile.profilename}}
+                    </a>
+                   </td>
+                   <td>{{profile.profiledesc}}</td>
+                   <td class="roles">
+                    <div id="ember398" class="dropdown float-right ember-view">
+                       <div class="job-buttons action-btn-outer-box">
+                        <a class="btn btn-shortlist manage-btn" title="Edit"><i class="ti-pencil-alt"></i></a>
+                       </div>
+
+                    </div>
+                   </td>
+                  </tr>
+                   <tr *ngIf="allProfile.length==0">
+                    <td colspan="3" style="font-weight: 5f00;text-align: center;">
+                    <alert></alert>
+                    </td>
+                  </tr>
+                 </tbody>
+              </table>
+
+            </div>
+
+
+
+            </div>
+
+
+
+
+            </div>
+          </div>
+        </div>
+
+
+        <!-- <div class="col-md-12 col-12 padd-top-15 text-center">
+          <a (click)="routeToNewRole()" class="btn btn-primary"  >Add Roles</a>
+        </div> -->
+
+      </div>
+
+
+      </div>
+      <!-- /row -->
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>
+
+
+<!-- Update role-->
+<div [@grooveState]="addProfile?'active':'inactive'" class="modal">
+  <div [@dongleState]="addProfile?'active':'inactive'"  class="modal-dialog">
+    <div class="modal-content">
+      <form [formGroup]="addProfileForm" (ngSubmit)="addUpdateProfile()">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Add Role</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+          (click)="closeUpdateProfile()">&times;</button>
+        </div>
+        <div class="modal-body" id="add-user-modal" style="overflow: auto;
+        max-height: 71vh;">
+        <alert></alert>
+          <div class="form-group">
+            <label>Profile Name <span class="text-danger">*</span></label>
+            <input type="text" formControlName="profilename" class="form-control" placeholder="Enter Role name"
+            [ngClass]="{'is-invalid': isSubmitted && pf.rolename.errors}">
+          </div>
+
+          <div class="form-group">
+            <label>Profile Description</label>
+            <input type="text" formControlName="profiledesc" class="form-control" placeholder="Enter Role Description"
+            >
+          </div>
+
+          <!-- <div class="form-group add-og-btn-box">
+             <a href="#" class="btn btn-success">add OU</a>
+          </div> -->
+
+          <!-- <div class="form-group">
+            <label>Status</label>
+            <select formControlName="status" class="form-control IsBillable_NonBillable">
+              <option value="1">Active</option>
+              <option value="0">Inactive</option>
+
+            </select>
+          </div> -->
+
+
+
+        </div>
+        <div class="modal-footer">
+          <input type="submit" class="btn btn-default" data-dismiss="modal" value="Save">
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- /#wrapper -->

@@ -1,0 +1,30 @@
+#style-2 table th{
+  padding: 2px;
+  font-size: 12px;
+  background-color: #8eccf5;
+  font-weight: 600;
+}
+
+#style-2{
+  max-height: 75vh;
+}
+
+.nested-table {
+  margin-top: 10px;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+.invalid-row td{
+  color: red;
+}
+.invalid-row td small{
+  color: red;
+  font-weight: 600;
+  font-size: 10px;
+}
+
+table thead tr{
+  position: sticky;
+  top: -13px;
+}

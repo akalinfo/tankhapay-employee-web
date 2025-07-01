@@ -1,0 +1,173 @@
+<section>
+   <div id="wrapper" [ngClass]="{'active':showSidebar==false}">
+      <!-- <div class="fakeLoader"></div> -->
+      <div id="page-wrapper">
+
+
+         <!----Registration Form---->
+         <div class="container" *ngIf="!this.reg_data">
+            
+            <div class="row">
+               <div class="col-md-6 col-md-offset-3">
+                  <div class="logo-panel-heading-box"><img src="assets/img/logo.png" alt="" class="img-responsive" style="width: 220px;" >
+                  </div>
+                  <alert></alert>
+                  <div class="login-panel panel panel-default">
+                     <div class="panel-body">
+                       
+                        <div class="login-with-email-phone-box" style="margin-bottom: 20px;">
+                           <h3 class="login-text-top-box">Sign Up </h3>
+                        </div>
+                        <div class="login-with-email-phone-box" style="margin-bottom: 10px;"> </div>
+
+                        <!-- <form [formGroup]="RegistrationForm" autocomplete="off"> -->
+                        <div class="form-group">
+                           <form [formGroup]="RegistrationForm" autocomplete="off">
+                              <!-- <form  novalidate="" autocomplete="off" class="ng-touched ng-pristine ng-invalid"> -->
+                              <label for="name">Full Name: <span class="required-indicator"> *</span></label>
+                              <input type="text" formControlName="full_name" placeholder="Enter Full Name"
+                                 class="form-control"
+                                 [ngClass]="{'is-invalid':registationSubmitted && (r.full_name.errors || r.full_name.value == '')}">
+
+                              <div *ngIf="registationSubmitted && r.full_name.errors"
+                                 class="invalid-feedback inline-pos1">
+                                 <small *ngIf="r.full_name.hasError('required')" class="text-danger">Name is
+                                    required</small>
+                                 <small *ngIf="r.full_name.hasError('pattern')" class="text-danger">Name should contain
+                                    only alphabhet-space</small>
+                              </div>
+
+                              <label for="mobile">Mobile Number: <span class="required-indicator"> *</span></label>
+                              <input type="text" formControlName="employer_mobile" class="form-control" maxlength="10"
+                                 placeholder="Enter your (10 digit) Mobile number"
+                                 onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"
+                                 [ngClass]="{'is-invalid':registationSubmitted && (r.employer_mobile.errors || r.employer_mobile.value == '')}">
+
+                              <div *ngIf="registationSubmitted && r.employer_mobile.errors"
+                                 class="invalid-feedback inline-pos1">
+                                 <small *ngIf="r.employer_mobile.hasError('required')" class="text-danger">Mobile No is
+                                    required</small>
+                                 <small *ngIf="r.employer_mobile.hasError('pattern')" class="text-danger">Mobile No is
+                                    Incorrect</small>
+                              </div>
+
+                              <label for="email">Email Address: <span class="required-indicator"> *</span></label>
+                              <input type="text" formControlName="employer_email" placeholder="Enter Email"
+                                 class="form-control"
+                                 [ngClass]="{'is-invalid':registationSubmitted && (r.employer_email.errors || r.employer_email.value == '')}">
+
+                              <div *ngIf="registationSubmitted && r.employer_email.errors"
+                                 class="invalid-feedback inline-pos1">
+                                 <small *ngIf="r.employer_email.hasError('required')" class="text-danger">Email is
+                                    required</small>
+                                 <small *ngIf="r.employer_email.hasError('pattern')" class="text-danger">Email is
+                                    Incorrect</small>
+                              </div>
+
+                              <label for="pincode">Pincode: <span class="required-indicator"> *</span></label>
+                              <input type="text" formControlName="employer_pincode" maxlength="6"
+                                 placeholder="Enter Pin Code"
+                                 onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"
+                                 class="form-control"
+                                 [ngClass]="{'is-invalid':registationSubmitted && (r.employer_pincode.errors || r.employer_pincode.value == '')}">
+
+                              <div *ngIf="registationSubmitted && r.employer_pincode.errors"
+                                 class="invalid-feedback inline-pos1">
+                                 <small *ngIf="r.employer_pincode.hasError('required')" class="text-danger">Pin Code is
+                                    required</small>
+                                 <small *ngIf="r.employer_pincode.hasError('pattern')" class="text-danger">Pin Code is
+                                    Incorrect</small>
+                              </div>
+
+                              <a class="btn btn-primary btn-lg" style="width: 100%;" (click)="register()">Register
+                                 Now</a>
+                              <p class="Signup-now-text-box"> Already have an account?
+                                 <a [routerLink]="['/login']">Login</a>
+                              </p>
+
+
+                           </form>
+                        </div>
+
+                     </div>
+                     <div class="modal-footer text-center">
+                        <div class="col-md-12"> © 2023 TankhaPay. Akal Information Systems Ltd. All Rights Reserved.
+                        </div>
+                        <div class="col-md-12">
+
+                           <ul class="bottom-footer-list">
+                                 
+                                 
+                             <li class="first-li"><a href="https://www.tankhapay.com/terms-of-use.html" target="_blank">Terms of Use</a></li>
+                             <li><a href="https://www.tankhapay.com/privacy-policy.html" target="_blank">Privacy Policy</a></li>
+                             
+                           
+                           </ul>
+                 
+                          </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+
+         <!-------OTP Send----->
+         <div class="container" *ngIf="this.reg_data">
+            <div class="row">
+               <div class="col-md-6 col-md-offset-3">
+                  <div class="logo-panel-heading-box"><img src="assets/img/logo.png" alt="" class="img-responsive" style="width: 220px;" >
+                  </div>
+                  <alert></alert>
+                  <div class="login-panel panel panel-default">
+                     <div class="panel-body">
+                        <div class="login-with-email-phone-box" style="margin-bottom: 20px;"></div>
+
+                        <div class="form-group signup-form-box">
+                           <div class="form-group">
+                              <form [formGroup]="ValidationForm">
+
+                                 <label for="password">Please enter the One-Time Password to verify your
+                                    account.</label>
+                                 <label for="password">A One-time Password has been sent to {{this.mobileNumber |
+                                    hideDigits:3:6}}</label>
+                                 <!-- <div  class="input-icons"> -->
+                                 <input formControlName="mobile_otp" placeholder="****" maxlength="4"
+                                    pattern="^[0-9]{4}$" class="form-control" type="password">
+                                 <p class="Resend-OTP-btn"><a (click)="resend_otp()">Resend OTP</a></p>
+                                 <!-- </div> -->
+
+
+                                 <!-- login/registration-approved -->
+                                 <a class="btn btn-primary btn-lg" style="width: 100%;"
+                                    (click)="validate()">Validate</a>
+                                 <!--<p class="Signup-now-text-box">Already have an account? <a href="#">Signin now</a></p>-->
+                              </form>
+                           </div>
+                        </div>
+
+                     </div>
+                     <div class="modal-footer text-center">
+                        <div class="col-md-12"> © 2023 TankhaPay. Akal Information Systems Ltd. All Rights Reserved.
+                        </div>
+                        <div class="col-md-12">
+
+                           <ul class="bottom-footer-list">
+                                 
+                                 
+                             <li class="first-li"><a href="https://www.tankhapay.com/terms-of-use.html" target="_blank">Terms of Use</a></li>
+                             <li><a href="https://www.tankhapay.com/privacy-policy.html" target="_blank">Privacy Policy</a></li>
+                             
+                           
+                           </ul>
+                 
+                          </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+      </div>
+   </div>
+</section>

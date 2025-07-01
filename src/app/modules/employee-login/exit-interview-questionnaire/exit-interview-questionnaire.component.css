@@ -1,0 +1,265 @@
+/* General container for the page - apply if this component isn't nested in a styled layout */
+/* .page-container {
+  background-color: #eef5f9; 
+  padding: 20px; 
+  font-family: 'Montserrat', sans-serif;
+} */
+
+/* Main form container - card like appearance */
+.questionnaire-form-container {
+  background-color: #fff;
+  padding: 35px 40px; /* Increased padding */
+  border-radius: 8px; /* Consistent with .tab-pane .card .card-body */
+  border: 1px solid #d3e7f5; /* Consistent border */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Consistent shadow */
+  font-family: 'Montserrat', sans-serif; 
+  color:black; /* Default text color */
+}
+
+/* Form title */
+.questionnaire-form-container h2 {
+  color: black; /* Standard heading color */
+  font-weight: 600; /* Common heading weight */
+  margin-bottom: 20px; /* Space below title */
+  text-align: center;
+}
+
+.questionnaire-form-container p.text-muted {
+    margin-bottom: 25px; /* More space for intro paragraph */
+}
+
+/* Styling for fieldsets to act as sections */
+.questionnaire-form-container fieldset {
+  background-color: white; /* Very light background for sections, similar to some panel bodies or headers */
+  border: 1px solid #e0eaf0; /* Slightly softer border for fieldsets */
+  padding: 20px;
+  margin-top: 25px;
+  margin-bottom: 25px; /* Space between sections */
+  border-radius: 6px; /* Consistent radius */
+}
+
+.questionnaire-form-container fieldset legend {
+  font-size: 14px; /* Slightly smaller than h4 */
+  font-weight: 600; /* Bold legend */
+  color: #004899; /* Theme blue for legend text */
+  background-color: #e9f6ff; /* Light blue background for legend, similar to panel-heading */
+  padding: 8px 15px;
+  border-radius: 4px;
+  border: 1px solid #d3e7f5;
+  width: auto; /* Necessary for background to fit content */
+  margin-bottom: 20px; /* Space after legend */
+}
+
+/* Form labels */
+.questionnaire-form-container .form-label {
+  font-weight: 600; /* Slightly bolder labels */
+  color: black;
+  margin-bottom: 0.3rem;
+  font-size: 14px;
+}
+
+/* Input fields, textareas, selects - rely on Bootstrap but ensure consistency */
+.questionnaire-form-container .form-control,
+.questionnaire-form-container .form-select {
+  border-radius: 4px; /* Slightly more rounded corners for inputs */
+  border-color: #ced4da; /* Standard Bootstrap border */
+  font-size: 14px;
+}
+
+.questionnaire-form-container .form-control:focus,
+.questionnaire-form-container .form-select:focus {
+  border-color: #1194f7; /* Theme blue for focus */
+  box-shadow: 0 0 0 0.2rem rgba(17, 148, 247, 0.25); /* Theme blue shadow */
+}
+
+/* Checkbox and radio styling improvements */
+.questionnaire-form-container .form-check-label {
+    font-weight: normal; /* Standard weight for checkbox labels */
+    color: black;
+    font-size: 14px;
+    margin-left:8px;
+}
+.questionnaire-form-container .form-check-input {
+    margin-top: 0.2rem;
+}
+.questionnaire-form-container .form-check-input:checked {
+    background-color: #1194f7;
+    border-color: #1194f7;
+}
+
+
+/* Table styling for rankings */
+.questionnaire-form-container .table thead th {
+  background-color: #e9f6ff; /* Light blue background for table headers */
+  color: black;
+  font-weight: 600;
+  border-bottom: 2px solid #d3e7f5;
+  font-size: 14px;
+  padding: 0.75rem;
+}
+
+.questionnaire-form-container .table tbody td {
+  vertical-align: middle;
+  font-size:14px;
+  padding: 0.75rem;
+}
+
+.questionnaire-form-container .table input[type="number"].form-control {
+    text-align: center;
+    padding: 0.375rem 0.5rem; /* Smaller padding for table inputs */
+}
+
+
+/* Submit button */
+.questionnaire-form-container .btn-primary {
+  background-color: #1194f7;
+  border-color: #1194f7;
+  padding: 10px 25px; /* Larger padding for primary action */
+  font-weight: 600;
+  font-size:14px;
+  border-radius: 4px;
+}
+
+.questionnaire-form-container .btn-primary:hover {
+  background-color: #004899; /* Darker blue on hover */
+  border-color: #004899;
+}
+
+.questionnaire-form-container .btn-primary:disabled {
+  background-color: #a0d3f9;
+  border-color: #a0d3f9;
+}
+
+/* Helper for full width */
+.w-100 {
+    width: 100% !important;
+}
+
+
+.section-header {
+  display: flex;                 /* Arrange items in a row */
+  justify-content: space-between;  /* Push items to opposite ends */
+  align-items: center;           /* Vertically center the items */
+  cursor: pointer;               /* Show a hand cursor to indicate it's clickable */
+  background-color: #e9f6ff; 
+  color:#004899;    /* Optional: Give it a slight background color */
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  padding:5px;
+  margin-top: 20px;
+}
+
+.section-title {
+  font-weight: 600; /* Optional: Make the title bold */
+  font-size: 14px;
+}
+
+.toggle-icon {
+  font-size: 14px;
+  color: #004899; /* Optional: Give the icon a color */
+}
+.text-center {
+  padding: 20px;
+}
+
+/* 30.06.2025 */
+
+
+
+
+/* --- UPDATED STYLES FOR HORIZONTAL NPS/RANKING SCALE --- */
+
+/* Main container for the scale and its labels.
+   Limits width to prevent ugly stretching on wide screens. */
+.nps-container {
+  width: 100%;
+  max-width: 600px; /* Adjust this value as needed for your layout */
+  margin-top: 8px;
+  margin-bottom: 1rem; /* Add some space below */
+}
+
+/* The container for the buttons. Flexbox distributes them horizontally. */
+.nps-scale {
+  display: flex;
+  justify-content: space-between; /* This is the key property for horizontal distribution */
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+
+/* Individual ranking button styling */
+.nps-btn {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;      /* Ensure it doesn't shrink */
+  border-radius: 50%;   /* Makes it a circle */
+  border: 2px solid #ddd;
+  font-weight: 600;
+  background-color: #f8f9fa;
+  color: #333;
+  transition: all 0.2s ease-in-out; /* Smooth transitions for hover/selection */
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+/* Hover effect for better user experience */
+.nps-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+/* Color classes for different score ranges (using your existing logic) */
+
+
+.nps-score-1  { background-color: #e6f0ff; border-color: #c0d8f7; color: #004899; }
+.nps-score-2  { background-color: #d1e3ff; border-color: #a6c9f2; color: #004899; }
+.nps-score-3  { background-color: #adc9ff; border-color: #8db5ed; color: #004899; }
+.nps-score-4  { background-color: #89aeff; border-color: #6893e8; color: #004899; }
+
+/* Medium Blues (transitioning to light text) */
+.nps-score-5  { background-color: #6495ed; border-color: #437ae3; color: #fff; } /* CornflowerBlue - great midpoint */
+.nps-score-6  { background-color: #4682B4; border-color: #3a6d96; color: #fff; } /* SteelBlue */
+.nps-score-7  { background-color: #3b76ac; border-color: #2e5d8a; color: #fff; }
+
+/* Deep Blues (leading to your theme color, light text) */
+.nps-score-8  { background-color: #2a5a8a; border-color: #21476d; color: #fff; }
+.nps-score-9  { background-color: #154c79; border-color: #103b5f; color: #fff; }
+.nps-score-10 { background-color: #004899; border-color: #00336b; color: #fff; } /* YOUR THEME COLOR */
+
+
+
+/* Style for the currently selected button */
+.nps-btn.selected {
+  transform: scale(1.15); /* Make it slightly larger than hover */
+  border: 3px solid #00060c; /* Use a distinct, theme-colored border */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+  font-weight: 700;
+}
+
+/* Container for the text labels below the buttons */
+.nps-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #6c757d;
+  font-weight: 500;
+  padding: 0 5px; /* Align text slightly inward from the edges */
+}
+
+/* --- STYLING FOR DISABLED NPS BUTTONS --- */
+
+/* Targets the NPS buttons only when they have the disabled attribute */
+.nps-btn:disabled {
+  opacity: 0.9; /* Fades the button to visually indicate it's inactive */
+  cursor: not-allowed; /* Shows the standard 'not allowed' cursor on hover */
+}
+
+/* Explicitly remove hover effects when the button is disabled */
+.nps-btn:disabled:hover {
+  transform: none; /* Prevents the button from scaling up on hover */
+  box-shadow: none; /* Removes any hover shadow */
+}

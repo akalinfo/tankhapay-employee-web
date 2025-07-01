@@ -1,0 +1,1757 @@
+<div class="loader-overlay" *ngIf="!isDataLoaded">
+  <div class="loader"></div>
+</div>
+<div id="home" class="tab-pane fade1 in active">
+  <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="card">
+      <div class="panel-heading panel_heading_gray card-header" role="tab" id="headingOne2" data-toggle="collapse"
+        data-parent="#accordion2" href="#collapseOne2" aria-expanded="false" aria-controls="collapseOne">
+        <h4>Personal Details <i class="fa fa-angle-down"></i></h4>
+      </div>
+      <div id="collapseOne2" class="panel-collapse collapse card-body in" role="tabpane2">
+        <div class="row">
+          <div class="col-md-12 padd-bot-15 padd-top-15" *ngIf="candidateDetails">
+
+            <div class="col-md-12">
+              <div class="form-group" style="width: fit-content">
+                <label><strong>Date Of Birth: </strong>{{ candidateDetails.dateofbirth }}</label>
+              </div>
+              <a *ngIf="isBasicEditable" (click)="openBasicDetails();" class="btn btn-gary manage-btn emp-edit-btn-box"
+                title="Edit" style="float: right"><i class="ti-pencil-alt"></i></a>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Gender: </strong>{{ candidateDetails.gender }}</label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Father's Name: </strong>{{ candidateDetails.fathername }}</label>
+              </div>
+            </div>
+            <!--<div class="col-md-12">
+                              <div class="form-group">
+                                  <label><strong>Aadhaar Card: </strong><span
+                                          id="employee_since">{{candidateDetails.aadhar_card}}</span></label>
+                              </div>
+                          </div> -->
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Official Email ID: </strong><span id="employee_since">
+                  {{ candidateDetails.email }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Personal Email ID: </strong><span id="employee_since">
+                  {{ candidateDetails.personal_email }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Mobile Number: </strong><span id="employee_since">{{
+                    candidateDetails.mobile
+                    }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Date of Joining: </strong><span id="employee_since">{{
+                    candidateDetails.dateofjoining
+                    }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Emergency Contact Name: </strong><span id="employee_since">{{
+                    candidateDetails?.bloodrelationname
+                    }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Emergency Contact No: </strong><span id="employee_since">{{
+                    candidateDetails?.emergency_contact
+                    }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Post Offered: </strong><span id="employee_since">{{
+                    candidateDetails.post_offered
+                    }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Residential Address: </strong><span id="employee_since">{{
+                    candidateDetails.residential_address
+                    }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Permanent Address: </strong><span id="employee_since">{{
+                    candidateDetails.emp_address
+                    }}</span></label>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Job Type: </strong><span id="employee_since">{{
+                    candidateDetails.jobType
+                    }}</span></label>&nbsp;
+              </div>
+            </div>
+            <!-- <div class="col-md-12">
+                <div class="form-group">
+                  <label
+                    ><strong>ESI Location: </strong
+                    ><span id="employee_since"></span
+                  ></label>
+                </div>
+              </div> -->
+            <!-- <div class="col-md-12">
+                <div class="form-group">
+                  <label
+                    ><strong>ESI Dispensary: </strong
+                    ><span id="employee_since">-</span></label
+                  >
+                </div>
+              </div> -->
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong> Geo Fencing Name: </strong><span id="employee_since">{{
+                    candidateDetails?.GeoFenceName
+                    }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong> Organization Unit Name: </strong><span id="employee_since">{{
+                    candidateDetails?.assigned_ou_ids_name
+                    }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Posting Department: </strong><span id="employee_since">{{
+                    candidateDetails?.posting_department
+                    }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Project:
+                  </strong>
+                  <span id="employee_since">{{
+                    candidateDetails?.project_name
+                    }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>ORG Emp Code: </strong><span id="employee_since">{{
+                    candidateDetails?.orgempcode
+                    }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Reporting Manager: </strong><span id="employee_since">{{
+                    candidateDetails?.reporting_manager_name
+                    }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Blood Group: </strong><span
+                    id="employee_since">{{candidateDetails?.blood_group}}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group" *ngIf="location_default.length > 0"><!-- -->
+                <label><strong>Current Location : </strong><span id="employee_since">
+                    {{location_default[0]?.state}} <ng-container
+                      *ngIf="location_default && location_default.length > 0 && location_default[0].location">,</ng-container>
+                    {{location_default[0]?.location}} wef ({{location_default[0]?.location_effective_date |
+                    date:'dd-MM-yyyy'}})</span></label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Pan No: </strong><span id="employee_since">{{candidateDetails?.pan_card}}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12"
+              *ngIf="candidateDetails.uan_number && candidateDetails.uan_number!='Request For UAN'">
+              <div class="form-group">
+                <label><strong>UAN No.: </strong><span id="employee_since">{{
+                    candidateDetails.uan_number
+                    }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Functional Designation: </strong><span id="employee_since">{{
+                    fdesignationListname?.func_designation
+                    }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12" *ngIf="candidateDetails?.probation_confirmation_date">
+              <div class="form-group">
+                <label><strong>Probation Confirmation Date: </strong><span id="employee_since">{{
+                    candidateDetails?.probation_confirmation_date
+                    }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12" *ngIf="candidateDetails?.agencyname">
+              <div class="form-group">
+                <label><strong>Vendor Name: </strong><span id="employee_since">{{
+                    candidateDetails?.agencyname
+                    }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12" *ngIf="candidateDetails?.contractenddate">
+              <div class="form-group">
+                <label><strong>Contract end date: </strong><span id="employee_since">{{
+                    candidateDetails?.contractenddate
+                    }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12" *ngIf="candidateDetails?.salary_book_project">
+              <div class="form-group">
+                <label><strong>Salary Booked Under Project Name: </strong><span id="employee_since">{{
+                    candidateDetails?.salary_book_project
+                    }}</span></label>
+              </div>
+            </div>
+            <!------- <div class="col-md-12">
+                              <div class="form-group">
+                                  <label><strong>Metro/Non-Metro (TDS):
+                                      </strong><span
+                                          id="employee_since">-</span></label>
+                              </div>
+                          </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" *ngIf="
+          payout_method != 'self' && candidateDetails.joiningStatus != 'RELIEVED'
+        ">
+      <div class="panel-heading panel_heading_gray collapsed card-header" role="tab" id="headingOne8"
+        data-toggle="collapse" data-parent="#accordion8" href="#collapseOne8" aria-expanded="false"
+        aria-controls="collapseOne">
+        <h4>KYC Details <i class="fa fa-angle-down"></i></h4>
+      </div>
+      <div id="collapseOne8" class="panel-collapse collapse card-body" role="tabpane8">
+        <div class="row">
+          <div class="col-md-12 padd-bot-15 padd-top-15" [ngClass]="{ 'no-click': !edit_kyc_details }">
+            <div class="col-md-12" *ngIf="candidateDetails.pan_card">
+              <div class="form-group">
+                <label><strong>Pan Card No.: </strong><span id="employee_since">{{
+                    candidateDetails.pan_card
+                    }}</span></label>
+              </div>
+            </div>
+            <div class="kyc-done-logo"
+              *ngIf="candidateDetails.aadharverfication_status == 'Y' || candidateDetails.pan_verification_status == 'Y'">
+              <!-- <img src="assets/img/KYC_logo.png"  height="200"> -->
+
+              <h2>KYC Done <span class="kyc-done"><i class="fa fa-check" aria-hidden="true"></i></span></h2>
+            </div>
+            <div class="kyc-done-logo"
+              *ngIf="(candidateDetails.aadharverfication_status == 'N' || candidateDetails.aadharverfication_status=='') && (candidateDetails.pan_verification_status == 'N' || candidateDetails.pan_verification_status=='')">
+              <!-- <img src="assets/img/KYC_logo.png"  height="200"> -->
+              <h2>KYC Pending. <span class="kyc-not-done"><i class="fa fa-clock-o" aria-hidden="true"></i></span> </h2>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="panel-heading panel_heading_gray card-header" role="tab" id="headingOne21" data-toggle="collapse"
+        data-parent="#accordion2" href="#collapseOne21" aria-expanded="false" aria-controls="collapseOne">
+        <h4>
+          Education Details / Academic Details <i class="fa fa-angle-down"></i>
+        </h4>
+      </div>
+      <div id="collapseOne21" class="panel-collapse collapse card-body" role="tabpane2">
+        <div class="row">
+
+          <div class="col-sm-12 text-right">
+            <a *ngIf="isBasicEditable" (click)="showEducationModal()" class="btn btn-user1 btn-round btn-primary"
+              title="Edit">Add</a>
+          </div>
+          <div class="col-md-12 padd-bot-15 padd-top-15">
+
+            <div class="table-responsive challan-table-outer-box Documents-listing-table-box">
+              <table class="table table-lg table-hover">
+                <thead>
+                  <tr>
+                    <th>Sno</th>
+                    <th style="width: 120px;">Course </th>
+                    <th>Specialization</th>
+                    <th style="width: 88px;">State</th>
+                    <th style="width: 88px;">University/College</th>
+                    <th>Course Type</th>
+                    <th>Passing Year</th>
+                    <th>Percentage/CGPA</th>
+
+                    <th>Action</th>
+
+                  </tr>
+                </thead>
+
+                <tbody>
+
+                  <tr *ngFor="let edu  of educationDetailData;let i=index;">
+                    <td>
+                      {{i+1}}
+                    </td>
+                    <td>{{edu.course}}</td>
+                    <td>{{edu.specialization}}</td>
+                    <td>{{edu.state}}</td>
+                    <td>{{edu.university_college}}</td>
+                    <td>{{edu.course_type}}</td>
+                    <td>{{edu.passing_year}}</td>
+                    <td>{{edu.percentage_cgpa}}</td>
+                    <td>
+                      <a *ngIf="isBasicEditable" (click)="showEducationModal(edu)"><i class="ti-pencil-alt"
+                          style="font-size:20px; margin: 0 5px 0 0;"></i></a>
+
+                  </tr>
+                  <tr *ngIf="educationDetailData.length==0">
+                    <td colspan="9" class="no-data">No data to display</td>
+                  </tr>
+                </tbody>
+              </table>
+
+
+
+            </div>
+
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="panel-heading panel_heading_gray card-header" role="tab" id="headingOne22" data-toggle="collapse"
+        data-parent="#accordion22" href="#collapseOne22" aria-expanded="false" aria-controls="collapseOne">
+        <h4>Work Experience <i class="fa fa-angle-down"></i></h4>
+      </div>
+      <div id="collapseOne22" class="panel-collapse collapse card-body" role="tabpane2">
+        <div class="row">
+
+          <div class="col-sm-12 text-right">
+            <a *ngIf="isBasicEditable" (click)="showExperienceModal()" class="btn btn-user1 btn-round btn-primary"
+              data-placement="top" title="Edit">Add</a>
+          </div>
+          <div class="col-md-12 padd-bot-15 padd-top-15">
+
+            <div class="table-responsive challan-table-outer-box Documents-listing-table-box">
+              <table class="table table-lg table-hover">
+                <thead>
+                  <tr>
+                    <th>Sno</th>
+                    <th style="width: 120px;">Company name </th>
+                    <th>Job Title</th>
+                    <th style="width: 88px;">From Date</th>
+                    <th style="width: 88px;">To Date</th>
+                    <th>Job description</th>
+                    <th>Skills</th>
+                    <th>Total Experience</th>
+                    <th>Last take-home drawn</th>
+                    <th>Leaving Reason</th>
+                    <th>Action</th>
+
+                  </tr>
+                </thead>
+
+                <tbody>
+
+                  <tr *ngFor="let exp of experiencedata;let i= index;">
+                    <td>
+                      {{i+1}}
+                    </td>
+                    <td>{{exp.company_name}}</td>
+                    <td>{{exp.job_title}}</td>
+                    <td>{{exp.from_date}}</td>
+                    <td>{{exp.to_date}}</td>
+                    <td>{{exp.job_description}}</td>
+                    <td>{{exp.skills}}</td>
+                    <td>{{exp.total_experience}}</td>
+                    <td>{{exp.last_take_home_drawn}}</td>
+                    <td>{{exp.leaving_reason}}</td>
+                    <td>
+                      <a *ngIf="isBasicEditable" (click)="showExperienceModal(exp)"><i class="ti-pencil-alt"
+                          style="font-size:20px; margin: 0 5px 0 0;"></i></a>
+
+                  </tr>
+
+                  <tr *ngIf="experiencedata.length==0">
+                    <td colspan="11" class="no-data">
+                      No data to display
+                    </td>
+
+                  </tr>
+
+                </tbody>
+              </table>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="panel-heading panel_heading_gray card-header" role="tab" id="headingOne23" data-toggle="collapse"
+        data-parent="#accordion23" href="#collapseOne23" aria-expanded="false" aria-controls="collapseOne">
+        <h4>Training Details <i class="fa fa-angle-down"></i></h4>
+      </div>
+      <div id="collapseOne23" class="panel-collapse collapse card-body" role="tabpane2">
+        <div class="row">
+
+          <div class="col-sm-12 text-right">
+            <a *ngIf="isBasicEditable" (click)="showTrainingModal()" class="btn btn-user1 btn-round btn-primary"
+              data-placement="top" title="Edit">Add</a>
+          </div>
+          <div class="col-md-12 padd-bot-15 padd-top-15">
+
+            <div class="table-responsive challan-table-outer-box Documents-listing-table-box">
+              <table class="table table-lg table-hover">
+                <thead>
+                  <tr>
+                    <th>Sno</th>
+                    <th style="width: 120px;">Training </th>
+                    <th>Date of Completion</th>
+                    <th>Certification</th>
+                    <th style="width: 120px;">Institute</th>
+                    <th>Grade/ Marks</th>
+                    <th>Action</th>
+
+                  </tr>
+                </thead>
+
+                <tbody>
+
+                  <tr *ngFor="let training of trainingData;let i=index;">
+                    <td>
+                      {{i+1}}
+                    </td>
+                    <td>{{training.training_name}}</td>
+
+                    <td>{{training.completion_date.split('-').reverse().join('-')}}</td>
+
+                    <td>{{training.certification}}</td>
+                    <td>{{training.institute}}</td>
+                    <td>{{training.grade_or_marks}}</td>
+
+                    <td>
+                      <a *ngIf="isBasicEditable" (click)="showTrainingModal(training)"><i class="ti-pencil-alt"
+                          style="font-size:20px; margin: 0 5px 0 0;"></i></a>
+
+                  </tr>
+
+                  <tr *ngIf="trainingData.length ==0">
+                    <td colspan="7" class="no-data">No data to display</td>
+                  </tr>
+                </tbody>
+              </table>
+
+
+
+            </div>
+
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="panel-heading panel_heading_gray card-header" role="tab" id="headingOne24" data-toggle="collapse"
+        data-parent="#accordion24" href="#collapseOne24" aria-expanded="false" aria-controls="collapseOne">
+        <h4>Family Details <i class="fa fa-angle-down"></i></h4>
+      </div>
+      <div id="collapseOne24" class="panel-collapse collapse card-body" role="tabpane2">
+        <div class="row">
+          <div class="col-sm-12 text-right">
+            <a *ngIf="isBasicEditable" (click)="showFamilyDetail()" class="btn btn-user1 btn-round btn-primary"
+              data-placement="top" title="Edit">Add</a>
+          </div>
+          <div class="col-md-12 padd-bot-15 padd-top-15">
+
+            <div class="table-responsive challan-table-outer-box Documents-listing-table-box">
+              <table class="table table-lg table-hover">
+                <thead>
+                  <tr>
+                    <th>Sno</th>
+                    <th style="width: 120px;">Name </th>
+                    <th>Address</th>
+                    <th>Relation</th>
+                    <th style="width: 120px;">Date of Birth</th>
+                    <th>Aadhaar/ Identification No</th>
+                    <th>Action</th>
+
+                  </tr>
+                </thead>
+
+                <tbody>
+
+                  <tr *ngFor="let family of familyData;let i=index;">
+                    <td>
+                      {{i+1}}
+                    </td>
+                    <td>{{family.name}}</td>
+
+                    <td>{{family.address}}</td>
+
+                    <td>{{family.relation}}</td>
+                    <td>{{family.date_of_birth}}</td>
+                    <td>{{family.identification_no}}</td>
+
+                    <td>
+                      <a *ngIf="isBasicEditable" (click)="showFamilyDetail(family)"><i class="ti-pencil-alt"
+                          style="font-size:20px; margin: 0 5px 0 0;"></i></a>
+                    </td>
+
+                  </tr>
+                  <tr *ngIf="familyData.length ==0">
+                    <td colspan="7" class="no-data">No data to display</td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="panel-heading panel_heading_gray collapsed card-header" role="tab" id="headingOne3"
+        data-toggle="collapse" data-parent="#accordion3" href="#collapseOne3" aria-expanded="false"
+        aria-controls="collapseOne">
+        <h4>Bank Details <i class="fa fa-angle-down"></i></h4>
+      </div>
+      <div id="collapseOne3" class="panel-collapse collapse card-body" role="tabpane3">
+        <div class="row">
+          <div class="col-sm-12 mrg-bot-15">
+
+            <div class="col-md-12">
+              <div class="form-group" style="max-width: fit-content;">
+                <label><strong>Name as per Bank : </strong>{{ candidateDetails.emp_name }}</label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Bank Name: </strong><span id="employee_since">{{
+                    candidateDetails.bank_name
+                    }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>IFSC Code : </strong><span id="employee_since">{{
+                    candidateDetails.ifsccode
+                    }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Account Number: </strong><span id="employee_since">{{
+                    candidateDetails.bank_account_no
+                    }}</span></label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Basic detail modal -->
+<div [@grooveState]="isBasicDetails?'active':'inactive'" class="modal fade add-address-form-box Component-outer-box in">
+  <div class="modal-dialog" [@dongleState]="isBasicDetails?'active':'inactive'">
+    <div class="modal-content">
+      <form [formGroup]="basic_detail_form" novalidate #formElement>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Edit Personal Details</h4>
+          <button type="button" class="close" (click)="hideBasicDetails()" aria-hidden="true">
+            x
+          </button>
+        </div>
+        <div class="modal-body card-body">
+          <div class="form-group">
+            <label class="control-label col-sm-4"> Name <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Employee Name" formControlName="name" maxlength="70"
+                [ngClass]="{'is-invalid': bf.name.errors && submitted}"
+                [readonly]="candidateDetails.joiningStatus === 'JOINED'" />
+              <div *ngIf="bf.name.errors && submitted" class="text-danger">
+                <small *ngIf="bf.name.errors.required">Name is required.</small>
+                <small *ngIf="bf.name.errors.maxlength">Name cannot exceed 70 characters.</small>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">Date Of Birth<span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input readonly type="text" id="dob" class="form-control" placeholder="dd/mm/yy" formControlName="dob"
+                [ngClass]="{'is-invalid': bf.dob.errors && submitted}" />
+              <div *ngIf="bf.dob.errors && submitted" class="text-danger">
+                <small *ngIf="bf.dob.errors.required">Date of Birth is required.</small>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">Gender<span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <select formControlName="gender" class="form-control">
+                <option value="">----Select Gender----</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="relation_name" class="control-label col-sm-4">Father / Husband Name </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter Father's Name" formControlName="relation_name"
+                maxlength="70" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Email ID (Optional)</label>
+            <div class="col-sm-8">
+              <input type="email" id="email" formControlName="employee_email" class="form-control"
+                placeholder="Enter Employee Email id" autocomplete="off"
+                [ngClass]="{'is-invalid': submitted && this.bf.employee_email.errors}">
+              <div *ngIf="bf.employee_email.errors && submitted" class="text-danger">
+                <small *ngIf="bf.employee_email.errors?.pattern">Enter a valid email address.</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Mobile Number<span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" formControlName="employee_mobile" class="form-control" maxlength="10"
+                placeholder="Enter Employee Mobile number (10 digit)" pattern="^[6-9]{1}[0-9]{9}$" autocomplete="off"
+                [ngClass]="{'is-invalid': submitted && this.bf.employee_mobile.errors}">
+              <div *ngIf="bf.employee_mobile.errors && submitted" class="text-danger">
+                <small *ngIf="bf.employee_mobile.errors.required">Mobile number is required.</small>
+                <small *ngIf="bf.employee_mobile.errors.pattern">Enter a valid 10-digit number.</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="doj" class="control-label col-sm-4">Date of Joining <span class="text-danger">*</span></label>
+            <div class="col-md-8">
+              <input type="text" id="doj" formControlName="doj" class="form-control" maxlength="10" readonly
+                placeholder="dd-mm-yy" autocomplete="off" [ngStyle]="{'pointer-events': (candidateDetails.joiningStatus=='JOINED' && token.payout_mode_type!='self') || 
+                  (((candidateDetails?.uan_number!='' && candidateDetails?.uan_number!='Request For UAN') || (candidateDetails?.esi_number!='' 
+                  && candidateDetails?.esi_number!='Request For ESIC') ) && token.payout_mode_type=='self' && candidateDetails.joiningStatus=='JOINED')?'none':'',
+                  'is-invalid': submitted && bf.doj.errors}">
+              <div *ngIf="bf.doj.errors && submitted" class="text-danger">
+                <small *ngIf="bf.doj.errors.required">Date of joining is required.</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="mobile" class="control-label col-sm-4">Emergency Contact Name </label>
+            <div class="col-sm-8">
+              <input type="text" formControlName="blood_relation" class="form-control"
+                placeholder="Emergency Contact Name" autocomplete="off"
+                [ngClass]="{'is-invalid': submitted && this.bf.blood_relation.errors}">
+              <div *ngIf="bf.blood_relation.errors && submitted" class="text-danger">
+                <small *ngIf="bf.blood_relation.errors.pattern">Invalid contact name.</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="mobile" class="control-label col-sm-4">Emergency Contact No.</label>
+            <div class="col-md-8">
+              <input type="text" formControlName="emergency_mobile" class="form-control" maxlength="10"
+                placeholder="Emergency Contact No." pattern="^[6-9]{1}[0-9]{9}$" autocomplete="off"
+                [ngClass]="{'is-invalid': submitted && this.bf.emergency_mobile.errors}">
+              <div *ngIf="bf.emergency_mobile.errors && submitted" class="text-danger">
+                <small *ngIf="bf.emergency_mobile.errors.pattern">Invalid emergency contact no.</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Residential Address </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter residential address" formControlName="res_add"
+                maxlength="450" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Permanent Address <span class="text-danger">*</span><br>
+            </label>
+            <div class="col-sm-8">
+
+              <input type="text" style="margin-bottom: 0;" class="form-control" placeholder="Enter permanenet address"
+                formControlName="perm_add" maxlength="450"
+                [ngClass]="{'is-invalid': bf.perm_add.errors && submitted}" />
+              <input type="checkbox" name="" id="" (change)="getPermAdd($event.target.checked)">&nbsp;
+              <small>Same as residential address</small>
+              <div *ngIf="bf.perm_add.errors && submitted" class="text-danger">
+                <small *ngIf="bf.perm_add.errors.required">Permanent address is required.</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="post_offered" class="control-label col-sm-4">Department <span
+                class="text-danger">*</span></label>
+            <div class="col-md-8" style="padding-right:0;">
+              <ng-select [items]="deptartmentList" bindLabel="departmentname" bindValue="departmentname"
+                formControlName="posting_department" placeholder="Select Department "
+                (change)="onDepartmentChange($event)"
+                [ngClass]="{'is-invalid': bf.posting_department.errors && submitted}">
+              </ng-select>
+
+              <div *ngIf="bf.posting_department.errors && submitted" class="text-danger">
+                <small *ngIf="bf.posting_department.errors.required">Department is required.</small>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="form-group">
+            <label for="post_offered" class="control-label col-sm-4">Designation/Post Offered <span
+                class="text-danger">*</span></label>
+            <div class="col-md-8" style="padding-right:0;">
+              <ng-select [items]="designationList" bindLabel="designationname" bindValue="designationname"
+                formControlName="post_offered" placeholder="Select Designation "
+                [ngClass]="{'is-invalid': bf.post_offered.errors && submitted}" (change)="onDesignationChange($event)">
+              </ng-select>
+              <div *ngIf="bf.post_offered.errors && submitted" class="text-danger">
+                <small *ngIf="bf.post_offered.errors.required">Designation is required.</small>
+              </div>
+              <!-- <input type="text" formControlName="post_offered" class="form-control"
+                placeholder="Post Offered" autocomplete="off"> -->
+            </div>
+
+          </div>
+
+          <div class="form-group">
+            <label for="functional_designation" class="control-label col-sm-4">Functional Designation
+            </label>
+            <div class="col-md-7" style="padding-right:0;">
+              <ng-select [items]="fdesignationList" bindLabel="func_designation" bindValue="dsignationid"
+                formControlName="functional_designation" placeholder="Select Functional Designation"
+                (change)="onfDesignationChange($event)">
+              </ng-select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">
+              Project
+            </label>
+            <div class="col-md-8">
+
+              <ng-select [items]="projectList" bindLabel="project_name" bindValue="project_name"
+                formControlName="project" placeholder="Search Project(s)"
+                (change)="onProjectSelect($event)"></ng-select>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <label for="res_add" class="control-label col-sm-4">Organization Emp Code </label>
+            <div class="col-md-8">
+              <input type="text" formControlName="orgempcode" class="form-control" placeholder="Organization Emp Code"
+                maxlength="20" autocomplete="off">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">Job Type<span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <ng-select [items]="masterJobType" bindLabel="jobtypecode" bindValue="jobtypecode"
+                placeholder="Select Job Type" formControlName="jobType"></ng-select>
+              <div *ngIf="bf.jobType.errors && submitted" class="text-danger">
+                <small *ngIf="bf.jobType.errors.required">Job type is required.</small>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">Reporting Manager Name</label>
+            <div class="col-sm-8">
+              <ng-select [items]="filteredEmployees" bindLabel="emp_name" bindValue="emp_name"
+                [searchFn]="search.bind(this)" placeholder="Search Employee(s)" formControlName="reportingManager"
+                (change)="onEmployeeSelect($event)">
+                <ng-template ng-option-tmp let-item="item">
+                  {{ item.emp_name }} ({{ item.orgempcode ? item.orgempcode : item.tpcode }})
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4"> Blood Group </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" formControlName="blood_group" placeholder="Enter blood group"
+                maxlength="4">
+
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">Organization Units</label>
+            <div class="col-md-8 orgMultiselectDropdown">
+              <ng-multiselect-dropdown [placeholder]="'Select OU'" [settings]="dropdownSettings"
+                [data]="employerOUorGeoFenceData" formControlName="orgIds" [(ngModel)]="selectedval"
+                [disabled]="basic_detail_form.get('orgIds')?.disabled" (onSelect)="onItemSelect($event)"
+                (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onUnselectAll($event)"
+                (onDeSelect)="onItemUnselect($event)">
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Geo Fence</label>
+            <div class="col-md-8 orgMultiselectDropdown">
+              <ng-multiselect-dropdown [placeholder]="'Select Geo Fence'" [settings]="geoDropdownSettings"
+                [data]="employerGeoFenceData" [disabled]="basic_detail_form.get('geoFenceIds')?.disabled"
+                formControlName="geoFenceIds">
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">Pan No<span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" formControlName="pan_no" placeholder="Enter Pan no."
+                maxlength="10" />
+              <div *ngIf="bf.pan_no.invalid && (bf.pan_no.dirty || bf.pan_no.touched)">
+                <small class="text-danger" *ngIf="bf.pan_no.errors?.required">PAN number is required</small>
+                <small class="text-danger" *ngIf="bf.pan_no.errors?.pattern">Invalid PAN number format</small>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="form-group">
+                                   <label class="control-label col-sm-4">ESI Location: <span class="text-danger">*</span></label>
+                                  <div class="col-sm-8">
+                                          <input type="text" class="form-control" placeholder="  ">
+                                    </div>
+                                    
+                              </div> -->
+
+          <!-- <div class="form-group">
+                                   <label class="control-label col-sm-4">ESI Dispensary: <span class="text-danger">*</span></label>
+                                  <div class="col-sm-8">
+                                          <input type="text" class="form-control" placeholder="  ">
+                                    </div>
+                                    
+                              </div> -->
+          <!-- <div class="form-group">
+                                   <label class="control-label col-sm-4">Metro/Non-Metro (TDS): <span class="text-danger">*</span></label>
+                                  <div class="col-sm-8">
+                                          <input type="text" class="form-control" placeholder="  ">
+                                    </div>
+                                    
+                              </div> -->
+
+          <div class="modal-footer">
+            <input *ngIf="isBasicEditable" type="button" class="btn btn-default" data-dismiss="modal" value="Save"
+              (click)="update_basic_details()" />
+            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel"
+              (click)="hideBasicDetails()" />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--------basic detail Modal ends-------->
+
+<!-----------Setup salary unit parameter----------->
+<div [@grooveState]="isUnitParameterSalary?'active':'inactive'"
+  class="modal fade add-address-form-box Component-outer-box in">
+  <div class="modal-dialog" [@dongleState]="isUnitParameterSalary?'active':'inactive'">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Set up Unit Salary</h4>
+          <button type="button" class="close" (click)="hideUnitSalary()" aria-hidden="true">
+            x
+          </button>
+        </div>
+        <div class="modal-body card-body">
+          <div class="card">
+            <div class="card-body">
+
+              <div class="col-md-12 no-padd">
+                <div class="col-md-6">
+                  <label>Company Name</label>
+                  <select class="form-control"
+                    (change)="getMasterData($event.target.value,'','master_department_list')">
+                    <option>--Select--</option>
+                    <option *ngFor="let ou of organzationUnitList" [value]="ou.org_unit_id">{{ou.org_unit_name}}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label>Department</label> <a style="float:right;" title="Add Department" (click)="routeToUnit()"><i
+                      class="fa fa-lg fa-plus-circle" aria-hidden="true"></i></a>
+                  <select class="form-control" (change)="getMasterData('',$event.target.value,'master_role_list')">
+                    <option>--Select--</option>
+                    <option *ngFor="let dept of deptList" [value]="dept.departmentid">{{dept.departmentname}}</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label>Designation</label><a style="float: right;" title="Add Designation" (click)="routeToUnit()"><i
+                      class="fa fa-lg fa-plus-circle" aria-hidden="true"></i></a>
+                  <select class="form-control" (change)="getAop($event.target.value)">
+                    <option>--Select--</option>
+                    <option *ngFor="let desg of desgList" [value]="desg.dsignationid">{{desg.designationname}}</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label>Annually Offered Package</label>
+                  <input class="form-control" [(ngModel)]="aop" [ngModelOptions]="{standalone: true}"
+                    placeholder="Annual Offered Package" readonly>
+                </div>
+              </div>
+
+              <div class="col-md-12 employees-details-outer-box">
+                <div class="table-responsive" *ngIf="salaryStructureView != ''">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Salary Bucket</th>
+                        <th>Monthly</th>
+                        <th>Annually</th>
+                      </tr>
+                    </thead>
+                    <tbody id="roundedValues">
+                      <tr class="danger1" *ngIf="candidateDetails.jobType!='Consultant'">
+                        <th colspan="3">1. GROSS SALARY</th>
+                      </tr>
+                      <tr class="danger1" *ngIf="candidateDetails.jobType!='Consultant'">
+                        <td scope="col">Basic</td>
+                        <td>{{ salaryStructureView.basic }}</td>
+                        <td>{{salaryStructureView.basic*12}}</td>
+                      </tr>
+                      <tr class="danger1" *ngIf="candidateDetails.jobType!='Consultant'">
+                        <td scope="col">HRA</td>
+                        <td>{{ salaryStructureView.hra }}</td>
+                        <td>{{salaryStructureView.hra*12}}</td>
+                      </tr>
+                      <tr class="danger1"
+                        *ngIf="salaryStructureView.allowances!='' && salaryStructureView.allowances!='0' && salaryStructureView.allowances!='0.0000' ">
+                        <td scope="col">Special Allowance</td>
+                        <td>{{ salaryStructureView.allowances }}</td>
+                        <td>{{salaryStructureView.allowances*12}}</td>
+                      </tr>
+                      <tr class="danger1"
+                        *ngIf="salaryStructureView?.conveyance_allowance!='' && salaryStructureView?.conveyance_allowance!='0.0000' && salaryStructureView?.conveyance_allowance!='0'">
+                        <td scope="col">Conveyance Allowance</td>
+                        <td>{{ salaryStructureView.conveyance_allowance }}</td>
+                        <td>{{salaryStructureView.conveyance_allowance*12}}</td>
+                      </tr>
+                      <tr class="danger1"
+                        *ngIf="salaryStructureView?.medical_allowance!='' && salaryStructureView?.medical_allowance!='0.0000' && salaryStructureView?.medical_allowance!='0'">
+                        <td scope="col">Medical Allowance</td>
+                        <td>{{ salaryStructureView.medical_allowance }} </td>
+                        <td>{{salaryStructureView.medical_allowance*12}}</td>
+                      </tr>
+
+                      <tr class="danger1" *ngFor="
+                             let deduction of salaryStructureView.OtherDeductions
+                           " [ngStyle]="{'display':deduction.deduction_amount==0 ? 'none':''}">
+                        <td scope="col">
+                          {{ deduction.deduction_name }}
+                        </td>
+                        <td>{{ deduction.deduction_amount }}</td>
+                        <td>{{ deduction.deduction_amount*12 }}</td>
+                      </tr>
+                      <tr
+                        *ngIf="salaryStructureView.gross!='' && salaryStructureView.gross!='0' && salaryStructureView.gross!='0.0000' && candidateDetails.jobType!='Consultant'">
+                        <th scope="col">Gross Salary</th>
+                        <th>{{ salaryStructureView.gross }}</th>
+                        <th>{{ salaryStructureView.grossAnnual }}</th>
+                      </tr>
+                      <tr class="danger1"
+                        *ngIf="salaryStructureView.gross!='' && salaryStructureView.gross!='0' && salaryStructureView.gross!='0.0000' && candidateDetails.jobType=='Consultant'">
+                        <td scope="col">Gross Earning</td>
+                        <td>{{ salaryStructureView.gross }}</td>
+                        <td>{{ salaryStructureView.grossAnnual }}</td>
+                      </tr>
+                      <tr class="danger1"
+                        *ngIf="salaryStructureView.bonus!='' && salaryStructureView.bonus!='0' && salaryStructureView.bonus!='0.0000'">
+                        <td scope="col">Regular Bonus</td>
+                        <td>{{ salaryStructureView.bonus }}</td>
+                        <td>{{ salaryStructureView.bonus*12 }}</td>
+                      </tr>
+                      <tr class="danger1"
+                        *ngIf="salaryStructureView.employerepfrate!='' && salaryStructureView.employerepfrate!='0' && salaryStructureView.employerepfrate!='0.0000'">
+                        <td scope="col">Employer EPF Part</td>
+                        <td>{{ salaryStructureView.employerepfrate }}</td>
+                        <td>{{ salaryStructureView.employerepfrate*12 }}</td>
+                      </tr>
+                      <tr class="danger1"
+                        *ngIf="salaryStructure.employeresirate!='' && salaryStructure.employeresirate!='0' && salaryStructure.employeresirate!='0.0000'">
+                        <td scope="col">Employer ESIC Part</td>
+                        <td>{{ salaryStructureView.employeresirate }}</td>
+                        <td>{{ salaryStructureView.employeresirate*12 }}</td>
+                      </tr>
+                      <tr class="danger1"
+                        *ngIf="salaryStructureView.employerlwf!='' && salaryStructureView.employerlwf!='0' && salaryStructureView.employerlwf!='0.0000'">
+                        <td scope="col">Employer LWF</td>
+                        <td>
+                          {{salaryStructureView.employerlwf}}</td>
+                        <td>{{salaryStructureView.employerlwf*12}}
+                        </td>
+                      </tr>
+                      <tr class="danger1"
+                        *ngIf="salaryStructureView.employergratuity!='' && salaryStructureView.employergratuity!='0' && salaryStructureView.employergratuity!='0.0000'">
+                        <td scope="col">Employer Gratuity</td>
+                        <td>
+                          {{salaryStructureView.employergratuity}}
+                        </td>
+                        <td>{{salaryStructureView.employergratuity*12}}</td>
+                      </tr>
+                      <tr class="danger1"
+                        *ngIf="salaryStructureView.total!='' && salaryStructureView.total!='0' && salaryStructureView.total!='0.0000'">
+                        <th scope="col">GRAND TOTAL</th>
+                        <th>
+                          {{ salaryStructureView.total }}
+                        </th>
+                        <th>{{ salaryStructureView.totalAnnual}}</th>
+                      </tr>
+
+                      <tr class="danger1">
+                        <th colspan="3">3. DEDUCTION</th>
+                      </tr>
+
+                      <tr class="danger1"
+                        *ngIf="salaryStructureView.taxes!='' && salaryStructureView.taxes!='0' && salaryStructureView.taxes!='0.0000'">
+                        <td scope="col">Tax</td>
+                        <td>
+                          {{salaryStructureView.taxes}}
+                        </td>
+                        <td>
+                          {{salaryStructureView.taxes*12}}
+                        </td>
+                      </tr>
+                      <tr class="danger1"
+                        *ngIf="salaryStructureView.employeeepfrate!='' && salaryStructureView.employeeepfrate!='0' && salaryStructureView.employeeepfrate!='0.0000'">
+                        <td scope="col">Employee EPF</td>
+                        <td>
+                          {{salaryStructureView.employeeepfrate}}
+                        </td>
+                        <td>
+                          {{salaryStructureView.employeeepfrate*12}}
+                        </td>
+                      </tr>
+                      <tr class="danger1"
+                        *ngIf="salaryStructureView.vpfemployee!='' && salaryStructureView.vpfemployee!='0' && salaryStructureView.vpfemployee!='0.0000'">
+                        <td scope="col">Employee VPF</td>
+                        <td>
+                          {{salaryStructureView.vpfemployee}}</td>
+                        <td>{{salaryStructureView.vpfemployee*12}}
+                        </td>
+                      </tr>
+
+                      <tr class="danger1"
+                        *ngIf="salaryStructureView.employeeesirate!='' && salaryStructureView.employeeesirate!='0' && salaryStructureView.employeeesirate!='0.0000'">
+                        <td scope="col">Employee ESIC</td>
+                        <td>{{ salaryStructureView.employeeesirate }}</td>
+                        <td>{{ salaryStructureView.employeeesirate*12 }}</td>
+                      </tr>
+
+                      <tr class="danger1"
+                        *ngIf="salaryStructureView.employeelwf!='' && salaryStructure.employeelwf!='0' && salaryStructure.employeelwf!='0.0000'">
+                        <td scope="col">Employee LWF</td>
+                        <td>
+                          {{salaryStructureView.employeelwf }}</td>
+                        <td> {{salaryStructureView.employeelwf*12 }}
+                        </td>
+                      </tr>
+                      <tr class="danger1"
+                        *ngIf="salaryStructureView.gratuity!='' && salaryStructureView.gratuity!='0' && salaryStructureView.gratuity!='0.0000'">
+                        <td scope="col">Gratuity</td>
+                        <td>
+                          {{salaryStructureView.gratuity}}</td>
+                        <td>{{salaryStructureView.gratuity*12}}
+                        </td>
+                      </tr>
+
+                      <tr class="danger3">
+                        <td>Salary Bucket Total</td>
+                        <td>{{ salaryStructureView.ctc }}</td>
+                        <td>{{ salaryStructureView.ctcAnnual }}</td>
+                      </tr>
+                      <tr class="danger3">
+                        <td>Salary In Hand</td>
+                        <td>{{ salaryStructureView.salaryinhand }}</td>
+                        <td>{{ salaryStructureView.inHandAnnual }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <div class="col-md-12" style="text-align:center">
+                    <button class="btn btn-primary update-btn" (click)="saveCustomSal()">Save Salary</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-----------Setup salary unit parameter----------->
+
+
+<!----------Education Modal---------------->
+<div [@grooveState]="isEducationDetails?'active':'inactive'"
+  class="modal fade add-address-form-box Component-outer-box in">
+
+  <div class="modal-dialog" [@dongleState]="isEducationDetails?'active':'inactive'">
+    <div class="modal-content ">
+      <form [formGroup]="educationDetailForm">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Edit Education Details / Academic Details</h4>
+          <button type="button" class="close" (click)="hideEducationModal()">×</button>
+        </div>
+        <div class="modal-body card-body">
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Course: <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" formControlName="course" placeholder="Enter course"
+                maxlength="50">
+            </div>
+
+          </div>
+
+
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Specialization: </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" formControlName="specialization"
+                placeholder="Enter specialization">
+            </div>
+
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Country: <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" formControlName="country" placeholder="Enter country">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">State: <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" formControlName="state" placeholder="Enter state" maxlength="20">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">University/College: </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter University"
+                formControlName="university_college" maxlength="60">
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Course Type:</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter course type" formControlName="course_type"
+                maxklength="50">
+            </div>
+
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">Passing Year: </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter passing year" formControlName="passing_year"
+                maxlength="4">
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Percentage/CGPA: </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter percentage/cgpa"
+                formControlName="percentage_cgpa">
+            </div>
+
+          </div>
+
+          <div class="modal-footer">
+            <input type="button" class="btn btn-default" value="Save" (click)="updateEducationDetail()">
+            <input type="button" class="btn btn-default" value="Cancel" (click)="hideEducationModal()">
+
+          </div>
+
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+</div>
+<!---------Education Modal ends------------->
+
+<!--------Experience Detail Modal---------->
+<div [@grooveState]="isWorkExperience?'active':'inactive'"
+  class="modal fade add-address-form-box Component-outer-box in">
+
+  <div class="modal-dialog" [@dongleState]="isWorkExperience?'active':'inactive'">
+    <div class="modal-content">
+      <form [formGroup]="workExperienceForm">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Edit Work Experience</h4>
+          <button type="button" class="close" (click)="hideWorkExperience()">×</button>
+        </div>
+        <div class="modal-body card-body">
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Company name: <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter company name" formControlName="company_name"
+                maxlength="150">
+            </div>
+
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Job Title: </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter job title " formControlName="job_title"
+                maxlength="100">
+            </div>
+
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">From Date: <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="dd-mm-yy" readonly id="expFrom"
+                formControlName="from_date" [ngStyle]="{'margin-bottom': invalidDate ? '0':''}">
+              <small class="text-danger" *ngIf="invalidDate">From date should be smaller than To date.</small>
+            </div>
+
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">To Date: <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="dd-mm-yy" readonly id="expTo"
+                formControlName="to_date" [ngStyle]="{'margin-bottom': invalidDate ? '0':''}">
+              <small class="text-danger" *ngIf="invalidDate">To date should be greater than From date.</small>
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Job description:</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter job description" formControlName="description"
+                maxlength="500">
+            </div>
+
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">Skills: </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter skills (eg. : Java, Python)"
+                formControlName="skills" maxlength="">
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Total Experience (in years): </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Total experience" readonly
+                formControlName="total_experience" required (keyup)="check_digits_two($event)">
+            </div>
+
+          </div>
+
+
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Last take-home drawn (monthly): </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter 1 last take-home drawn"
+                formControlName="last_take_home_drawn" required (keyup)="check_digits($event)">
+            </div>
+
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">Leaving Reason: </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter leaving reason"
+                formControlName="leaving_reason">
+            </div>
+
+          </div>
+
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="updateExperienceDetail()"
+              [disabled]="invalidDate">Save</button>
+            <input type="button" class="btn btn-default" value="Cancel" (click)="hideWorkExperience()">
+
+          </div>
+
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+</div>
+<!---------Experience Detail modal ends------------->
+
+<!------------Training detail modal--------------->
+<div [@grooveState]="isTrainingDetail?'active':'inactive'"
+  class="modal fade add-address-form-box Component-outer-box in" style="display: block;">
+
+  <div class="modal-dialog " [@dongleState]="isTrainingDetail?'active':'inactive'">
+    <div class="modal-content ">
+      <form [formGroup]="trainingDetailForm">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Edit Training Details</h4>
+          <button type="button" class="close" (click)="hideTrainingModal()">×</button>
+        </div>
+        <div class="modal-body card-body">
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Training: <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="eg. Financial Modeling" formControlName="training">
+            </div>
+
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Date of Completion: <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" id="doc" class="form-control" placeholder="dd-mm-yy" formControlName="completionDate"
+                readonly>
+            </div>
+
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Certification:</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="-- " formControlName="certification">
+            </div>
+
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Institute: </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder=" -- " formControlName="institute">
+            </div>
+
+          </div>
+
+
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Grade/ Marks: </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder=" -- " formControlName="grade">
+            </div>
+
+          </div>
+
+
+
+          <div class="modal-footer">
+            <input type="button" class="btn btn-default" value="Save" (click)="updateTrainingDetail()">
+            <input type="button" class="btn btn-default" value="Cancel" (click)="hideTrainingModal()">
+
+          </div>
+
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+</div>
+<!------------Training detail modal ends--------------->
+
+<!------------Family details Modal------------------------>
+<div [@grooveState]="isFamilyDetail ? 'active' : 'inactive'"
+  class="modal fade add-address-form-box Component-outer-box in" style="display: block;">
+
+  <div class="modal-dialog " [@dongleState]="isFamilyDetail ? 'active':'inactive'">
+    <div class="modal-content ">
+      <form [formGroup]="familyDetailForm">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Edit Family Details</h4>
+          <button type="button" class="close" (click)="hideFamilyDetail()" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body card-body">
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Relation: </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter relation" formControlName="relationName">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Name: <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter name" formControlName="name">
+            </div>
+          </div>
+
+          <!-- <div class="form-group">
+                  <label class="control-label col-sm-4">Pan Card No: <span class="text-danger">*</span></label>
+                  <div class="col-sm-8">
+                      <input type="text" class="form-control" placeholder="Enter pan no" formControlName="panno">
+                  </div>
+                </div> -->
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Address: </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter address" formControlName="address">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Date of Birth: </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="dd-mm-yyyy" id="familydob" formControlName="dob"
+                readonly>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Aadhaar/ Identification No: </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter identification no" formControlName="aadharno">
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <input type="button" class="btn btn-default" value="Save" (click)="updateFamilyDetails()">
+            <input type="button" class="btn btn-default" value="Cancel" (click)="hideFamilyDetail()">
+
+          </div>
+
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+</div>
+<!------------Family details Modal ends------------------------>
+
+<!-- Add Reward popup by ARPIT -->
+<div [@grooveState]="open_reward_popup ? 'active' : 'inactive'" id="allowanceDeduct" class="modal">
+  <div [@dongleState]="open_reward_popup ? 'active' : 'inactive'" class="modal-dialog" style="margin:auto;">
+    <div class="modal-content" style="height: 100%; margin-top: 100px; max-height: 80vh; overflow-y: auto;">
+      <form *ngIf="open_reward_popup" [formGroup]="reward_form">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Add Reward Details</h4>
+          <button type="button" class="close" data-dismiss="modal" (click)="close_reward_popup()">×</button>
+        </div>
+        <div class="modal-body card-body">
+          <div class="form-group">
+            <label class="control-label col-sm-4">Reward Name: <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" formControlName="rewardName" placeholder="Enter reward name"
+                style="cursor: pointer;" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Reward Reason: <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" formControlName="rewardReason" style="cursor: pointer;"
+                placeholder="Enter reward reason" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Reward Date: <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <div class="custom-file">
+                <input id="reward_Date" formControlName="rewardDate" class="form-control" placeholder="dd-mm-yyyy"
+                  style="cursor: pointer;" autocomplete="off" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="desc">Issued a <b>formal warning </b>on <b>10th October 2021</b> for <b>unauthorized absence</b>
+            for 3 consecutive days. </div>
+          <div class="desc">Here Reward Name is <b>formal warning</b>,Reward Date is <b>10th October 2021</b>, Reward
+            Reason is <b>unauthorized absence</b> </div>
+        </div>
+
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" value="Submit" (click)="Add_reward()">
+          <input type="button" class="btn btn-default" value="Cancel" (click)="close_reward_popup()">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Reward popup by ARPIT -->
+<div [@grooveState]="open_edit_reward_popup ? 'active' : 'inactive'" id="allowanceDeduct" class="modal">
+  <div [@dongleState]="open_edit_reward_popup ? 'active' : 'inactive'" class="modal-dialog" style="margin:auto;">
+    <div class="modal-content" style="height: 100%; margin-top: 100px; max-height: 80vh; overflow-y: auto;">
+      <form *ngIf="open_edit_reward_popup" [formGroup]="Reward_Form">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Edit Reward Details</h4>
+          <button type="button" class="close" data-dismiss="modal" (click)="close_edit_reward_popup()">×</button>
+        </div>
+        <div class="modal-body card-body">
+          <div class="form-group">
+            <label class="control-label col-sm-4">Reward Name: <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" formControlName="reward_Name" style="cursor: pointer;"
+                placeholder="Enter reward name" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Reward Reason: <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" style="cursor: pointer;" formControlName="reward_Reason"
+                placeholder="Enter reward reason" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Reward Date: <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <div class="custom-file">
+                <input id="reward_date" formControlName="reward_Date" style="cursor: pointer;" class="form-control"
+                  placeholder="dd-mm-yyyy" autocomplete="off" required>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" value="Submit" (click)="edit_reward()">
+          <input type="button" class="btn btn-default" value="Reject"
+            (click)="DeleteReward_Details(this.reward_row_id)">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Add Discipilinary popup by ARPIT -->
+<div [@grooveState]="open_disciplinary_popup ? 'active' : 'inactive'" id="allowanceDeduct" class="modal">
+  <div [@dongleState]="open_disciplinary_popup ? 'active' : 'inactive'" class="modal-dialog" style="margin:auto;">
+    <div class="modal-content" style="height: 100%; margin-top: 100px; max-height: 80vh; overflow-y: auto;">
+      <form *ngIf="open_disciplinary_popup" [formGroup]="disciplinary_form">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Add Discipilinary Details</h4>
+          <button type="button" class="close" data-dismiss="modal" (click)="close_disciplinary()">×</button>
+        </div>
+        <div class="modal-body card-body">
+          <div class="form-group">
+            <label class="control-label col-sm-4">Action Detail: <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" style="cursor: pointer;" class="form-control" formControlName="actionDetail"
+                placeholder="Enter action name" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Action Reason: <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" style="cursor: pointer;" class="form-control" formControlName="actionReason"
+                placeholder="Enter action reason" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Action Date: <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <div class="custom-file">
+                <input id="actionDate" style="cursor: pointer;" formControlName="actionDate" class="form-control"
+                  placeholder="dd-mm-yyyy" autocomplete="off" required>
+              </div>
+            </div>
+          </div>
+          <div class="desc">Issued a <b>formal warning </b>on <b>10th October 2021</b> for <b>unauthorized absence</b>
+            for 3 consecutive days. </div>
+          <div class="desc">Here Action Detail is <b>formal warning</b>,Action Date is <b>10th October 2021</b>, Action
+            Reason is <b>unauthorized absence</b> </div>
+        </div>
+
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" value="Submit" (click)="AddDisciplinary_Action()">
+          <input type="button" class="btn btn-default" value="Cancel" (click)="close_disciplinary()">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Disciplinary popup by ARPIT -->
+<div [@grooveState]="open_edit_disciplinary_popup ? 'active' : 'inactive'" id="allowanceDeduct" class="modal">
+  <div [@dongleState]="open_edit_disciplinary_popup ? 'active' : 'inactive'" class="modal-dialog" style="margin:auto;">
+    <div class="modal-content" style="height: 100%; margin-top: 100px; max-height: 80vh; overflow-y: auto;">
+      <form *ngIf="open_edit_disciplinary_popup" [formGroup]="Disciplinary_Form">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Edit Discipilinary Details</h4>
+          <button type="button" class="close" data-dismiss="modal" (click)="close_disciplinary_popup()">×</button>
+        </div>
+        <div class="modal-body card-body">
+          <div class="form-group">
+            <label class="control-label col-sm-4">Action Detail:<span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" style="cursor: pointer;" class="form-control" formControlName="action_Detail"
+                placeholder="Enter action name" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Action Reason: <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" style="cursor: pointer;" class="form-control" formControlName="action_Reason"
+                placeholder="Enter action reason" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Action Date: <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <div class="custom-file">
+                <input id="action_date" style="cursor: pointer;" formControlName="action_Date" class="form-control"
+                  placeholder="dd-mm-yyyy" autocomplete="off" required>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" value="Submit" (click)="edit_disciplinary()">
+          <input type="button" class="btn btn-default" value="Reject"
+            (click)="Deletedisciplinary_Details(this.action_row_id)">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!------Edit disciplinary popup ends---------------------->
+
+
+<!--------Add Department popup------------------>
+<div [@grooveState]="isAddDepartment ? 'active' : 'inactive'" class="modal">
+  <div [@dongleState]="isAddDepartment ? 'active' : 'inactive'" class="modal-dialog" style="margin:auto;">
+    <div class="modal-content" style="height: 100%; margin-top: 100px; max-height: 80vh; overflow-y: auto;">
+      <form [formGroup]="departmentForm">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Add Department</h4>
+          <button type="button" class="close" data-dismiss="modal" (click)="hideAddDepartment()">×</button>
+        </div>
+        <div class="modal-body card-body">
+          <div class="form-group">
+            <label class="control-label col-sm-4">Department Name <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" formControlName="departmentName"
+                placeholder="Enter department name" required>
+              <div *ngIf="departmentForm.controls.departmentName.errors" class="text-danger">
+                <small>Department name is required.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" value="Add" (click)="addDepartment()"
+            [disabled]="departmentForm.invalid">
+          <input type="button" class="btn btn-default" value="Cancel" (click)="hideAddDepartment()">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-------Add department popup ends---------->
+
+<!--------Add Designation popup------------------>
+<div [@grooveState]="isAddDesignation ? 'active' : 'inactive'" class="modal">
+  <div [@dongleState]="isAddDesignation ? 'active' : 'inactive'" class="modal-dialog" style="margin:auto;">
+    <div class="modal-content" style="height: 100%; margin-top: 100px; max-height: 80vh; overflow-y: auto;">
+      <form [formGroup]="designationForm">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Add Department</h4>
+          <button type="button" class="close" data-dismiss="modal" (click)="hideAddDesignation()">×</button>
+        </div>
+        <div class="modal-body card-body">
+          <div class="form-group">
+            <label class="control-label col-sm-4">Designation Name <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" formControlName="designationName"
+                placeholder="Enter designation name" required>
+              <div *ngIf="designationForm.controls.designationName.errors" class="text-danger">
+                <small>Designation name is required.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" value="Add" (click)="addDesignation()"
+            [disabled]="designationForm.invalid">
+          <input type="button" class="btn btn-default" value="Cancel" (click)="hideAddDesignation()">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-------Add Designation popup ends-------------->

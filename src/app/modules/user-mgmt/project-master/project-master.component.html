@@ -1,0 +1,204 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+  <div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+    <div class="fakeLoader"></div>
+    <!-- Navigation -->
+    <div id="page-wrapper">
+      <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+          <h3 class="text-themecolor" style="margin-left: 20px;">Project Master</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item" title="Home"><a [routerLink]="['/dashboard']">Home</a>
+            </li>
+            <li class="breadcrumb-item active">Project Master</li>
+          </ol>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <!-- /row -->
+        <div class="row">
+          <div class="col-md-12 col-sm-12">
+            <div class="card">
+              <div class="card-header">
+                <div class="row row-head">
+                  <div class="col-md-9 col-sm-12">
+                    <input type="text" placeholder="Search Project Master" class="form-control wide-width"
+                      style="width: 100%;" (keyup)="search($event)" />
+                  </div>
+                  <div class="col-md-3 col-sm-12">
+                    <div class="top-right-outer-box">
+                      <div class="dropdown float-right-box">
+                        <button class="btn btn-deault btn-primary" (click)="showProjectModal()">Add Project</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Project Name</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Project Amount</th>
+                      <th>Project Loction</th>
+                      <th>Employee Count</th>
+                      <th>Create Employee Group</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let list_data of filteredproject_master; let i=index;">
+                      <tr>
+                        <td>{{i+1}}</td>
+                        <td >{{list_data.project_name}}</td>
+                        <td> {{list_data.start_date}}</td>
+                        <td>{{list_data.end_date}}</td>
+                        <td>{{list_data.project_amount}}</td>
+                        <td>{{list_data.project_location}}</td>
+                        <td><a (click)="getProjectWiseEmp(list_data)">{{list_data.emp_count}}</a></td>
+                        <td class="mapped-emp userOrgUnit">
+                          <ng-multiselect-dropdown
+                          [settings]="dropdownSettings"
+                          [data]="filteredEmployees"
+                          [placeholder]="'Select users'"
+                          [ngStyle]="{ width: '300px'}"
+                          [(ngModel)]="selectedEmp[i]"
+                          (onSelect)="onItemSelect(i,$event)"
+                          (onSelectAll)="onSelectAll(i,$event)"
+                          (onDeSelectAll)="onUnselectAll(i,$event)"
+                          (onDeSelect)="onItemUnselect(i,$event)"
+                          ></ng-multiselect-dropdown>
+
+                        </td>
+                        <td>
+                          <a title="Edit Project" (click)="showProjectModal(list_data)"><i class="fa fa-pencil-square-o fa-lg"></i></a>&nbsp;
+                          <a title="Delete Project" *ngIf="list_data.emp_count==0" (click)="manageProject('delete_project',list_data.id)"
+                          ><i class="fa fa-trash fa-lg"></i></a>&nbsp;
+                          <a (click)="mapEmployees(list_data,i)" title="Map employee"
+                          ><i class="fa fa-floppy-o fa-lg" aria-hidden="true"></i></a>
+                        </td>
+                      </tr>
+                    </ng-container>
+
+                    <tr *ngIf="project_master_data_count == 0">
+                      <td colspan="10" style="text-align: center;">No Data Found</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <alert></alert>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- /#page-wrapper -->
+
+<!-----------Add Edit project starts---------------->
+<div class="modal" [@grooveState]="isAddEditProject?'active':'inactive'" aria-labelledby="myModalLabel">
+  <div [@dongleState]="isAddEditProject?'active':'inactive'" class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Employee Project</h4>
+          <button type="button" class="close" (click)="hideProjectModal()"
+            >&times;</button>
+        </div>
+        <form [formGroup]="projectForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="project_name">Project Name <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" formControlName="projectName"
+              placeholder="Enter Project Name">
+            <small class="text-danger" *ngIf="isFieldInvalid('projectName')">Project Name is required</small>
+          </div>
+          <div class="form-group">
+            <label for="start_date">Start Date </label> <!--<span class="text-danger">*</span> -->
+            <input type="date" class="form-control" formControlName="startDate"
+              placeholder="Enter Start Date">
+            <!-- <small class="text-danger" *ngIf="isFieldInvalid('startDate')">Start Date is required</small> -->
+          </div>
+          <div class="form-group">
+            <label for="end_date">End Date </label><!--<span class="text-danger">*</span> -->
+            <input type="date" class="form-control" formControlName="endDate"
+              placeholder="Enter End Date">
+            <!-- <small class="text-danger" *ngIf="isFieldInvalid('endDate')">End Date is required</small> -->
+          </div>
+          <div class="form-group">
+            <label for="end_date">Project Amount</label>
+            <input type="text" class="form-control" formControlName="projectAmount"
+              placeholder="Enter project amount">
+          </div>
+          <div class="form-group">
+            <label for="end_date">Project Location</label>
+            <input type="text" class="form-control" formControlName="projectLocation"
+              placeholder="Enter project location">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default" (click)="hideProjectModal()">Close</button>
+          <button class="btn btn-default btn-success" (click)="manageProject()">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-----------Add Edit project end---------------->
+
+<!------------Project Emp details modal------------------->
+<div class="modal" [@grooveState]="isShowEmp?'active':'inactive'" aria-labelledby="myModalLabel">
+  <div [@dongleState]="isShowEmp?'active':'inactive'" class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Employee List</h4>
+          <button type="button" class="close" (click)="isShowEmp=false;OUWiseEmpList=[];pageIndex=1;"
+            >&times;</button>
+        </div>
+        <div class="modal-body" style="max-height: 320px;">
+          <div class="table" style="max-height: 237px;
+          overflow: auto;
+          margin-bottom: 0;">
+            <table class="table table-responsive" id="otherDeductionTable">
+              <thead style="position:sticky;top:0px;background: #fff;">
+                <tr>
+                 <th id="ember1089" class="sortable ember-view" style="width: 10%;">
+                  #
+                 </th>
+                 <th id="ember1089" class="sortable ember-view">
+                  Employee Name
+                 </th>
+                 <th id="ember1089" class="sortable ember-view">
+                  Org Emp Code/TP Code
+                 </th>
+                 </tr> 
+                </thead>
+                <tbody>
+                  <tr *ngFor="let emp of OUWiseEmpList | paginate: { itemsPerPage: 10, currentPage: pageIndex,totalItems: totalEmp };let i=index;" class="emp-item">
+                    <td>{{(pageIndex-1)*10+i+1}}</td>
+                    <td>{{emp.emp_name}}</td>
+                    <td>{{emp.orgempcode ? emp.orgempcode : emp.cjcode}}</td>
+                  </tr>
+                  <tr *ngIf="OUWiseEmpList.length==0">
+                    <td colspan="3" style="text-align: center;">No Data Found</td>
+                  </tr>
+                </tbody>
+            </table>
+          </div>
+            <div class="flexbox padd-10" *ngIf="OUWiseEmpList.length > 0">
+              <pagination-controls (pageChange)="get_page($event)"
+                  style="font-size: 2rem; padding: 6px; font-weight: bold"
+                  class="float-right"></pagination-controls>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+<!------------Project Emp details modal------------------->
+<app-footer></app-footer>

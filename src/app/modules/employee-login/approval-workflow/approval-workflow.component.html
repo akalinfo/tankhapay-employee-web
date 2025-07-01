@@ -1,0 +1,908 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card-header caded-innder-head-box">
+      <div class="col-md-12" style="margin-bottom: 10px;">
+        <div class="col-md-3">
+          <input type="hidden" id="recdate" (click)="getDateWiseData()">
+
+          <label style="color:#000; font-weight: 500;">From Date</label>
+          <input id="FromDate" class="form-control" type="text" style="cursor: pointer;" placeholder="dd-mm-yyyy"
+            autocomplete="off" readonly>
+        </div>
+        <div class="col-md-3">
+          <label style="color:#000; font-weight: 500;">To Date</label>
+          <input id="ToDate" class="form-control" type="text" style="cursor: pointer;" placeholder="dd-mm-yyyy"
+            autocomplete="off" readonly>
+        </div>
+
+        <div class="col-sm-2">
+          <label style="color:#000; font-weight: 500;">Status</label>
+          <select class="wide form-control" (change)="getLeaveByStatus($event.target.value)">
+            <option value="P" selected>Pending</option>
+            <option value="A">Approved</option>
+            <option value="R">Rejected</option>
+          </select>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="menu6" class="tab-pane fade1 active">
+  <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+
+    <div class="card panel">
+      <div class="panel-heading panel_heading_gray  card-header" role="tab" id="headingOne001" data-toggle="collapse"
+        data-parent="#accordion001" href="#collapseOne001" aria-expanded="false" aria-controls="collapseOne">
+        <h4>Approval Workflow <i class="fa fa-angle-down"></i></h4>
+      </div>
+      <div id="collapseOne001" style="padding:0;" class="panel-collapse collapse card-body in" role="tabpanel">
+        <div class="row">
+
+          <div class="col-md-12 col-sm-12">
+            <div class="card">
+
+              <div id="approval-workflow-info123">
+
+                <div class="card-body padd-bot-0 padd-top-0">
+
+                  <div class="row">
+
+                    <div class="col-md-12 padd-top-0">
+
+                      <div class="col-md-12 table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+
+
+                        <table class="table user-list">
+                          <thead>
+                            <tr>
+                              <th id="ember394" class="sortable header-user-role ember-view">
+                                Type
+                                <!---->
+                              </th>
+                              <th id="ember395" class="sortable header-user-role ember-view">
+                                Count
+                                <!---->
+                              </th>
+                              <th id="ember395" class="sortable header-user-role ember-view">
+                                Action
+                                <!---->
+                              </th>
+
+
+                              <!-- <th id="ember395"
+                                  class="sortable header-user-role ember-view">
+                                  Status
+                                </th> -->
+
+
+                              <!-- <th
+                                  class="header-actions text-center">
+                                  Action</th>
+                              </tr> -->
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let approval of approvalList;let i=index;">
+                              <td class="ZPLRow">
+
+                                <div class="ZPusrName">
+                                  <span>{{approval.approvaltype}}<span></span></span>
+                                </div>
+                              </td>
+                              <td class="CP">
+                                {{approval.approvalcount}}
+                              </td>
+                              <td>
+                                <div class="alwd_dur">
+                                  <span class="alwd_tg">
+                                    <a class="btn btn-primary" (click)="openAddApprovalModal(approval)">
+                                      <i class="fa fa-eye" aria-hidden="true"></i>
+                                    </a>
+                                  </span>
+                                </div>
+                              </td>
+
+                            </tr>
+                            <tr>
+
+                              <td class="ZPLRow">
+
+                                <div class="ZPusrName">
+                                  <span>
+                                    Exit Feedback
+                                    <span></span></span>
+                                </div>
+                              </td>
+                              <td class="CP">
+                                0
+                              </td>
+                              <td>
+                                <div class="alwd_dur">
+                                  <span class="alwd_tg">
+                                    <a class="btn btn-primary" (click)="openAddApprovalModalForExit('exitProcess')">
+                                      <i class="fa fa-eye" aria-hidden="true"></i>
+                                    </a>
+                                  </span>
+                                </div>
+                              </td>
+
+                            </tr>
+
+
+                          </tbody>
+                        </table>
+
+                      </div>
+
+
+
+                    </div>
+
+
+
+
+                  </div>
+                </div>
+
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div [@grooveState]="showAddApprovalModal?'active':'inactive'" id="addApprovalWorkflow"
+  class="modal add-address-form-box">
+  <div [@dongleState]="showAddApprovalModal?'active':'inactive'" class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">{{approvalType}} - {{leaveStatus=='P' ? 'Pending' : leaveStatus=='A'?
+            'Approved':'Rejected'}} Requests
+          </h4>
+          <button (click)="closeAddApprovalModal()" type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+        <div class="modal-body">
+
+          <div class="row">
+
+
+            <div class="col-md-12 ">
+              <div class="manage-list-row manage-pay-select" style="padding: 0px;">
+
+                <table class="table table-hover align-middle">
+                  <thead>
+                    <tr class="bg-light text-secondary">
+                      <th class="ps-3">Employee Details</th>
+                      <th class="text-center">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngIf="fullAndFinal">
+                      <tr *ngFor="let emp of employeesInFullFinal; let i = index">
+
+
+                        <!-- Cell 1: Employee Info. Added padding 'p-3' for spacing. -->
+                        <td style="cursor: pointer; vertical-align: middle;" class="p-3"
+                          (click)="showExitEmployeeDetails(emp)">
+                          <div>
+                            <span style="font-weight: 600;">{{ emp?.emp_name }}</span>
+                            <span style="font-weight: 500;color: rgb(0, 175, 219);">
+                              {{ emp.orgempcode || emp.tpcode }}
+                            </span>
+                          </div>
+                        </td>
+
+                        <!-- Cell 2: Action Buttons. 'vertical-align' keeps them centered. -->
+                        <td class="text-center" style="vertical-align: middle;">
+                          <button class="btn btn-primary btn-sm me-2" (click)="openExitClearanceModal(emp)"
+                            *ngIf="isShowActionButton(emp)">
+                            Approve
+                          </button>
+                          <button class="btn btn-danger btn-sm" (click)="openAddApprovalModalForExit(emp, 'R')"
+                            *ngIf="isShowActionButton(emp)">
+                            Reject
+                          </button>
+                        </td>
+
+                      </tr>
+                    </ng-container>
+
+                    <!-- Optional: A message to show when there are no employees -->
+                    <tr *ngIf="!employeesInFullFinal || employeesInFullFinal.length === 0">
+                      <td colspan="2" class="text-center text-muted p-4">No employees to display.</td>
+                    </tr>
+                    <!-- <div *ngIf="!fullAndFinal"> -->
+                    <tr *ngFor="let employee of approvalDataByActionType;let i=index;" class="border-bottom">
+                      <td class="ps-3" style="cursor: pointer;" (click)="showEmpDetailsModal(employee)">
+                        <div class="fw-bold">
+                          <span style="font-weight: 600;">{{ employee?.emp_name }}</span>
+                          <span style="font-weight: 500;color: rgb(0, 175, 219);">
+                            {{employee?.orgempcode || employee?.cjcode}}</span>
+                        </div>
+                        <!-- start - Imprest -->
+                        <ng-container *ngIf="approvalType == 'Imprest Request'">
+                          <div class="text-muted">
+                            {{ employee?.createdon }}
+                          </div>
+                          <div style="font-weight: 500;color: rgb(0, 175, 219);">
+                            Request Amount:<span style="color: grey;"> {{employee?.amount_spent}}</span>
+                          </div>
+                          <div style="font-weight: 500;color: rgb(0, 175, 219);" *ngIf="leaveStatus == 'A'">
+                            Approved Amount:<span style="color: grey;"> {{employee?.approved_amount_spent}}</span>
+                          </div>
+                        </ng-container>
+                        <!-- <div class="text-muted">{{ formatDate(employee.att_date) }}</div> -->
+                        <!-- end - Imprest -->
+
+                        <!-- start - Leave -->
+                        <div class="text-muted" *ngIf="approvalType == 'Leave'">
+                          {{employee?.leavetypecode}} | {{employee?.fromdate}} - {{employee?.todate}}
+                        </div>
+                        <div class="text-muted">{{ formatDate(employee.att_date) }}</div>
+                        <!-- start - Leave -->
+
+                        <!-- start - missed punch -->
+                        <div class="text-muted" *ngIf="approvalType == 'Missed Punch'">
+                          <span style="font-weight: 500;color: rgb(0, 175, 219);">
+                            {{employee?.att_catagory_txt}}</span>
+                        </div>
+                        <!-- end - missed punch -->
+
+                        <!-- start - on duty -->
+                        <ng-container
+                          *ngIf="approvalType == 'On Duty' || approvalType == 'Comp-Off Request' || approvalType == 'WFH Request'">
+                          <div class="text-muted">
+                            <span style="font-weight: 500; color: rgb(0, 175, 219);">
+                              <ng-container *ngIf="approvalType === 'On Duty'; else checkWFH">
+                                {{ employee?.od_description }}
+                              </ng-container>
+
+                              <ng-template #checkWFH>
+                                <ng-container *ngIf="approvalType === 'WFH Request'; else checkCompOff">
+                                  {{ employee?.wfh_description }}
+                                </ng-container>
+                              </ng-template>
+
+                              <ng-template #checkCompOff>
+                                <ng-container *ngIf="approvalType === 'Comp-Off Request'">
+                                  {{ employee?.compoff_description }}
+                                </ng-container>
+                              </ng-template>
+                            </span>
+                          </div>
+                          <div class="text-muted">{{ employee?.createdon }}</div>
+                        </ng-container>
+                        <!-- end - on duty -->
+                      </td>
+
+                      <td class="text-center">
+                        <div class="mt-top"
+                          *ngIf="employee?.approval_status == 'Pending' && !isShowActionButton(employee)">
+                          {{employee?.approval_status}} at Level {{employee?.wf_approval_cur_level}}
+                        </div>
+                        <button class="btn btn-primary btn-sm me-2 mt-top"
+                          (click)="openAddremark('A',employee,activeLeaveType.approvaltype)"
+                          *ngIf="isShowActionButton(employee)">Approve</button>
+                        <button class="btn btn-danger btn-sm mt-top"
+                          (click)="openAddremark('R',employee,activeLeaveType.approvaltype)"
+                          *ngIf="isShowActionButton(employee)" style="margin-left: 5px;">Reject</button>
+                      </td>
+
+                    </tr>
+                    <!-- </div> -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" data-dismiss="modal" value="Close"
+            (click)="closeAddApprovalModal()">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div [@grooveState]="addRemarks?'active':'inactive'" id="addApprovalWorkflow" class="modal add-address-form-box">
+  <div [@dongleState]="addRemarks?'active':'inactive'" class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Add Remarks</h4>
+          <button (click)="addRemarks=false;remarks=''" type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+        <div class="modal-body">
+
+          <div class="row">
+
+            <div class="col-md-12 ">
+              <input type="text" class="form-control" placeholder="Enter remarks" [(ngModel)]="remarks"
+                [ngModelOptions]="{standalone:true}">
+            </div>
+            <div class="col-md-12 ">
+              <input type="text" class="form-control" placeholder="Enter remarks" [(ngModel)]="remarks"
+                [ngModelOptions]="{standalone:true}">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" data-dismiss="modal" value="Submit" (click)="requestAction()">
+          <input type="button" class="btn btn-default" data-dismiss="modal" value="Close"
+            (click)="addRemarks=false;remarks=''">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div [@grooveState]="isShowEmpDetails?'active':'inactive'" id="addApprovalWorkflow" class="modal add-address-form-box">
+  <div [@dongleState]="isShowEmpDetails?'active':'inactive'" class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">{{modalHeadText}}</h4>
+          <button (click)="hideEmpDetailModal()" type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+        <div class="modal-body">
+
+          <div class="row">
+            <!-- Leave - start -->
+            <div class="leave-block" *ngIf="approvalType =='Leave'">
+              <div class="col-md-12" style="line-height: 25px;">
+                <strong>Leave Type</strong><br>
+                <span>{{empDetails?.leavetypecode}}</span>
+              </div>
+              <div class="col-md-12" style="line-height: 25px;">
+                <strong>Subject</strong><br>
+                <span>{{empDetails?.leave_subject}}</span>
+              </div>
+              <div class="col-md-12">
+                <strong>Description</strong><br>
+                <span>{{empDetails?.leave_description}}</span>
+              </div>
+              <div class="col-md-12">
+                <strong>From Date</strong><br>
+                <span>{{empDetails?.fromdate}}</span>
+              </div>
+              <div class="col-md-12">
+                <strong>To Date</strong><br>
+                <span>{{empDetails?.todate}}</span>
+              </div>
+              <div class="col-md-12">
+                <strong>Application status</strong><br>
+                <span>{{empDetails?.approval_status}}</span>
+              </div>
+              <div class="col-md-12" *ngIf="!addRemarks">
+                <strong>Remarks</strong><br>
+                <span [innerHtml]="empDetails?.action_comment_txt"></span>
+              </div>
+
+              <!-- start - Add Remarks -->
+              <div class="col-md-12 " *ngIf="addRemarks">
+                <strong>Remarks</strong>
+                <!-- <span class="text-danger">*</span> -->
+                <input type="text" class="form-control" placeholder="Enter remarks" [(ngModel)]="remarks"
+                  [ngModelOptions]="{standalone:true}">
+              </div>
+              <!-- end - Add Remarks -->
+
+            </div>
+            <!-- Leave - end -->
+
+            <div class="travel-block" *ngIf="approvalType !='Leave'">
+              <!-- On Duty/Comp-Off/WFH Request/Missed Punch - Start -->
+              <div class="col-md-12" style="line-height: 25px;"
+                *ngIf="approvalType == 'On Duty' || approvalType == 'Comp-Off Requests' || approvalType == 'WFH Request' || approvalType == 'Missed Punch'">
+                <strong>Employee Name</strong><br>
+                <span>{{empDetails?.emp_name}}</span>
+              </div>
+              <div class="col-md-12" style="line-height: 25px;" *ngIf="approvalType == 'On Duty'">
+                <strong>Employee Id</strong><br>
+                <span>{{empDetails?.cjcode}}</span>
+              </div>
+              <div class="col-md-12" style="line-height: 25px;" *ngIf="approvalType == 'On Duty'">
+                <strong>Description</strong><br>
+                <span>{{empDetails?.od_description}}</span>
+              </div>
+              <div class="col-md-12" style="line-height: 25px;" *ngIf="approvalType == 'On Duty'">
+                <strong>Created On</strong><br>
+                <span>{{empDetails?.createdon}}</span>
+              </div>
+              <div class="col-md-12" style="line-height: 25px;"
+                *ngIf="approvalType == 'On Duty' || approvalType == 'WFH Request'">
+                <strong>From Date</strong><br>
+                <span>{{empDetails?.fromdate}}</span>
+              </div>
+              <div class="col-md-12" style="line-height: 25px;"
+                *ngIf="approvalType == 'On Duty' || approvalType == 'WFH Request'">
+                <strong>To Date</strong><br>
+                <span>{{empDetails?.todate}}</span>
+              </div>
+              <div class="col-md-12" style="line-height: 25px;" *ngIf="approvalType == 'On Duty'">
+                <strong>Approval Status</strong><br>
+                <span>{{empDetails?.approval_status}}</span>
+              </div>
+              <div class="col-md-12" style="line-height: 25px;" *ngIf="approvalType == 'Missed Punch'">
+                <strong>Attendance Date</strong><br>
+                <span>{{empDetails?.att_date}}</span>
+              </div>
+              <div class="col-md-12" style="line-height: 25px;" *ngIf="approvalType == 'Missed Punch'">
+                <strong>Check-In Time</strong><br>
+                <span>{{empDetails?.check_in_time}}</span>
+              </div>
+              <div class="col-md-12" style="line-height: 25px;" *ngIf="approvalType == 'Missed Punch'">
+                <strong>Check-Out Time</strong><br>
+                <span>{{empDetails?.check_out_time}}</span>
+              </div>
+              <!-- <div class="col-md-12" *ngIf="isShowEmpDetails">
+              <strong>Remarks</strong><br>
+              <span [innerHTML]="empDetails?.action_comment_txt"></span>
+              </div>  -->
+              <!-- On Duty/WFH Request/Missed Punch - End -->
+
+              <!-- Comp-Off Request - Start -->
+              <ng-container *ngIf="approvalType == 'Comp-Off Request'">
+                <div class="col-md-12" style="line-height: 25px;">
+                  <strong>Employee Name</strong><br>
+                  <span>{{empDetails?.emp_name}}</span>
+                </div>
+                <div class="col-md-12" style="line-height: 25px;">
+                  <strong>Comp Off Date</strong><br>
+                  <span>{{empDetails?.comp_off_applied_date}}</span>
+                </div>
+                <div class="col-md-12" style="line-height: 25px;">
+                  <strong>Start Time</strong><br>
+                  <span>{{empDetails?.working_start_time}}</span>
+                </div>
+                <div class="col-md-12" style="line-height: 25px;">
+                  <strong>End Time</strong><br>
+                  <span>{{empDetails?.working_end_time}}</span>
+                </div>
+                <div class="col-md-12" style="line-height: 25px;">
+                  <strong>Working Hours</strong><br>
+                  <span>{{empDetails?.working_hours}}</span>
+                </div>
+                <div class="col-md-12" *ngIf="approvalType === 'Comp-Off Request'">
+                  <strong>Document</strong>
+                  <div class="card"
+                    style="width: 100px; height: 100px; padding: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid #ccc; border-radius: 8px;">
+                    <a [href]="empDetails.attachemnt_url" target="_blank" rel="noopener noreferrer"
+                      style="text-align: center; text-decoration: none; color: inherit;">
+                      <i class="fa fa-file-pdf-o fa-2x" style="color: #d9534f;"></i>
+                      <div style="font-size: 12px; margin-top: 5px;">View</div>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- <div class="col-md-12" *ngIf="approvalType === 'Comp-Off Request'">
+                <strong>Document</strong>
+                <div class="card" style="width: 75%; height: 200px; margin-bottom: 10px;">
+                  <iframe
+                    [src]="empDetails.attachemnt_url | safeUrl"
+                    width="100%"
+                    height="100%"
+                    style="border: none;"
+                  ></iframe>
+                </div>
+                <a [href]="empDetails.attachemnt_url" target="_blank" rel="noopener noreferrer"
+                  style="color: #00afdb; text-decoration: underline;">
+                  View
+                </a>
+              </div> -->
+
+                <!-- start - Add Approve Leave -->
+                <div class="col-md-12" *ngIf="addRemarks && compoff_leaves_flag == 'A'">
+                  <strong>Approve Leave</strong><span class="text-danger">*</span>
+                  <input type="number" class="form-control" placeholder="Enter Approve Leave"
+                    [(ngModel)]="compoff_leaves" [ngModelOptions]="{ standalone: true }" step="0.01" min="0"
+                    [attr.max]="empDetails?.max_leaves_per_compoff" (input)="onInputLimit($event)" />
+                </div>
+                <span *ngIf="addRemarks && compoff_leaves_flag == 'A'" style=" margin: 17px;color:red">
+                  <small>Max leaves allowed per comp-off is {{empDetails?.max_leaves_per_compoff}}</small>
+                </span>
+
+                <!-- <div class="col-md-12" *ngIf="addRemarks && compoff_leaves_flag === 'A'">
+                <strong>Approve Leave</strong><span class="text-danger">*</span>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  [max]="empDetails?.max_leaves_per_compoff"
+                  class="form-control"
+                  placeholder="Enter Approve Leave"
+                  [(ngModel)]="compoff_leaves"
+                  [ngModelOptions]="{ standalone: true }"
+                  [value]="empDetails?.comp_off_days"/>
+              </div> -->
+
+              </ng-container>
+              <!-- Comp-Off Request - End -->
+
+              <!-- Imprest Request - Start -->
+              <ng-container *ngIf="approvalType == 'Imprest Request'">
+                <div class="col-md-12" style="line-height: 25px;">
+                  <strong>Employee Name</strong><br>
+                  <span>{{ empDetails?.emp_name }}</span>
+                  <span style="font-weight: 500;color: rgb(0, 175, 219);">
+                    {{empDetails?.orgempcode || empDetails?.cjcode}}</span>
+                </div>
+                <div class="col-md-12" style="line-height: 25px;">
+                  <strong>Expense Category</strong><br>
+                  <span>{{ empDetails?.expense_category_name }}</span>
+                </div>
+                <div class="col-md-12" style="line-height: 25px;">
+                  <strong>Expense Description</strong><br>
+                  <span>{{ empDetails?.imprest_reim_description }}</span>
+                </div>
+                <div class="col-md-12" style="line-height: 25px;">
+                  <strong>Expense Amount</strong><br>
+                  <span>{{ empDetails?.amount_spent }}</span>
+                </div>
+                <div class="col-md-12" style="line-height: 25px;">
+                  <strong>Date of Expense</strong><br>
+                  <span>{{ empDetails?.date_of_expense }}</span>
+                </div>
+                <div class="col-md-12 " *ngIf="addRemarks && activeEmp.action == 'A'">
+                  <strong>Expense Amount</strong><span class="text-danger">*</span>
+                  <input type="number" class="form-control" placeholder="Enter Amount" [(ngModel)]="expense_amount"
+                    [ngModelOptions]="{standalone:true}" (ngModelChange)="validateExpenseAmount()">
+                  <small class="text-danger" *ngIf="expenseAmountError">
+                    Entered amount should not exceed {{ empDetails?.amount_spent }}
+                  </small>
+                </div>
+              </ng-container>
+              <!-- Imprest Request - End -->
+
+
+
+              <!-- Start - Travel Request || Travel Expense -->
+              <ng-container *ngIf="approvalType == 'Travel Request' || approvalType == 'Travel Expense'">
+                <div class="col-md-12" style="line-height: 25px;">
+                  <strong>Purpose</strong><br>
+                  <span>{{empDetails?.purpose}}</span>
+                </div>
+                <div class="col-md-12" style="line-height: 25px;">
+                  <strong>Place of Travel</strong><br>
+                  <span>From :{{empDetails?.place_of_travel_from}}</span><br>
+                  <span>To :{{empDetails?.place_of_travel_to}}</span><br>
+                </div>
+                <div class="col-md-12">
+                  <strong>Date of Travel</strong><br>
+                  <span>From : {{empDetails?.date_of_travel_from}}</span><br>
+                  <span>To : {{empDetails?.date_of_travel_to}}</span>
+                </div>
+                <div class="col-md-12">
+                  <strong>Mode of Travel</strong><br>
+                  <span>{{empDetails?.mode_of_travel}}</span>
+                </div>
+                <div class="col-md-12">
+                  <strong>Travel Advance</strong><br>
+                  <span>{{empDetails?.travel_adv_flag}}</span>
+                </div>
+                <div class="col-md-12">
+                  <strong>Advance Amount</strong><br>
+                  <span>{{empDetails?.travel_adv_amount }}</span>
+                </div>
+                <div class="col-md-12" *ngIf="approvalType =='Travel Request'">
+                  <strong>Application status</strong><br>
+                  <span>{{empDetails?.travel_request_status}}</span>
+                </div>
+                <div class="col-md-12" *ngIf="approvalType =='Travel Expense'">
+                  <strong>Transportation</strong><br>
+                  <span>{{empDetails?.transportation}}</span>
+                </div>
+                <div class="col-md-12" *ngIf="approvalType =='Travel Expense' && isTicketFile">
+                  <strong>Document</strong>
+                  <div class="card" style="padding:5px;flex-direction: row;">
+                    <span *ngFor="let doc of empDetails.docment_file">
+                      <a href="{{doc.doc_url}}" *ngIf="doc.doc_type=='Ticket'" style="margin-right: 5px;">
+                        <i class="fa fa-file-pdf-o fa-lg"></i>
+                      </a>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-12" *ngIf="approvalType =='Travel Expense'">
+                  <strong>Accomodation</strong><br>
+                  <span>{{empDetails?.accommodation}}</span>
+                </div>
+                <div class="col-md-12" *ngIf="approvalType =='Travel Expense' && isHotelBill">
+                  <strong>Document</strong>
+                  <div class="card" style="padding:5px;flex-direction: row;">
+                    <span *ngFor="let doc of empDetails.docment_file">
+                      <a href="{{doc.doc_url}}" *ngIf="doc.doc_type=='Hotel Bill'" style="margin-right: 5px;">
+                        <i class="fa fa-file-pdf-o fa-lg"></i>
+                      </a>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-12"
+                  *ngIf="approvalType =='Travel Request' ? empDetails?.action_comment_txt_req : empDetails?.action_comment_txt_exp">
+                  <strong>Remarks</strong><br>
+                  <span
+                    [innerHTML]="approvalType =='Travel Request' ? empDetails?.action_comment_txt_req : empDetails?.action_comment_txt_exp"></span>
+                </div>
+                <div class="col-md-12 " *ngIf="approvalType=='Travel Expense' && addRemarks">
+                  <strong>Amount</strong>
+                  <input type="text" class="form-control" placeholder="Enter Approved Amount"
+                    [(ngModel)]="approvedAmount" [ngModelOptions]="{standalone:true}">
+                </div>
+              </ng-container>
+              <!-- End - Travel Request || Travel Expense -->
+
+              <!-- Start - Full and Final -->
+              <ng-container *ngIf="approvalType == 'Exit Clearance'">
+                <div class="col-md-12">
+                  <h5><strong>Exit Clearance Details</strong></h5>
+                </div>
+
+                <div class="col-md-12" *ngFor="let item of clearanceItemsArray.controls; let i = index"
+                  [formGroupName]="i">
+                  <div class="card p-2 mb-2" style="border: 1px solid #ddd; border-radius: 5px;">
+                    <div class="row align-items-center">
+                      <div class="col-md-6">
+                        <strong>Item:</strong><br />
+                        <span>{{ item.get('itemName')?.value }}</span>
+                      </div>
+
+                      <div class="col-md-3">
+                        <strong>Status</strong>
+                        <select class="form-select mt-1" formControlName="status">
+                          <option value="" disabled>-- Select --</option>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                        </select>
+                        <div *ngIf="item.get('status')?.invalid && item.get('status')?.touched"
+                          class="text-danger small mt-1">
+                          Selection is required.
+                        </div>
+                      </div>
+
+                      <div class="col-md-3">
+                        <strong>Remarks</strong>
+                        <input type="text" class="form-control mt-1" formControlName="remarks"
+                          placeholder="Enter Remarks" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+              <!-- End - Full and Final -->
+
+              <div class="col-md-12" *ngIf="isShowEmpDetails && !addRemarks">
+                <strong>Remarks</strong><br>
+                <span [innerHTML]="empDetails?.action_comment_txt"></span>
+              </div>
+
+              <!-- start - Add Remarks -->
+              <div class="col-md-12 " *ngIf="addRemarks">
+                <strong>Remarks </strong>
+                <span class="text-danger" *ngIf="approvalType == 'Imprest Request'">*</span>
+                <input type="text" class="form-control" placeholder="Enter Remarks" [(ngModel)]="remarks"
+                  [ngModelOptions]="{standalone:true}">
+              </div>
+              <!-- end - Add Remarks -->
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" value="Submit" (click)="requestAction()" *ngIf="addRemarks">
+          <input type="button" class="btn btn-default" value="Close" (click)="hideEmpDetailModal()">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div [@grooveState]="isShowEmployeeDetails ? 'active' : 'inactive'" id="addApprovalWorkflow"
+  class="modal add-address-form-box">
+  <div [@dongleState]="isShowEmployeeDetails ? 'active' : 'inactive'" class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">{{ 'Employee Detail' }}</h4>
+          <button (click)="hideEmpDetailModal()" type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="row">
+
+            <!-- Employee Details Section -->
+            <ng-container *ngIf="empDetails">
+              <div class="col-12 mb-3">
+                <!-- <div class="row g-3"> -->
+                <div class="col-md-12">
+                  <label class="form-label"><strong>Employee Name:</strong></label>
+                  <div>{{ empDetails?.emp_name }}</div>
+                </div>
+                <div class="col-md-12">
+                  <label class="form-label"><strong>Employee Code</strong></label>
+                  <div>{{ empDetails?.emp_code }}</div>
+                </div>
+                <div class="col-md-12">
+                  <label class="form-label"><strong>Department:</strong></label>
+                  <div>{{ empDetails?.posting_department }}</div>
+                </div>
+                <div class="col-md-12">
+                  <label class="form-label"><strong>Designation:</strong></label>
+                  <div>{{ empDetails?.post_offered }}</div>
+                </div>
+              </div>
+            </ng-container>
+
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="hideEmpDetailModal()">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div [@grooveState]="showExitClearanceModal ? 'active' : 'inactive'" id="exitClearanceFormModal"
+  class="modal add-address-form-box">
+  <div [@dongleState]="showExitClearanceModal ? 'active' : 'inactive'" class="modal-dialog modal-xl">
+    <div class="modal-content">
+
+      <div class="modal-header theme-bg">
+        <h4 class="modal-title">Exit Clearance Form: {{ activeEmp?.emp_name }}</h4>
+        <button (click)="closeExitClearanceModal()" type="button" class="close" data-dismiss="modal">×</button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- Loading State -->
+        <div *ngIf="isLoadingAccess" class="text-center p-5">
+          <p>Loading clearance form...</p>
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+
+        <!-- Access Denied State -->
+        <div *ngIf="!isLoadingAccess && !canAccessForm" class="m-3 alert alert-warning text-center">
+          Access Denied. You may not be authorized to view this form or it may not be applicable for this employee at
+          this time.
+        </div>
+
+        <!-- Main Form (binds to properties on ApprovalWorkflowComponent) -->
+        <div class="clearance-form-container" *ngIf="!isLoadingAccess && canAccessForm && clearanceForm">
+
+          <form [formGroup]="clearanceForm" (ngSubmit)="submitClearanceForm()">
+            <!-- Employee Details Section -->
+            <div class="section-container mb-4">
+              <div class="section-header p-3" (click)="toggleEmployeeInfo()">
+                <span class="section-title">Employee Details</span>
+                <i class="fa toggle-icon" [ngClass]="showEmployeeInfo ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+              </div>
+              <div class="section-body border border-top-0 p-3" *ngIf="showEmployeeInfo">
+                <!-- <fieldset class="p-3 border rounded"> -->
+                <div class="row">
+                  <div class="col-md-6 mb-2">
+                    <label class="form-label">Employee Name:</label>
+                    <input type="text" class="form-control" formControlName="employeeName">
+                  </div>
+                  <div class="col-md-6 mb-2">
+                    <label class="form-label">Employee Code:</label>
+                    <input type="text" class="form-control" formControlName="employeeCode">
+                  </div>
+                  <div class="col-md-6 mb-2">
+                    <label class="form-label">Designation:</label>
+                    <input type="text" class="form-control" formControlName="designation">
+                  </div>
+                  <div class="col-md-6 mb-2">
+                    <label class="form-label">Department:</label>
+                    <input type="text" class="form-control" formControlName="department">
+                  </div>
+                  <div class="col-md-6 mb-2">
+                    <label class="form-label">Date of Joining:</label>
+                    <input type="text" class="form-control" formControlName="dateOfJoining">
+                  </div>
+                  <div class="col-md-6 mb-2">
+                    <label class="form-label">HoD/ RO:</label>
+                    <input type="text" class="form-control" formControlName="hodRo">
+                  </div>
+                  <div class="col-md-6 mb-2">
+                    <label class="form-label">Date of Resignation:</label>
+                    <input type="text" class="form-control" formControlName="dateOfResignation">
+                  </div>
+                  <div class="col-md-6 mb-2">
+                    <label class="form-label">Last Working Day:</label>
+                    <input type="text" class="form-control" formControlName="lastWorkingDay">
+                  </div>
+                </div>
+                <!-- </fieldset> -->
+              </div>
+            </div>
+
+            <!-- Asset Record Section -->
+            <div class="section-container mb-4">
+              <div class="section-header p-3" (click)="toggleTable()">
+                <span class="section-title">Asset Record</span>
+                <i class="fa toggle-icon" [ngClass]="showTable ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+              </div>
+              <div class="section-body border border-top-0 p-3" *ngIf="showTable">
+                <div class="p-3 border rounded">
+                  <div class="table-responsive">
+                    <table class="table table-bordered align-middle">
+                      <thead>
+                        <tr>
+                          <th style="width:13%;">Department</th>
+                          <th style="width: 26%;">Assets / Item Description</th>
+                          <th style="width: 13%;">Handed Over? (Y/N)</th>
+                          <th style="width: 30%;">Verification/ Remarks</th>
+                          <th style="width: 20%;">Deductions</th>
+                        </tr>
+                      </thead>
+                      <tbody formArrayName="clearanceItems">
+                        <ng-container *ngFor="let deptKey of departmentKeys">
+                          <ng-container *ngFor="let item of groupedItems[deptKey]; let isFirst = first">
+                            <tr [formGroupName]="item.originalIndex">
+                              <td *ngIf="isFirst" [attr.rowspan]="groupedItems[deptKey].length">
+                                <b>{{ item.department_name }}</b>
+                              </td>
+                              <td>{{ item.asset_item }}</td>
+                              <td>
+                                <ng-container>
+                                  <select class="form-select" formControlName="status">
+                                    <option value="" disabled>-- Select --</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                  </select>
+                                  <div *ngIf="clearanceItemsArray.controls[item.originalIndex].get('status')?.invalid &&
+            clearanceItemsArray.controls[item.originalIndex].get('status')?.touched" class="text-danger small mt-1">
+                                    Selection is required.
+                                  </div>
+                                </ng-container>
+
+                              </td>
+                              <td>
+                                <input type="text" class="form-control" formControlName="remarks"
+                                  placeholder="Enter remarks">
+                              </td>
+                              <td>
+                                <input type="number" class="form-control" formControlName="deducation_amount" min="0"
+                                  placeholder="Enter amount" disabled>
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- This button is hidden but allows the footer button to trigger the form submission -->
+            <button type="submit" id="internalSubmitButton" style="display: none;"></button>
+
+          </form>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <!-- The button in the footer now triggers the form submission -->
+        <button type="button" class="btn btn-primary" (click)="submitClearanceForm()"
+          [disabled]="!clearanceForm || clearanceForm.invalid">Approve</button>
+        <button type="button" class="btn btn-secondary" (click)="closeExitClearanceModal()">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>

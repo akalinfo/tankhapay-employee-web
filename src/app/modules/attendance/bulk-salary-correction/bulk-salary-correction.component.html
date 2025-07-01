@@ -1,0 +1,200 @@
+
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+  <div id="wrapper" [ngClass]="{'active':showSidebar}">
+    <div class="fakeLoader"></div>
+    <div id="page-wrapper">
+      <div class="row page-titles">
+        <div class="col-md-4 align-self-center">
+          <h3 class="text-themecolor" style="font-size: 16px;"><a routerLink="/attendance/bulk-salary-correction"></a>&nbsp;&nbsp;Bulk Salary Correction</h3>
+        </div>
+        <div class="col-md-8 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item" title="Attendance"><a [routerLink]="['/attendance/salary-correction']">Salary-Correction</a></li>
+            <li class="breadcrumb-item active">Bulk Salary Correction</li>
+          </ol>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12 col-sm-12">
+            <div class="card">
+              <div class="card-header">
+                <div class="row">
+                  <div class="col-lg-12">
+
+
+                    <div class="row">
+                      <div class="col-md-2" style="text-align: left;">
+                        <span style="font-weight: bold;">Month</span>
+                        <select class="form-control" [(ngModel)]="month" style="width: 15rem;" (change)="changeMonth()">
+                          <option value="">Select</option>
+                          <option *ngFor="let ma of filteredMonthsArray" [selected]="month==ma.id" [value]="ma.id">
+                            {{ma.month}}
+                          </option>
+                        </select>
+
+                        <!-- <select class="form-control" (change)="changeMonth($event)">
+
+                          <option *ngFor="let ma of monthsArray" [selected]="month==ma.id" [value]="ma.id">
+                            {{ma.month}}</option>
+                        </select> -->
+                      </div>
+
+                      <div class="col-md-2">
+                        <span style="font-weight: bold;">Year</span>
+                        <select class="form-control" [(ngModel)]="year" (change)="onYearChange()">
+                          <!-- <option value="">Select</option> -->
+                          <option *ngFor="let ya of filteredYearsArray" [selected]="year==ya" [value]="ya">{{ya}}</option>
+                        </select>
+                        <!-- <select class="form-control" (change)="changeYear($event)">
+
+                          <option *ngFor="let ya of yearsArray" [selected]="year==ya" [value]="ya">{{ya}}
+                          </option>
+                        </select> -->
+                      </div>
+
+                      <div class="col-md-2">
+                        <a (click)="employer_details()" id="searcharrears-btn" title="Search"
+                        class=" btn btn-user btn-round  btn-primary search-btn btn-primary-Add-Roles-btn">Search </a> &nbsp;&nbsp;
+                      </div>
+
+                    </div>
+                    <!-- <p style="color: red;font-size: 1.1rem;"> <b>Note</b>* Only <b>Full Time [ Monthly ]</b> Employee(s)
+                      shows/
+                      can upload bulk attendnace using excel.
+                      . For work report / daily employee attendance will marked from <b>Tankhapay Mobile App</b>. </p> -->
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-11 col-md-offset-0 mrg-top-0 mrg-bot-1">
+                    <!-- General Information -->
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-md-12 padd-bot-10 padd-top-10">
+                            <h3>Bulk Upload Salary Correction</h3>
+                            <ul>
+                              <li style="color: #ff0c0c;font-weight: 500;"
+                                title="Click on template to download excel with list of employee">1. Please download the
+                                latest <a (click)="getAttExcel()"
+                                  style="font-weight: bold; cursor: pointer;">template</a>, with
+                                the list of employee(s)</li>
+                              <li>2. Edit this file in Excel, add the  <b style="font-size: 1.2rem; color: #ff0c0c; font-weight: 500;">PaidDays , ManualModeReason & Remarks </b> and it is required.
+                              </li>
+                              <li>3. Do not change any employee details already present in the template. This includes
+                                <b style="font-size: 1.2rem; color: #ff0c0c; font-weight: 500;"> the following columns -
+                                  Employee, OrgEmpCode, Month, Year, DOB, DOJ, DOR
+                                </b>
+                              </li>
+                              <li>4.   
+                                The only allowed values for the column <b style="font-size: 1.2rem; color: #ff0c0c; font-weight: 500;">ManualModeReason</b> are <b style="font-size: 1.2rem; color: #ff0c0c; font-weight: 500;"> Additional Days </b> or <b style="font-size: 1.2rem; color: #ff0c0c; font-weight: 500;"> Attendance Not Recieved</b>.
+                               
+                              </li>
+                              <li>5.  A maximum of <b style="font-size: 1.2rem; color: #ff0c0c; font-weight: 500;">50 rows </b>can be uploaded at a time. Please split the data into multiple sheets for uploading
+                               
+                              </li>
+
+                            </ul>
+
+                            <h3 class="mrg-top-15">Template file instructions -</h3>
+
+                            <ul>
+                              <li>1. There is a list of employees with orgempcode/tpcode and joining dates.
+                                Please fill in the data accordingly.</li>
+                              <li>2. Please do not add/remove columns.</li>
+                              <li>3. Please enter the PaidDays and Remarks.</li>
+                              <!-- <li>4. If there is no data for a particular cell, leave it
+                                empty. Don't enter "-", "NA" etc.</li> -->
+
+                            </ul>
+                            <div class="col-sm-10 mrg-bot-15 mrg-top-15"
+                              title="Bulk Salary Correction.">
+                              <input type="file"
+                                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                                name="salary_correction_excel" class="allowed_jpg_jpeg_pdf form-control" id="salary_correction_excel"
+                                (change)="onFileChange($event)">
+                            </div>
+                            <div class="col-sm-2 mrg-bot-15 mrg-top-15">
+                              <button type="button" class="btn btn-secondary" (click)="clear_file()"
+                                style="border-color: black;">Clear</button>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+
+
+                    </div>
+
+                    <div class="card" *ngIf="excelToTableData.length>0">
+                      <span style="text-align: left; color: blue;font-weight: bold;"> Total Records :
+                        {{excelToTableData.length}}</span>
+                      <div class="card-body" style="overflow:auto;">
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <!-- <th><strong>Emp Code</strong></th> -->
+                              <th><strong>Name</strong></th>
+                              <th><strong>Org Emp Code/TP Code</strong></th>
+                              <!-- <th><strong>Mobile</strong></th> -->
+                              <th><strong>Month</strong></th>
+                              <th><strong>Year</strong></th>
+                              <th><strong>DOB</strong></th>
+                              <th><strong>Paid Days</strong><span style="color:red">*</span></th>
+                              <th><strong>Manual Mode Reason</strong><span style="color:red">*</span></th>
+                              <th><strong>Remarks</strong><span style="color:red">*</span></th>
+                              <th *ngIf="bulk_salary_flag"><strong>Status</strong></th>
+                              <th *ngIf="bulk_salary_flag"><strong>Message</strong></th>
+
+                            </tr>
+                          </thead>
+
+                          <tbody>
+                            <ng-container *ngFor="let et of excelToTableData">
+                              <tr [ngStyle]="{'color': et.rowColor == false || et?.status_txt == 'Failed'  ? 'red' : 'green'}">
+                                <!-- <td>{{et.empcode}}</td> -->
+                                <td>{{et.employee}}</td>
+                                <td>{{et?.orgempcode || ''}}</td>
+                                <!-- <td>{{et.mobile}}</td> -->
+                                <td>{{et.month}}</td>
+                                <td>{{et.year}}</td>
+                                <td>{{et.dob}}</td>
+                                <td>{{et.paidDays}}</td>
+                                <td>{{et.manualModeReason}}</td>
+                                <td>{{et.remarks}}</td>
+                                <td *ngIf="bulk_salary_flag">{{et?.status_txt}}</td>
+                                <td *ngIf="bulk_salary_flag">{{et?.message}}</td>
+
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                        </table>
+                      </div>
+
+                    </div>
+
+                    <div *ngIf="(excelToTableData.length>0 && show_bulk_upload_btn)"
+                      class="col-md-12 col-12 padd-top-20 text-center">
+                      <button class="btn btn-primary btn-lg" (click)="uploadExcelBulkAtt()"><i
+                          class="fa fa-upload fa-lg">
+                        </i> Save Bulk Salary Correction</button>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- /#page-wrapper -->
+
+
+  </div>
+</section>
+<app-footer></app-footer>
+

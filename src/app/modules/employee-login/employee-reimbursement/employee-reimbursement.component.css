@@ -1,0 +1,98 @@
+.btn{
+    border-radius: 2px;
+}
+
+.btn.btn-user {
+    background: transparent;
+    text-transform: uppercase;
+    font-size: 12px;
+    border-radius: 10px;
+    padding: 6px 20px;
+    min-width: 110px;
+    color: #fff
+}
+
+.top-right-outer-box {
+    align-items: center;
+}
+
+.table-responsive.reports-table-outer-box.reports-new-table-outer-box table tr td {
+    font-size: 12px;
+}
+
+.btn-sm {
+    padding: 1px 6px !important;
+    font-size: 11px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+
+a.edite-delete-btn {
+    font-size: 20px;
+}
+
+.fa-trash {
+    color: red;
+}
+
+a {
+    color: #67757c;
+    text-decoration: none;
+}
+
+table tr th{
+    background: #6fbbdb !important;
+}
+
+input.form-control.deductionAmountField, select.form-control.IsBillable_NonBillable {
+    font-size: 12px;
+    padding: 5px;
+    height: 30px;
+    width: 117px;
+    margin: 0.2rem;
+}
+a.btn.btn-danger.removeDeductionBtn {
+    background: #ffb4ba!important;
+    border-color: #ffbfbc;
+    padding: 2px 8px;
+    border-radius: 2px;
+}
+
+.table-responsive.reports-table-outer-box.reports-new-table-outer-box table tr td p {
+    margin: 0;
+    font-size: 12px;
+}
+.table-responsive.reports-table-outer-box.reports-new-table-outer-box table tr td {
+     font-size: 12px;
+}
+a.btn.btn-gary.manage-btn.emp-edit-btn-box12 {
+    padding: 0px 8px;
+    background: #fff;
+    font-size: 22px;
+}
+a.edite-delete-btn {
+    font-size: 20px;
+}
+
+ .btn-sm {
+    padding: 1px 6px !important;
+    font-size: 11px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+
+.no-data{
+    text-align: center;
+    font-weight: 600;
+}
+
+.table-responsive.reports-new-table-outer-box thead {
+    color: #ffffff;
+    background: #6fbbdb !important;
+    vertical-align: top;
+}
+
+.btn-primary {
+    background-color: #0084ff !important;
+    border-color: #0084ff !important;
+}

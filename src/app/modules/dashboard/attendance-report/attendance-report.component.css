@@ -1,0 +1,155 @@
+.ou-hide-text-box {
+    line-height: 14px !important;
+}
+
+.active-right-sidebar{
+    width:381px !important;
+  }
+
+  #sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: #f1f5fa;
+    overflow-x: hidden;
+    transition: 0.5s;
+    
+    z-index: 1000;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 9px -1px, rgba(0, 0, 0, 0.3) -10px 6px 10px 0px, rgba(0, 0, 0, 0.12) -7px 1px 18px 0px;
+}
+
+#sidebar .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+}
+
+.sidebar-content {
+    padding: 15px;
+}
+h3.filter-menu-header-text-box {
+    padding: 21px 15px;
+	margin-bottom: 0;
+}
+.sidebar-content-box .form-group {
+    font-size: 13px;
+}
+
+
+#sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+#sidebar::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+#sidebar::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+#sidebar::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+.sidebar-menu_filter-box label.control-label {
+    font-weight: 500;
+    padding: 0;
+}
+.sidebar-menu_filter-box select.form-control {
+    height: 35px;
+}
+.sidebar-menu_filter-box .form-group {
+    margin-bottom: 0px;
+}
+
+
+.sidebar-menu_filter-box .panel-default>.panel-heading {
+    color: #333;
+    background-color: #deedff;
+    border-color: #fff;
+    border: 1px solid #fff;
+}
+.sidebar-menu_filter-box .panel-default>.panel-heading h4 {
+    font-size: 14px;
+    color: #000;
+}
+.sidebar-menu_filter-box .panel-heading h4 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.sidebar-menu_filter-box .panel-heading {
+    cursor: pointer;
+}
+
+.filter-onlick-btn {
+ 
+    padding: 5px 15px !important;
+ 
+}	
+
+
+
+.filter-outer-main-box label.control-label {
+    color: #383838;
+    padding: 0;
+}
+.filter-outer-main-box .form-control {
+    height: 40px;
+	margin-bottom: 0;
+}
+.filter-outer-main-box .btn-primary-Add-Roles-btn {
+    border-radius: 0 !important;
+    background-color: #adacac00 !important;
+    border: 1px solid #1194f7;
+    color: #1194f7!important;
+    text-transform: capitalize;
+    font-size: 13px;
+    padding: 8px 17px;
+	    min-width: auto;
+}
+.filter-outer-main-box .btn-primary-Add-Roles-btn:hover {
+    background-color: #ffffff !important;
+    color: #1194f7;
+    border: 1px solid #1194f7;
+}
+.filter-outer-main-box .form-control {
+    height: 40px;
+    font-size: 13px;
+    padding: 6px 5px;
+}
+.filter-outer-main-box .filter-onlick-btn {
+    
+    font-size: 13px !important;
+    padding: 8px 13px !important;
+    background-color: #ffffff;
+    color: #1194f7 !important;
+    border: 1px solid #1194f7;
+	margin: 0;
+}
+.filter-outer-main-box .filter-onlick-btn:hover, .filter-outer-main-box .btn-primary-Add-Roles-btn:hover {
+    background-color: #008ffb0f!important;
+}
+ 
+.filter-outer-main-box .form-group {
+    margin: 0;
+}
+.filter-outer-main-box  .card-body{
+    padding : 5px;
+}
+.filter-onlick-btn{
+    font-size: 13px !important;
+    padding: 8px 13px !important;
+    background-color: #ffffff;
+    color: #1194f7 !important;
+    border: 1px solid #1194f7;
+    margin: 0;border-radius: 2px !important;
+    padding-top: 9px !important;
+    margin-right: 10px;
+    margin-top:10px;
+}

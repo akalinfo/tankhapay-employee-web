@@ -1,0 +1,344 @@
+
+    <div id="page-wrapper">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card" style="margin-top: 15px;">
+              <div class="card-body">
+                <div style="border: none;">
+                  <div style="display: flex; justify-content: space-between;">
+                    <h4 class="mg-left"><b>Level Potential : {{levelPotential | number: '1.2-2'}} %</b></h4>
+                    <div style="display: flex; justify-content: space-evenly; width: 16%;">
+                      <a href="#tag-skillset" data-toggle="modal" data-placement="top" title="Add"
+                        class="btn btn-primary blu" style="margin-bottom: 7px; margin-left: 8px;">
+                        Tag Skill Set
+                      </a>
+                    </div>
+                  </div>
+
+                  <div style="display: flex; margin-top: 20px;">
+
+                    <div class="tb-header-design-1">Score</div>
+                    <div class="tb-header-design-2">Name</div>
+                    <div class="tb-header-design-3">
+                      <ng-container *ngIf="skillSetMetrix?.settings?.weight">
+                        Weightage(%)
+                      </ng-container>
+                    </div>
+                    <div class="tb-header-design-4">Add/Updated On</div>
+                    <div class="tb-header-design-5"></div>
+
+                  </div>
+
+                  <div *ngFor="let skill of tagSkillSetList;let i=index">
+
+                    <div class="tb-body-parent">
+                      <div class="tb-body-design-1" style="background-color: rgb(226, 159, 83);">
+                        <h5>Level</h5>
+                        <h4><b>{{skill?.latest_level}}</b></h4>
+                      </div>
+
+                      <div class="tb-body-design-2">
+                        <b style="font-weight: 600; color: black;">{{skill?.title}}</b>
+                        <p>{{skill?.description}}</p>
+                      </div>
+
+                      <div class="tb-body-design-3">
+                        <!-- {{skill?.latest_weightage}} % -->
+                        <ng-container *ngIf="skillSetMetrix?.settings?.weight">
+
+                          <div style="margin-top: 10px;">
+                            <input type="text" [readonly]="!skill.isEditMode" [(ngModel)]="skill.latest_weightage"
+                              style="border:none;width:60px;margin-left:10px;"
+                              oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)"
+                              (input)="onWeightageInput(skill)" [ngStyle]="{
+                             'border-bottom': skill?.isEditMode ? '1px solid gray' : 'none',
+                             'background-color': skill?.isEditMode ? 'white' : '#eef5f9'
+                          }" />
+                            <span *ngIf="!skill?.isEditMode" (click)="toggleEditMode(i)">
+                              <i class="fa fa-pencil" style="font-size: 15px; cursor: pointer;margin-left:10px;"
+                                aria-hidden="true"></i>
+                            </span> &nbsp;
+                            <span *ngIf="skill?.isEditMode">
+                              <i (click)="cancel(i)"
+                                style="font-size: 20px; width:40px; height: 30px; color: rgb(216, 82, 82);cursor: pointer;"
+                                class="fa fa-times" aria-hidden="true"></i>
+                              <i (click)="save(i)"
+                                style="font-size: 20px; width:40px; height: 30px; color: green;cursor: pointer;"
+                                class="fa fa-check" aria-hidden="true"></i>
+                            </span>
+                          </div>
+                        </ng-container>
+
+                      </div>
+
+                      <div class="tb-body-design-4">{{skill?.latest_created_date | date: 'dd-MM-yyyy' }}</div>
+
+                      <div class="tb-body-design-5" style="display: flex;">
+
+                        <div class="dropdown" style="margin-top: 4px;margin-left: 30px;">
+                          <i class="ti-more-alt dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="true"></i>
+                          <ul class="dropdown-menu dropdown-menu-left custom-dropdown-menu"
+                            aria-labelledby="dropdownMenu1">
+                            <li><a href="#level-upgrade-skillset" data-toggle="modal" data-placement="top"
+                                title="Import" (click)="updateSkillSetLevel(skill)">
+                                Upgrade</a></li>
+                            <li><a href="#delete-skillset-model" data-toggle="modal" data-placement="top" title="Export"
+                                (click)="deleteSkillSetLevelWise(skill,'parent')">Delete</a></li>
+                          </ul>
+                        </div>
+
+                        <p class="text-primary isVisible" (click)="toggleVisibility(skill)">
+                          <i *ngIf="skill.isVisible" style="font-size:24px" class="fa">&#xf139;</i>
+                          <i *ngIf="!skill.isVisible" style="font-size:24px" class="fa">&#xf13a;</i>
+                        </p>
+
+                      </div>
+                    </div>
+
+                    <!-- //////////////////////// -->
+
+                    <ng-container *ngIf="skill.isVisible">
+                      <div class="designCustomLevel" *ngFor="let item of skill?.upgrade_list">
+
+                        <div class="tb-body-designShow">
+                          <h4><b>{{item?.level}}</b></h4>
+                        </div>
+
+                        <div class="tb-body-design-2">
+                          <b style="font-weight: 600; color: black;">{{item?.title}}</b>
+                          <p>{{item?.reason}}</p>
+                        </div>
+
+                        <div class="tb-body-design-3">{{item?.skill_set_weightage}} %</div>
+
+                        <div class="tb-body-design-4">{{item?.created_date | date: 'dd-MM-yyyy' }}</div>
+
+                        <div class="tb-body-design-5" style="display: flex;">
+
+                          <p style="text-align: center;">
+                            <i href="#delete-skillset-model" data-toggle="modal" data-placement="top"
+                              style="font-size:20px" class="fa fa-trash"
+                              (click)="deleteSkillSetLevelWise(item,'level')"></i>
+                          </p>
+
+                        </div>
+
+                      </div>
+                    </ng-container>
+
+
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+  <!-- //////////////////////tag skill set Popup ///////////////////////////// -->
+
+  <div id="tag-skillset" class="modal fade add-address-form-box main" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Tag Skill Set</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <!-- <div class="col-sm-6" style="margin-top: 20px;">
+                <select class="form-control">
+                  <option value="" disabled selected>Selected</option>
+                  <option value="" >Skill Set1</option>
+                  <option value="" >Skill Set2</option>
+                  <option value="" >Skill Set3</option>
+                  <option value="" >Skill Set4</option>
+                </select>
+            </div> -->
+            <div class="col-sm-6" style="margin-top: 20px;display: flex;">
+              <input class="form-control" type="text" placeholder="Search" (keyup)="searchSkillSet($event)">
+              <div class="mg-left" style="margin-top: 6px;margin-left: 10px;">
+                <a href="#add-skillset" data-toggle="modal" data-placement="top" title="Add Skill">
+                  <i class="fa fa-plus-circle fa-lg"></i></a>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12" style="margin-top:25px;">
+                <div class="col-md-6" *ngFor="let data of filteredSkillSetList">
+                  <div class="card designTop" [ngClass]="{'disabled-div': data?.istagged}"
+                    style="height: 70px;background-color: whitesmoke;border-radius: 10px;">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-md-3">
+
+                          <p style="line-height:4px;margin-top:8px;">Level</p>
+                          <p>
+                            <select [disabled]="!isSkillChecked(data.id)" style="border: none;"
+                              (change)="updateSkillLevel(data.id, $event)">
+                              <option value="0">0</option>
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                            </select>
+                          </p>
+
+                        </div>
+
+                        <div class="col-md-6">
+                          {{data.title}}
+                        </div>
+
+                        <div class="col-md-3">
+                          <input type="checkbox" (input)="addSkillToArray(data)" [checked]="data.istagged">
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="modal-footer">
+          <input type="button" class="btn btn-primary" data-dismiss="modal" value="Submit" (click)="createSkillSet()"
+            style="margin-right: 9px;">
+          <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Delete summary Modal -->
+
+  <div class="modal fade" id="delete-skillset-model" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalCenterTitle">Delete {{renameData?.skillSet?.newName}}</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">cancel</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="confirmDelete()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- ////////////////////////////////////// update skillset popup ////////////////////////// -->
+
+
+  <div id="level-upgrade-skillset" class="modal fade add-address-form-box main" data-backdrop="static">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Upgrade {{renameData?.skillSet?.newName}}</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+
+        <div class="card">
+          <form [formGroup]="upgradeForm">
+            <div class="card-body">
+
+              <div class="form-group">
+                <label class="col-sm-12">Attach Document</label>
+                <div class="col-sm-12">
+                  <input type="file" class="form-control" formControlName="attachDocument"
+                    (change)="onFileChange($event)">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3">Reason</label>
+                <div class="col-sm-12">
+                  <textarea class="form-control" formControlName="reason" style="height:70px"></textarea>
+
+                  <!-- <ng-container *ngIf="updateSummaryForm.get('answer').errors && updateSummaryForm.get('answer').touched" class="text-danger">
+                  <p class="text-danger">Answer is required</p>
+                 </ng-container> -->
+
+                </div>
+              </div>
+
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <input type="button" class="btn btn-primary" data-dismiss="modal" value="Submit" style="margin-right: 9px;"
+            (click)="submitUpgradedSkillSet()">
+          <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- //////////////////////////////////// Add Skill Set Popup /////////////////////////////////// -->
+
+  <div id="add-skillset" class="modal fade add-address-form-box main" data-backdrop="static">
+		<div class="modal-dialog modal-md">
+		  <div class="modal-content">
+			<form [formGroup]="addSkillForm">
+			  <div class="modal-header theme-bg">
+				<h4 class="modal-title">{{renameData?.skillSet?.newName}}</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelForm()">×</button>
+			  </div>
+			  <div class="modal-body">
+				<div class="form-group">
+				  <label class="control-label col-sm-3">Title</label>
+				  <div class="col-sm-10">
+					   <input type="text" class="form-control" placeholder="Enter title" maxlength="250" formControlName="title">
+					   <ng-container *ngIf="addSkillForm.get('title').errors && addSkillForm.get('title').touched" class="text-danger">
+						<p class="text-danger">Title is required</p>
+					  </ng-container>
+					</div>
+				</div>
+				<div class="form-group">
+				  <label class="control-label col-sm-3" for="exampleFormControlTextarea1">Description</label>
+				  <div class="col-sm-10">
+					<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" formControlName="description"></textarea>
+
+					</div>
+				</div>
+
+			  </div>
+
+			  <div class="modal-footer">
+			  <ng-container >
+			  <input type="button" class="btn btn-default"  value="Submit"  [attr.data-dismiss]="(addSkillForm.valid) ? 'modal' : 'null'" (click)="createSkillCatalogue()" >
+			  </ng-container>
+
+			  <input type="button" class="btn btn-default" data-dismiss="modal"  (click)="cancelForm()" value="Cancel">
+
+			  </div>
+			</form>
+		  </div>
+		</div>
+	  </div>

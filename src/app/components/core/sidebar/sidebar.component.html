@@ -1,0 +1,42 @@
+
+<app-header (toggleEmitter)="toggle()"></app-header>
+
+
+<div id="sidebar-id" [ngClass]="{'show-hide':showSidebar==false}" class="navbar-default sidebar" role="navigation">
+    <div class="sidebar-nav navbar-collapse" [innerHTML]="safeHtml" #dynamicContainer>
+    <!-- <div > -->
+        <!-- [routerLink]="['/employee']" -->
+
+            <!-- <li class="active"><a [routerLink]="['/employee']"><i class="ti ti-user"></i>Employees </a></li>
+
+            <li  ><a [routerLink]="['/attendance']"><i class="ti ti-ruler-pencil"></i>Attendance</a></li>
+            <li ><a [routerLink]="['/payouts']"><i class="ti ti-settings"></i> Payouts</a></li>
+
+            <li>
+                <a href="javascript:void(0)"><i class="ti ti-folder"></i>Approvals <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li ><a [routerLink]="['/approvals/reimbursements']"> Reimbursements</a></li>
+                    <li><a routerLink="/approvals/proof-of-investments">Proof Of Investments</a></li>
+                    <li><a [routerLink]="['/approvals/advance-salary']">Advance Salary</a></li>
+                    <li><a routerLink="/approvals/overtime">Overtime</a></li>
+                    <li><a routerLink="/approvals/allowance"> Allowance</a></li>
+                    <li><a routerLink="/approvals/deduction"> Deduction</a></li>
+
+
+                </ul>
+            </li>
+            <li ><a [routerLink]="['/reports']"><i class="ti ti-star"></i>Reports</a></li>
+
+            <li ><a [routerLink]="['/accounts']"><i class="ti ti-clipboard"></i>Accounts</a></li>
+
+
+
+            <li  ><a [routerLink]="['/business-settings']"><i class="ti ti-star"></i> Business Settings</a></li> -->
+
+
+        <!-- </div> -->
+
+    </div>
+
+
+</div>

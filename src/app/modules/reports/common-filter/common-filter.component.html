@@ -1,0 +1,159 @@
+<div class="col-md-12 col-sm-12">
+						
+    <div class="card filter-outer-main-box" style="z-index: 999;">
+        <div class="card-body ">
+            <div class="row">
+            <div class="col-md-1 col-sm-1 text-right padd-0 filter_by">
+                                <div class="form-group">
+                    <h3>Filter By :</h3>
+                
+                </div>
+                </div>
+
+                <div class="col-md-2 filter_by">
+                    <div class="form-group">
+                    <select class="form-control" (change)="changeMonth($event)">
+                        
+                        <option *ngFor="let ma of monthsArray" [selected]="month==ma.id" [value]="ma.id">{{ma.month}}
+                        </option>
+                    </select>       
+                    </div>
+                </div>	
+
+                <div class="col-md-1 padd-0 filter_by">
+                    <div class="form-group">
+                    <select class="form-control" (change)="changeYear($event)">
+                        <!-- <option value="">Select</option> -->
+                        <option *ngFor="let ya of yearsArray" [selected]="year==ya" [value]="ya">{{ya}}</option>
+
+                    </select>
+                    </div>
+                </div>
+
+
+                <div class="col-md-1 padd-0 filter_by">
+                    <a 
+                        class="btn excel-btn-box results btn-primary" 
+                        style="padding: 9px; border-radius: 0;" 
+                        (click)="Apply_new_filter()">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </a>
+                </div>
+                            
+                <ng-container *ngFor="let filter of extraFilters">
+                    <div class="col-md-4" *ngIf="filter.type=='radio'">
+                        <span class="form-check" *ngFor="let filterOpt of filter.options" style="line-height: 39px;">
+                            <input class="form-check-input" type="radio" [name]="filter.key" id="{{filterOpt.id}}" value="{{filterOpt.value}}" (change)="onRadioChange($event)"
+                            [checked]="filterOpt.value == appliedFilters.radioBtnVal">
+                            <label class="form-check-label" for="{{filterOpt.id}}">{{filterOpt.label}}</label>
+                        </span>
+                    </div>
+                    <div class="col-md-4" *ngIf="filter.type!='radio'"></div>
+                </ng-container>
+                <div class="col-md-4" *ngIf="extraFilters.length==0"></div>
+                
+                <div class="col-md-3 col-sm-3 text-right" *ngIf="isSideBar">
+                    <div class="form-group">
+                    <a (click)="openSidebar()" class="btn excel-btn-box results filter-onlick-btn" style="padding-top: 9px;">
+                    <span class="filter_count-box"></span> More Filters<i class="fa fa-filter"></i></a>
+                    <!-- <a id="ResetBtnBox" title="Reset" class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn">Reset </a> -->
+                    </div>
+                </div>           
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+  
+   <!-- Search Filter Code  -->
+    <div id="sidebar" class="sidebar bg-dark text-white sidebar-menu_filter-box" [style.width]="sidebarWidth"> 
+        <h3 class="filter-menu-header-text-box">Filter</h3>
+        <a class="clear-box-btn" title="Clear Filter" style="float: right; cursor: pointer;" (click)="reset()">Clear</a>
+        <button class="close-btn btn btn-danger1" (click)="closeSidebar()"><i class="fa fa-close"></i></button>
+
+        <div class="sidebar-content-box">
+            <div class="col-md-12 col-sm-12">
+                <input type="text"  [(ngModel)]="invKey" value="" placeholder="Search Employee(s)"
+                class="form-control wide-width" style="width: 100%;"
+                (keyup)="search($event)" />
+                <!-- <input type="text" value="" placeholder="Search with employee / mobile no." class="form-control wide-width" style="width: 100%;"> -->
+            </div>
+
+        <div class="col-md-12 ">
+
+            <div id="filterComponent">
+                <div class="panel-group">
+
+                    <div class="panel panel-default">
+                        <div  class="panel-heading panel_heading_gray  card-header" role="tab" id="headingOne2" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne2" aria-expanded="false" aria-controls="collapseOne">
+                            <h4>Employees Filter   <i class="fa fa-angle-down"></i></h4>
+                        </div>
+                        <div id="collapseOne2" class="panel-collapse collapse card-body in" role="tabpane2">
+                            <div class="row">
+                                <div class="col-sm-12" >
+                                    <ng-container *ngFor="let filter of extraFilters">
+                                        <div class="form-group" *ngIf="filter.type=='select'">
+                                            <label class="control-label col-sm-12">Status</label>
+                                            <div class="col-sm-12 padd-0">
+                                                
+                                                <select class="form-control" id="statusFilter" [(ngModel)]="selectedStatus">
+                                                    <option [value]="option.value" *ngFor="let option of filter.options">{{option.label}}</option>
+                                                </select>
+                                                
+                                                </div>
+                                        </div>
+                                    </ng-container>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-12">Organization Unit</label>
+                                        <div class="col-sm-12 padd-0 ">
+                                        <ng-multiselect-dropdown 
+                                            [placeholder]="'Select Organization Units'"
+                                            [data]="unit_master_list_data" 
+                                            [(ngModel)]="selectedUnitId"
+                                            [settings]="dropdownSettings">
+                                        </ng-multiselect-dropdown>
+                                        </div>
+                                    </div>                          
+                                    
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-12">Department</label>
+                                        <div class="col-sm-12 padd-0">
+                                        <ng-multiselect-dropdown
+                                            [placeholder]="'Select Departments'"
+                                            [data]="department_master_list_data"
+                                            [(ngModel)]="selectedDepartmentId"
+                                            [settings]="dropdownSettings_department">
+                                        </ng-multiselect-dropdown>
+                                        </div>
+                                    </div>                          
+                                    
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-12">Designation</label>
+                                        <div class="col-sm-12 padd-0">
+                                        <ng-multiselect-dropdown
+                                            [placeholder]="'Select Designations'"
+                                            [data]="role_master_list_data"
+                                            [(ngModel)]="selectedDesignationId"
+                                            [settings]="dropdownSettings_designation">
+                                        </ng-multiselect-dropdown>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="text-center mrg-bot-25">
+            <button type="button" class="btn btn-user2 btn-round btn-primary" style="color: #fff !important;" (click)="apply_extra_filter()"> &nbsp;Apply</button>
+        <!-- <button type="button" class="btn btn-user1 btn-round" (click)="reset()">Reset</button> -->
+        </div>
+    </div>
+</div>
+    <!-- End of search filter code  -->

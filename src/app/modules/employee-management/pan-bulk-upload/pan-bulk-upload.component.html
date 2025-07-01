@@ -1,0 +1,166 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+    <div id="wrapper" [ngClass]="{'active': showSidebar == true}">
+        <div class="fakeLoader"></div>
+
+        <div id="page-wrapper">
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Bulk Upload Form-16</h3>
+                </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a [routerLink]="['/reports']">Reports</a></li>
+
+                        <li class="breadcrumb-item active">Bulk Upload Form-16</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="container-fluid">
+                <!-- /row -->
+                <div class="row">
+
+                    <div class="col-md-12 mrg-top-0 mrg-bot-25">
+                        <div class="card">
+                            <div class="card-body padd-bot-0 padd-top-0">
+                                <div class="row">
+                                    <div class="col-sm-4 mrg-bot-15">
+                                        <div class="Financial-Year-inn-box" style="display: flex; align-items: center;">
+                                            <span style="margin-right: 1.5rem; font-weight: bold;">Financial Year</span>
+                                        
+                                            <!-- Financial Year dropdown -->
+                                            <select class="form-control" style="margin: 25px; width: 150px;" (change)="changeFinancialYear($event)">
+                                                <option *ngFor="let fy of financialYearsArray" [selected]="selectedFinancialYear == fy" [value]="fy">
+                                                    {{fy}}
+                                                </option>
+                                            </select>
+
+                                            <span class="btn btn-info" (click)="exportExcelToForm16()">Download Uploaded List</span>
+                                        
+                                            <!-- Search button -->
+                                            <!-- <button class="btn btn-primary" style="margin-left: 10px; float: right;" (click)="GetForm16_Details()">Search</button>
+                                            <div class="col-md-2 text-right" style="float: right;" *ngIf="selectedFinancialYear !== 'All'">
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8" style="text-align:right">
+                                        <button class="btn btn-info" style="margin: 25px;" (click)="openFormModal()">
+                                            Add Bulk Upload Form-16
+                                        </button>
+                                    </div>
+                                    <div class="col-md-12 padd-top-0 day-wise-reports-box">
+                                        <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                    <th>#</th>
+                                                    <th>TP / Org Emp Code</th>
+                                                    <th>EMP Name</th>
+                                                    <th>Form 16 Part A</th>
+                                                    <th>Form 16 Part B</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let record of GetForm16_data; let i = index">
+                                                        <td>{{ i + 1 }}</td> <!-- Serial Number -->
+                                                        <td>{{ record.orgempcode?.trim() ? record.orgempcode : record.tp_code }}</td> <!-- TP / Org Emp Code -->
+                                                        <td>{{record.emp_name}}</td>
+                                                        <td>
+                                                            <a *ngIf="record.form16path" [href]="record.form16path" target="_blank">
+                                                                <i class="fa fa-eye"></i> View
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            <a *ngIf="record.form16b_path" [href]="record.form16b_path" target="_blank">
+                                                                <i class="fa fa-eye"></i> View
+                                                            </a>
+                                                        </td>                               
+                                                    </tr>
+                                                    <tr *ngIf="GetForm16_data.length === 0">
+                                                        <td colspan="4" style="text-align: center;">No Data Found</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+
+</section>
+
+<div class="modal"  [ngStyle]="{'display':addModalStatus?'block':'none'}">
+  <div class="modal-dialog modal-md ">
+      <div class="modal-content " >
+          <!-- Modal Header -->
+          <div class="modal-header">
+                  <h4 class="modal-title">Upload Bulk Form-16</h4>
+                  <button type="button" class="close modal-close-btn" data-dismiss="modal" aria-label="Close"
+                      data-bs-dismiss="modal" (click)="closeFormModal()">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+          </div>
+          <!-- Modal body -->
+            <form id="uploadForm" enctype="multipart/form-data" [formGroup]="uploadForm16">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12" style="min-height:50px;">
+
+                            <div *ngIf="isProcessing">
+                            <p>Uploading {{ completedCount }} of {{ totalCount }}</p>
+                            <progress [value]="progressPercent" max="100" style="width: 100%;"></progress>
+                            </div>
+
+
+                            <!-- Form Type Selection -->
+                            <label for="formType">Form Type:</label>
+                            <select class="form-control" formControlName="formType" 
+                            (change)="onFormTypeChange()">
+                                <option value="">Select Form Type</option>
+                                <option value="16A">Form 16A</option>
+                                <option value="16B">Form 16B</option>
+                            </select>
+
+
+                            <!-- Financial Year -->
+                            <label for="financialYear">Financial Year:</label>
+                            <select class="form-control" formControlName="finYear" >
+                                    <option value="">Financial Years</option>
+                                    <option *ngFor="let year of financialYearList" [value]="year">{{ year }}</option>
+                            </select>
+                            <br><br>
+
+                            <!-- Multiple File Upload -->
+                            <label for="documentFiles">Upload Files:</label>
+                            <input type="file" formControlName="file" class="form-control" (change)="onFilesSelected($event)" accept="application/pdf" multiple />
+                            <br><br>
+
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+
+                    <div class="modal-footer" style="background-color: #fff;">
+                    <button class="btn btn-success btn-xs"  data-dismiss="modal" (click)="closeFormModal()">Cancel</button>
+                    <button type="button" class="btn btn-danger btn-xs" (click)="startUpload()" data-dismiss="modal" aria-hidden="true">Upload</button>
+                    </div>
+                    
+                </div>
+            </form>
+      </div>
+  </div>
+</div>

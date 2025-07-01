@@ -1,0 +1,36 @@
+
+<div class="container-fluid element" id="element">
+    <!-- /row -->
+    <div class="row">         
+    
+        <div class="col-md-12">
+                <div class="card caded-innder-head-box">
+                    <div class="card-header">
+                        <h4 style="color:#000">HR Policy</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12 table-responsive bulk-attendance-outer-box Reimbursements-outer-box" >
+                            <table class="table user-list">
+                                <thead>
+                                    <tr>
+                                        <th>Policy Name</th>
+                                        <th>File</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let policy of policies">
+                                        <td>{{policy.policies_type}}</td>
+                                        <td><a [href]="policy.policies_file" target="_blank"><i class="fa fa-file-pdf-o fa-lg"></i></a></td>
+                                    </tr>
+                                    <tr *ngIf="policies.length==0">
+                                        <td colspan="2" style="font-weight:500;text-align:center">No Data Found</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+ 

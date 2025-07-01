@@ -1,0 +1,476 @@
+
+.hide-show-outer-box {
+    background: #eef5f7;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    transition: 1s height ease-in-out;
+  }
+
+  .hide-show-outer-box.start {
+    height: 85vh;
+    padding: 4px;
+    overflow-y: auto;
+  }
+
+  ul.calendar-inner-box {
+    background: #f7f7f7;
+    list-style: none;
+
+    display: block;
+    justify-content: center;
+    align-items: center;
+    overflow-x: auto;
+  }
+  .tr-swl{
+    background: #f38f9f;
+  }
+  .attendance-btn-inner-box {
+    text-align: center;
+    margin-top: 15px;
+  }
+  ul.calendar-inner-box li {
+    width: 14.28%;
+    float: left;
+    border-right: 1px solid #e7e7e7;
+  }
+  ul.calendar-inner-box li a {
+    padding: 1px 0;
+    display: flex;
+    border-bottom: 1px solid #e7e7e7;
+    min-width: auto;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  ul.calendar-inner-box li span {
+    padding: 5px 2px;
+    display: block;
+    text-align: center;
+    font-size: 14px;
+    color: #7a7a7a;
+    font-weight: 500;
+    height: 30px;
+    line-height: 23px;
+  }
+  ul.calendar-inner-box li.nav-item.head-title-box a {
+    background: #ffffff;
+    color: #000 !important;
+  }
+
+  ul.calendar-inner-box li span.day-box1 {
+    padding: 5px 2px;
+    height: 30px;
+    line-height: 23px;
+    color: #3c3c3c;
+    font-weight: 600;
+    background: #ffffff;
+    color: #000;
+  }
+
+  .present-days {
+    background: #2196f3;
+  }
+  .od-days {
+    background: #002dd38e;
+  }
+  .tr-days {
+    background: #232d4e8e;
+  }
+  .tr-asl {
+    background: #6b84d88e;
+  }
+  .tr-lwp {
+    background: #f16f85;
+  }
+  .wfh-days {
+    /* background: #2196f396; */
+    background: #0092bf;
+  }
+  .absent-days {
+    background: #f21136;
+  }
+  .weekoff-days {
+    background: rgb(1, 178, 172);
+  }
+  .half-days {
+    background: #30ab4a;
+  }
+  .leave-days {
+    background: #ec971f;
+  }
+  .holiday {
+    background: #c1e309;
+  }
+  .disabled-date {
+    /* background: #80808061; */
+    background: #80808040;
+    cursor: no-drop;
+    pointer-events: none;
+  }
+
+  .hide-show-outer-box ::-moz-selection {
+    background: none;
+  }
+  .hide-show-outer-box ::selection {
+    background: none;
+  }
+  .selected-items {
+    background: #addcf9;
+  }
+  /* .selected-items::selection {
+    background: #addcf9;
+  } */
+  input.form-control.wide-width {
+    width: 100% !important;
+  }
+
+  .label-design {
+    font-size: 11px !important;
+    margin-right: -52px;
+    color: #ffffff !important;
+    margin-left: 27px;
+    margin-bottom: -12px;
+    position: absolute;
+  }
+
+  .payout-breakup {
+    /* width: 90%; */
+    margin: 1rem auto auto;
+    background: #eef5f7;
+    padding: 1rem;
+    font-size: 12px;
+  }
+
+  .modal-header {
+    background: #1194f7;
+    color: #ffffff;
+  }
+  .txt {
+    color: rgb(102 105 249);
+    font-size: 2rem;
+    font-weight: bold;
+    border: 1rem;
+    width: 5rem;
+    height: 5rem;
+    background-color: #38abf227;
+    text-transform: uppercase;
+    padding: 10px 0 0 10px;
+  }
+
+  .btn-design {
+    margin-right: 0.5rem;
+    border-color: black;
+  }
+  span.date-box.selected-items {
+    background: #dbd8d8 !important;
+    width: 100%;
+  }
+  .job-details h3.job-name span.full-time-btn {
+    background-color: transparent;
+    color: #30ab4a;
+    font-weight: 500;
+    border-radius: 0;
+  }
+  .external b,
+  strong {
+    font-weight: 600;
+  }
+  .manage-list-row a.btn.btn-blue.manage-Update.myButton-box {
+    background: #ffffff;
+    color: #404040;
+    font-weight: 500;
+    border: 1px solid #1194f7;
+    border-radius: 5px;
+    padding: 10px 15px;
+  }
+  .manage-list-row a.btn.btn-blue.manage-Update.myButton-box:hover {
+    background: #f1f1f1;
+  }
+  .attendance-btn-inner-box .btn-design {
+    margin-left: 5px;
+    border: 1px solid #fff;
+  }
+  .attendance-btn-inner-box a.manage-btn {
+    border: 1px solid #fff !important;
+  }
+
+  li.pagination-previous span,
+  li.pagination-next a {
+    font-weight: 500 !important;
+    font-size: 15px !important;
+  }
+
+  .alert-group.alert-box .alert-success {
+    color: #525252;
+    background-color: #ffffff;
+    border-color: #c5e6d4;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .notice {
+    padding: 15px;
+    background-color: #fff;
+    margin-bottom: 10px;
+    border-radius: 2px;
+    border: 1px solid #eaeff5;
+    border-left: 6px solid #838992;
+    box-shadow: 0 0 10px 1px rgba(71, 85, 95, 0.08);
+    -webkit-box-shadow: 0 0 10px 1px rgba(71, 85, 95, 0.08);
+    -moz-box-shadow: 0 0 10px 1px rgba(71, 85, 95, 0.08);
+  }
+  .notice-warning {
+    border-left-color: #fea911;
+  }
+  a.Add-balancebtn strong {
+    font-size: 12px;
+    color: #1692df;
+    font-weight: 500;
+    text-decoration: underline;
+  }
+  .notice.alert-dismissable {
+    font-size: 13px;
+  }
+  .notice.alert-dismissable button.close {
+    right: -2px !important;
+    color: #000;
+  }
+  .card.Your-progress-sidebar-menu-box .login-panel .panel-heading h4 {
+    font-size: 15px;
+  }
+  .notice-success {
+    border-left-color: #74ba28;
+  }
+  .notice-success > strong {
+    color: #74ba28;
+  }
+
+  .notice-danger {
+    border-left-color: #eb344f;
+  }
+
+  .notice-danger > strong {
+    color: #eb344f;
+  }
+
+  .notice-info {
+    border-left-color: #1db4bd;
+  }
+  .notice-info > strong {
+    color: #1db4bd;
+  }
+
+  .notice-primary {
+    border-left-color: #1f1aa3;
+  }
+  .notice-primary > strong {
+    color: #1f1aa3;
+  }
+
+  .blur {
+    filter: blur(5px);
+    cursor: none !important;
+    pointer-events: none;
+  }
+
+  .manage-list-row .job-details {
+    font-size: 14px !important;
+  }
+  .manage-list-row .job-info {
+  padding-left: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: capitalize;
+  }
+  a.job_name_tag {
+      font-weight: 500;
+      color: #0047ab;
+  }
+	
+  .disable-background {
+    background: #f5f5f5;
+    pointer-events: none;
+  }
+  .selected-items:before {
+    content: "✓";
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    position: absolute;
+    left: 6px;
+    top: 6px;
+    border-radius: 2px;
+    color: #000;
+    z-index:1000;
+  }
+
+  .social-box-new {
+    padding: 3px 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+    font-size: 12px;
+    border-color: rgba(31, 182, 80, 0.12) !important;
+    background: rgba(31, 182, 80, 0.12);
+  }
+  ul.calendar-inner-box li span.label-design i {
+    position: absolute;
+    left: 5px;
+  }
+
+  .missed-punch {
+    background: rgb(240 128 128 / 81%);
+  }
+
+
+  ul.ngx-pagination.responsive {
+    display: inline-block;
+    padding: 0 25px;
+    border-radius: 35px;
+    background-color: #fff;
+  }
+  ul.ngx-pagination.responsive li a {
+    display: block;
+    padding: 0 25px !important;
+
+    transition: 400ms ease;
+    color: #595959 !important;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    line-height: 55px;
+  }
+  ul.ngx-pagination.responsive li.current {
+    padding: 0 25px !important;
+    transition: 400ms ease;
+    color: #ffffff !important;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    line-height: 55px;
+    font-weight: 500;
+  }
+  ul.ngx-pagination.responsive li.disabled {
+    padding: 0 25px !important;
+    transition: 400ms ease;
+    color: #cacaca !important;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    line-height: 55px;
+    font-weight: 500;
+  }
+  ul.ngx-pagination.responsive li:hover a {
+    text-decoration: none;
+  }
+
+
+  .accordion .panel-heading {
+    background: #e9f6ff;
+    padding: 6px 13px !important;
+    width: 100%;
+    display: block;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 6px;
+    border: 1px solid #d3e7f5;
+}
+
+.tab-pane {
+    border-left: 1px solid #e8edef;
+    border-right: 1px solid #e8edef;
+    border-bottom: 1px solid #e8edef;
+    background: #fff;
+    padding: 20px;
+}
+
+.accordion .panel-heading h4 {
+    font-size: 16px;
+    color: #000;
+}
+
+span.close-print-box a {
+    cursor: pointer;
+  }
+  .modal-body.final-bill-inner-box {
+    background: #efefef;
+  }
+  .modal-body.final-bill-inner-box .card-body {
+    border: 1px dashed #a1a1a1;
+    background: #fff;
+  }
+  .modal-body.final-bill-inner-box tr th {
+    border-bottom: none !important;
+    border-top: none !important;
+  }
+  .modal-body.final-bill-inner-box input.form-control {
+    height: 30px;
+  margin: 0;
+  }
+  .take-picture-box img.img-responsive {
+    height: 100%;
+    margin: 0 auto;
+    border: 10px solid #dfdfdf;
+    border-radius: 20px;
+  }
+  .take-picture-box {
+    height: 200px;
+  }
+
+  .main-tab-outer-box .tab-pane {
+    border-left: 1px solid #e8edef;
+    border-right: 1px solid #e8edef;
+    border-bottom: 1px solid #e8edef;
+    background: #fff;
+    padding: 20px;
+}
+
+.important-text {
+  color: black !important;
+}
+.account-newtheme .weekoff-days .date-box {
+  color: red !important;
+}
+.account-newtheme .weekoff-days .label-design {
+  color: red !important;
+}
+.account-newtheme .weekoff-days {
+  background: transparent;
+}
+
+
+.account-newtheme .holiday .date-box {
+  color: red !important;
+}
+.account-newtheme .holiday .label-design {
+  color: red !important;
+}
+.account-newtheme .holiday {
+  background: transparent;
+}
+
+
+.account-newtheme .restricted-holiday .date-box {
+  color: green !important;
+}
+.account-newtheme .restricted-holiday .label-design {
+  color: green !important;
+}
+.account-newtheme .restricted-holiday {
+  background: transparent;
+}
+
+.no-attendance-message {
+  padding: 40px 20px;
+  background-color: #f8f9fa;
+  border: 1px dashed #cfd8dc;
+  border-radius: 8px;
+  margin-top: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.no-attendance-message .message-text {
+  color: #6c757d;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0;
+}

@@ -1,0 +1,1343 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+  <div class="fakeLoader"></div>
+
+  <div id="page-wrapper">
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center" style="padding-left: 3rem;">
+        <h3 class="text-themecolor">{{update_text}}</h3>
+      </div>
+      <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="['/leave-mgmt/leave-settings']">Leave Templates</a></li>
+          <li class="breadcrumb-item active">{{update_text}}</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="row">
+      <button class="btn bck-btn" (click)="backToLeaveTemplate()"><i class="fa fa-arrow-left"></i> Back</button>
+    </div>
+
+    <div class="container-fluid">
+      <!-- /row -->
+      <div class="row">
+
+        <form [formGroup]="addNewTemplateForm">
+
+
+          <div class="col-md-12  mrg-top-25 mrg-bot-25">
+
+
+            <!-- General Information -->
+            <div class="card">
+
+              <div class="card-body">
+
+                <div class="row">
+
+                  <div class="col-md-12 padd-top-15">
+
+                    <p class="text-danger" style="font-weight: bold; font-size: 13px; text-align: center;"
+                      *ngIf="checkTemplateAssignedStatus">
+                      {{AssignedStatus_Msg}} So you can update only the Applicable or Restriction parts of this template
+                    </p>
+                    <div class="col-md-12 mrg-bot-15" [ngClass]="{'no-click-me': checkTemplateAssignedStatus}">
+                      <div class="custom-radio Include-checkbox-btn">
+                        <!-- <h3>Basic</h3> -->
+                        <label>Template Name<span class="text-danger">*</span></label>
+                        <input type="text" formControlName="templatedesc" class="form-control"
+                          placeholder="Enter Template name" [ngClass]="{'is-invalid':
+                          submitted && (antctrl.templatedesc.errors || antctrl.templatedesc.value == '')
+                      }">
+
+                        <div *ngIf="submitted && antctrl.templatedesc.errors" class="inline-pos">
+                          <small *ngIf="antctrl.templatedesc.errors.required" class="text-danger">Template Name is
+                            required</small>
+                        </div>
+                      </div>
+
+                      <!-- <div class="custom-radio Include-checkbox-btn">
+                      <input type="checkbox" onclick="javascript:yesnoCheck();" name="yesno" id="noCheck" checked="">
+                      <label for="noCheck">Enable attendance for contractors</label>
+                    </div> -->
+                    </div>
+
+                    <div class="col-md-12 mrg-bot-15" [ngClass]="{'no-click-me': checkTemplateAssignedStatus}">
+                      <label>Weekend <span class="text-danger">*</span> </label>
+                      <table class="table-style-fullWidth">
+                        <thead>
+                          <tr>
+                            <th></th> <!-- Empty top-left cell -->
+                            <th *ngFor="let week of [1, 2, 3, 4, 5]">Week {{week}}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            *ngFor="let day of ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']">
+                            <td><strong>{{day}}</strong></td> <!-- Day name -->
+                            <td *ngFor="let week of [1, 2, 3, 4, 5]" style="text-align: center;">
+                              <input (click)="multiWeekCheckBox($event, day)" type="checkbox" [value]="week"
+                                [name]="day + '_' + week">
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div class="col-md-12 m-clear mrg-bot-15 mrg-top-15" [ngClass]="{'no-click-me': checkTemplateAssignedStatus}">
+                      <div class="add-leave-head">
+                        <label>Types of Leaves <span class="text-danger">*</span></label>
+                        <!-- <span *ngIf="leave_type.length < lead_type_master_data.length" title="Add"
+                          (click)="add_new_leave_type()">
+                          <i class="fa fa-plus" aria-hidden="true"></i>
+                          Add
+                        </span> -->
+                      </div>
+
+                      <table class="table-style-fullWidth Types-of-Leaves-box">
+                        <tbody>
+                          <tr>
+                            <th style="width:12rem;">Leave Code</th>
+                            <!-- <th>Leave Type</th> -->
+                            <th>No of Days</th>
+                            <th>Carry Forward</th>
+                            <th>Accumulate</th>
+                            <th>Max Limit</th>
+                            <th class="tbl-th-encashment" title="Minimum Paid Days Required for Leave Taken"
+                              style="width: 12rem;">Effective After Paid
+                              Days (Min)</th>
+                            <!-- <th colspan="1" class="tbl-th-encashment">Effective After</th>
+                            <th colspan="3" class="tbl-th-encashment" style="display: none;">Encashment</th> -->
+                            <!-- <th>Max Balance</th> -->
+                            <!-- <th>Opening Balance</th> -->
+                            <!-- <th>Description</th> -->
+                            <th>Action</th>
+
+                          </tr>
+                          <!-- <tr>
+                            <th colspan="5"></th> -->
+                          <!-- <th class="tbl-th-encashment" colspan="2" style="display: none;">From</th> -->
+                          <!-- <th class="tbl-th-encashment" style="display: none;">DOJ</th> -->
+                          <!-- <th class="tbl-th-encashment" title="Minimum Paid Days Required for Leave Taken">Paid
+                              Days (Min)</th> -->
+                          <!-- <th class="tbl-th-encashment" style="display: none;">Unit</th>
+                            <th class="tbl-th-encashment" style="display: none;">Unit Type</th>
+                            <th class="tbl-th-encashment" style="display: none;">Max Limit</th>
+                            <th></th>
+                          </tr> -->
+
+                          <ng-container formArrayName="leave_type">
+
+                            <ng-container *ngFor="let x of leave_type.controls; let im=index;">
+                              <tr [formGroup]="getLeaveTypeFormGroup(im)">
+
+                                  <td [title]="getLeaveTypeFormGroup(im).get('typename').value" [ngClass]="{'no-click-me': checkTemplateAssignedStatus && getLeaveTypeFormGroup(im)?.get('is_not_editable')?.value}">
+                                    <select formControlName="typecode" class="form-control"
+                                      (change)="change_leave_type($event, im)"
+                                      [ngClass]="{'is-invalid':submitted && (getLeaveTypeFormGroup(im).get('typecode').errors || getLeaveTypeFormGroup(im).get('typecode').value == '')}">
+                                      <option value="">Select</option>
+                                      <ng-container *ngFor="let ltmd of lead_type_master_data">
+                                        <option [value]="ltmd.leavetype" [title]="ltmd.leavetypename"
+                                          [disabled]="selectedTypecodes.includes(ltmd.leavetype)">
+                                          {{ltmd.leavetype}}
+                                        </option>
+                                      </ng-container>
+                                    </select>
+
+
+                                    <div *ngIf="submitted && getLeaveTypeFormGroup(im).get('typecode').errors"
+                                      class="inline-pos1">
+                                      <small *ngIf="getLeaveTypeFormGroup(im).get('typecode').errors.required"
+                                        class="text-danger">Typecode is required</small>
+                                    </div>
+                                  </td>
+
+                                  <!-- <td>
+                                    <input formControlName="typename" class="form-control" type="text" name="typename" [ngClass]="{'is-invalid':submitted &&
+                                    (getLeaveTypeFormGroup(im).get('typename').errors || getLeaveTypeFormGroup(im).get('typename').value == '')}" autocomplete="off">
+
+                                    <div *ngIf="submitted && getLeaveTypeFormGroup(im).get('typename').errors"
+                                      class="inline-pos1">
+                                      <small *ngIf="getLeaveTypeFormGroup(im).get('typename').errors.required"
+                                        class="text-danger">Type is reqd</small>
+                                    </div>
+                                  </td> -->
+                                  <td style="width: 10rem;" [ngClass]="{'no-click-me': checkTemplateAssignedStatus && getLeaveTypeFormGroup(im)?.get('is_not_editable')?.value}">
+                                    <input formControlName="days" class="form-control" type="text" name="days"
+                                      [ngClass]="{'is-invalid':submitted &&
+                                    (getLeaveTypeFormGroup(im).get('days').errors || getLeaveTypeFormGroup(im).get('days').value == ''
+                                    || getLeaveTypeFormGroup(im).get('days').value < '0')}" autocomplete="off"
+                                      (keyup)="check_value(im, $event)" maxlength="5">
+
+                                    <div *ngIf="submitted && getLeaveTypeFormGroup(im).get('days').errors"
+                                      class="inline-pos1">
+                                      <small *ngIf="getLeaveTypeFormGroup(im).get('days').errors.required"
+                                        class="text-danger">Days is reqd</small>
+                                      <small *ngIf="getLeaveTypeFormGroup(im).get('days').errors.max"
+                                        class="text-danger">Days < than 365</small>
+                                          <small *ngIf="getLeaveTypeFormGroup(im).get('days').errors.min"
+                                            class="text-danger">Days > than -1</small>
+                                    </div>
+                                  </td>
+
+                                  <td [ngClass]="{'no-click-me': checkTemplateAssignedStatus && getLeaveTypeFormGroup(im)?.get('is_not_editable')?.value}">
+                                    <select formControlName="is_carry_forward" class="form-control"
+                                      (change)="change_is_carry($event, im)">
+                                      <option value="Y">Yes</option>
+                                      <option value="N">No</option>
+                                    </select>
+                                  </td>
+                                  <td [ngClass]="{'no-click-me': checkTemplateAssignedStatus && getLeaveTypeFormGroup(im)?.get('is_not_editable')?.value}">
+                                    <select formControlName="accumulate" class="form-control"
+                                      (change)="change_accumulate($event.target.value, im)"
+                                      [ngClass]="{'is-invalid':submitted && (getLeaveTypeFormGroup(im).get('accumulate').errors || getLeaveTypeFormGroup(im).get('accumulate').value == '')}">
+                                      <option value="">Select</option>
+                                      <option *ngFor="let amd of accumulate_master_data" [value]="amd">
+                                        {{amd}}</option>
+                                    </select>
+
+                                    <div *ngIf="submitted && getLeaveTypeFormGroup(im).get('accumulate').errors"
+                                      class="inline-pos1">
+                                      <small *ngIf="getLeaveTypeFormGroup(im).get('accumulate').errors.required"
+                                        class="text-danger">Accumulate is reqd</small>
+                                    </div>
+                                  </td>
+                                  <td style="width: 10rem;"
+                                    [ngClass]="{'no-click': getLeaveTypeFormGroup(im).get('disable_max_limit').value, 'no-click-me': checkTemplateAssignedStatus && getLeaveTypeFormGroup(im)?.get('is_not_editable')?.value}">
+                                    <input formControlName="maximum_limit"
+                                      [ngClass]="{'read-only': getLeaveTypeFormGroup(im).get('disable_max_limit').value}"
+                                      class="form-control" type="text" name="maximum_limit"
+                                      [ngClass]="{'is-invalid':submitted &&
+                                    (getLeaveTypeFormGroup(im).get('maximum_limit').errors || getLeaveTypeFormGroup(im).get('maximum_limit').value == '')}"
+                                      autocomplete="off"
+                                      onkeyup="if(/[^0-9.]/g.test(this.value)) this.value = this.value.replace(/[^0-9.]/g,'')"
+                                      maxlength="5">
+
+                                    <div *ngIf="submitted && getLeaveTypeFormGroup(im).get('maximum_limit').errors"
+                                      class="inline-pos1">
+                                      <small *ngIf="getLeaveTypeFormGroup(im).get('maximum_limit').errors.required"
+                                        class="text-danger">Max limit is reqd</small>
+                                      <small *ngIf="getLeaveTypeFormGroup(im).get('maximum_limit').errors.max"
+                                        class="text-danger">Max limit < than 365</small>
+                                    </div>
+                                  </td>
+                                  <td style="width: 5rem; display: none;" [ngClass]="{'no-click-me': checkTemplateAssignedStatus && getLeaveTypeFormGroup(im)?.get('is_not_editable')?.value}">
+                                    <input formControlName="effective_after_unit" class="form-control" type="text"
+                                      onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+
+                                    <div
+                                      *ngIf="submitted && getLeaveTypeFormGroup(im).get('effective_after_unit').errors"
+                                      class="inline-pos1">
+                                      <small
+                                        *ngIf="getLeaveTypeFormGroup(im).get('effective_after_unit').errors.required"
+                                        class="text-danger">Effective unit is reqd</small>
+                                    </div>
+                                  </td>
+                                  <td style="width: 8rem;display: none;" [ngClass]="{'no-click-me': checkTemplateAssignedStatus && getLeaveTypeFormGroup(im)?.get('is_not_editable')?.value}">
+                                    <select class="form-control" formControlName="effective_after_unit_type"
+                                      [ngClass]="{'is-invalid':submitted && (getLeaveTypeFormGroup(im).get('effective_after_unit_type').errors || (!getLeaveTypeFormGroup(im).get('effective_after_unit_type').value))}">
+                                      <option value="">Select</option>
+                                      <option value="year">Year(s)</option>
+                                      <option value="month">Month(s)</option>
+                                      <option value="day">Day(s)</option>
+                                    </select>
+
+                                    <div
+                                      *ngIf="submitted && getLeaveTypeFormGroup(im).get('effective_after_unit_type').errors"
+                                      class="inline-pos1">
+                                      <small
+                                        *ngIf="getLeaveTypeFormGroup(im).get('effective_after_unit_type').errors.required"
+                                        class="text-danger" style="position: fixed;margin-top: -6rem;">Effective type is
+                                        reqd</small>
+                                    </div>
+                                  </td>
+                                  <td style="display: none;" [ngClass]="{'no-click-me': checkTemplateAssignedStatus && getLeaveTypeFormGroup(im)?.get('is_not_editable')?.value}">
+                                    <select class="form-control" formControlName="effective_after_from"
+                                      [ngClass]="{'is-invalid':submitted && (getLeaveTypeFormGroup(im).get('effective_after_from').errors || (!getLeaveTypeFormGroup(im).get('effective_after_from').value))}">
+                                      <!-- <option value="">Select</option> -->
+                                      <option value="DOJ">DOJ</option>
+                                      <!-- <option value="DOC">DOC</option> -->
+                                    </select>
+
+                                    <div
+                                      *ngIf="submitted && getLeaveTypeFormGroup(im).get('effective_after_from').errors"
+                                      class="inline-pos1">
+                                      <small
+                                        *ngIf="getLeaveTypeFormGroup(im).get('effective_after_from').errors.required"
+                                        class="text-danger" style="position: fixed;margin-top: -6rem;">Effective from is
+                                        reqd</small>
+                                    </div>
+                                  </td>
+                                  <td [ngClass]="{'no-click-me': checkTemplateAssignedStatus && getLeaveTypeFormGroup(im)?.get('is_not_editable')?.value}">
+                                    <!-- *ngIf="getLeaveTypeFormGroup(im).get('accumulate').value=='Monthly'" -->
+                                    <ng-container>
+                                      <input formControlName="effective_min_paid_days" class="form-control" type="text"
+                                        onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"
+                                        maxlength="2">
+
+                                      <div
+                                        *ngIf="submitted && getLeaveTypeFormGroup(im).get('effective_min_paid_days').errors"
+                                        class="inline-pos1">
+                                        <small
+                                          *ngIf="getLeaveTypeFormGroup(im).get('effective_min_paid_days').errors.required"
+                                          class="text-danger" style="position: fixed;margin-top: -6rem;">Min Paid Days
+                                          reqd</small>
+                                        <small
+                                          *ngIf="getLeaveTypeFormGroup(im).get('effective_min_paid_days').errors.max"
+                                          class="text-danger">Days < than 25</small>
+                                            <small
+                                              *ngIf="getLeaveTypeFormGroup(im).get('effective_min_paid_days').errors.min"
+                                              class="text-danger">Days > than -1</small>
+                                      </div>
+                                    </ng-container>
+                                  </td>
+                                  <td style="display: none;" [ngClass]="{'no-click-me': checkTemplateAssignedStatus && getLeaveTypeFormGroup(im)?.get('is_not_editable')?.value}">
+                                    <input class="form-control" formControlName="encashment_unit" type="text"
+                                      style="width:6rem;" [ngClass]="{'is-invalid':submitted && (getLeaveTypeFormGroup(im).get('encashment_unit').errors || getLeaveTypeFormGroup(im).get('encashment_unit').value == ''
+                                      || getLeaveTypeFormGroup(im).get('encashment_unit').value < '0')}"
+                                      onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                                    <div *ngIf="submitted && getLeaveTypeFormGroup(im).get('encashment_unit').errors"
+                                      class="inline-pos1">
+                                      <small *ngIf="getLeaveTypeFormGroup(im).get('encashment_unit').errors.required"
+                                        class="text-danger">Encashment unit is reqd</small>
+                                    </div>
+
+
+
+                                  </td>
+                                  <td style="display: none;" [ngClass]="{'no-click-me': checkTemplateAssignedStatus && getLeaveTypeFormGroup(im)?.get('is_not_editable')?.value}">
+                                    <select formControlName="encashment_type" class="form-control"
+                                      (change)="change_encashment_type($event.target.value, im)" style="width:10.5rem;"
+                                      [ngClass]="{'is-invalid':submitted && (getLeaveTypeFormGroup(im).get('encashment_type').errors || getLeaveTypeFormGroup(im).get('encashment_type').value == '')}">
+                                      <option value="">Select</option>
+                                      <option value="percent">Percent</option>
+                                      <option value="unit">Unit</option>
+                                    </select>
+
+                                    <div *ngIf="submitted && getLeaveTypeFormGroup(im).get('encashment_type').errors"
+                                      class="inline-pos1">
+                                      <small *ngIf="getLeaveTypeFormGroup(im).get('encashment_type').errors.required"
+                                        class="text-danger" style="position: fixed;margin-top: -6rem;">Encashment type
+                                        is
+                                        reqd</small>
+                                    </div>
+                                  </td>
+                                  <td style="width: 6rem;" style="display: none;" [ngClass]="{'no-click-me': checkTemplateAssignedStatus && getLeaveTypeFormGroup(im)?.get('is_not_editable')?.value}">
+                                    <input *ngIf="getLeaveTypeFormGroup(im).get('encashment_type').value=='percent'"
+                                      class="form-control" formControlName="encashment_maxlimit" type="text"
+                                      onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                                  </td>
+
+                                  <!-- <td>
+                                    <input formControlName="maximum_balance" class="form-control" type="text"
+                                      name="maximum_balance"
+                                      [ngClass]="{'is-invalid':submitted &&
+                                    (getLeaveTypeFormGroup(im).get('maximum_balance').errors || getLeaveTypeFormGroup(im).get('maximum_balance').value == '')}"
+                                      autocomplete="off"
+                                      onkeyup="if(/[^0-9]/g.test(this.value)) this.value = this.value.replace(/[^0-9]/g,'')">
+
+                                    <div *ngIf="submitted && getLeaveTypeFormGroup(im).get('maximum_balance').errors"
+                                      class="inline-pos1">
+                                      <small *ngIf="getLeaveTypeFormGroup(im).get('maximum_balance').errors.required"
+                                        class="text-danger">Max Balance reqd</small>
+                                    </div>
+                                  </td> -->
+                                  <!-- <td>
+                                    <input formControlName="opening_balance" class="form-control" type="text"
+                                      name="opening_balance"
+                                      [ngClass]="{'is-invalid':submitted &&
+                                    (getLeaveTypeFormGroup(im).get('opening_balance').errors || getLeaveTypeFormGroup(im).get('opening_balance').value == '')}"
+                                      autocomplete="off"
+                                      onkeyup="if(/[^0-9]/g.test(this.value)) this.value = this.value.replace(/[^0-9]/g,'')">
+
+                                    <div *ngIf="submitted && getLeaveTypeFormGroup(im).get('opening_balance').errors"
+                                      class="inline-pos1">
+                                      <small *ngIf="getLeaveTypeFormGroup(im).get('opening_balance').errors.required"
+                                        class="text-danger">Open Balance reqd</small>
+                                    </div>
+                                  </td> -->
+
+                                  <!-- <td>
+                                    <input formControlName="description" class="form-control" type="text" name="description" [ngClass]="{'is-invalid':submitted &&
+                                    (getLeaveTypeFormGroup(im).get('description').errors || getLeaveTypeFormGroup(im).get('description').value == '')}" autocomplete="off">
+
+                                    <div *ngIf="submitted && getLeaveTypeFormGroup(im).get('description').errors"
+                                      class="inline-pos1">
+                                      <small *ngIf="getLeaveTypeFormGroup(im).get('description').errors.required"
+                                        class="text-danger">Description is reqd</small>
+                                    </div>
+                                  </td> -->
+
+                                  <td class="my-trash" title="Remove" [ngClass]="{'no-click-me': checkTemplateAssignedStatus && getLeaveTypeFormGroup(im)?.get('is_not_editable')?.value}">
+                                    <i class="fa fa-2x fa-trash" (click)="remove_leave_type(im)"></i>
+                                  </td>
+
+                              </tr>
+
+                            </ng-container>
+
+                          </ng-container>
+
+                        </tbody>
+                      </table>
+
+                      <div style="margin-top: 5px; text-align: right; ">
+                        <span *ngIf="leave_type.length < 10" title="Add" (click)="add_new_leave_type()">
+                          <button class="btn btn-primary">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            Add
+                          </button>
+                        </span>
+                      </div>
+
+
+                    </div>
+
+                    <div class="col-sm-12 m-clear mrg-bot-15">
+                      <!-- <div class="custom-radio Include-checkbox-btn">
+                        <input type="checkbox" onclick="javascript:yesnoCheck();" name="yesno" id="noCheck">
+                        <label for="noCheck">Allow employees to have negative leave balance</label>
+                      </div>
+
+                      <div class="custom-radio Include-checkbox-btn">
+                        <input type="checkbox" onclick="javascript:yesnoCheck();" name="yesno" id="noCheck">
+                        <label for="noCheck">Allow half-day leave requests</label>
+                      </div>
+
+                      <div class="custom-radio Include-checkbox-btn">
+                        <input type="checkbox" onclick="javascript:yesnoCheck();" name="yesno" id="noCheck">
+                        <label for="noCheck">Employees must enter a remark when applying for leave/half day</label>
+                      </div>
+
+                      <div class="custom-radio Include-checkbox-btn">
+                        <input type="checkbox" onclick="javascript:yesnoCheck();" name="yesno" id="noCheck">
+                        <label for="noCheck">Show Attendance on Payslip</label>
+                      </div>
+
+                      <div class="custom-radio Include-checkbox-btn">
+                        <input type="checkbox" onclick="javascript:yesnoCheck();" name="yesno" id="noCheck">
+                        <label for="noCheck">Automatically add loss-of-pay for unpaid leaves</label>
+                      </div>
+
+                      <div class="custom-radio Include-checkbox-btn">
+                        <input type="checkbox" onclick="javascript:yesnoCheck();" name="yesno" id="noCheck">
+                        <label for="noCheck">Calculate loss-of-pay on working days instead of total days in a
+                          month</label>
+                      </div> -->
+
+                    </div>
+
+
+                    <div class="col-sm-12 m-clear mrg-bot-15" [ngClass]="{'no-click-me': checkTemplateAssignedStatus}">
+                      <div class="col-md-4 col-sm-4">
+                        <label> Leaves Calendar-<br> Use Calendar Year or Financial Year<span
+                            class="text-danger">*</span></label>
+                      </div>
+                      <div class="col-md-8 col-sm-8">
+                        <div class="custom-radio Include-checkbox-btn mrg-top-0">
+                          <input type="radio" id="calender" name="leaves_calender"
+                            [checked]="antf.leaves_calender=='Calender Year'" value="Calender Year"
+                            (change)="change_calendar_financial($event)">
+                          <label for="calender">Calender Year</label>
+
+                          <input type="radio" id="financial" name="leaves_calender"
+                            [checked]="antf.leaves_calender=='Financial Year'" value="Financial Year"
+                            (change)="change_calendar_financial($event)">
+                          <label for="financial">Financial Year</label>
+
+                          <!-- <input type="checkbox" onclick="javascript:yesnoCheck();" name="yesno" id="noCheck">
+                          <label for="noCheck">Use Financial Year instead of Calendar Year</label> -->
+                        </div>
+                      </div>
+
+
+
+
+                    </div>
+                    <!-- &nbsp;
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box" style="display: none;">
+                      <div class="col-md-4 col-sm-4">
+                        <label>Holiday State :</label>
+                      </div>
+
+                      <div class="col-md-6 col-sm-6">
+                        <select formControlName="holiday_state_name" class="form-control">
+                          <option value="">Select</option>
+                          <option *ngFor="let smd of state_master_data;" [value]="smd.state">{{smd.state}}</option>
+                        </select>
+                      </div>
+
+                    </div> -->
+
+                    <!-- [ngClass]="{'no-click-me': checkTemplateAssignedStatus}" -->
+                    <div class="col-sm-12 m-clear mrg-bot-15" [ngClass]="{'no-click-me': true}" style="display: none;">
+                      <div class="col-md-3 col-sm-3">
+                        <label> Absent is equal to loss of pay<span class="text-danger">*</span></label>
+                      </div>
+                      <div class="col-md-9 col-sm-9">
+                        <div class="custom-radio Include-checkbox-btn mrg-top-0">
+                          <input type="radio" id="lossOfPayYes" name="absent_is_equal_to_loss_of_pay"
+                            [checked]="antf.absent_is_equal_to_loss_of_pay=='Y'" value="Y"
+                            (change)="change_absent_equal_to_lop($event)">
+                          <label for="lossOfPayYes">Yes</label>
+
+                          <input type="radio" id="lossOfPayNo" name="absent_is_equal_to_loss_of_pay"
+                            [checked]="antf.absent_is_equal_to_loss_of_pay=='N'" value="N"
+                            (change)="change_absent_equal_to_lop($event)">
+                          <label for="lossOfPayNo">No</label>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- [ngClass]="{'no-click-me': checkTemplateAssignedStatus}" -->
+                    <div class="col-sm-12 m-clear mrg-bot-15" [ngClass]="{'no-click-me': true}" style="display: none;">
+                      <div class="col-md-3 col-sm-3">
+                        <label>Attendance approval is required for payout<span class="text-danger">*</span></label>
+                      </div>
+                      <div class="col-md-9 col-sm-9">
+                        <div class="custom-radio Include-checkbox-btn mrg-top-0">
+                          <input type="radio" id="approvalForPayoutYes" name="attendance_approval_required_for_payout"
+                            value="Y" [checked]="antf.attendance_approval_required_for_payout=='Y'"
+                            (change)="change_att_approval_required_for_payout($event)">
+                          <label for="approvalForPayoutYes">Yes</label>
+
+                          <input type="radio" id="approvalForPayoutNo" name="attendance_approval_required_for_payout"
+                            value="N" [checked]="antf.attendance_approval_required_for_payout=='N'"
+                            (change)="change_att_approval_required_for_payout($event)">
+                          <label for="approvalForPayoutNo">No</label>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="col-sm-12 m-clear mrg-bot-15" [ngClass]="{'no-click-me': checkTemplateAssignedStatus}"
+                      style="display: none;">
+
+                      <div class="col-md-3 col-sm-3">
+                        <label>Validity<span class="text-danger"></span>:</label>
+                      </div>
+                      <div class="col-md-3 col-sm-3">
+                        <input type="hidden" id="recdate" (click)="filterFromToDateLeads()">
+                        <input type="text" value="{{ validity_from_dt }}" class="form-control"
+                          placeholder="Enter From Date" #sd name="startDate" id="startDate" readonly maxlength="10" />
+                      </div>
+
+                      <div class="col-md-3 col-sm-3">
+                        <input type="text" value="{{ validity_to_dt }}" class="form-control" placeholder="Enter to Date"
+                          #ed name="endDate" id="endDate" readonly maxlength="10" />
+                      </div>
+
+                      <div class="col-md-2 col-sm-2">
+                        <button class="btn" (click)="clearToDate()">Clear</button>
+                      </div>
+
+                    </div>
+
+                    <div class="col-sm-12 m-clear mrg-bot-15" [ngClass]="{'no-click-me': checkTemplateAssignedStatus}"
+                      style="display: none;">
+
+                      <div class="col-md-3 col-sm-3">
+                        <label>Description<span class="text-danger">*</span>:</label>
+                      </div>
+                      <div class="col-md-9 col-sm-9">
+                        <textarea formControlName="leave_description" class="form-control" rows="3"
+                          placeholder="Description">
+                        </textarea>
+                      </div>
+
+                    </div>
+
+                    <div class="col-sm-12 m-clear mrg-bot-15" style="display: none;">
+
+                      <div class="col-md-3 col-sm-3">
+                        <label>Balance based on<span class="text-danger">*</span>:</label>
+                      </div>
+                      <div class="col-md-9 col-sm-9">
+                        <input type="radio" name="balance_based_on" id="entitlementId" value="entitlement"
+                          [checked]="antctrl.balance_based_on.value=='entitlement'"
+                          (click)="change_balance_basedon($event.target.value)">
+                        <label for="entitlementId">Fixed entitlement</label>
+                        <input type="radio" name="balance_based_on" id="leavegrantId" value="leavegrant"
+                          [checked]="antctrl.balance_based_on.value=='leavegrant'"
+                          (click)="change_balance_basedon($event.target.value)">
+                        <label for="leavegrantId"> Leave grant </label>
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  <!----ENTITLEMENT----->
+                  <div class="col-md-12 padd-top-15" style="display: none;">
+                    <div class="col-sm-12 m-clear mrg-bot-15">
+                      <h3 class="clsentitlement">Entitlement</h3>
+                    </div>
+
+                    <!-- <div class="col-sm-12 m-clear mrg-bot-15">
+
+                      <div class="col-md-3 col-sm-3">
+                        <label>Effective after<span class="text-danger">*</span>:</label>
+                      </div>
+
+                      <div class="col-md-1 col-sm-1">
+                        <input formControlName="effective_after_unit" class="form-control" type="text"
+                          onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                      </div>
+
+                      <div class="col-md-2 col-sm-2">
+                        <select class="form-control" formControlName="effective_after_unit_type">
+                          <option value="">Select</option>
+                          <option value="year">Year(s)</option>
+                          <option value="month">Month(s)</option>
+                          <option value="year">Day(s)</option>
+                        </select>
+                      </div>
+
+                      <div class="col-md-1 col-sm-1">
+                        from
+                      </div>
+
+                      <div class="col-md-2 col-sm-2">
+                        <select class="form-control" formControlName="effective_after_from">
+                          <option value="">Select</option>
+                          <option value="DOJ">Date of Joining</option>
+                          <option value="DOC">Date of confirmation</option>
+                        </select>
+                      </div>
+                    </div> -->
+
+
+                    <div class="col-sm-12 m-clear mrg-bot-15">
+                      <div class="col-md-3 col-sm-3">
+                        <label>Carry Forward<span class="text-danger"></span>:</label>
+                      </div>
+
+                      <div class="col-md-3 col-sm-3">
+                        <select class="form-control" formControlName="carry_forward_type"
+                          (change)="change_carry_forward_type($event.target.value)">
+                          <option value="">Select</option>
+                          <option value="carry_forward">Carry Forward</option>
+                          <option value="carry_forward_expiry">Carry Forward with expiry</option>
+                          <option value="carry_forward_overall">Carry Forward with overall limit</option>
+                        </select>
+                      </div>
+
+                      <div class="col-md-1 col-sm-1">
+                        <input formControlName="carry_forward_cnt" class="form-control"
+                          onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                      </div>
+
+                      <div class="col-md-2 col-sm-2">
+                        <select class="form-control" formControlName="carry_forward_unit"
+                          (change)="change_carry_forward_unit($event.target.value)">
+                          <option value="">Select</option>
+                          <option value="unit">Unit(s)</option>
+                          <option value="percent">Percentage</option>
+                        </select>
+                      </div>
+
+                      <ng-container *ngIf="antctrl.carry_forward_unit.value=='percent'">
+                        <div class="col-md-2 col-sm-2">
+                          <label>Max Limit</label>
+                        </div>
+
+                        <div class="col-md-1 col-sm-1">
+                          <input class="form-control" formControlName="carry_forward_max_limit"
+                            onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                        </div>
+                      </ng-container>
+                    </div>
+
+                    <div class="col-sm-12 m-clear mrg-bot-15">
+                      <div class="col-md-3 class-sm-3">
+                        <label *ngIf="antctrl.carry_forward_type.value=='carry_forward_expiry'">Expires in</label>
+                        <label *ngIf="antctrl.carry_forward_type.value=='carry_forward_overall'">Overall Limit</label>
+                      </div>
+
+                      <ng-container *ngIf="antctrl.carry_forward_type.value=='carry_forward_expiry'">
+                        <div class="col-md-1 col-sm-1">
+                          <input class="form-control" formControlName="carry_forward_expire_cnt"
+                            onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                        </div>
+
+                        <div class="col-md-2 col-sm-2">
+                          <select class="form-control" formControlName="carry_forward_expire_unit">
+                            <option value="">Select</option>
+                            <option value="month">Month(s)</option>
+                            <option value="day">Day(s)</option>
+                          </select>
+                        </div>
+                      </ng-container>
+
+                      <ng-container *ngIf="antctrl.carry_forward_type.value=='carry_forward_overall'">
+                        <div class="col-md-1 col-sm-1">
+                          <input class="form-control" formControlName="carry_forward_over_all_limit"
+                            onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                        </div>
+                      </ng-container>
+
+
+                    </div>
+
+
+                  </div>
+
+                  <!----APPLICABLE----->
+                  <div class="col-md-12 padd-top-15" style="display: none;">
+                    <div class="col-sm-12 m-clear mrg-bot-15">
+                      <h3 class="clsapplicable">Applicable</h3>
+                    </div>
+
+                    <div class="col-sm-12 m-clear mrg-bot-15 check-pad-box">
+                      <div class="col-md-3 col-sm-3">
+                        <label>Gender<span class="text-danger"></span>:</label>
+                      </div>
+                      <div class="col-md-2 col-sm-2"> <input type="checkbox" name="gender" id="maleId" value="male"
+                          [checked]="isApplicableGender('male')"
+                          (click)="change_applicable_gender($event.target.value, $event.target.checked)">
+                        <label for="maleId">Male</label>
+                      </div>
+
+                      <div class="col-md-2 col-sm-2">
+                        <input type="checkbox" name="gender" id="femaleId" value="female"
+                          [checked]="isApplicableGender('female')"
+                          (click)="change_applicable_gender($event.target.value, $event.target.checked)">
+                        <label for="femaleId">Female</label>
+                      </div>
+                      <div class="col-md-2 col-sm-2">
+
+
+
+
+                        <input type="checkbox" name="gender" id="otherId" value="others"
+                          [checked]="isApplicableGender('others')"
+                          (click)="change_applicable_gender($event.target.value, $event.target.checked)">
+                        <label for="otherId">Others</label>
+
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box" style="display: none;">
+                      <div class="col-md-3 col-sm-3">
+                        <label>Marital Status:</label>
+                      </div>
+                      <div class="col-md-2 col-sm-2">
+                        <input type="checkbox" name="marital_status" id="singleId" value="single"
+                          [checked]="is_applicable_marital_status('single')"
+                          (click)="change_applicable_marital_status($event.target.value, $event.target.checked)">
+                        <label for="singleId">Single</label>
+                      </div>
+                      <div class="col-md-2 col-sm-2">
+                        <input type="checkbox" name="marital_status" id="marriedId" value="married"
+                          [checked]="is_applicable_marital_status('married')"
+                          (click)="change_applicable_marital_status($event.target.value, $event.target.checked)">
+                        <label for="marriedId">Married</label>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <!------RESTRICTIONS------>
+                  <div class="col-md-12 padd-top-15">
+                    <div class="col-sm-12 m-clear mrg-bot-15">
+                      <h3 class="clsRESTRICTIONS">Restrictions</h3>
+                    </div>
+
+                    <div class="col-md-12 m-clear mrg-bot-15" style="display: none;">
+                      <div class="col-md-3 col-sm-3">
+                        <label>Weekends between leave periods:</label>
+                      </div>
+
+                      <div class="col-md-6 col-sm-6" style="display:flex;">
+                        <input type="radio" name="wk_beetwen_lp_as_leave_yn" id="wk_beetwen_lp_as_leave_y" value="Y"
+                          [checked]="antctrl.wk_beetwen_lp_as_leave_yn.value=='Y'"
+                          (click)="change_wk_beetwen_lp_as_leave_yn($event.target.value)">
+                        <label for="wk_beetwen_lp_as_leave_y">Count as leave: Count after</label>
+
+                        <input *ngIf="antctrl.wk_beetwen_lp_as_leave_yn.value=='Y'" type="text" style="width:8rem;"
+                          class="form-control" formControlName="wk_beetwen_lp_as_leave_count"
+                          onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                      </div>
+
+                      <div class="col-md-3 col-sm-3">
+                        <input type="radio" name="wk_beetwen_lp_as_leave_yn" id="wk_beetwen_lp_as_leave_n" value="N"
+                          [checked]="antctrl.wk_beetwen_lp_as_leave_yn.value=='N'"
+                          (click)="change_wk_beetwen_lp_as_leave_yn($event.target.value)">
+                        <label for="wk_beetwen_lp_as_leave_n">Don't count as leave</label>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 m-clear mrg-bot-15" style="display: none;">
+                      <div class="col-md-3 col-sm-3">
+                        <label>Holidays between leave periods:</label>
+                      </div>
+
+                      <div class="col-md-6 col-sm-6" style="display:flex;">
+                        <input type="radio" name="ho_btwn_lp_as_leave_yn" id="ho_btwn_lp_as_leave_y" value="Y"
+                          [checked]="antctrl.ho_btwn_lp_as_leave_yn.value=='Y'"
+                          (click)="change_ho_btwn_lp_as_leave_yn($event.target.value)">
+                        <label for="ho_btwn_lp_as_leave_y">Count as leave: Count after</label>
+
+                        <input *ngIf="antctrl.ho_btwn_lp_as_leave_yn.value=='Y'" type="text" style="width:8rem;"
+                          class="form-control" formControlName="ho_btwn_lp_as_leave_count"
+                          onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                      </div>
+
+                      <div class="col-md-3 col-sm-3">
+                        <input type="radio" name="ho_btwn_lp_as_leave_yn" id="ho_btwn_lp_as_leave_n" value="N"
+                          [checked]="antctrl.ho_btwn_lp_as_leave_yn.value=='N'"
+                          (click)="change_ho_btwn_lp_as_leave_yn($event.target.value)">
+                        <label for="ho_btwn_lp_as_leave_n">Don't count as leave</label>
+                      </div>
+                    </div>
+
+
+                    <div class="col-md-12 m-clear mrg-bot-15">
+                      <div class="col-md-3 col-sm-3">
+                        <label>While applying leave, exceed leave balance :</label>
+                      </div>
+
+                      <div class="col-md-3 col-sm-3">
+                        <input type="radio" name="is_apply_leave_when_exceed_bal_yn"
+                          id="is_apply_leave_when_exceed_bal_y" value="Y"
+                          [checked]="antctrl.is_apply_leave_when_exceed_bal_yn.value=='Y'"
+                          (click)="change_is_apply_leave_when_exceed_bal_yn($event.target.value)">
+                        <label for="is_apply_leave_when_exceed_bal_y">Allow</label>
+                      </div>
+
+                      <div class="col-md-3 col-sm-3">
+                        <input type="radio" name="is_apply_leave_when_exceed_bal_yn"
+                          id="is_apply_leave_when_exceed_bal_n" value="N"
+                          [checked]="antctrl.is_apply_leave_when_exceed_bal_yn.value=='N'"
+                          (click)="change_is_apply_leave_when_exceed_bal_yn($event.target.value)">
+                        <label for="is_apply_leave_when_exceed_bal_n">Don't Allow</label>
+
+                      </div>
+                    </div>
+
+                    <div *ngIf="antctrl.is_apply_leave_when_exceed_bal_yn.value=='Y'"
+                      class="col-md-12 m-clear mrg-bot-15" style="display: none;">
+                      <div class="col-md-3 col-sm-3">
+
+                      </div>
+                      <div class="col-md-3 col-sm-3">
+                        <input type="radio" name="is_apply_leave_when_exceed_bal_if_y"
+                          id="is_apply_leave_when_exceed_bal_if_y_without_limit" value="without_limit"
+                          [checked]="antctrl.is_apply_leave_when_exceed_bal_if_y.value=='without_limit'"
+                          (click)="change_is_apply_leave_when_exceed_bal_if_y($event.target.value)">
+                        <label for="is_apply_leave_when_exceed_bal_if_y_without_limit">Without limit</label>
+                      </div>
+                      <div class="col-md-3 col-sm-3">
+                        <input type="radio" name="is_apply_leave_when_exceed_bal_if_y"
+                          id="is_apply_leave_when_exceed_bal_if_y_until_year_end_limit" value="until_year_end_limit"
+                          [checked]="antctrl.is_apply_leave_when_exceed_bal_if_y.value=='until_year_end_limit'"
+                          (click)="change_is_apply_leave_when_exceed_bal_if_y($event.target.value)">
+                        <label for="is_apply_leave_when_exceed_bal_if_y_until_year_end_limit">Until year end
+                        </label>
+                      </div>
+                      <div class="col-md-3 col-sm-3">
+                        <input type="radio" name="is_apply_leave_when_exceed_bal_if_y"
+                          id="is_apply_leave_when_exceed_bal_if_y_without_limit_mark_as_lop"
+                          value="without_limit_mark_as_lop"
+                          [checked]="antctrl.is_apply_leave_when_exceed_bal_if_y.value=='without_limit_mark_as_lop'"
+                          (click)="change_is_apply_leave_when_exceed_bal_if_y($event.target.value)">
+                        <label for="is_apply_leave_when_exceed_bal_if_y_without_limit_mark_as_lop">Without limit and
+                          mark as LOP</label>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box">
+                      <div class="col-md-3 col-sm-3">
+                        <label>Duration allowed :</label>
+                      </div>
+
+                      <div class="col-md-2 col-sm-2 inn-label-weight">
+                        <input type="checkbox" name="duration_allowed" id="Include11" value="full-day"
+                          (click)="change_durations($event.target.value, $event.target.checked)"
+                          [checked]="isDurationChecked('full-day')">
+                        <label for="Include11"> Full Day</label>
+                      </div>
+                      <div class="col-md-2 col-sm-2 inn-label-weight">
+                        <input type="checkbox" name="duration_allowed" id="Include12" value="half-day"
+                          (click)="change_durations($event.target.value,$event.target.checked)"
+                          [checked]="isDurationChecked('half-day')">
+                        <label for="Include12"> Half Day </label>
+                      </div>
+                      <!-- <div class="col-md-3 col-sm-3 inn-label-weight">
+                        <input type="checkbox" name="duration_allowed" id="Include13" value="quarter-day"
+                          (click)="change_durations($event.target.value, $event.target.checked)"
+                          [checked]="isDurationChecked('quarter-day')">
+                        <label for="Include13"> Quarter Day</label>
+                      </div>
+                      <div class="col-md-2 col-sm-2 inn-label-weight">
+                        <input type="checkbox" name="duration_allowed" id="Include14" value="hourly"
+                          (click)="change_durations($event.target.value,$event.target.checked)"
+                          [checked]="isDurationChecked('hourly')">
+                        <label for="Include14"> Hourly </label>
+                      </div> -->
+                    </div>
+
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box">
+                      <div class="col-md-3 col-sm-3">
+                        <label>Allow requests for:</label>
+                      </div>
+
+                      <div class="col-md-3 col-sm-3 inn-label-weight">
+                        <input type="checkbox" name="allow_requests_for_past_dates_yn"
+                          id="allow_requests_for_past_dates_y" value="Y"
+                          (click)="change_allow_requests_for_past_dates_yn($event.target.value,$event.target.checked)"
+                          [checked]="isAllowRequest('Y')">
+                        <label for="allow_requests_for_past_dates_y"> Past Dates </label>
+                      </div>
+
+                      <div *ngIf="antctrl.allow_requests_for_past_dates_yn.value=='Y'" class="col-md-3 col-sm-3"
+                        style="display:flex;">
+                        <input style="width:10rem;" class="form-control"
+                          formControlName="requests_for_past_days_cnt_if_y"
+                          onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">&nbsp; days
+                      </div>
+
+                    </div>
+
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box">
+                      <div class="col-md-3 col-sm-3">
+                      </div>
+
+                      <div class="col-md-3 col-sm-3 inn-label-weight">
+                        <input type="checkbox" name="allow_requests_for_future_dates_yn"
+                          id="allow_requests_for_future_dates_y" value="Y"
+                          (click)="change_allow_requests_for_future_dates_yn($event.target.value,$event.target.checked)"
+                          [checked]="isAllowRequestFutureDates('Y')">
+                        <label for="allow_requests_for_future_dates_y"> Future Dates </label>
+                      </div>
+
+                      <div *ngIf="antctrl.allow_requests_for_future_dates_yn.value=='Y'" class="col-md-3 col-sm-3"
+                        style="display:flex;">
+                        <input style="width:10rem;" class="form-control"
+                          formControlName="requests_for_future_days_cnt_if_y"
+                          onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">&nbsp; days
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box" style="display: none;">
+                      <div class="col-md-12 col-sm-12">
+                        <input type="checkbox" name="admins_view_apply_leave_yn" id="admins_view_apply_leave_y"
+                          (click)="change_admins_view_apply_leave_yn($event.target.value,$event.target.checked)"
+                          [checked]="isAdminViewApplyLeave('Y')">
+                        <label for="admins_view_apply_leave_y"> Allow only administrators to view and apply this leave
+                          on employee's behalf </label>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box" style="display: none;">
+                      <div class="col-md-8 col-sm-8">
+                        <input type="checkbox" name="number_of_leaves_in_a_week_yn" id="number_of_leaves_in_a_week_yn_y"
+                          (click)="change_number_of_leaves_in_a_week_yn($event.target.checked)"
+                          [checked]="isMaxLeavePerWeekCanAwail('Y')">
+                        <label for="number_of_leaves_in_a_week_yn_y"> Maximum Number of leaves that can be availed in a
+                          week
+                        </label>
+                      </div>
+                      <div *ngIf="antctrl.number_of_leaves_in_a_week_yn.value=='Y'" class="col-md-2 col-sm-2">
+                        <input class="form-control" formControlName="number_of_leaves_in_a_week_cnt_if_y"
+                          onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                      </div>
+                    </div>
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box">
+                      <div class="col-md-8 col-sm-8">
+                        <input type="checkbox" name="min_leave_per_appl_can_awail_yn"
+                          id="min_leave_per_appl_can_awail_y"
+                          (click)="change_min_leave_per_appl_can_awail_yn($event.target.checked)"
+                          [checked]="isMinLeavePerApplCanAwail('Y')" maxlength="2">
+                        <label for="min_leave_per_appl_can_awail_y"> Minimum leaves that can be availed per application
+                        </label>
+                      </div>
+                      <div *ngIf="antctrl.min_leave_per_appl_can_awail_yn.value=='Y'" class="col-md-2 col-sm-2">
+                        <input class="form-control" formControlName="min_leave_can_awail_cnt_if_y"
+                          onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box">
+                      <div class="col-md-8 col-sm-8">
+                        <input type="checkbox" name="max_leave_per_appl_can_awail_yn"
+                          id="max_leave_per_appl_can_awail_y"
+                          (click)="change_max_leave_per_appl_can_awail_yn($event.target.checked)"
+                          [checked]="isMaxLeavePerApplCanAwail('Y')">
+                        <label for="max_leave_per_appl_can_awail_y"> Maximum leaves that can be availed per application
+                        </label>
+                      </div>
+                      <div *ngIf="antctrl.max_leave_per_appl_can_awail_yn.value=='Y'" class="col-md-2 col-sm-2">
+                        <input class="form-control" formControlName="max_leave_can_awail_cnt_if_y"
+                          onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                      </div>
+                    </div>
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box">
+                      <div class="col-md-8 col-sm-8">
+                        <input type="checkbox" name="min_gap_btwn_two_leave_appl_yn" id="min_gap_btwn_two_leave_appl_y"
+                          (click)="change_min_gap_btwn_two_leave_appl_yn($event.target.checked)"
+                          [checked]="isMinGapBtwnTwoLeaveAppl('Y')">
+                        <label for="min_gap_btwn_two_leave_appl_y"> Minimum gap (in days) between two applications
+                        </label>
+                      </div>
+                      <div *ngIf="antctrl.min_gap_btwn_two_leave_appl_yn.value=='Y'" class="col-md-2 col-sm-2">
+                        <input class="form-control" formControlName="min_gap_btwn_two_leave_appl_cnt_if_y"
+                          onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                      </div>
+                    </div>
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box">
+                      <div class="col-md-8 col-sm-8">
+                        <input type="checkbox" name="file_upload_if_exceed_yn" id="file_upload_if_exceed_y"
+                          (click)="change_file_upload_if_exceed_yn($event.target.checked)"
+                          [checked]="isFileUploadIfExceed('Y')">
+                        <label for="file_upload_if_exceed_y"> Enable file upload option if the applied leave period
+                          exceeds </label>
+                      </div>
+                      <div *ngIf="antctrl.file_upload_if_exceed_yn.value=='Y'" class="col-md-2 col-sm-2">
+                        <input class="form-control" formControlName="file_upload_if_exceed_cnt_if_y"
+                          onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box">
+                      <div class="col-md-8 col-sm-8">
+                        <input type="checkbox" name="max_appls_in_period_yn" id="max_appls_in_period_y"
+                          (click)="change_max_appls_in_period_yn($event.target.checked)"
+                          [checked]="isMaxApplsInPeriod('Y')">
+                        <label for="max_appls_in_period_y"> Max number of applications allowed within the specified
+                          period </label>
+                      </div>
+                      <div *ngIf="antctrl.max_appls_in_period_yn.value=='Y'" class="col-md-2 col-sm-2">
+                        <input class="form-control" formControlName="max_appls_in_period_cnt_if_y"
+                          onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                      </div>
+                      <div *ngIf="antctrl.max_appls_in_period_yn.value=='Y'" class="col-md-2 col-sm-2">
+                        <select class="form-control" formControlName="max_appls_in_period_cnt_unit">
+                          <option value="">Select</option>
+                          <!-- <option value="week">Week</option> -->
+                          <option value="month">Month</option>
+                          <option value="year">Year</option>
+                          <!-- <option value="accural_period">Accural Period</option>
+                          <option value="job_tenure">Job Tenure</option> -->
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- Probation Period-->
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box">
+                      <div class="col-md-8 col-sm-8">
+                        <input type="checkbox" name="is_probation_prd_enable" id="is_probation_prd_enable"
+                          (click)="change_is_probation_prd_enable_yn($event.target.checked)"
+                          [checked]="is_probation_prd_enable('Y')">
+                        <label for="is_probation_prd_enable"> Enable Probation Period</label>
+                      </div>
+
+                    </div>
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box"
+                      *ngIf="antctrl.is_probation_prd_enable.value=='Y'">
+                      <div class="col-md-1 col-sm-1">
+                        &nbsp;
+                      </div>
+                      <div class="col-md-10 col-sm-10">
+                        <div class="col-md-7 col-sm-7">
+                          <label> Probation Period from Date of Joining (DOJ)</label>
+                        </div>
+                        <div class="col-md-2 col-sm-2">
+                          <input class="form-control" formControlName="probation_prd_months" maxlength="2"
+                            onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                        </div>
+                        <div class="col-md-2 col-sm-2">
+                          <b> (Months)</b>
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box"
+                      *ngIf="antctrl.is_probation_prd_enable.value=='Y'">
+                      <div class="col-md-1 col-sm-1">
+                        &nbsp;
+                      </div>
+                      <div class="col-md-10 col-sm-10">
+                        <div class="col-md-7 col-sm-7">
+                          <label> Apply the Template After the Probation Period is Over</label>
+                        </div>
+                        <div class="col-md-4 col-sm-4">
+                          <select class="form-control" formControlName="prob_prd_over_template">
+                            <option value="">Select</option>
+                            <option *ngFor="let ltd of leave_template_data;" [value]="ltd.templateid">
+                              {{ltd.templatedesc}}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box" style="display: none;">
+                      <div class="col-md-6 col-sm-6">
+                        <label>This leave cannot be taken together with</label>
+                      </div>
+
+                      <!-- [(ngModel)]="selectedLeaveTypes"
+                      [ngModelOptions]="{standalone: true}" -->
+                      <div class="col-md-6 col-sm-6">
+                        <ng-multiselect-dropdown style="height: 20rem;
+                        display: block;overflow: auto;" placeholder="Select Leave Type(s)"
+                          [settings]="dropdownSettings" [data]="leave_type_master_data"
+                          formControlName="non_combinable_leaves_typecode" (onSelect)="onItemSelect($event)"
+                          (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onUnselectAll($event)"
+                          (onDeSelect)="onItemUnselect($event)">
+                        </ng-multiselect-dropdown>
+
+                        <ng-template #customSelectedTemplate let-item="item">
+                          <div>{{ item.typecode }}</div>
+                        </ng-template>
+
+                        <ng-template #customOptionTemplate let-item="item">
+                          <div>{{ item.typename }}</div>
+                        </ng-template>
+                      </div>
+                    </div>
+                    <!-- end -->
+
+                    <!--- Start - Sandwich Leave Policy --->
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box">                      
+                      <div class="col-sm-12 m-clear mrg-bot-15">
+                        <h3 class="clsRESTRICTIONS">Week Off Absent Policy</h3>
+                      </div>
+                    </div>
+
+
+                    <!-- start -full day setting -->
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box" style="margin-left: 15px;">
+                      <span style="margin-right: 10px;"><strong>1.</strong></span>
+                      <input type="checkbox" name="half_day" id="half_day"
+                        (click)="change_full_day_credit_weeklyoff($event.target.checked)"
+                        [checked]="full_day_credit_weeklyoff('Y')">
+                      <label for="half_day">Mark Full Day if present before & after and worked on weekly off</label>
+                    </div>
+                    <!-- end -full day setting -->
+
+                  <div style="margin-left: 15px;">
+
+                    <div class="col-md-8 col-sm-8 check-pad-box">
+                      <span style="margin-right: 10px;"><strong>2.</strong></span>
+                      <input type="checkbox" name="enable_weekends_holiddys_absent_yn"
+                        id="enable_weekends_holiddys_absent_yn"
+                        (click)="change_enable_weekends_holiddys_absent_yn($event.target.checked)"
+                        [checked]="is_enable_weekends_holiddys_absent_yn('Y')">
+                      <label for="enable_weekends_holiddys_absent_yn"> Enable to consider weekends between two absent day(s) as absent</label>
+                    </div>
+
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box"
+                      *ngIf="antctrl.enable_weekends_holiddys_absent_yn.value=='Y'">
+                      <div class="col-md-1 col-sm-1">
+                        &nbsp;
+                      </div>
+                      <div class="col-md-11 col-sm-11">
+                        <input type="checkbox" name="enable_weekends_absent_yn" id="enable_weekends_absent_yn"
+                          (click)="change_enable_weekends_absent_yn($event.target.checked)"
+                          [checked]="is_enable_weekends_absent_yn('Y')">
+                        <label for="enable_weekends_absent_yn"> Consider weekends occurring between two absent period as
+                          absent</label>
+                      </div>
+                    </div>
+
+
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box"
+                      *ngIf="this.antf?.enable_weekends_absent_yn == 'Y'">
+                      <div class="col-md-1 col-sm-1">
+                        &nbsp;
+                      </div>
+                      <div class="col-md-4 col-sm-4">
+                        <ng-multiselect-dropdown *ngIf="leave_type_master_data_copy.length"
+                          placeholder="Select Leave Type(s)" [settings]="clubDropdownSettings"
+                          formControlName="club_leave_with_off" [data]="leave_type_master_data_copy"
+                          (onSelect)="onClubItemSelect($event)" (onSelectAll)="onClubSelectAll($event)"
+                          (onDeSelectAll)="onClubUnselectAll($event)" (onDeSelect)="onClubItemUnselect($event)">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+
+               
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box"
+                      *ngIf="antctrl.enable_weekends_holiddys_absent_yn.value=='Y'" style="display: none;">
+                      <div class="col-md-1 col-sm-1">
+                        &nbsp;
+                      </div>
+                      <div class="col-md-11 col-sm-11">
+                        <input type="checkbox" name="enable_holiddys_absent_yn" id="enable_holiddys_absent_yn"
+                          (click)="change_enable_holiddys_absent_yn($event.target.checked)"
+                          [checked]="is_enable_holiddys_absent_yn('Y')">
+                        <label for="enable_holiddys_absent_yn"> Consider holidays occurring between two absent period as absent</label>
+                      </div>
+                    </div>
+
+                    <!-- new condition for weekly off -->
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box">
+                      <div class="col-md-8 col-sm-8">
+                        <h4 style="    text-align: -webkit-left;
+                          font-size: medium;
+                          color: blue;
+                          margin-left: 4rem;">OR</h4>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box" style="margin-left: 5px;">
+                      <div class="col-md-8 col-sm-8">
+                        <input type="checkbox" name="number_of_absent_in_a_week_yn" id="number_of_absent_in_a_week_yn_y"
+                          (click)="change_number_of_absent_in_a_week_yn($event.target.checked)"
+                          [checked]="isMinabsentPerWeekCanAwail('Y')">
+                        <label for="number_of_absent_in_a_week_yn_y"> Weekends marked as Absent if more than number of day(s) missed
+                        </label>
+                      </div>
+                      <div *ngIf="antctrl.number_of_absent_in_a_week_yn.value=='Y'" class="col-md-2 col-sm-2">
+                        <input class="form-control" formControlName="number_of_absent_in_a_week_cnt_if_y"
+                          onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                      </div>
+                      <div *ngIf="antctrl.number_of_absent_in_a_week_yn.value=='Y'" class="col-md-2 col-sm-2">
+                        <label>(Days)</label>
+                      </div>
+                    </div>
+                  </div>
+                    <!--- End - Sandwich Leave Policy --->
+
+                  <!--- Start - Leave Clubbing Policy - sidharth kaul dated. 06.06.2025 --->
+                  <div class="col-md-12 m-clear mrg-bot-15 check-pad-box">                      
+                    <div class="col-sm-12 m-clear mrg-bot-15">
+                      <h3 class="clsRESTRICTIONS">Leave Clubbing Policy</h3>
+                    </div>
+
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box" style="margin-left: 15px;">
+                       <input type="checkbox" name="clubbing" id="clubbing" style="height: 18px;width: 18px;"
+                          (click)="change_is_leave_clubbing_allowed($event.target.checked)"
+                          [checked]="is_leave_clubbing_allowed('Y')">
+                      <label for="clubbing">&nbsp;Is Leave Clubbing Allowed</label>
+                    </div>
+                  
+
+                    <div class="col-sm-12 m-clear mrg-bot-15" *ngIf="addNewTemplateForm.get('is_leave_clubbing_allowed').value == 'Y'">
+
+                        <table class="leave-policy-table">
+                          <thead>
+                            <tr>
+                              <th>Leave Type</th>
+                              <th style="text-align: center;">Is Leave Clubbing Allowed</th>
+                              <th>Leave Type Clubbed With</th>
+                            </tr>
+                          </thead>
+                          <tbody formArrayName="clubbing_leave_type">
+                            <tr *ngFor="let group of leaveTypeArray.controls; let i = index" [formGroupName]="i">
+                              <td>
+                                <!-- Non-editable preset leave type -->
+                                <input class="form-control" formControlName="typecode" readonly
+                                style="background-color: white; border: none;" />
+                              </td>
+
+                              <td style="text-align: center;">
+                                <!-- (change)="setupIsClubbingWatcher(clubbing_leave_type.at(i))" -->
+                                <select name="isclub" id="isclub" formControlName="isclubbing" style="width: 35%;">
+                                  <option value="Y">Yes</option>
+                                  <option value="N">No</option>
+                                </select>
+                              </td>
+
+                              <td>
+                                 <!-- [ngClass]="{'ng-multiselect-disabled': clubbing_leave_type.at(i).get('leavetypesselected')?.status == 'DISABLED'}"  -->
+                                <ng-multiselect-dropdown
+                                  placeholder="Select Leave Type(s)"
+                                  [settings]="clubDropdownSettings"
+                                  [data]="master_AllLeaveTypesDropdownData"
+                                  formControlName="leavetypesselected"
+                                  (onSelect)="onClubItemSelect($event, i)"
+                                  (onSelectAll)="onClubSelectAll($event, i)"
+                                  (onDeSelectAll)="onClubUnselectAll($event, i)"
+                                  (onDeSelect)="onClubItemUnselect($event, i)"
+                                  style="background-color: white;">
+                                </ng-multiselect-dropdown>
+                                <ng-container *ngIf="clubbing_leave_type.at(i).get('leavetypesselected').errors && clubbing_leave_type.at(i).get('leavetypesselected').touched"
+                                  class="text-danger">
+                                  <p class="text-danger">Leave Type(s) are required</p>
+                                </ng-container>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                    </div>
+                  </div>
+                  <!--- End - Leave Clubbing Policy --->
+
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="col-md-12 col-12 padd-top-15 text-center">
+              <a (click)="update()" class="btn btn-primary"></a>
+            </div> -->
+            <alert></alert>
+            <div *ngIf="!checkTemplateAssignedStatus" class="badge badge-action template-btn"
+              [ngStyle]="{'justify-content':update_text=='Update Template' ? 'space-evenly': 'center'}">
+              <a class="btn btn-primary" (click)="update()">{{update_text}}</a>
+
+
+              <a *ngIf="update_text=='Update Template'" class="btn btn-danger"
+                (click)="openRemoveTemplatePopup()">Remove
+                Template</a>
+
+            </div>
+
+
+            <div *ngIf="checkTemplateAssignedStatus" class="badge badge-action template-btn"
+              [ngStyle]="{'justify-content':'center'}">
+              <a class="btn btn-primary" (click)="update()">{{update_text}}</a>
+
+            </div>
+
+
+          </div>
+
+        </form>
+
+
+      </div>
+      <!-- /row -->
+    </div>
+
+  </div>
+
+</div>
+
+
+<app-footer></app-footer>
+
+
+<!--------Remove Template Popup-------->
+<div [@grooveState]="showRemoveTemplatePopup?'active':'inactive'" id="removetemplate" class="modal">
+  <div [@dongleState]="showRemoveTemplatePopup?'active':'inactive'" class="modal-dialog"
+    style="margin:auto auto auto auto;">
+    <div class="modal-content" style="height:100%;margin-top:100px;">
+      <form>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Remove Template</h4>
+          <button type="button" class="close" (click)="closeRemoveTemplatePopup()" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+          <h5>
+
+            Are you sure you want to remove this template ?
+
+          </h5>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-info" (click)="remove_template_by_id()">Remove</button>
+
+          <button class="btn btn-cancel" (click)="closeRemoveTemplatePopup()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--------Remove Template Popup-------->

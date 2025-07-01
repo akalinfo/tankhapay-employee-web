@@ -1,0 +1,491 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+  <div id="wrapper" [ngClass]="{'active':showSidebar==false}">
+    <div class="fakeLoader"></div>
+    <div id="page-wrapper">
+      <div class="row page-titles">
+        <div class="col-md-6 align-self-center">
+          <!-- Employee Present/Absent Status -->
+          <h4 class="text-themecolor"><a routerLink="/attendance/bulk-attendance"></a>&nbsp;&nbsp; Attendance Muster
+            Roll <span style="font-size: 1.5rem;color: #01b6ed;"> [ {{get_month_year_name()}} ]</span></h4>
+        </div>
+        <div class="col-md-6 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item" title="Attendance"><a [routerLink]="['/reports']">Reports</a></li>
+            <li class="breadcrumb-item active">Attendance Muster Roll</li>
+          </ol>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <div class="row">
+
+          <div class="col-md-12 col-sm-12">
+            <div class="card filter-outer-main-box" style="z-index: 999;">
+              <div class="card-body" style="padding: 10px;">
+                <div class="row">
+                  <a (click)="update_weekly_off_holiday_by_account()"
+                    class="btn excel-btn-box results filter-onlick-btn"
+                    style="padding-top: 9px;float:right;margin-right: 2rem;"> Sync WO | Ho</a>
+                  <a (click)="openSidebar()" class="btn excel-btn-box results filter-onlick-btn"
+                    style="padding-top: 9px;float:right;margin-right: 2rem;">Search &nbsp;<i
+                      class="fa fa-filter"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12 col-sm-12">
+            <div class="card filter-outer-main-box">
+              <div class="card-header">
+                <div class="row">
+                  <div class="col-md-12">
+
+                    <div class="row">
+
+                      <div class="col-md-4">
+                        <input type="text" class="form-control" value="" placeholder="Search Employee(s)"
+                          (keyup)="search()" maxlength="100" [(ngModel)]="searchKey">
+
+                      </div>
+                      <div class="col-md-4" style="display: flex;"
+                        *ngIf="istToGermanTimeService.checkIfGermanTimeZone()">
+                        <!-- <strong>Timezone : &nbsp;</strong> -->
+                        <div class="form-check-inline">
+                          <input id="ist" type="radio" [(ngModel)]="showGermanTime" [ngModelOptions]="{standalone: true}" name="timezone" value="IST"
+                            class="form-check-input" (change)="onTimezoneChange()">
+                          <label for="ist" class="form-check-label">IST</label>
+                        </div>
+                        <div class="form-check-inline">
+                          <input id="cet" type="radio" [(ngModel)]="showGermanTime" [ngModelOptions]="{standalone: true}" name="timezone" value="CET"
+                            class="form-check-input" (change)="onTimezoneChange()">
+                          <label for="cet" class="form-check-label">CET/CEST</label>
+                        </div>
+
+                      </div>
+
+
+                      <div class="col-md-2" style="display: none;">
+                        <span style="font-weight: bold;">Att Status</span>
+                        <select class="form-control" (change)="change_status()" [(ngModel)]="status_filter"
+                          [ngModelOptions]="{standalone: true}">
+                          <option value="all">All</option>
+                          <option value="present">Present</option>
+                          <option value="absent">Absent</option>
+                          <option value="leave">Leave</option>
+                          <option value="overtime">Overtime</option>
+                        </select>
+                      </div>
+                      <div class="col-md-2" style="text-align: left;" style="display: none;">
+                        <span style="font-weight: bold;">Month</span>
+                        <select class="form-control" (change)="changeMonth($event)">
+                          <option *ngFor="let ma of monthsArray" [selected]="month==ma.id" [value]="ma.id">
+                            {{ma.month}}</option>
+                        </select>
+                      </div>
+                      <div class="col-md-2" style="display: none;">
+                        <span style="font-weight: bold;">Year</span>
+                        <select class="form-control" (change)="changeYear($event)">
+                          <option *ngFor="let ya of yearsArray" [selected]="year==ya" [value]="ya">{{ya}}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-md-2 col-sm-2" style="display: none;">
+                        <span style="font-weight: bold;">Status</span>
+                        <select class="form-control" [(ngModel)]="att_status_filter"
+                          [ngModelOptions]="{standalone: true}" (change)="search()">
+                          <option value="">All</option>
+                          <option value="Unmarked">Yet to Mark</option>
+                          <option value="Pending">Marked</option>
+                          <option value="Approved">Verified</option>
+                        </select>
+                      </div>
+
+
+                      <div class="col-md-2" style="margin-top: 10px;">
+                        <span style="text-align: center; color: blue;font-weight: bold;
+                        display: inline-block;"> Total: {{filtered_employee_att_table_data.length}} </span>
+                      </div>
+                      <div class="col-md-3" *ngIf="1" style="margin-top: 10px;">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="flexCheckDefault"
+                            [(ngModel)]="includeAllDateFields" (click)="toggleShowFields();updateFilteredDays()">
+                          <label class="form-check-label" for="flexCheckDefault">
+                            &nbsp;Include all Dates
+                          </label>
+                        </div>
+                      </div>
+                      <div class="col-md-3" style="text-align: end;">
+                        <!--     <a *ngIf="filtered_employee_att_table_data.length > 0" title="Download Attendance in Excel"
+                          class="btn btn-round btn-success excel-btn-box" style="padding-top: 9px;"
+                            (click)="getEmployerMonthAttendance_for_excel()">&nbsp;<i class="fa fa-file-excel-o"
+                              aria-hidden="true"></i></a> -->
+                        <a *ngIf="0" class="btn btn-round btn-success excel-btn-box" style="padding-top: 9px;"
+                          (click)="SaveColumnValues()" title="Click to save setting"><i
+                            class="fa fa-save"></i></a>&nbsp;
+                        <a class="btn btn-round btn-success excel-btn-box" style="margin-left: 2px;padding-top: 9px;"
+                          (click)="exportToExcelTable()">&nbsp;<i class="fa fa-file-excel-o" aria-hidden="true"></i></a>
+
+                        <div *ngIf="1" class="dropdown btn-group Show-Fields-outer-box"
+                          style="margin-top: 3px;margin-left: 10px;">
+                          <button type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false" class="btn btn-primary dropdown-toggle"> Show Fields
+                            <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu showhide" aria-labelledby="dropdownMenuButton"
+                            style="overflow-y: auto; margin-left: -13rem;max-height: 300px;">
+                            <li *ngFor="let fields of fieldarray; let i = index">
+                              <a class="dropdown-item" (click)="$event.stopPropagation()">
+                                <label>
+                                  <input type="checkbox" (click)="hideshowfields($event,fields);updateFilteredDays()"
+                                    [checked]="showfields[fields.value] ? true : null">&nbsp;
+                                  <span style="font-size: small;">{{fields.name}}</span>
+                                </label>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+
+                      </div>
+
+
+                      <!-- <div class="col-md-2 col-sm-2">
+                        <span style="font-weight: bold;">Status</span>
+                        <select class="form-control" (change)="filter_emp($event.target.value)">
+                          <option value="1">All</option>
+                          <option value="2">Yet to Mark</option>
+                          <option value="3">Marked</option>
+                          <option value="4">Verified</option>
+                        </select>
+                      </div> -->
+                    </div>
+
+                    <!-- <p style="color: red;font-size: 1.1rem;"> <b>Note</b>* Only <b>Full Time [ Monthly ]</b> Employee(s)
+                      shows/
+                      can upload bulk attendance using excel.
+                      . For work report / daily employee attendance will marked from <b>Tankhapay Mobile App</b>. </p> -->
+                  </div>
+                </div>
+
+                <!-- // Table Present in this Row -->
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div
+                      class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box reports-main-outerbox-table">
+
+                      <table class="table table-hover table_fixed table-border" id="shiftReportTable">
+                        <thead>
+                          <tr>
+                            <th *ngIf="1">
+                              <input class="form-check-input" type="checkbox" id="selectAll" [(ngModel)]="selectAll"
+                                (change)="toggleSelectAll()" *ngIf="showSelectionCheckboxes">
+                            </th>
+                            <th rowspan="2">Employee</th>
+                            <th rowspan="2">Employee Code</th>
+                            <th rowspan="2">Email Id </th>
+                            <th rowspan="2">DOJ</th>
+                            <th rowspan="2">DOL</th>
+                            <th rowspan="2">Department</th>
+                            <th rowspan="2">Designation</th>
+                            <th rowspan="2">Organization Unit</th>
+                            <th rowspan="2">Vender Name</th>
+                            <th rowspan="2">Project Name</th>
+                            <th rowspan="2">Salary Booked Project</th>
+                            <th rowspan="2">Job Type</th>
+                            <th rowspan="2">Status</th>
+                            <th rowspan="2">Worked Hours</th>
+                            <th rowspan="2">Worked Minutes</th>
+                            <th colspan="2" *ngFor="let dd of filtered_month_days_master;"
+                              [ngStyle]="{'color': ((dd.dayname.toUpperCase()) == 'SUN' || (dd.dayname.toUpperCase()) =='SAT') ? 'red': ''}"
+                              class="text-center">
+                              <span class="DB MB3"> {{getShortMonthName(dd)}}
+                                {{dd.day_cnt}}</span>
+                              <span class="DB dgry ZPreg"> {{dd.dayname}}</span>
+                            </th>
+                            <th rowspan="2" *ngIf="includeAllDateFields">Month Days</th>
+                            <th rowspan="2" *ngIf="includeAllDateFields">Present</th>
+                            <th rowspan="2" *ngIf="includeAllDateFields">Absent</th>
+                            <th rowspan="2" *ngIf="includeAllDateFields">Leaves</th>
+                            <th rowspan="2" *ngIf="includeAllDateFields">WO</th>
+                            <th rowspan="2" *ngIf="includeAllDateFields">Holiday</th>
+                            <th rowspan="2" *ngIf="includeAllDateFields">WFH</th>
+                            <th rowspan="2" *ngIf="includeAllDateFields">HD</th>
+                            <th rowspan="2" *ngIf="includeAllDateFields">OD</th>
+                            <th rowspan="2" *ngIf="includeAllDateFields">LWP</th>
+                            <th rowspan="2" *ngIf="includeAllDateFields">Paid Days</th>
+                            <th rowspan="2" *ngIf="includeAllDateFields">LOP</th>
+                          </tr>
+                          <tr>
+                            <th> # </th>
+                            <ng-container *ngFor="let dd of filtered_month_days_master;">
+                              <th
+                                [ngStyle]="{'color': ((dd.dayname.toUpperCase()) == 'SUN' || (dd.dayname.toUpperCase()) =='SAT') ? 'red': ''}"
+                                class="text-center">
+                                Shift
+                              </th>
+                              <th
+                                [ngStyle]="{'color': ((dd.dayname.toUpperCase()) == 'SUN' || (dd.dayname.toUpperCase()) =='SAT') ? 'red': ''}"
+                                class="text-center">Status</th>
+                            </ng-container>
+                          </tr>
+
+                        </thead>
+                        <tbody>
+
+                          <ng-container *ngFor="let emp_data of filtered_employee_att_table_data; let i=index;">
+                            <!-- [ngStyle]="{'background':(emp_data.approval_status=='Approved' ? '#ddffdd' : emp_data.approval_status=='Pending' ? '#0090d31f':'')}" -->
+                            <tr>
+
+                              <td *ngIf="1">
+                                <input type="checkbox" [(ngModel)]="emp_data.selected"
+                                  (change)="onEmployeeCheckboxChange()"
+                                  *ngIf="showSelectionCheckboxes && emp_data.emp_name != 'Grand Total'">
+                              </td>
+
+                              <td>
+                                {{emp_data.emp_name}}
+                              </td>
+                              <td>
+                                {{emp_data.orgempcode ? emp_data.orgempcode : emp_data.tpcode }}
+                              </td>
+                              <td>
+                                {{emp_data.email}}
+                              </td>
+                              <td>
+                                {{emp_data.dateofjoining}}
+                              </td>
+                              <td>
+                                {{emp_data.dateofrelieveing}}
+                              </td>
+                              <td>
+                                {{emp_data.posting_department}}
+                              </td>
+                              <td>
+                                {{emp_data.post_offered}}
+                              </td>
+                              <td>
+                                {{emp_data.assignedous}}
+                              </td>
+                              <td>
+                                {{emp_data.vendor_name}}
+                              </td>
+                              <td>
+                                {{emp_data.project_name}}
+                              </td>
+                              <td>
+                                {{emp_data.salary_book_project}}
+                              </td>
+                              <td>
+                                {{emp_data.jobtype}}
+                              </td>
+                              <td>
+                                {{(emp_data.approval_status=='Unmarked'? 'Yet to
+                                mark':emp_data.approval_status=='Pending'?'Marked':emp_data.approval_status )}}
+                              </td>
+                              <td>
+                                {{emp_data.total_hours_worked}}
+                              </td>
+                              <td>
+                                {{emp_data.total_minute_worked}}
+                              </td>
+
+                              <ng-container *ngFor="let dd of filtered_month_days_master;">
+                                <td>
+                                  {{ emp_data['day' + dd.day_cnt+'shift'] }}
+                                </td>
+                                <td
+                                  [ngClass]="{'weekend': dd.dayname.toUpperCase() === 'SAT' || dd.dayname.toUpperCase() === 'SUN'}"
+                                  [ngStyle]="{'background': emp_data.approval_status === 'Approved' ? '#ddffdd' : '', 'color': {'PP': 'green', 'WFH': 'green', 'AA': '#e76277;', 'HO': '#fb00da', 'WO': '#d30808'}[emp_data['day' + dd.day_cnt]]?.split('|')[0]}">
+                                  <span> {{ emp_data['day' + dd.day_cnt]?.split('|')[0] }}</span>
+
+
+                                  <ng-container *ngIf="showGermanTime=='IST'">
+                                    <span class="CheckIn_CheckOut_time-box"> {{ emp_data['day' +
+                                      dd.day_cnt]?.split('|')[1] }}</span>
+                                  </ng-container>
+
+                                  <ng-container *ngIf="showGermanTime=='CET'">
+
+                                    <span class="CheckIn_CheckOut_time-box">
+                                      {{ getCheckInOutTime(emp_data, dd.day_cnt, 0) ?
+                                      getGermanTime(getCheckInOutTime(emp_data, dd.day_cnt, 0), dd.day_cnt + '/' + month
+                                      + '/' + year) : '' }}
+                                      {{ getCheckInOutTime(emp_data, dd.day_cnt, 1) ? '-' +
+                                      getGermanTime(getCheckInOutTime(emp_data, dd.day_cnt, 1), dd.day_cnt + '/' + month
+                                      + '/' + year) : '' }}
+                                    </span>
+                                  </ng-container>
+
+
+                                  <span class="CheckIn_CheckOut_time-box"
+                                    title="{{status_filter_copy=='overtime'?'Over Time':'WrkHrs'}}">{{ emp_data['day' +
+                                    dd.day_cnt]?.split('|')[2] }}</span>
+                                </td>
+                              </ng-container>
+
+                              <td class="Month-Days" *ngIf="includeAllDateFields">{{emp_data.month_days}}</td>
+                              <td *ngIf="includeAllDateFields">{{emp_data.pp_presentcount}}</td>
+                              <td *ngIf="includeAllDateFields">{{emp_data.absentcount}}</td>
+                              <td *ngIf="includeAllDateFields">{{emp_data.leavecount}}</td>
+                              <td *ngIf="includeAllDateFields">{{emp_data.wo_presentcount}} </td>
+                              <td *ngIf="includeAllDateFields">{{emp_data.ho_presentcount}}</td>
+                              <td *ngIf="includeAllDateFields">{{emp_data.wfh_presentcount}} </td>
+                              <td *ngIf="includeAllDateFields">{{emp_data.hd_count}} </td>
+                              <td *ngIf="includeAllDateFields">{{emp_data.od_presentcount}} </td>
+                              <td *ngIf="includeAllDateFields">{{emp_data.lwp_presentcount}}</td>
+                              <td class="Paid-Days" *ngIf="includeAllDateFields">{{emp_data.paiddays}}</td>
+                              <td class="LOP" *ngIf="includeAllDateFields">{{emp_data.lossofpay}}</td>
+                            </tr>
+                          </ng-container>
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- /#page-wrapper -->
+
+
+  </div>
+</section>
+<app-footer></app-footer>
+
+<!-----Sidebar Filter---->
+<div id="sidebar" class="sidebar bg-dark text-white sidebar-menu_filter-box">
+  <h3 class="filter-menu-header-text-box">Filter</h3>
+  <!-- <button type="button" class="btn btn-user1 btn-round" (click)="resetFilter()">Clear</button>-->
+  <a class="clear-box-btn" title="Clear Filter" (click)="resetFilter()">Clear</a>
+  <button class="close-btn btn btn-danger1" (click)="closeSidebar()"><i class="fa fa-close"></i></button>
+  <div class="sidebar-content-box">
+
+    <div class="col-md-12 col-sm-12">
+      <input type="text" [(ngModel)]="search_key_copy" placeholder="Search with employee(s)"
+        class="form-control wide-width" style="width: 100%;" maxlength="200">
+    </div>
+
+    <div class="col-md-12 ">
+
+      <div id="filterComponent">
+        <div class="panel-group">
+
+          <div class="panel panel-default">
+            <div class="panel-heading panel_heading_gray  card-header" role="tab" id="headingOne2"
+              data-toggle="collapse" data-parent="#accordion2" href="#collapseOne2" aria-expanded="false"
+              aria-controls="collapseOne">
+              <h4>Attendance Filter <i class="fa fa-angle-down"></i></h4>
+            </div>
+            <div id="collapseOne2" class="panel-collapse collapse card-body in" role="tabpane2">
+              <div class="row">
+                <div class="col-sm-12">
+
+
+                  <div class="form-group">
+                    <span>Month-Year</span>
+                    <!-- (change)="changeMonth($event)"  (change)="changeYear($event)"-->
+                    <p style="display: inline-flex;">
+                      <select class="form-control" [(ngModel)]="month_copy" style="width: 15rem;">
+                        <!-- <option value="">Select</option> -->
+                        <option *ngFor="let ma of monthsArray" [selected]="month==ma.id" [value]="ma.id">{{ma.month}}
+                        </option>
+                      </select>
+                      <select class="form-control" [(ngModel)]="year_copy">
+                        <!-- <option value="">Select</option> -->
+                        <option *ngFor="let ya of yearsArray" [selected]="year==ya" [value]="ya">{{ya}}</option>
+
+                      </select>
+                    </p>
+
+                  </div>
+
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-12">Status</label>
+                    <div class="col-sm-12 padd-0">
+                      <select class="form-control" [(ngModel)]="att_status_filter_copy">
+                        <option value="">All</option>
+                        <option value="Unmarked">Yet to Mark</option>
+                        <option value="Pending">Marked</option>
+                        <option value="Approved">Verified</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-12">Attendance Status</label>
+                    <div class="col-sm-12 padd-0">
+                      <select class="form-control" [(ngModel)]="status_filter_copy"
+                        [ngModelOptions]="{standalone: true}">
+                        <option value="all">All</option>
+                        <option value="present">Present</option>
+                        <option value="absent">Absent</option>
+                        <option value="leave">Leave</option>
+                        <option value="overtime">Overtime</option>
+                      </select>
+                    </div>
+                  </div>
+
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-12">Organization Unit</label>
+                    <div class="col-sm-12 padd-0 userOrgUnit">
+
+                      <ng-multiselect-dropdown [placeholder]="'Select Organization Units'" [settings]="dropdownSettings"
+                        [data]="orgList" [(ngModel)]="orgName_copy" [ngModelOptions]="{standalone: true}">
+                      </ng-multiselect-dropdown>
+                      <!-- (onFilterChange)="getOrgUnitData()" -->
+
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-12">Department</label>
+                    <div class="col-sm-12 padd-0 userOrgUnit">
+
+                      <ng-multiselect-dropdown [placeholder]="'Select Department'" [settings]="deptDropdownSettings"
+                        [data]="deptList" [(ngModel)]="deptName_copy" [ngModelOptions]="{standalone: true}">
+                      </ng-multiselect-dropdown>
+
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-12">Designation</label>
+                    <div class="col-sm-12 padd-0 userOrgUnit">
+
+                      <ng-multiselect-dropdown [placeholder]="'Select Designation'" [settings]="desgDropdownSettings"
+                        [data]="desgList" [(ngModel)]="desgName_copy" [ngModelOptions]="{standalone: true}">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+
+
+
+
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+
+      <div class="text-center mrg-bot-25">
+        <button type="button" class="btn btn-user1 btn-round btn-primary" (click)="change_sidebar_filter()"
+          id="btnSetFilter">
+          &nbsp;Apply</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-----Sidebar Filter---->

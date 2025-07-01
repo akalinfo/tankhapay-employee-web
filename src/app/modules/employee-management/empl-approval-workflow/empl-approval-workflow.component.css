@@ -1,0 +1,146 @@
+
+.accordion .panel-heading {
+  background: #e9f6ff;
+  padding: 6px 13px !important;
+  width: 100%;
+  display: block;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 6px;
+  border: 1px solid #d3e7f5;
+}
+
+.tab-pane {
+  border-left: 1px solid #e8edef;
+  border-right: 1px solid #e8edef;
+  border-bottom: 1px solid #e8edef;
+  background: #fff;
+  padding: 20px;
+}
+
+.accordion .panel-heading h4 {
+  font-size: 16px;
+  color: #000;
+}
+
+span.close-print-box a {
+  cursor: pointer;
+}
+.modal-body.final-bill-inner-box {
+  background: #efefef;
+}
+.modal-body.final-bill-inner-box .card-body {
+  border: 1px dashed #a1a1a1;
+  background: #fff;
+}
+.modal-body.final-bill-inner-box tr th {
+  border-bottom: none !important;
+  border-top: none !important;
+}
+.modal-body.final-bill-inner-box input.form-control {
+  height: 30px;
+margin: 0;
+}
+.take-picture-box img.img-responsive {
+  height: 100%;
+  margin: 0 auto;
+  border: 10px solid #dfdfdf;
+  border-radius: 20px;
+}
+.take-picture-box {
+  height: 200px;
+}
+
+.main-tab-outer-box .tab-pane {
+  border-left: 1px solid #e8edef;
+  border-right: 1px solid #e8edef;
+  border-bottom: 1px solid #e8edef;
+  background: #fff;
+  padding: 20px;
+}
+
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 15px;
+  width: 15px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked+.slider {
+  background-color: #2196F3;
+}
+
+input:focus+.slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+h4.sub-title-inn-box.View-Roles-list-outer-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+a.btn-primary-Add-Roles-btn {
+  color: #fff;
+  background-color: #1194f7 !important;
+  border-color: #1194f7;
+  border-radius: 10px !important;
+}
+.fa-trash {
+  color: red;
+}
+h4.sub-title-inn-box.View-Roles-list-outer-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+h4.sub-title-inn-box {
+  font-weight: 500;
+}
+div#approval-workflow-info123 {
+  padding: 10px;
+}

@@ -1,0 +1,235 @@
+table.table.table-lg tr th,
+table.table tr td {
+    border-color: #eaeff5;
+    padding: 15px 5px !important;
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+#top_searh_bar {
+    padding-top: 2em !important;
+    padding-bottom: 0 !important;
+}
+
+#filterdateForm {
+    margin-bottom: -25px !important;
+}
+
+.page-title {
+    height: 70px !important;
+    padding-top: 0px !important;
+}
+
+section {
+    padding: 0em 0 !important;
+}
+
+.search-form {
+    padding: 10px 10px 0px 10px !important;
+
+}
+
+.form-control {
+    height: 40px !important;
+}
+
+#ui-datepicker-div {
+    z-index: 9999 !important;
+}
+
+.ui-datepicker {
+    z-index: 9999 !important;
+}
+
+#signinalertmodal .modal-dialog {
+    width: 950px !important;
+    margin: 30px auto;
+}
+
+.pac-container {
+    z-index: 9999 !important;
+}
+
+#signinalertmodal .modal-dialog {
+    overflow-y: initial !important
+}
+
+#signinalertmodal .modal-body {
+    height: 75vh;
+    overflow-y: auto;
+}
+
+.custom_pointr {
+    cursor: pointer;
+}
+
+.logo-left-box {
+    position: inherit;
+    float: left;
+    margin: 20px auto;
+    width: auto;
+    max-width: 450px;
+    padding: 0;
+    font-family: Arial, Times, serif;
+}
+
+.top-right-box {
+    position: inherit;
+    float: right;
+    margin: 20px auto;
+    width: auto;
+    max-width: 450px;
+    padding: 0;
+    font-family: Arial, Times, serif;
+}
+
+#dynamicTemplate {
+    text-align: left;
+}
+
+
+sup {
+    display: none !important;
+}
+
+.top-right-box p {
+    text-align: left;
+}
+
+p.MsoNormal {
+    text-transform: initial !important;
+}
+
+
+.salary-slip-logo-box {
+    vertical-align: text-bottom;
+}
+
+.salary-slip-logo-box {
+    padding: 10px 20px;
+}
+
+.salary-slip-address-box {
+    text-align: right;
+    float: right;
+    max-width: 300px;
+    padding: 20px;
+}
+
+.salary-slip-address-box p {
+    font-weight: 600;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    #printableCard,
+    #printableCard * {
+        visibility: visible;
+    }
+
+    #printableCard {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+}
+
+/* Style for the print button */
+.print-button {
+    margin: 10px 0;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+
+.print-button img {
+    margin-right: 8px;
+}
+
+
+.page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4f4f4;
+    padding: 20px;
+    /* Surrounding padding for better centering */
+    min-height: 100vh;
+    /* Ensure full viewport height */
+}
+
+.card {
+    width: 210mm;
+    /* A4 width */
+    height: 297mm;
+    /* A4 height */
+    padding: 3mm;
+    /* Inner padding for content */
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Soft shadow for elevation effect */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+}
+
+.salary-slip-header-box img {
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+}
+
+.salary-slip-address-box p {
+    margin: 0;
+    font-size: 12px;
+    text-align: right;
+}
+
+.card-body {
+    padding: 20px;
+    overflow-y: auto;
+    /* Add vertical scroll if content exceeds */
+}
+
+.card-footer img {
+    width: 100%;
+    height: 48px;
+    /* Adjust to your footer image size */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+@media print {
+    .page-break {
+        page-break-before: always;
+    }
+
+    .table {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+
+
+}
+
+.manage-list-row .job-details {
+    display: inline-block;
+    font-size: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}

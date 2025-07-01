@@ -1,0 +1,48 @@
+.custom-file-input {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: calc(4.25rem + 4px);
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.custom-file label.custom-file-label {
+    right: 16px;
+    left: 16px;
+}
+
+label.custom-file-label {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    height: calc(3.25rem + 3px);
+    padding: .375rem .75rem;
+    line-height: 2.1;
+    color: #495057;
+    background-color: #fbfdff;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    cursor: pointer;
+}
+
+.custom-file-label::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    display: block;
+    height: calc(calc(3.25rem + 3px) - 1px* 2);
+    padding: .375rem .75rem;
+    line-height: 2.1;
+    color: #495057;
+    content: "Browse";
+    background-color: #e9ecef;
+    border-left: 1px solid #ced4da;
+    border-radius: 0 .25rem .25rem 0;
+    cursor: pointer;
+}

@@ -1,0 +1,502 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<section>
+  <div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+      <div class="fakeLoader"></div>
+      <div id="page-wrapper">
+
+        <div class="row page-titles">
+          <div class="col-md-5 align-self-center">
+            <h3 class="ml-13 text-themecolor">Shift Details</h3>
+          </div>
+          <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+              <li class="breadcrumb-item active">Shift Details </li>
+            </ol>
+          </div>
+        </div>
+
+    
+        <div class="container-fluid">
+          <!-- /row -->
+          <div class="row">
+
+          <div class="col-md-12 mrg-top-0 mrg-bot-25">
+          <div class="card">
+            <div class="card-header"> 
+              <h4 class="sub-title-inn-box View-Roles-list-outer-box shiftTitleMain">Shift 
+              
+              <a href="#SendMessage" data-toggle="modal" data-placement="top" title="Add" class="btn btn-primary" (click)="checkPopupType('addShift')">Add Shift </a>
+              
+              </h4>
+             </div>	
+              
+              <div class="card-body padd-bot-0 padd-top-0">
+
+                <div class="row">
+                
+                <div class="col-md-12 padd-top-0">
+                
+                
+                <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+
+                  <table class="table user-list">
+                     <thead>
+                      <tr>
+                       <th id="ember394" class="sortable header-user-role ember-view">
+                        Shift Name 
+                        <!---->
+                       </th>
+                       <th id="ember395" class="sortable header-user-role ember-view">
+                        Time 
+                        <!---->
+                       </th>
+                       <th class="header-actions text-center">Action</th>
+                      </tr>
+                     </thead>
+
+                     <tbody>
+                      <tr *ngFor="let data of shiftDetails">
+                       <td>
+                        {{data.shift_name}}
+                       </td>
+                       <td><span>{{data.from_time}}</span><span class="ZPuscr">  To  </span><span>{{data.to_time}}</span></td>
+                       <td class="roles">
+                        <div id="ember398" class="dropdown float-right ember-view">
+                           <div class="job-buttons action-btn-outer-box">
+                             
+                            <a href="#SendMessage" data-toggle="modal" class="btn btn-shortlist manage-btn" data-placement="top" title="Edit" (click)="patchShiftDetails(data.shift_id,'updateShift')"><i class="ti-pencil-alt"></i></a>
+                            <a  class="btn btn-shortlist manage-btn"  title="delete" data-toggle="modal" data-target="#exampleModalCenter"  (click)="openDeleteModal(data.shift_id)"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                           </div>
+                           
+                        </div>
+                       </td>
+                      </tr>
+                     </tbody>
+                  </table>
+                
+                </div>	
+                </div>
+                </div>		
+              </div>
+            </div>
+          </div>
+          </div>
+          <!-- /row -->
+        </div>	
+      </div>
+      </div>
+</section>
+<div>
+</div>
+
+<app-footer></app-footer>
+
+<!-- /////////////////open popup //////////////////////// -->
+
+
+<div id="SendMessage" class="modal fade add-address-form-box main" data-backdrop="static">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form [formGroup]="addShiftForm">
+        <div class="modal-header theme-bg">						
+          <h4 class="modal-title" *ngIf="popupType == 'addShift'">Add Shift</h4>
+          <h4 class="modal-title" *ngIf="popupType == 'updateShift'">Edit Shift</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelForm()">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label col-sm-3">Shift Name</label>
+            <div class="col-sm-6">
+                 <input type="text" class="form-control" placeholder="Enter Shift Name" formControlName="shift_name" maxlength="35">
+                 <ng-container *ngIf="addShiftForm.get('shift_name').errors && addShiftForm.get('shift_name').touched" class="text-danger">
+                  <p class="text-danger">Shift name is required</p>
+                </ng-container>
+              </div>
+          </div>
+
+
+          <!-- <div class="form-group">
+            <label class="control-label col-sm-3">From</label>
+            <div class="col-sm-6">
+              <input class="form-control" type="time" id="timePicker" name="timePicker" formControlName="from" style="width: 100%;">
+
+                <ng-container *ngIf="addShiftForm.get('from').errors && addShiftForm.get('from').touched" class="text-danger">
+                  <p class="text-danger">From is required</p>
+                </ng-container>
+              </div>
+          </div> -->
+
+       <div class="form-group">
+       <label class="control-label col-sm-3">From</label>
+       <div class="col-sm-6">
+        <div class="PL0 FL MR10">
+        <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr">
+           <input id="ZPAtt_shiftMarginStarts" type="text" class="form-control"  placeholder="00:00" formControlName="from" readonly > 
+           <span   class="input-group-addon" (click)="togglePopover(popoverFrom);formatTime(from,'from')" #popoverFrom="bs-popover" [popover]="popoverContentFrom" triggers="manual" [outsideClick]="true">
+            <i class="fa fa-clock-o" ></i></span>
+        </div>
+       </div>
+           
+       <ng-container *ngIf="addShiftForm.get('from').errors && addShiftForm.get('from').touched" class="text-danger">
+        <p class="text-danger">From is required</p>
+       </ng-container>
+       <ng-template #popoverContentFrom>
+        <timepicker [(ngModel)]="from" [hourFormat]="24"  (ngModelChange)="formatTime(from,'from')" [showMeridian]="false" [ngModelOptions]="{standalone: true}"></timepicker>
+        </ng-template>
+
+       </div>
+       </div>
+
+
+       <div class="form-group">
+       <label class="control-label col-sm-3">To</label>
+       <div class="col-sm-6">
+        <div class="PL0 FL MR10">
+        <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr">
+           <input id="ZPAtt_shiftMarginStarts" type="text" class="form-control"  placeholder="00:00" formControlName="to" readonly > 
+           <span class="input-group-addon" (click)="togglePopover(popoverTo);formatTime(to,'to')" #popoverTo="bs-popover" [popover]="popoverContentTo" triggers="manual" [outsideClick]="true">
+            <i class="fa fa-clock-o"></i></span>
+        </div>
+       </div>
+           
+       <ng-container *ngIf="addShiftForm.get('from').errors && addShiftForm.get('from').touched" class="text-danger">
+        <p class="text-danger">To is required</p>
+       </ng-container>
+
+       <!-- <div class="text-danger">{{checkMsg}}</div> -->
+
+
+       <ng-template #popoverContentTo>
+        <timepicker [(ngModel)]="to"  (ngModelChange)="formatTime(to,'to')" [hourFormat]="24" [showMeridian]="false" [ngModelOptions]="{standalone: true}"></timepicker>
+        </ng-template>
+
+       </div>
+       </div>
+
+
+          <div class="form-group">
+               <label class="control-label col-sm-3">Shift Margin</label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                   <div class="Search-By-all-box">
+                     &nbsp;&nbsp;
+                     <input type="radio" id="SearchByAll" name="shift_margin" (input)="getShiftMarginValue($event)" class="SearchBy" value="Enable" formControlName="shift_margin">
+                     <label for="SearchByAll">Enable</label>&nbsp;&nbsp;
+                     <input type="radio" id="SearchByEmployeeCode" name="shift_margin" (input)="getShiftMarginValue($event)" class="SearchBy" value="Disable" formControlName="shift_margin" checked="checked" >
+                     <label for="SearchByEmployeeCode">Disable</label>
+                  </div>
+                </div>
+                <ng-container *ngIf="addShiftForm.get('shift_margin').errors && addShiftForm.get('shift_margin').touched" class="text-danger">
+                  <p class="text-danger">Shift margin is required</p>
+                </ng-container>
+              </div>
+          </div>
+
+
+
+          <div id="Shift-Margin-box" *ngIf="shift_margin == 'Enable'">
+          <div class="form-group" id="ZPAtt_shiftMarginStartLayout">
+          <label class="control-label col-sm-3">&nbsp;</label>
+             <!-- <div class="col-sm-6 ">
+ 
+              <input class="form-control" type="time" id="timePicker" name="timePicker" formControlName="shift_margin_hours_from">
+              <label *ngIf="addShiftForm.get('shift_margin_hours_from').invalid && addShiftForm.get('shift_margin_hours_from').touched" class="control-label FL PT4I text-danger">Shift margin hours from is required</label>
+
+              <label class="control-label FL PT4I">hours before the shift starts</label>
+             </div> -->
+
+             <div class="col-sm-6">
+              <div class="PL0 FL MR10 col-md-6">
+              <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr">
+                 <input id="ZPAtt_shiftMarginStarts" type="text" class="form-control"  placeholder="00:00" formControlName="shift_margin_hours_from" readonly > 
+                 <span class="input-group-addon" (click)="togglePopover(popoverShiftMFrom);formatTime(shift_margin_hours_from,'shift_margin_hours_from')" #popoverShiftMFrom="bs-popover" [popover]="popoverShiftMarginFrom" triggers="manual" [outsideClick]="true">
+                  <i class="fa fa-clock-o"></i></span>
+                  
+              </div>
+             </div>
+                 <div class="col-md-6 no-padd"><span>hours before the shift starts</span></div>
+             <ng-container *ngIf="addShiftForm.get('shift_margin_hours_from').errors && addShiftForm.get('shift_margin_hours_from').touched" class="text-danger">
+              <p class="text-danger">Shift margin from is required</p>
+             </ng-container>
+      
+    
+             <ng-template #popoverShiftMarginFrom>
+              <timepicker [(ngModel)]="shift_margin_hours_from" (ngModelChange)="formatTime(shift_margin_hours_from,'shift_margin_hours_from')" [hourFormat]="24" [showMeridian]="false" [ngModelOptions]="{standalone: true}"></timepicker>
+             </ng-template>
+      
+             </div>
+          </div>
+          
+          <div class="form-group" id="ZPAtt_shiftMarginEndLayout" >
+             <label class="control-label col-sm-3">&nbsp;</label>
+
+              <!-- <input class="form-control" type="time" id="timePicker" name="timePicker" formControlName="shift_margin_hours_to">
+              <label *ngIf="addShiftForm.get('shift_margin_hours_to').invalid && addShiftForm.get('shift_margin_hours_to').touched" class="control-label FL PT4I text-danger">Shift margin hours from is required</label>
+
+              <label class="control-label FL PT4I">hours after the shift ends</label> 
+              <div class="zp_NoteI PB10" id="ZPAtt_shiftMarginDef">Check-in/check-out entries only within {{addShiftForm.value.shift_margin_hours_from}} - {{addShiftForm.value.shift_margin_hours_to}} will be considered as payable hours</div>
+             </div> -->
+           
+
+             <div class="col-sm-6">
+              <div class="PL0 FL MR10 col-md-6">
+              <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr">
+                 <input id="ZPAtt_shiftMarginStarts" type="text" class="form-control"  placeholder="00:00" formControlName="shift_margin_hours_to" readonly > 
+                 <span class="input-group-addon" (click)="togglePopover(popoverShiftMTo);formatTime(shift_margin_hours_to,'shift_margin_hours_to')" #popoverShiftMTo="bs-popover" [popover]="popoverShiftMarginTo" triggers="manual" [outsideClick]="true">
+                  <i class="fa fa-clock-o"></i></span>
+                  
+              </div>
+             </div>
+                 <div class="col-md-6 no-padd">
+                  <span>hours after the shift ends</span></div>
+             <ng-container *ngIf="addShiftForm.get('shift_margin_hours_from').errors && addShiftForm.get('shift_margin_hours_from').touched" class="text-danger">
+              <p class="text-danger">Shift margin from is required</p>
+             </ng-container>
+      
+    
+             <ng-template #popoverShiftMarginTo>
+              <timepicker [(ngModel)]="shift_margin_hours_to"  (ngModelChange)="formatTime(shift_margin_hours_to,'shift_margin_hours_to')" [hourFormat]="24" [showMeridian]="false" [ngModelOptions]="{standalone: true}"></timepicker>
+             </ng-template>
+      
+             </div>
+          
+          </div>
+        </div>
+          
+          <div class="form-group">
+               <label class="control-label col-sm-3">Weekend</label>
+            <div class="col-sm-7">
+                <div class="input-group">
+                   <div class="Search-By-all-box">
+                     &nbsp;&nbsp;
+                    <input type="radio" name="weekend" id="FilterByTaxReport" (input)="getWeekend($event)" checked="checked" value="Disable" formControlName="weekend">
+                    <label for="FilterByTaxReport">Location Based</label>
+                    
+                    <input type="radio" name="weekend" id="FilterByAll" (input)="getWeekend($event)" value="Enable" formControlName="weekend">
+                       <label for="FilterByAll"> Shift Based </label>
+                  </div>
+                </div>
+                <ng-container *ngIf="addShiftForm.get('weekend').errors && addShiftForm.get('weekend').touched" class="text-danger">
+                  <p class="text-danger">Weekend is required</p>
+                </ng-container>
+              </div>
+          </div>
+          
+          
+          <div id="weekend-box" >
+              <div class="form-group" *ngIf="weekend == 'Enable'">
+                 <label class="control-label col-sm-3">Half working day &amp; half weekend</label>
+                <div class="col-sm-7">
+                    <div class="input-group">
+                     
+                       <div class="Search-By-all-box">
+                         &nbsp;&nbsp;
+                         <input type="radio" name="half_working_day" id="HalfWorking" value="Enable" formControlName="half_working_day" (click)="changeDropdownFlag('Enable')">
+                         <label for="HalfWorking">Enable</label>
+                        
+                        <input type="radio" name="half_working_day" id="Half_Working" value="Disable" checked="checked" formControlName="half_working_day" (click)="changeDropdownFlag('Disable')">
+                        <label for="Half_Working">Disable</label>
+
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <!-- //---------------------------------------------------------------- -->
+              <div class="form-group" *ngIf="addShiftForm.value.weekend=='Enable'">
+                <label class="control-label col-sm-3">Weekend definition</label>
+                <div class="col-sm-12">
+                  <div id="shiftTable">
+                    <div class="table-responsive">
+                      <table class="table table-cbox MB0I enbl_hlfdy">
+                        <tbody>
+                          <tr class="ZPLHRow">
+                            <th class="days-btn">Days</th>
+                            <th class="P0I TBrdr">
+                              <table class="table i_table">
+                                <tbody>
+                                  <tr>
+                                    <th class="text-center B1" colspan="6">Weeks</th>
+                                  </tr>
+                                  <tr class="TblGryBg">
+                                    <th class="text-center dgry W40">
+                                     <div class="W30">All</div>
+                                    </th>
+                                    <th class="text-center dgry">
+                                     <div class="W30">1st</div>
+                                    </th>
+                                    <th class="text-center dgry">
+                                     <div class="W30">2nd</div>
+                                    </th>
+                                    <th class="text-center dgry">
+                                     <div class="W30">3rd</div>
+                                    </th>
+                                    <th class="text-center dgry">
+                                     <div class="W30">4th</div>
+                                    </th>
+                                    <th class="text-center dgry">
+                                     <div class="W30">5th</div>
+                                    </th>
+                                 </tr>
+                                </tbody>
+                              </table>
+                            </th>
+                          </tr>
+                          <tr *ngFor="let day of weekData; let dayIndex = index" class="ZPLRow">
+                            <td class="ZThov">{{ day.day }}</td>
+                            <td class="P0I TBrdr">
+                              <table class="table i_table">
+                                <tbody>
+                                  <tr>
+                                    <td class="text-center">
+                                      <div class="W30">
+                                        <label class="checkbox marginCalender">
+                                          <input type="checkbox" name="chk" [checked]="day.selected" (change)="toggleAllSelections(dayIndex)">
+                                          <span></span>
+                                        </label>
+                                      </div>
+                                    </td>
+                                    <td class="ZThov" *ngFor="let selection of day.selections; let selectionIndex = index">
+                                      <div class="d-flex a-itm-cntr">
+                                        <div class="W30">
+                                          <label class="checkbox">
+                                            <input type="checkbox" name="chk" [checked]="selection.selected" (change)="toggleSelection(dayIndex, selectionIndex)">
+                                            <span></span>
+                                          </label>
+                                        </div>
+                                        <!-- <select *ngIf="selection.selected && day.showDropdown" class="W100A select2-offscreen" tabindex="-1" (change)="onDropdownChange(dayIndex, selectionIndex, $event.target.value)">
+                                          <option *ngFor="let option of ['Full day', '1st half', '2nd half']; let j = index" [value]="j" [selected]="j === selection.dropdownValue">
+                                            {{ option }}
+                                          </option>
+                                        </select> -->
+
+                                        <ng-container *ngIf="addShiftForm.get('half_working_day').value == 'Enable'">
+                                          <select *ngIf="selection.selected && day.showDropdown" class="W100A select2-offscreen" tabindex="-1" (change)="onDropdownChange(dayIndex, selectionIndex, $event.target.value)">
+                                            <option *ngFor="let option of ['Full day', '1st half', '2nd half']; let j = index" [value]="j" [selected]="j === selection.dropdownValue">
+                                              {{ option }}
+                                            </option>
+                                          </select>
+                                        </ng-container>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+          </div>
+
+          
+          <div class="form-group">
+               <label class="control-label col-sm-3">Shift Allowance</label>
+            <div class="col-sm-6">
+                <div class="input-group">
+                   <div class="Search-By-all-box">
+                     &nbsp;&nbsp;
+                     <input type="radio" id="SearchBq" name="shift_allowance" (input)="getShiftAllowance($event)" class="SearchBy" value="Enable" formControlName="shift_allowance">
+                     <label for="SearchBq">Enable</label>&nbsp;&nbsp;
+                     <input type="radio" id="EmployeeCode" name="shift_allowance" (input)="getShiftAllowance($event)" class="SearchBy" value="Disable" checked="checked" formControlName="shift_allowance">
+                     <label for="EmployeeCode">Disable</label>
+                  </div>
+                </div>
+                <ng-container *ngIf="addShiftForm.get('shift_allowance').errors && addShiftForm.get('shift_allowance').touched" class="text-danger">
+                  <p class="text-danger">Shift allowance is required</p>
+                </ng-container>
+              </div>
+          </div>
+          
+          
+          <div id="Shift-Allowance" *ngIf="shift_allowance == 'Enable'" >
+            <div class="row">
+            <div class="form-group">
+               <label class="control-label col-sm-3">Rate per day</label>
+            <div class="col-sm-6">
+                 <input type="text" class="form-control"  formControlName="rate_per_day" 
+                 maxlength="4"  oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4)">
+                 <label *ngIf="addShiftForm.get('rate_per_day').invalid && addShiftForm.get('rate_per_day').touched" class="control-label FL PT4I text-danger">Rate per day is required</label>
+              </div>
+              
+              <div class="col-sm-3">
+              <button type="button"  placement="top" class="btn btn-secondary" tooltip="Do you know about Shift Allowance eligibility? Navigate to Attendance Settings page.">
+                <i class="fa fa-info-circle"></i>
+              </button>
+
+   
+              </div>
+          </div> 
+          </div>
+          </div>
+          
+    <!-- Your HTML template -->
+    <div class="form-group multiple-select-dropdown-btn">
+      <label class="control-label col-sm-3">Applicable for</label>
+      <div class="col-sm-6">
+        
+        <ng-multiselect-dropdown
+        [placeholder]="'Select department'"
+        [settings]="dropdownSettings"
+        [data]="departmentList"
+        formControlName="applicable_from"
+        (onSelect)="onItemSelect($event)"
+        (onSelectAll)="onSelectAll($event)"
+        (onDeSelectAll)="onUnselectAll($event)"
+        (onDeSelect)="onItemUnselect($event)" >
+      </ng-multiselect-dropdown>
+        <ng-container *ngIf="addShiftForm.get('applicable_from').errors && addShiftForm.get('applicable_from').touched"
+          class="text-danger">
+          <p class="text-danger">Applicable for is required</p>
+        </ng-container>
+      </div>
+    </div>
+    
+    
+    </div>
+        <div class="modal-footer">
+        <ng-container *ngIf="popupType=='addShift'">
+        <input type="button" class="btn btn-default"  value="Submit" [attr.data-dismiss]="(addShiftForm.valid)? 'modal' : 'null'" (click)="submitShiftDetails('addShift')">
+        </ng-container>
+        <ng-container *ngIf="popupType=='updateShift'">
+        <input type="button" class="btn btn-default"  value="Update"  [attr.data-dismiss]="(addShiftForm.valid) ? 'modal' : 'null'" (click)="submitShiftDetails('updateShift')">
+        </ng-container>
+        <input type="button" class="btn btn-default" data-dismiss="modal"  (click)="cancelForm()" value="Cancel">
+          
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+     <!-- Modal -->
+     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalCenterTitle">Delete Shift Details</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">cancel</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deleteShift()">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+

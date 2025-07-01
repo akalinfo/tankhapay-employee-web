@@ -1,0 +1,151 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+    <div id="wrapper" [ngClass]="{'active': showSidebar == false}">
+        <div class="fakeLoader"></div>
+        <div id="page-wrapper">
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Branding </h3>
+                </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a [routerLink]="['/employee-mgmt/hr-letter']">HR Letter</a></li>
+                        
+                        <li class="breadcrumb-item active">Branding</li>
+                    </ol>
+                </div>
+            </div>
+        
+            <div class="container-fluid element"   id="element">
+                <!-- /row -->
+                <div class="row">
+                
+                    <div class="col-md-12 col-sm-12">
+                        <div class="row">
+                        
+                            <div class="col-md-8 col-md-offset-2 mrg-top-25 mrg-bot-15">
+                            
+                            
+                                <div class="card">
+                                
+                                    <div class="card-header ">
+                                        <h4>Branding </h4>
+                                        
+                                    </div>
+                                    
+                                    <div class="card-body" >
+                                        <div class="row">
+                                          <form [formGroup]="brandingForm" (ngSubmit)="saveTemplateImg()">
+                                            <div class="col-md-12 padd-bot-15 padd-top-15">
+                                              <!-- Header Image -->
+                                              <div class="form-group">
+                                                <label>Header</label><br />
+                                                <input
+                                                  type="file"
+                                                  id="headerImage"
+                                                  accept="image/*"
+                                                  style="display: none;"
+                                                  (change)="onFileChange($event, 'headerImage','headerImgName')"
+                                                />
+                                                <label for="headerImage" class="pxp-cover btn manage-btn btn-primary" *ngIf="!bf.headerImage">
+                                                  Choose Header Image <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                                                </label>
+                                                <div *ngIf="bf.headerImage" style="display: inline-block;">
+                                                  <img [src]="bf.headerImage" alt="Header Preview" width="200" height="45"
+                                                  style="border: 1px solid #e1e1e1;margin-right: 20px;"/>
+                                                  
+                                                  <button *ngIf="bf.headerImage" type="button" (click)="uploadImage('headerImage','headerImgName')" class="btn btn-success" title="Upload Image">
+                                                    <i class="fa fa-upload fa-lg" aria-hidden="true"></i>
+                                                  </button>&nbsp;
+                                                  <button *ngIf="bf.headerImage" type="button" (click)="removeImage('headerImage','headerImgName')" class="btn btn-danger" title="Remove Image">
+                                                    <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+                                                  </button>
+                                                </div>
+                                                <div *ngIf="brandingForm.get('headerImage')?.errors?.invalidDimensions">
+                                                  <p class="text-danger">
+                                                    Header image must be exactly 2480px wide and up to 300px in height.
+                                                  </p>
+                                                </div>
+                                              </div>
+                                          
+                                              <!-- Footer Image -->
+                                              <div class="form-group">
+                                                <label>Footer</label><br />
+                                                <input
+                                                  type="file"
+                                                  id="footerImage"
+                                                  accept="image/*"
+                                                  style="display: none;"
+                                                  (change)="onFileChange($event, 'footerImage','footerImgName')"
+                                                />
+                                                <label for="footerImage" class="pxp-cover btn manage-btn btn-primary" *ngIf="!bf.footerImage">
+                                                  Choose Footer Image <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                                                </label>
+                                                <div *ngIf="bf.footerImage">                                                  
+                                                  <img [src]="bf.footerImage" alt="Footer Preview" width="200" height="45"
+                                                  style="border: 1px solid #e1e1e1;margin-right: 20px;" />
+                                                  <!-- <p>{{bf.footerImgName}}</p> -->
+                                                  <button *ngIf="bf.footerImage" type="button" (click)="uploadImage('footerImage','footerImgName')" class="btn btn-success" title="Upload Image">
+                                                    <i class="fa fa-upload fa-lg" aria-hidden="true"></i>
+                                                  </button>&nbsp;
+                                                  <button *ngIf="bf.footerImage" type="button" (click)="removeImage('footerImage','footerImgName')" class="btn btn-danger" title="Remove Image">
+                                                    <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+                                                  </button>
+                                                </div>
+
+                                                <div *ngIf="brandingForm.get('footerImage')?.errors?.invalidDimensions">
+                                                  <p class="text-danger">
+                                                    Footer image must be exactly 2480px wide and up to 200px in height.
+                                                  </p>
+                                                </div>
+                                              </div>
+                                          
+                                              <!-- Signature Image -->
+                                              <div class="form-group">
+                                                <label>Signature</label><br />
+                                                <input
+                                                  type="file"
+                                                  id="signatureImage"
+                                                  accept=".jpg, .jpeg, .png"
+                                                  style="display: none;"
+                                                  (change)="onFileChange($event, 'signatureImage','signatureImgName')"
+                                                />
+                                                <label for="signatureImage" class="pxp-cover btn manage-btn btn-primary" *ngIf="!bf.signatureImage">
+                                                  Choose Signature Image <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                                                </label>
+                                                <div *ngIf="bf.signatureImage">
+                                                  <img [src]="bf.signatureImage" alt="Signature Preview" width="200" height="45"
+                                                  style="border: 1px solid #e1e1e1;margin-right: 20px;" />
+                                                  <!-- <p>{{bf.signatureImgName}}</p> -->
+                                                  <button *ngIf="bf.signatureImage" type="button" (click)="uploadImage('signatureImage','signatureImgName')" class="btn btn-success" title="Upload Image">
+                                                    <i class="fa fa-upload fa-lg" aria-hidden="true"></i>
+                                                  </button>
+                                                  <button *ngIf="bf.signatureImage" type="button" (click)="removeImage('signatureImage','signatureImgName')" class="btn btn-danger" title="Remove Image">
+                                                    <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+                                                  </button>
+                                                </div>
+                                              </div>
+                                          
+                                              <!-- Submit Button -->
+                                              <div class="col-sm-12 text-center">
+                                                <button type="submit" [disabled]="brandingForm.invalid" class="btn btn-primary">
+                                                  Submit
+                                                </button>
+                                              </div>
+                                            </div>
+                                          </form>
+                                          
+                                              
+                                        </div>
+                                    </div>		
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+<app-footer></app-footer>

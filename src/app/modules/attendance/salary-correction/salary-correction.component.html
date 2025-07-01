@@ -1,0 +1,369 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<div id="wrapper" [ngClass]="{'active': showSidebar}">
+
+  <div id="page-wrapper" style="min-height: 596px;">
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Salary Correction</h3>
+      </div>
+      <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="['/dashboard']">Home</a></li>
+
+          <li class="breadcrumb-item active">Salary Correction</li>
+        </ol>
+      </div>
+    </div>
+    <div class="container-fluid element" id="element">
+      <!-- /row -->
+      <div class="row">
+
+        <div class="table-listing-in-arrears-box" id="TableListingBox" style="display: block;">
+          <div class="col-md-12 col-sm-12" style="z-index:10;">
+
+
+            <div class="card filter-outer-main-box">
+              <div class="card-body">
+
+                <div class="row" style="margin-top: 10px;">
+                  <div class="col-md-1 col-sm-1 text-right padd-0">
+                    <div class="form-group">
+                      <h3>Filter By :</h3>
+                    </div>
+                  </div>
+
+                  <div class="col-md-2 col-sm-12">
+                    <div class="form-group">
+                      <select class="form-control" [(ngModel)]="year" (change)="onYearChange()">
+                        <!-- <option value="">Select</option> -->
+                        <option *ngFor="let ya of filteredYearsArray" [selected]="year==ya" [value]="ya">{{ya}}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-md-2 col-sm-12  padd-0">
+                    <div class="form-group">
+                      <select class="form-control" [(ngModel)]="month" style="width: 15rem;">
+                        <option value="">Select</option>
+                        <option *ngFor="let ma of filteredMonthsArray" [selected]="month==ma.id" [value]="ma.id">
+                          {{ma.month}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3 padd-0">
+                    <ng-select [items]="userList_modified" bindLabel="emp_name" placeholder="Select Employee"
+                      [(ngModel)]="selectedEmployee" [searchFn]="customSearch" (change)="updateSearchKeyword($event)">
+                    </ng-select>
+                    <!-- <input type="text" class="form-control" placeholder="Search Emp Code" [(ngModel)]="searchKeyword"> -->
+                  </div>
+
+                  <div class="col-md-4 col-sm-4 text-left">
+                    <div class="form-group">
+                      <a (click)="search()" id="searcharrears-btn" title="Search"
+                        class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn">Search </a> &nbsp;
+                      <a id="ResetBtnBox" title="Reset" (click)="reset_btn_click()"
+                        class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn">Reset </a>
+
+                      <a (click)="routeToBulkSalaryCorrection()" id="searcharrears-btn"
+                        title="Click for Bulk Salary Correction" style="font-weight: bold;"
+                        class="btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn">Bulk Correction</a>
+                      &nbsp;&nbsp;
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-md-12 padd-top-0 day-wise-reports-box">
+            <div class="card">
+
+              <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+
+                <table class="table dataTable no-footer" id="filterSalDataTable"
+                  aria-describedby="filterSalDataTable_info" role="grid">
+                  <thead>
+                    <tr role="row">
+                      <th class="sorting_asc" tabindex="0" aria-controls="filterSalDataTable" rowspan="1" colspan="1"
+                        aria-sort="ascending" aria-label="S.NO: activate to sort column descending"
+                        style="width: 31px;">#</th>
+                      <th class="sorting" tabindex="0" aria-controls="filterSalDataTable" rowspan="1" colspan="1"
+                        aria-label="Action: activate to sort column ascending" style="width: 76px;">
+                        Action</th>
+                      <th class="sorting" tabindex="0" aria-controls="filterSalDataTable" rowspan="1" colspan="1"
+                        aria-label="MPR Year: activate to sort column ascending" style="width: 39px;">MPR Month-Year
+                      </th>
+                      <th class="sorting_disabled" rowspan="1" colspan="1" aria-label="Employee Code"
+                        style="width: 74px;">Employee</th>
+                      <!-- <th class="sorting" tabindex="0" aria-controls="filterSalDataTable" rowspan="1" colspan="1"
+                      aria-label="Employee Name: activate to sort column ascending" style="width: 76px;">Employee
+                      Name</th> -->
+                      <!-- <th class="sorting" tabindex="0" aria-controls="filterSalDataTable" rowspan="1" colspan="1"
+                      aria-label="Salary In Days Opted: activate to sort column ascending" style="width: 70px;">
+                      Salary In Days Opted</th>
+                    <th class="sorting" tabindex="0" aria-controls="filterSalDataTable" rowspan="1" colspan="1"
+                      aria-label="Master Salary Days: activate to sort column ascending" style="width: 68px;">Master
+                      Salary Days</th> -->
+                      <!-- <th class="sorting" tabindex="0" aria-controls="filterSalDataTable" rowspan="1" colspan="1"
+                      aria-label="MPR Year: activate to sort column ascending" style="width: 39px;">MPR Year</th>
+                    <th class="sorting" tabindex="0" aria-controls="filterSalDataTable" rowspan="1" colspan="1"
+                      aria-label="MPR Month: activate to sort column ascending" style="width: 52px;">MPR Month</th> -->
+                      <th class="sorting" tabindex="0" aria-controls="filterSalDataTable" rowspan="1" colspan="1"
+                        aria-label="Loss Of Pay: activate to sort column ascending" style="width: 43px;">Loss Of Pay
+                      </th>
+                      <th class="sorting" tabindex="0" aria-controls="filterSalDataTable" rowspan="1" colspan="1"
+                        aria-label="Total Paid Days: activate to sort column ascending" style="width: 52px;">Total
+                        Paid Days</th>
+                      <th class="sorting" tabindex="0" aria-controls="filterSalDataTable" rowspan="1" colspan="1"
+                        aria-label="Total Leaves Taken: activate to sort column ascending" style="width: 68px;">Total
+                        Leaves Taken</th>
+                      <th class="sorting" tabindex="0" aria-controls="filterSalDataTable" rowspan="1" colspan="1"
+                        aria-label="Attendance Mode: activate to sort column ascending" style="width: 87px;">
+                        Attendance Mode</th>
+                      <th class="sorting" tabindex="0" aria-controls="filterSalDataTable" rowspan="1" colspan="1"
+                        aria-label="Manual Mode Reason: activate to sort column ascending" style="width: 76px;">Manual
+                        Mode Reason</th>
+                      <!-- <th class="sorting" tabindex="0" aria-controls="filterSalDataTable" rowspan="1" colspan="1"
+                        aria-label="TDS Mode: activate to sort column ascending" style="width: 76px;">
+                        TDS Mode</th> -->
+                      <th class="sorting" tabindex="0" aria-controls="filterSalDataTable" rowspan="1" colspan="1"
+                        aria-label="TDS Value: activate to sort column ascending" style="width: 76px;">TDS </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <ng-container *ngFor="let ad of attendanceDetails; let i=index;">
+                      <tr role="row" class="odd">
+                        <td class="fit" scope="col">{{i+1}}</td>
+                        <td class="fit" scope="col">
+                          <i *ngIf="ad.attendancemode=='Manual' && ad.paystatus=='UnPaid'"
+                          (click)="openRejectRemarksPopup(ad.att_row_id)" class="fa fa-trash"></i>
+                        </td>
+                        <td class="fit" scope="col">{{ad.mprmonth_name}}-{{ad.mpryear}}</td>
+                        <!-- <td class="fit" scope="col">{{ad.emp_code}}</td> -->
+                        <td class="fit" scope="col">{{ad.emp_name}}
+                        </td>
+                        <!-- <td class="fit" scope="col">{{ad.salaryindaysopted}}</td>
+                        <td class="fit" scope="col">{{ad.salarydays}}</td> -->
+                        <!-- <td class="fit" scope="col">{{ad.mpryear}}</td>
+                        <td class="fit" scope="col">{{ad.mprmonth}}</td> -->
+                        <td class="fit" scope="col">{{ad.lossofpay}}</td>
+                        <td class="fit" scope="col">{{ad.totalpaiddays}}</td>
+                        <td class="fit" scope="col">{{ad.totalleavetaken}}</td>
+                        <td class="fit" scope="col">{{ad.attendancemode}}</td>
+                        <td class="fit" scope="col">{{ad.manualmodereason}}</td>
+                        <!-- <td class="fit" scope="col">{{ad.tdsmode}}</td> -->
+                        <td class="fit" scope="col">{{ad.tdsvalue || ''}} [  {{ad.tdsmode}} ]</td>
+                      </tr>
+                    </ng-container>
+
+                    <tr *ngIf="attendanceDetails.length==0">
+                      <td style="text-align: center;" colspan="100%">No Data Found</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-md-12 mrg-top-0 mrg-bot-15" *ngIf="attendanceDetails.length>0">
+            <div class="card">
+              <div class="card-header">
+                <div class="row">
+                  <div class="col-md-6 col-sm-6">
+                    <h4 class="sub-title-inn-box View-Roles-list-outer-box">Salary Adjustment Correction </h4>
+                  </div>
+                </div>
+              </div>
+
+              <form [formGroup]="employeeDetailsForm">
+                <div class="card-body padd-bot-0 padd-top-0">
+                  <div class="row">
+                    <div class="Manual-Salary-table-box padd-top-0">
+                      <div class="Appointment-outer-box">
+                        <table class="table">
+                          <tbody>
+                            <tr>
+                              <th scope="col">Employee:</th>
+                              <td>
+                                {{ed.emp_name.value}} {{ (ed.orgempcode.value || ed.tp_code.value) ? '(' +
+                                (ed.orgempcode.value || ed.tp_code.value) + ')' : '' }}
+
+                              </td>
+                              <th scope="col">Designation:</th>
+                              <td>
+                                {{ed.post_offered.value}}
+                              </td>
+                            </tr>
+                            <tr>
+                              <th scope="col">Mobile:</th>
+                              <td>{{ed.mobile.value}}</td>
+                              <th scope="col">Date Of Joining:</th>
+                              <td> {{ed.dateofjoining.value}} </td>
+                            </tr>
+                            <tr>
+
+                              <th scope="col">PAN:</th>
+                              <td>{{ed.pancard.value}}
+                              </td><th scope="col">Department:</th>
+                              <td> {{ed.posting_department.value}}</td>
+                            </tr>
+
+                            <tr>
+                              <th scope="col">Organisation Unit:</th>
+                              <td colspan="3">{{ed.assigned_ou_names.value}}</td>
+                            </tr>
+
+                            <tr>
+                              <th scope="col" class="customVal">Paid Days: <span class="text-danger">*</span></th>
+                              <td scope="col">
+                                <input formControlName="paidDays" class="isreq form-control" id="paidDays"
+                                  (keyup)="check_digits($event)" data-tile="Paid Days" placeholder="Paid Days"
+                                  maxlength="8" style="width: 50%;">
+                              </td>
+                              <th scope="col" class="customVal">Manual Mode Reason:<span class="text-danger">*</span>
+                              </th>
+                              <td>
+                                <select formControlName="manualModeReason" class="form-control isreq" style="width:60%;"
+                                  id="manualSalaryObj_manualmodereason" name="manualSalaryObj.manualmodereason">
+                                  <option value="">Select Reason</option>
+                                  <option value="Attendance Not Recieved">Attendance Not Recieved</option>
+                                  <option value="Additional Days">Additional Days</option>
+                                </select>
+                              </td>
+                            </tr>
+                            
+                            <tr>
+                              <!-- <th scope="col" class="customVal">Paid Days: <span class="text-danger">*</span></th>
+                              <td scope="col">
+                                <input formControlName="paidDays" class="isreq form-control" id="paidDays"
+                                  (keyup)="check_digits($event)" data-tile="Paid Days" placeholder="Paid Days"
+                                  maxlength="8" style="width: 50%;">
+                              </td> -->
+                              <th scope="col" class="customVal">Salary Pay Month:</th>
+                              <td>
+                                <select formControlName="salaryPayMonth" class="form-control isreq" style="width:100%;"
+                                  id="manualSalaryObj_salaryPayMonth" name="manualSalaryObj_salaryPayMonth">
+                                  <option value="">Select Month</option>
+                                  <option value="Current">Current</option>
+                                  <option value="Advance">Advance</option>
+                                </select>
+                              </td>
+                            </tr>
+
+                            <tr>
+                              <th scope="col" class="customVal">Remarks <span class="text-danger">*</span></th>
+                              <td scope="col" colspan="3">
+                                <textarea formControlName="remark" placeholder="Enter Remarks" maxlength="300"
+                                  style="width: 85%;" class="form-control isreq" id="manualSalaryObj_remark"
+                                  name="manualSalaryObj.remark"></textarea>
+                                (Max. 300 characters)
+                              </td>
+                            </tr>
+
+                            <!-- start - Manual TDS Logic - 08.05.2025 by sidharth kaul -->
+                            <tr *ngIf="showManualTDS">
+                              <th scope="col" class="customVal">Add Manual TDS:</th>
+                              <td scope="col">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        &nbsp;&nbsp;
+                                        <input type="checkbox" name="manualTDS" id="tds" formControlName="manualTDS">
+                                        <label for="tds" class="administrator">&nbsp;</label>
+                                    </div>
+                                </div>
+                              </td>
+
+                              <ng-container *ngIf="employeeDetailsForm.get('manualTDS').value == true">
+                              <th scope="col" class="customVal">Manual TDS Value:</th>
+                              <td>
+                                <input formControlName="manualTDSValue" class="isreq form-control" id="tds_val"
+                                (blur)="validateManualTds()" data-tile="Enter TDS Value" placeholder="Enter TDS Value"
+                                maxlength="8" style="width: 50%;">
+                                <ng-container *ngIf="employeeDetailsForm.get('manualTDSValue').errors && employeeDetailsForm.get('manualTDSValue').touched"
+                                class="text-danger">
+                                 <p class="text-danger">TDS value is required</p>
+                                </ng-container>
+                              </td>
+                              </ng-container>
+                            </tr>
+                            <!-- end - Manual TDS Logic - 08.05.2025 by sidharth kaul -->
+
+                          </tbody>
+                        </table>
+                      </div>
+
+
+
+                    </div>
+
+
+
+
+                  </div>
+                </div>
+              </form>
+
+
+            </div>
+
+
+
+          </div>
+
+
+          <div class="col-md-12 col-12 padd-top-0 text-center">
+            <a (click)="updateTDS()" class="btn btn-primary" *ngIf="attendanceDetails.length>0">Save </a>
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+  </div>
+
+</div>
+
+
+<div [@grooveState]="showRejectRemarksPopup?'active':'inactive'" id="remarks_modal" class="modal">
+  <div [@dongleState]="showRejectRemarksPopup?'active':'inactive'" class="modal-dialog"
+    style="margin:auto auto auto auto;">
+    <div class="modal-content" style="height:100%;margin-top:100px;">
+      <div class="modal-header theme-bg">
+        <h4 class="modal-title">Reject Record</h4>
+        <button type="button" class="close" (click)="closeRejectRemarksPopup()" data-dismiss="modal"
+          aria-hidden="true">&times;</button>
+      </div>
+
+      <form [formGroup]="rejectForm">
+        <div class="modal-body">
+          <div class="row">
+
+            <div class="col-md-12">
+              <label>Remarks</label>
+              <textarea placeholder="Enter Remarks" formControlName="remarks" maxlength="399">
+                  </textarea>
+            </div>
+
+          </div>
+        </div>
+      </form>
+      <div class="modal-footer">
+        <button class="btn btn-info" (click)="rejectSalaryInfo()">Update</button>
+
+        <button class="btn btn-cancel" (click)="closeRejectRemarksPopup()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

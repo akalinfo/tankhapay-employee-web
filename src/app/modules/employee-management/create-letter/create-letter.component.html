@@ -1,0 +1,278 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+    <div id="wrapper" [ngClass]="{'active': showSidebar == false}">
+        <div class="fakeLoader"></div>
+        <div id="page-wrapper">
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">{{letterType}} </h3>
+                </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a [routerLink]="['/employee-mgmt/hr-letter']">HR Letter</a></li>
+                        
+                        <li class="breadcrumb-item active">{{letterType}}</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="container-fluid element"   id="element">
+                <!-- /row -->
+                <div class="row">
+                
+                
+                 
+                <div class="col-md-12"><a [routerLink]="['/employee-mgmt/hr-letter']" class="btn btn-secondary btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></div>
+                
+             
+                
+                
+                <div class="col-md-12 padd-bot-15 padd-top-0">
+                    <div class="card">
+                    
+                    <div class="card-header caded-innder-head-box"> 
+                        
+                        
+                
+                        <div class="col-sm-6 text-left"><h3 class="list-name-text"> </h3> </div>
+                         
+                         
+                        <div class="col-sm-6 text-right">
+                            <!--<a href="#SendMessage199" data-toggle="modal" class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn" data-placement="top" style=" margin-top: 10px;">Add Category </a>-->
+                            <a data-toggle="modal"
+                            class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn"
+                            data-placement="top" style="margin: 6px 0;"
+                            (click)="openAddTemplateModal('createTemplate')">Create Template </a>
+                        </div>
+                        
+                        </div>
+
+                    <div class="card-body padd-bot-0 padd-top-0">
+
+                    
+                    <div class="table-responsive challan-table-outer-box Documents-listing-table-box"> 
+                    
+                            <table class="table table-lg table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th style="width: 150px;">Template Name </th>
+                                         <th>Subject</th>
+                                          
+                                         <!-- <th style="width: 120px;">Create Date</th> -->
+                                         
+                                         <th>Action</th>
+                                         
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                                
+                                    <tr *ngFor="let template of masterTemplateList;let i=index;">
+                                        <td>
+                                            {{i+1}}
+                                        </td>
+                                        <td>{{template.template_name}}</td>
+                                        
+                                         <td>{{template.emailsubject}}</td>
+                                        
+                                         
+                                        <!-- <td>21-08-2020 </td> -->
+                                                                                             
+                                        
+                                        <td>
+                                         
+                                        
+                                            <a data-toggle="modal" data-placement="top"
+                                            class="btn btn-shortlist manage-btn" title="Edit"
+                                            (click)="openAddTemplateModal('editTemplate', template)"><i
+                                                class="ti-pencil-alt"></i></a>
+                                        
+                                        <a (click)="generatePDF(template)" style="cursor:pointer;"><i class="fa fa-eye" aria-hidden="true"></i></a>  </td> 
+                                         
+                                         
+                                         
+                                           
+                                    </tr>
+                                    <tr *ngIf="masterTemplateList.length==0">
+                                       <td  colspan="4" style="text-align: center;font-weight:600;">No record(s) found</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    
+                    </div> 
+                    </div> 
+                 
+                    </div>
+                
+             
+                  
+                
+                            </div>
+                            
+                            
+                            
+                        </div>
+        </div>
+    </div>
+                <!-- /row -->
+        <!-- /#page-wrapper -->
+        
+   <app-footer></app-footer>
+    
+    
+    <!-- Send Message -->
+        <div id="final-bill" class="modal fade punchin-punchout-outer1-box">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <form [formGroup]="templateForm" (ngSubmit)="onSaveTemplate()">
+                        <div class="modal-header theme-bg">
+                            <h4 class="modal-title" *ngIf="popupType === 'createTemplate'">Create Email Template</h4>
+                            <h4 class="modal-title" *ngIf="popupType === 'editTemplate'">Edit Email Template</h4>
+                            <span class="close-print-box">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                    (click)="closeModal()">&times;</button>
+                            </span>
+                        </div>
+                        <div class="modal-body final-bill-inner-box">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3">Template Type <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" formControlName="templateTypeName" readonly>
+                                                <!-- <select id="templateType" class="form-control"
+                                                    formControlName="templateType" required>
+                                                    <option value="" selected="true" disabled>Select Template Type</option>
+                                                    <option *ngFor="let type of templateTypeList"
+                                                        [value]="type.templatetype_id">
+                                                        {{ type.templatetype }}
+                                                    </option>
+                                                </select> -->
+                                                <div *ngIf="f.templateType?.touched && f.templateType?.invalid" class="text-danger">
+                                                    <div *ngIf="f.templateType.errors?.required">Template Type is required.</div>
+                                                </div>
+                                            </div>
+                                        </div>
+    
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3">Template Name<span class="text-danger">*</span></label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" formControlName="templateName"
+                                                    placeholder="Enter Template Name" required>
+                                                <div *ngIf="f.templateName.touched && f.templateName.invalid" class="text-danger">
+                                                    <div *ngIf="f.templateName.errors?.required">Template name is required.</div>
+                                                </div>
+                                            </div>
+                                        </div>
+    
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3">Subject<span class="text-danger">*</span></label>
+                                            <div class="col-sm-9">
+                                                <input id="subject" type="text" class="form-control"
+                                                    formControlName="subject"
+                                                    (click)="updateCursorPosition('subject', $event)"
+                                                    (keyup)="updateCursorPosition('subject', $event)"
+                                                    placeholder="Enter Subject" required>
+                                                <div *ngIf="f.subject.touched && f.subject.invalid" class="text-danger">
+                                                    <div *ngIf="f.subject.errors?.required">Subject is required.</div>
+                                                </div>
+                                            </div>
+                                        </div>
+    
+                                        <!-- <div class="form-group">
+                                            <label class="control-label col-sm-3">Body<span class="text-danger">*</span></label>
+                                            <div class="col-sm-9">
+                                                <div class="box">
+                                                   <angular-editor id="body-editor" class="jdbanktoolbarsize" formControlName="body"
+                                                   [config]="editorConfig" (focus)="setActiveEditor('body')">
+                                                   </angular-editor>
+                                                    <div *ngIf="f.body.touched && f.body.invalid" class="text-danger">
+                                                        <div *ngIf="f.body.errors?.required">Subject is required.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> -->
+
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3">Body (This text will appear in Mail Body)<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="col-sm-9">
+                                                <div [ngxSummernote]="getEditorConfig('body')" id="body-editor" formControlName="body" (focus)="setActiveEditor('attachment')" required>
+                                                </div>
+                                                <div *ngIf="f.body.touched && f.body.invalid" class="text-danger">
+                                                    <div *ngIf="f.body.errors?.required">Body is required.</div>
+                                                </div>
+                                            </div>
+                                        </div>
+    
+                                        <!-- <div class="form-group">
+                                            <label class="control-label col-sm-3">Attachment<span class="text-danger">*</span></label>
+                                            <div class="col-sm-9">
+                                                <div class="box">
+                                                   <angular-editor id="attachment-editor" class="jdbanktoolbarsize" formControlName="attachment"
+                                                   [config]="editorConfig" (focus)="setActiveEditor('attachment')">
+                                                   </angular-editor>
+                                                    <div *ngIf="f.attachment.touched && f.attachment.invalid" class="text-danger">
+                                                        <div *ngIf="f.attachment.errors?.required">Attachment is required.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> -->
+
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3">Attachment<span class="text-danger">*</span></label>
+                                            <div class="col-sm-9">
+                                                <div [ngxSummernote]="getEditorConfig('attachment')" id="attachment-editor" formControlName="attachment" (focus)="setActiveEditor('attachment')" required>
+                                                </div>
+                                                <div *ngIf="f.attachment.touched && f.attachment.invalid" class="text-danger">
+                                                    <div *ngIf="f.attachment.errors?.required">Attachment is required.</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+    
+                                   <div class="col-sm-3" *ngIf="templateFormField && templateFormField.length > 0">
+                                        <h5 class="heads" id="earnings_btn-box" (click)="toggleList()"
+                                        >Master
+                                        <i class="fa" [class.fa-chevron-down]="isListVisible" [class.fa-chevron-up]="!isListVisible" aria-hidden="true"></i>
+                                        </h5>
+                                         <!-- Search box to filter the list -->
+                                       <div *ngIf="isListVisible">
+                                       <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchTerm" (keyup)="filterFields()"
+                                       [ngModelOptions]="{standalone: true}"/>
+                                       </div>
+                                        <!-- Listing of filtered fields -->
+                                       <div class="right-template-listing-box" *ngIf="isListVisible">
+                                          <select class="form-control" (change)="insertFieldIntoTemplate($event.target.value)">
+                                             <option value="">Select template field</option>
+                                             <option [value]="header.field_name" *ngFor="let header of filteredFields">{{header.field_name}}</option>
+                                          </select>
+                                          <!-- <ul class="earnings_btn-outer-box" *ngFor="let header of filteredFields">
+                                          <li (click)="insertFieldIntoTemplate(header.field_name)">
+                                             <div style="cursor: pointer;">{{header.field_name}}</div>
+                                          </li>
+                                          </ul> -->
+                                       </div>
+                                    </div>
+    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeModal()">Cancel</button>
+                            <button type="submit" class="btn btn-success" [disabled]="templateForm.invalid">
+                                {{ popupType === 'createTemplate' ? 'Save Template' : 'Update Template' }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+      
+</section>

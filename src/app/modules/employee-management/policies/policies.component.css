@@ -1,0 +1,163 @@
+.card-header.caded-innder-head-box {
+    display: flex;
+    margin-bottom: 20px;
+    padding: 0;
+}
+
+h3.list-name-text {
+    color: #3c3c3c;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 0;
+    line-height: 52px;
+}
+
+.manage-list-row.manage-pay-select.clearfix.list_view_de-box {
+    padding: 0;
+}
+
+.manage-list-row.manage-pay-select.clearfix.list_view_de-box .net-pay-section {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    height: auto;
+}
+
+.net-pay-section {
+    position: relative;
+}
+
+.job-buttons.action-btn-outer-box {
+    position: absolute;
+    right: 6px;
+    top: 6px;
+    z-index: 9;
+    display: none;
+}
+
+.manage-list-row .job-buttons {
+    margin-top: 0;
+    margin-right: 0;
+}
+
+.manage-list-row .job-buttons a.btn.btn-shortlist.manage-btn {
+    background: #ffffff !important;
+    color: #000000;
+    padding: 4px 4px;
+    font-size: 18px;
+}
+
+.font-mm.head-enve-box {
+    padding: 25px 10px 10px 10px;
+    text-align: center;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+.manage-list-row.manage-pay-select.clearfix.list_view_de-box .net-pay-section .title-inn_box {
+    padding: 15px;
+    color: #004899;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+    padding: 10px 10px 0px 10px;
+}
+
+.manage-list-row.manage-pay-select.clearfix.list_view_de-box .net-pay-section .title-inn_box {
+    padding: 15px;
+    color: #004899;
+}
+
+.manage-list-row.manage-pay-select.clearfix.list_view_de-box .net-pay-section .title-inn_box span.font-mm {
+    font-size: 18px !important;
+}
+
+.manage-list-row.manage-pay-select.clearfix.list_view_de-box .net-pay-section .row.net-pay-data-without-bt {
+    margin: 0 0 20px 0;
+}
+
+.manage-list-row.manage-pay-select.clearfix.list_view_de-box .net-pay-section .row.net-pay-data-without-bt .text-uppercase.font-ms.payrun-label {
+    opacity: inherit;
+    font-size: 13px;
+    text-transform: capitalize;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 20px;
+    text-align: center;
+}
+
+.net-pay-section:hover .job-buttons.action-btn-outer-box {
+    display: block;
+}
+.manage-list-row .job-buttons a.btn.btn-cancel.manage-btn, .manage-list-row .job-buttons a.btn.btn-shortlist.manage-btn, .manage-list-row .job-buttons a.btn.btn-info.btn-sm.manage-btn{
+    width: 29px;
+}
+
+.modal-body.final-bill-inner-box {
+    background: #efefef;
+}
+
+.modal-body.final-bill-inner-box .card-body {
+    border: 1px dashed #a1a1a1;
+    background: #fff;
+}
+
+.punchin-punchout-outer1-box label {
+    line-height: 25px;
+}
+
+.custom-file-input {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: calc(4.25rem + 4px);
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.custom-file label.custom-file-label {
+    right: 16px;
+    left: 16px;
+}
+
+label.custom-file-label {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    height: calc(3.25rem + 3px);
+    padding: .375rem .75rem;
+    line-height: 2.1;
+    color: #495057;
+    background-color: #fbfdff;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    cursor: pointer;
+}
+
+.custom-file-label::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    display: block;
+    height: calc(calc(3.25rem + 3px) - 1px* 2);
+    padding: .375rem .75rem;
+    line-height: 2.1;
+    color: #495057;
+    content: "Browse";
+    background-color: #e9ecef;
+    border-left: 1px solid #ced4da;
+    border-radius: 0 .25rem .25rem 0;
+    cursor: pointer;
+}
+
+.pointer{
+    cursor: pointer;
+}

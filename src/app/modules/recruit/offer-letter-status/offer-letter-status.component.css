@@ -1,0 +1,21 @@
+.login-panel .panel-body {
+    padding: 30px 10px;
+}
+.login-panel {
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 6px 14px;
+    margin-right: 5px;
+    border-radius: 2px;
+}
+
+/* a {
+    color: #67757c;
+    text-decoration: none;
+}
+a:hover, a:focus {
+    color: #62748F;
+    text-decoration: none;
+} */

@@ -1,0 +1,70 @@
+.main-tab-outer-box ul.nav.nav-tabs {
+    background-color: #00bcd4 !important;
+    border-radius: .3rem .3rem 0 0;
+    display: flex;
+    justify-content:  flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.main-tab-outer-box ul.nav.nav-tabs li.active a {
+    color: #fff;
+    border-bottom: 3px solid #ffeb3b !important;
+    text-transform: uppercase;
+    border-radius: 0;
+    background-color: transparent;
+    border: none;
+}
+
+ul.nav.nav-tabs li a {
+    display: block;
+    padding: 15px 14px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    text-transform: uppercase;
+    border-radius: 0;
+    border: none;
+    background-color: transparent;
+    font-weight: 600;
+}
+
+.main-tab-outer-box .tab-pane {
+    border-left: 1px solid #e8edef;
+    border-right: 1px solid #e8edef;
+    border-bottom: 1px solid #e8edef;
+    background: #fff;
+    padding: 20px;
+}
+
+.main-tab-outer-box .tab-pane .card {
+    border: none;
+}
+
+.employees-details-outer-box .main-tab-outer-box .accordion .panel-heading {
+    background: #e9f6ff;
+    padding: 6px 13px !important;
+    width: 100%;
+    display: block;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 6px;
+    border: 1px solid #d3e7f5;
+}
+
+.main-tab-outer-box .tab-pane .card .card-body {
+    padding: 15px 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    border: 1px solid #d3e7f5;
+}
+
+.employees-details-outer-box .main-tab-outer-box .accordion .panel-heading h4 {
+    font-size: 16px;
+    color: #464646;
+}
+
+.employees-details-outer-box .fa-angle-down{
+    top: 5px;
+    color: #000;
+}

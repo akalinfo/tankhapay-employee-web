@@ -1,0 +1,45 @@
+<div class="container-fluid element" id="element">
+    <!-- /row -->
+   <div class="row">
+    
+      <div class="col-md-4 " *ngFor="let training of employeeTrainingRecords;let i=index;">
+         <div class="manage-list-row manage-pay-select clearfix list_view_de-box" style="cursor: pointer;"
+         [routerLink]="['/profile/training-details',_encrypterService.aesEncrypt(training.trainingid+','+emp_code)]">
+               
+               <div class="net-pay-section">
+               
+               <div class="col-md-12">
+                  <a ><span class="font-mm head-enve-box ">
+                     <img [src]="training.course_image_url" class="img-responsive" alt="Logo"> </span>
+                  </a>
+               </div>
+               
+                  <div class="title-inn_box" style="display:flex;justify-content: space-between;">
+                     <a style="text-decoration:none;">
+                        <span class="font-semibold font-mm" style="font-size: 16px !important;">{{training?.trainingtype_name}}</span>
+                     </a>
+                     <a [ngClass]="{'status-complete':training.training_status=='Completed',
+                        'status-pending': training.training_status=='Pending',
+                        'status-expired': training.training_status=='Expired'
+                     }">{{training.training_status}}</a>
+                  </div>
+
+                  <div class="row net-pay-data-without-bt">
+                     <div class="training-content-box">
+                        <span>{{training.course_name}}</span>
+                        <small><i class="fa fa-calendar" aria-hidden="true"></i> Start Date : {{training.startdate}}</small>
+                        <small><i class="fa fa-calendar" aria-hidden="true"></i> End Date : {{training.enddate}}</small>
+                        <small><i class="fa fa-user" aria-hidden="true"></i> Trainer : {{training.faculty_name}} </small>
+                        <small><i class="fa fa-map-marker" aria-hidden="true"></i> Venue :  {{training.venue}}</small>
+                     </div>  
+                  </div>
+                  
+               </div>
+               
+         </div>
+         
+      </div>
+     
+   </div>
+                
+</div>

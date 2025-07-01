@@ -1,0 +1,5 @@
+﻿<div *ngFor="let alert of alerts" class="{{cssClass(alert)}}" style="margin-top: 18px;"
+    class="alert alert-success alert-dismissable mrg-bot-5 mrg-top-5">
+    <a class="close" (click)="removeAlert(alert)">&times;</a>
+    <span [innerHTML]="alert.message"></span>
+</div>

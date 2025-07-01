@@ -1,0 +1,1109 @@
+.packageMainDiv{
+    border: 1px solid #000;
+    padding: 14px;
+}
+
+ul {
+    list-style-type: inherit;
+    padding: 0px;
+    margin: 17px;
+}
+
+[type="radio"] {
+    display: inline !important
+}
+
+.light-skyblue {
+    background: lightblue;
+}
+
+.white {
+    background: white;
+}
+
+.export-button {
+    background-color: rgb(114, 238, 116);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  .dropdown.float-right-box ul#menu3 {
+    left: -52px;
+}
+.top-right-outer-box {
+    display: flex;
+    justify-content: flex-start;
+}
+.form-check {
+    padding-top: 10px;
+}
+.form-check .form-check-input {
+    height: 20px;
+    width: 20px;
+    vertical-align: text-bottom;
+    margin: 3px 5px 0 0;
+}
+.table-responsive.reports-table-outer-box thead {
+    background: #1669b6 !important;
+    color: #fff;
+}
+
+.Appointment-outer-box table thead th {
+    background: #31869b;
+    color: #fff;
+    font-size: 18px;
+    padding: 12px;
+}
+
+.table>thead>tr>th {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+}
+.table-responsive.reports-new-table-outer-box thead {
+    color: #ffffff !important;
+    background: #6fbbdb!important;
+    vertical-align: top;
+}
+
+  .table-bordered {
+    border: 1px solid #e8edef !important;
+}
+.save-button .btn.btn-primary:hover {
+    background: #87ceeb !important;
+}
+
+.save-button .btn.btn-primary {
+    background: #d1ebfc;
+    color: #000;
+    border: 1px solid #87ceeb;
+    padding: 10px 14px;
+}
+
+html body .btn-primary:hover, html body .btn-primary:focus {
+    color: #ffffff;
+}
+.btn-primary:hover, .btn-primary:focus {
+    color: #fff;
+    background-color: #1194f7 !important;
+    border-color: #1194f7 !important;
+}
+.btn.focus, .btn:focus, .btn:hover {
+    color: #67757c !important;
+    text-decoration: none;
+}
+
+.Show-Fields-top-outer-box {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.dropdown.btn-group.Show-Fields-outer-box .btn-primary {
+    padding: 10px 15px;
+}
+
+.showhide {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.dropdown-menu {
+    border-color: #e8eef1;
+    padding: 0;
+    box-shadow: none;
+    margin: 0px 0 0;
+}
+
+.Show-Fields-top-outer-box .dropdown.float-right-box .btn-primary:hover {
+    color: #fff;
+    background-color: #1194f7;
+    border-color: #1194f7;
+}
+.Show-Fields-top-outer-box .dropdown.float-right-box .btn-primary {
+    border-radius: 0;
+}
+
+.save-button .btn.btn-primary.Reset-btn-box:hover {
+    background: #dbdbdb;
+    border: 1px solid #c4c6c7;
+}
+
+.save-button .btn.btn-primary.Reset-btn-box {
+    background: #e3e3e3;
+    border: 1px solid #c4c6c7;
+}
+.save-button .btn.btn-primary:hover {
+    background: #87ceeb;
+}
+.save-button .btn.btn-primary {
+    background: #d1ebfc;
+    color: #000;
+    border: 1px solid #87ceeb;
+    padding: 10px 14px;
+}
+html body .btn-primary:hover, html body .btn-primary:focus {
+    color: #ffffff;
+}
+.btn-primary:hover, .btn-primary:focus {
+    color: #fff;
+    background-color: #1194f7;
+    border-color: #1194f7;
+}
+.btn.focus, .btn:focus, .btn:hover {
+    color: #67757c;
+    text-decoration: none;
+}
+
+html body .btn-primary {
+    background: #1194f7;
+}
+
+.dropdown-menu>li:last-child a {
+    border-bottom: none;
+}
+.dropdown-menu>li>a {
+    display: block;
+    padding: 14px 12px 14px 12px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #67757c;
+    white-space: nowrap;
+    border-bottom: 1px solid #f1f6f9;
+}
+
+select.form-control.status-btn-box {
+    font-size: 12px;
+    padding: 5px;
+    height: 30px;
+    width: 117px;
+    margin: 0.2rem;
+}
+
+h1.Payment-due-outer-box1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 24px;
+  }
+  
+  h1.Payment-due-outer-box1 span {
+    width: 100px;
+  }
+  
+  span.payment-due-text-box {
+      font-size: 14px;
+      line-height: 15px;
+      width: 155px!important;
+  }
+
+.card.make-payment-amount-outer-box .card-body {
+    border: 10px solid #afddfa;
+	padding: 1.25rem;
+}
+.make-payment-amount-inner-box {
+    border: 2px dashed #ffffff;
+    background: #ebeeff;
+    padding: 40px;
+}
+make-payment-amount-inner-box .form-group.text-center {
+    padding: 20px;
+}
+
+.make-payment-amount-inner-box hr {
+    border-top: 1px solid #f1f9ff;
+}
+.make-payment-amount-inner-box b {
+    font-weight: 500;
+}
+.page-titles {
+    padding: 0px 0px 7px 7px;
+}
+
+
+ul {
+    list-style-type: inherit;
+    padding: 0px;
+    margin: 17px;
+}
+
+.card.make-payment-amount-outer-box .card-body {
+    border: 10px solid #afddfa;
+	padding: 1.25rem;
+}
+.make-payment-amount-inner-box {
+    border: 2px dashed #ffffff;
+    background: #ebeeff;
+    padding: 40px;
+}
+make-payment-amount-inner-box .form-group.text-center {
+    padding: 20px;
+}
+
+.make-payment-amount-inner-box hr {
+    border-top: 1px solid #f1f9ff;
+}
+.make-payment-amount-inner-box b {
+    font-weight: 500;
+}
+.page-titles {
+    padding: 0px 0px 7px 7px;
+}
+
+input.form-control.Required-Balance-input-text {
+    height: 40px;
+    margin: 0 0 0 5px;
+}
+p.please-add-text-box {
+    font-size: 12px;
+    color: #c40000;
+    /* text-transform: capitalize; */
+}
+
+
+.plantypes-container {
+    position: relative;
+    font-size: 0;
+}
+.plan-content, .plan-contentmultiplan {
+    width: 100%;
+    background-color: #fff;
+    display: inline-block;
+    border-width: 1.333px;
+    border-color: #dce4e9;
+    border-style: solid;
+    box-shadow: 0px 4px 22.56px 1.44px #e0e4f0;
+    vertical-align: top;
+    font-size: 14px;
+    position: relative;
+	 
+}
+.plan-price-container {
+    background-color: #f7faff;
+    border-radius: 0 0 60% 60%;
+    float: left;
+    width: 100%;
+    padding: 0px 10px 20px 10px;
+	text-align: center;
+	position: relative;
+    overflow: hidden;
+}
+.plan-name {
+    color: #25a4ef;
+    font-size: 2.3125rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin: 30px auto 10px auto;
+    line-height: 30px;
+     
+}
+.plan-table-price {
+    font-size: 2.625rem;
+    font-weight: 600;
+}
+.plan-table-price span.currency-symbol {
+    font-size: 60%;
+    font-weight: 400;
+}
+.plan-table-price .exclusiveStar {
+    font-size: 20px;
+    top: -1em;
+    position: relative;
+	color: #ff0e0e;
+}
+.price-details {
+    font-size: 12px;
+    margin-top: -5px;
+    padding-bottom: 5px;
+}
+.fw400, .dropdown .btn, .fw300 {
+    font-weight: 600;
+}
+.primary-button, .secondary-button, .primary-btn {
+    color: white;
+    background-color: #25a4ef;
+    border-radius: 24px;
+    padding: 10px 20px;
+    font-size: inherit;
+    min-width: 150px;
+    border: none;
+    outline: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    line-height: inherit;
+	margin:20px;
+}	
+.plan-cont {
+    text-align: center;
+}
+
+/* .feature-list li {
+    border-top: 1px solid #e6e6e6;
+    background: url(./assets/img/feature-list.png) no-repeat 12px 13px;
+    background-size: 14px 14px;
+    text-align: left;
+    padding-left: 32px;
+    line-height: 36px;
+} */
+
+/* .plan-addon-list {
+    background: url(../../images/addon-icon.png) no-repeat 92% center;
+    background-size: 30px 27px;
+    padding: 15px 30px;
+    border-bottom: 1px solid #e5eefc;
+    position: relative;
+} */
+.feature-list li .feature-tick {
+    margin-top: 5px !important;
+}
+.feature-txt {
+    display: table-cell;
+    line-height: 1.6;
+    padding: 9px 5px 8px 0;
+	text-transform: capitalize;
+}
+.feature-inclusive-div {
+    color: #176686;
+    text-transform: uppercase;
+    border-top: 1px solid #e6e6e6;
+    letter-spacing: 0.2px;
+    line-height: 40px;
+    text-align: center;
+    font-weight: 600;
+}
+span.feature-plus {
+    color: #1dc721;
+    font-size: 20px;
+    margin: 0 0 0 4px;
+}
+span.plan-price {
+    color: #000;
+}
+
+.featureHeading {
+    background-color: #f2f4f8 !important;
+}
+.featHeading {
+    font-size: 15px;
+    font-weight: 600;
+}
+li.featureHeading {
+    background: none;
+}
+.plan-addon-container {
+    background-color: #f7faff;
+    font-weight: 500;
+    text-align: left;
+    border-top: 1px solid #e5eefc;
+}
+
+.plan-addon-name {
+    color: #25a4ef;
+}
+.addon-table-price {
+    font-size: 1.125rem;
+}
+.addon-table-price {
+    font-size: 2rem;
+    color: #000;
+}
+.plan-addon-list div span {
+    color: #000;
+}
+.addon-icon {
+    height: 35px;
+    width: 35px;
+    background-position: -107px -10px !important;
+    position: absolute;
+    top: 27%;
+    right: 15px;
+    background: #2ca8f2;
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 31px;
+    font-size: 16px;
+    border: 2px solid#fff;
+}
+.urgent-box {
+    position: absolute;
+    top: 18px;
+    right: -25px;
+    background: #1dc700;
+    color: #fff;
+    display: inline-block;
+    padding: 0 25px;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    font-weight: 500;
+}	
+.subscription-title.h-aligncenter {
+    padding: 10px;
+    font-weight: 500;
+    font-size: 20px;
+    color: #333;
+    padding-top: 0px;
+    text-align: center;
+    margin-bottom: 20px;
+}	
+
+ul#page-navigation {
+    margin-top: 0px;
+    color: #333;
+    font-weight: 400;
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+	text-align: center;
+	margin-left: -77px;
+}
+ul#page-navigation li.selected-menu {
+    border-color: #95a4b4;
+}
+ul#page-navigation li.currentView:first-child {
+    border-image-source: linear-gradient(to right, #ffffff00 50%, #25a4ef 50%)!important;
+}
+
+ul#page-navigation li.currentView:not(:first-child) {
+    border-image-source: linear-gradient(to right, #25a4ef 50%, #25a4ef 50%);
+}
+
+
+ul#page-navigation li {
+    display: inline-block;
+    min-width: 160px;
+    position: relative;
+    border-bottom: 4px solid #e4eaf1;
+    border-image-slice: 1;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+
+
+
+ul#page-navigation li.selected-menu {
+    border-color: #95a4b4;
+}
+
+li.currentView .menu-header span {
+    font-size: 15px;
+    font-weight: 600;
+    color: #317fd3;
+}
+
+li .menu-header span {
+    font-size: 15px;
+    font-weight: 600;
+    color: #000;
+}
+
+
+
+
+
+.menu-header {
+    height: 50px;
+}	
+
+.progress-check {
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 30px;
+    width: 30px;
+    background-color: #e5e2e2;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress-check::before {
+        content: "\2713";
+        font-size: 18px;
+        color: #ededed;
+    }
+
+
+ li.currentView .progress-check {
+    background-color: #25a4ef!important;
+}
+
+	
+ .progress-check.check-box::before {
+        content: "\2713";
+        font-size: 18px;
+        color: white;
+    }
+    
+ul#page-navigation li.confirm-order-menu.right-outer-box .progress-check {
+    left: 95%;
+    transform: translateX(-79%);
+}
+ul#page-navigation li.confirm-order-menu.right-outer-box .menu-header {
+    margin-right: -72px;
+}
+ul#page-navigation li.confirm-order-menu.right-outer-box {
+    min-width: 97px;
+}
+ul#page-navigation li.selected-menu:first-child {
+    border-image-source: linear-gradient(to right, #ffffff00 50%, #e4eaf1 50%);
+}
+
+ 
+form.Add-Ons-outer-box {
+    padding: 10px;
+}
+form.Add-Ons-outer-box .form-group {
+    margin: 0;
+}
+label.addon-price-box {
+    font-size: 18px;
+    color: #6e6e6e;
+}
+label.addon-price-box span {
+    font-weight: 500;
+    color: #25a4ef;
+}
+.addon-price-div {
+    font-size: 18px;
+    font-weight: 500;
+}
+label.addon-price-box strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+label.addon-price-box.Summary-title-box {
+    border-bottom: 1px solid #837f7f;
+    padding-bottom: 5px;
+    font-weight: 500;
+    color: #25a4ef;
+}
+
+.form-group.Subtotal-title-box label.addon-price-box,    .form-group.Subtotal-title-box .addon-price-div {
+    font-weight: 400;
+    font-size: 16px;
+}
+.form-group.Subtotal-title-box {
+    border-bottom: 1px solid #e7e7e7;
+	margin-top: 10px!important;
+}
+.form-group.Total-Amount-title-box label.addon-price-box {
+    font-size: 16px;
+    color: #6e6e6e;
+}
+.form-group.Total-Amount-title-box {
+    margin-bottom: 9px!important;
+}
+
+#top-div .payperiodDiv {
+    float: left;
+    padding: 0px 2px 0px 0px;
+    box-shadow: rgb(224, 228, 240) 1px 1px 5px 1px;
+    background: #fff;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    width: 158px;
+}
+
+.switch-label {
+   position: relative;
+    z-index: 2;
+    float: left;
+    width: 77px;
+    line-height: 35px!important;
+    cursor: pointer;
+    padding-left: 11px!important;
+    margin-right: 0!important;
+    text-transform: capitalize;
+    margin-bottom: 0;
+}
+.switch-selection {
+    position: absolute;
+    z-index: 1;
+    top: 0px;
+    left: 1px;
+    display: block;
+    width: 58px;
+    height: 35px;
+    border-radius: 16px;
+    background-color: #4b92be;
+    -webkit-transition: left 0.15s ease-out;
+    -moz-transition: left 0.15s ease-out;
+    -ms-transition: left 0.15s ease-out;
+    -o-transition: left 0.15s ease-out;
+    transition: left 0.15s ease-out;
+    width: 83px;
+}
+.plandetails-discount {
+    position: absolute;
+    width: 350px;
+    top: 6px;
+    color: #28a6f5;
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 400;
+    text-align: left;
+    margin-left: 10px;
+}
+
+.switch-input {
+    display: none;
+}
+#top-div .payperiodDiv [type="radio"]:checked, #top-div .payperiodDiv [type="radio"]:not(:checked) {
+    position: relative;
+    left: auto;
+}
+.switch-label::before, .switch-label::after {
+    display: none;
+}
+.switch-label.active {
+    color: #fff;
+}
+.form-group .add-fund {
+    padding: 22px;
+    background: #fbfbfb;
+    margin-top: 15px;
+    border: 1px solid #f1f4f9;
+}
+.existingBalDetails {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #dadbde;
+    padding-bottom: 20px;
+    line-height: 30px;
+}
+.walletPart .add-fund .add-fund-inp-div {
+    display: inline-block;
+}
+.walletPart .add-fund .add-fund-label {
+    margin-right: 13px;
+}
+span.balance-id, span.currencySymbol {
+    font-weight: 600;
+}	
+.min-fund {
+    color: #ff0000;
+}
+.login-panel .form-control {
+    height: 40px;
+    color: #607d8b;
+    font-size: 16px;
+    border-radius: 1px;
+    background: #f3f7f9;
+    border: #e8edef;
+}
+
+.sticky {
+  position: fixed;
+    top: 70px;
+    width: 389px;
+}
+
+
+
+.scan-and-pay-outer-box .login-panel form {
+    padding: 0 30px 0px 30px;
+  }
+  
+  .scan-and-pay-outer-box .payment-box {
+    border: 2px dashed #fff;
+    display: inline-block;
+    overflow: hidden;
+    width: 100%;
+    background: #63bdf5!important;
+    border-radius: 30px;
+  }
+  .scan-and-pay-outer-box .form-v10-content .form-detail h2 p {
+    font-size: 18px;
+    color: #444;
+    margin-top: 5px;
+  }
+  .scan-and-pay-outer-box .form-v10-content .form-detail h2 {
+    text-align: center;
+  }
+  .scan-and-pay-outer-box .form-row.form-checkbox.individual-business-box .payment-box img {
+    max-width: 300px;
+    border: 1px dashed #ffffff;
+    padding: 10px;
+    width: 250px;
+    background: #fff;
+  }
+  .scan-and-pay-outer-box .login-panel img {
+    margin: 20px auto 0 auto;
+    max-width: 200px;
+  }
+  
+  .scan-and-pay-outer-box .form-row.form-checkbox.individual-business-box .payment-box h5 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+    text-align: center;
+  }
+  .scan-and-pay-outer-box .pay-footer-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    width: 290px;
+    margin: 0 auto;
+  }
+  .scan-and-pay-outer-box .pay-footer-box img {
+    width: 35px;
+  margin: 0 10px;
+  }
+  .scan-and-pay-outer-box p.bhim-upi-box {
+    margin: 0;
+  }
+  .scan-and-pay-outer-box p.bhim-upi-box img.img-responsive {
+    padding-bottom: 20px;
+    margin: 10px auto 5px auto;
+  max-width: 150px;
+  }
+  .scan-and-pay-outer-box .form-v10-content {
+    box-shadow: none;
+  border-radius: 50px;
+  }
+  .scan-and-pay-outer-box p.Time-Remaining-box {
+    text-align: center;
+    font-size: 14px;
+    color: #000;
+    font-weight: 500;
+  }
+  .scan-and-pay-outer-box .form-v10-content .form-detail .form-checkbox {
+    margin: 0 auto;
+    padding: 0;
+    width: 325px;
+  }
+  
+  
+  .scan-and-pay-outer-box .modal-content {
+    position: relative;
+    background-color: #fff0;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 6px;
+    outline: 0;
+    box-shadow: 0 3px 9px rgba(0,0,0,.5);
+    box-shadow: none!important;
+    border: none;
+  }
+  .scan-and-pay-outer-box .modal-body {
+    position: relative;
+    padding: 0 20px;
+  }
+  
+  
+  .scan-and-pay-outer-box .modal-dialog{margin-top: 0!important;}
+  
+  .modal-content.bank-transfer-outer-box h2.modal-title {
+    font-size: 16px!important;
+    font-weight: 500!important;
+  }
+  .Transfer-th-amount-outer-box {
+    padding: 20px;
+    background: #faffd0;
+    border: 1px dashed #8b8600;
+  }
+  .Transfer-th-amount-outer-box ul {
+    padding-left: 25px;
+  }
+  .modal-content.bank-transfer-outer-box hr {
+    margin: 6px 0;
+    border-top: 1px solid #f7f7f7!important;
+  }
+  .modal-content.bank-transfer-outer-box b {
+    font-weight: 600;
+    font-size: 13px!important;
+  }
+  
+  .modal-content.bank-transfer-outer-box span {
+    font-weight: 600;
+    font-size: 13px!important;
+    color: #002476;
+  }
+  .Transfer-th-amount-outer-inner-box {
+    border: 1px solid #e3e3e3;
+    margin-bottom: 20px;
+    padding: 10px;
+  }
+
+.page-titles {
+    padding: 0px 0px 7px 7px;
+}
+
+.scan-and-pay-outer-box .login-panel.panel.panel-default {
+    margin-top: 20px;
+    padding: 0;
+  border-radius: 50px;
+  }
+  
+  .scan-and-pay-outer-box .login-with-email-phone-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 28px !important;
+  }
+  .scan-and-pay-outer-box .login-with-email-phone-box button.btn.btn-info {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+  }
+  .scan-and-pay-outer-box .login-with-email-phone-box button.btn.btn-info:hover {
+    background: #3eaef2 !important;
+    color: #fff !important;
+  }
+  .scan-and-pay-outer-box label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 700;
+  }
+  .scan-and-pay-outer-box .modal-footer.text-center {
+    text-align: center;
+    font-size: 12px;
+    color: #959393;
+  }
+  .scan-and-pay-outer-box .login-panel .form-control {
+    border-radius: 4px !important;
+  }
+  
+  .scan-and-pay-outer-box .logo-panel-heading-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+  }
+  .scan-and-pay-outer-box .form-group.signup-form-box {
+    margin-bottom: 0;
+  }
+  
+  .scan-and-pay-outer-box .form-v10-content .form-detail .form-right h2 {
+    color: #1a6bb7;
+    padding: 10px 0 0 0;
+  margin-bottom: 15px;
+  font-weight: 500;
+      font-size: 20px;
+      margin: 0 0 10px 0;
+  }
+  .payment-left-box1 {
+    text-align: center;
+    padding: 20px 10px 0px 10px;
+  }
+  
+  .scan-and-pay-outer-box .login-panel form {
+    padding: 0 30px 0px 30px;
+  }
+  
+  .scan-and-pay-outer-box .payment-box {
+    border: 2px dashed #fff;
+    display: inline-block;
+    overflow: hidden;
+    width: 100%;
+    background: #63bdf5!important;
+    border-radius: 30px;
+  }
+  .scan-and-pay-outer-box .form-v10-content .form-detail h2 p {
+    font-size: 18px;
+    color: #444;
+    margin-top: 5px;
+  }
+  .scan-and-pay-outer-box .form-v10-content .form-detail h2 {
+    text-align: center;
+  }
+  .scan-and-pay-outer-box .form-row.form-checkbox.individual-business-box .payment-box img {
+    max-width: 300px;
+    border: 1px dashed #ffffff;
+    padding: 10px;
+    width: 250px;
+    background: #fff;
+  }
+  .scan-and-pay-outer-box .login-panel img {
+    margin: 20px auto 0 auto;
+    max-width: 200px;
+  }
+  
+  .scan-and-pay-outer-box .form-row.form-checkbox.individual-business-box .payment-box h5 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+    text-align: center;
+  }
+  .scan-and-pay-outer-box .pay-footer-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    width: 290px;
+    margin: 0 auto;
+  }
+  .scan-and-pay-outer-box .pay-footer-box img {
+    width: 35px;
+  margin: 0 10px;
+  }
+  .scan-and-pay-outer-box p.bhim-upi-box {
+    margin: 0;
+  }
+  .scan-and-pay-outer-box p.bhim-upi-box img.img-responsive {
+    padding-bottom: 20px;
+    margin: 10px auto 5px auto;
+  max-width: 150px;
+  }
+  .scan-and-pay-outer-box .form-v10-content {
+    box-shadow: none;
+  border-radius: 50px;
+  }
+  .scan-and-pay-outer-box p.Time-Remaining-box {
+    text-align: center;
+    font-size: 14px;
+    color: #000;
+    font-weight: 500;
+  }
+  .scan-and-pay-outer-box .form-v10-content .form-detail .form-checkbox {
+    margin: 0 auto;
+    padding: 0;
+    width: 325px;
+  }
+  
+  
+  .scan-and-pay-outer-box .modal-content {
+    position: relative;
+    background-color: #fff0;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 6px;
+    outline: 0;
+    box-shadow: 0 3px 9px rgba(0,0,0,.5);
+    box-shadow: none!important;
+    border: none;
+  }
+  .scan-and-pay-outer-box .modal-body {
+    position: relative;
+    padding: 0 20px;
+  }
+  
+  
+  .scan-and-pay-outer-box .modal-dialog{margin-top: 0!important;}
+  
+  .modal-content.bank-transfer-outer-box h2.modal-title {
+    font-size: 16px!important;
+    font-weight: 500!important;
+  }
+  .Transfer-th-amount-outer-box {
+    padding: 20px;
+    background: #faffd0;
+    border: 1px dashed #8b8600;
+  }
+  .Transfer-th-amount-outer-box ul {
+    padding-left: 25px;
+  }
+  .modal-content.bank-transfer-outer-box hr {
+    margin: 6px 0;
+    border-top: 1px solid #f7f7f7!important;
+  }
+  .modal-content.bank-transfer-outer-box b {
+    font-weight: 600;
+    font-size: 13px!important;
+  }
+  
+  .modal-content.bank-transfer-outer-box span {
+    font-weight: 600;
+    font-size: 13px!important;
+    color: #002476;
+  }
+  .Transfer-th-amount-outer-inner-box {
+    border: 1px solid #e3e3e3;
+    margin-bottom: 20px;
+    padding: 10px;
+  }
+  
+
+  .payment-box {
+    border: 1px solid #eaeff5;
+    display: inline-block;
+    border-radius: 6px;
+    overflow: hidden;
+    width: 100%;
+  }
+  .form-row.form-checkbox.individual-business-box .payment-box {
+    background: #fff;
+  }
+  .pay-box-footer {
+    padding: 5px;
+    display: inline-block;
+    width: 100%;
+    border-top: 1px solid #dde6ef !important;
+  }
+  .pay-box-footer a.theme-cl {
+    background: #38abf2;
+    color: #fff;
+    padding: 5px 10px;
+    float: right;
+  }
+  .pay-box-footer a {
+    font-size: 13px;
+  }
+  .payment-left-box {
+    background: #fff2f2;
+    padding: 20px 0;
+  }
+  .payment-right-box {
+    padding: 10px 0 0 0;
+  }
+  .form-row.form-checkbox.individual-business-box .payment-box h5 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #0eb31c;
+    margin: 0;
+  }
+  .form-row.form-checkbox.individual-business-box .payment-box small {
+    font-size: 15px;
+    font-weight: 600;
+    color: #d70909;
+    margin: 0;
+  }
+  
+  .form-row.form-checkbox.individual-business-box .payment-box img {
+    max-width: 125px;
+  }
+  .form-row.form-checkbox.individual-business-box .payment-box img.arrow-btn {
+    max-width: 40px !important;
+    float: right;
+    width: 50px;
+    margin-top: 7px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .custom-time {
+    right: 5px;
+    position: relative;
+    bottom: 0;
+    font-weight: 500;
+  }

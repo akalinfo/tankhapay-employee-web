@@ -1,0 +1,85 @@
+.freelance-container:focus, .freelance-container:hover {
+    cursor: inherit!important;
+}
+.disabled-color {
+    color: #d5d4d4!important;
+}
+.freelance-box.report-outer-box .freelance-inner-box ul li a.disabled-color:hover {
+    background: transparent;
+    cursor: default;
+}
+
+
+
+.alert-group.alert-box .alert-success {
+  color: #525252;
+  background-color: #ffffff;
+  border-color: #c5e6d4;
+  text-align: center;
+  font-size: 14px;
+}
+
+.notice {
+  padding: 15px;
+  background-color: #fff;
+  margin-bottom: 10px;
+  border-radius: 2px;
+  border: 1px solid #eaeff5;
+  border-left: 6px solid #838992;
+  box-shadow: 0 0 10px 1px rgba(71, 85, 95, 0.08);
+  -webkit-box-shadow: 0 0 10px 1px rgba(71, 85, 95, 0.08);
+  -moz-box-shadow: 0 0 10px 1px rgba(71, 85, 95, 0.08);
+}
+.notice-warning {
+  border-left-color: #fea911;
+}
+a.Add-balancebtn strong {
+  font-size: 12px;
+  color: #1692df;
+  font-weight: 500;
+  text-decoration: underline;
+}
+.notice.alert-dismissable {
+  font-size: 13px;
+}
+.notice.alert-dismissable button.close {
+  right: -2px !important;
+  color: #000;
+}
+.card.Your-progress-sidebar-menu-box .login-panel .panel-heading h4 {
+  font-size: 15px;
+}
+.notice-success {
+  border-left-color: #74ba28;
+}
+.notice-success > strong {
+  color: #74ba28;
+}
+
+.notice-danger {
+  border-left-color: #eb344f;
+}
+
+.notice-danger > strong {
+  color: #eb344f;
+}
+
+.notice-info {
+  border-left-color: #1db4bd;
+}
+.notice-info > strong {
+  color: #1db4bd;
+}
+
+.notice-primary {
+  border-left-color: #1f1aa3;
+}
+.notice-primary > strong {
+  color: #1f1aa3;
+}
+
+.blur {
+  filter: blur(5px);
+  cursor: none !important;
+  pointer-events: none;
+}

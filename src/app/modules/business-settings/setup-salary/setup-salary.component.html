@@ -1,0 +1,305 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+
+    <div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+        <div class="fakeLoader"></div>
+
+        <!-- Sidebar Navigation -->
+
+        <div id="page-wrapper">
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Setup Salary</h3>
+                </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item" title="Dashboard"><a [routerLink]="['/dashboard']">Home</a></li>
+                        <li class="breadcrumb-item active">Setup Salary</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <!-- /row -->
+                <div class="row">
+
+
+                <div class="col-md-8 col-md-offset-2 mrg-top-25 mrg-bot-25">
+
+
+                    <!-- General Information -->
+                    <div class="card">
+
+                        <div class="card-header">
+                                <h4>Salary Structure  </h4>
+
+                            </div>
+
+                        <div class="card-body">
+                            <div class="row">
+
+                            <div class="col-md-6 padd-top-15">
+                              <label>Enter In Hand Salary<span class="text-danger">*</span> </label>
+                                          <div class="input-group">
+                                              <div class="input-group-addon">₹</div>
+                                              <input type="text" placeholder="120000" class="form-control" id="exampleInputAmount">
+                                              <div class="input-group-addon enter-btn-box">GO</div>
+                                            </div>
+                            </div>
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-header">
+                                <h4>SALARY  </h4>
+
+                            </div>
+
+                        <div class="card-body">
+                            <div class="row">
+
+                            <div class="col-md-12 padd-top-15">
+
+
+
+                            <div class="table-responsive basic-table-outer-box">
+
+                                <table class="table">
+
+                                    <tbody id="roundedValues">
+
+                                        <tr class="danger1">
+                                            <td scope="col">Basic</td>
+                                            <td> <input type="text" placeholder="25000 " class="form-control" ></td>
+                                        </tr>
+                                        <tr class="danger1">
+                                            <td scope="col">HRA</td>
+                                            <td> <input type="text" placeholder="12500 " class="form-control" ></td>
+                                        </tr>
+                                        <tr class="danger1">
+                                            <td scope="col">Special Allowance</td>
+                                            <td>  <input type="text" placeholder="10550 " class="form-control" ></td>
+                                        </tr>
+                                        <tr class="danger1">
+                                            <th scope="col">Gross Salary</th>
+                                            <th> 48050 </th>
+                                        </tr>
+                                        <tr class="danger1">
+                                            <td scope="col">Regular Bonus</td>
+                                            <td> <input type="text" placeholder="0 " class="form-control" ></td>
+                                        </tr>
+                                        <tr class="danger1">
+                                            <td scope="col">Employer EPF Part</td>
+                                            <td> <input type="text" placeholder="1950" class="form-control" ></td>
+                                        </tr>
+                                        <tr class="danger1">
+                                            <td scope="col">Employer ESIC Part</td>
+                                            <td> <input type="text" placeholder="0" class="form-control" ></td>
+                                        </tr>
+                                        <tr class="danger1">
+                                            <th scope="col">GRAND TOTAL</th>
+                                            <th>
+                                                50000
+                                            </th>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+
+
+                                        </div>
+
+
+
+                            </div>
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="card">
+
+                        <div class="card-header">
+                                <h4>VARIABLE  </h4>
+
+                            </div>
+
+                        <div class="card-body">
+                            <div class="row">
+
+                            <div class="col-md-12 padd-top-15">
+
+
+
+                            <div class="table-responsive basic-table-outer-box">
+
+
+
+
+                                <table class="table">
+
+                                    <tbody id="roundedValues">
+
+                                        <tr>
+                                            <td scope="col">Grauity</td>
+                                            <td><input type="text" placeholder="0" class="form-control" ></td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="col">Leave Encashment</td>
+                                            <td><input type="text" placeholder="0" class="form-control" ></td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="col">Earned Bonus</td>
+                                            <td><input type="text" placeholder="0" class="form-control" ></td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="col">Overtime</td>
+                                            <td><input type="text" placeholder="0" class="form-control" ></td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="col">Incentive</td>
+                                            <td><input type="text" placeholder="0" class="form-control" ></td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+
+
+
+                                        </div>
+
+
+
+                            </div>
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="card">
+
+                        <div class="card-header">
+                                <h4>DEDUCTION  </h4>
+
+                            </div>
+
+                        <div class="card-body">
+                            <div class="row">
+
+                            <div class="col-md-12 padd-top-15">
+
+
+
+                            <div class="table-responsive basic-table-outer-box">
+
+
+
+                            <table class="table">
+
+                                    <tbody>
+                                    <tr class="danger1">
+                                        <td scope="col">Employer EPF</td>
+                                        <td> <input type="text" placeholder="1950" class="form-control"></td>
+                                    </tr>
+                                    <tr class="danger1">
+                                        <td scope="col">Employee EPF</td>
+
+                                        <td> <input type="text" placeholder="1800" class="form-control"></td>
+                                    </tr>
+                                    <tr class="danger1">
+                                        <td scope="col">Employee VPF</td>
+                                        <td> <input type="text" placeholder="0" class="form-control"></td>
+                                    </tr>
+                                    <tr class="danger1">
+                                        <td scope="col">Employer ESIC</td>
+                                        <td> <input type="text" placeholder="0" class="form-control"></td>
+                                    </tr>
+                                    <tr class="danger1">
+                                        <td scope="col">Employee ESIC</td>
+                                        <td> <input type="text" placeholder="0" class="form-control"></td>
+                                    </tr>
+                                    <tr class="danger1">
+                                        <td scope="col">Employer LWF</td>
+                                        <td> <input type="text" placeholder="0" class="form-control"></td>
+                                    </tr>
+                                    <tr class="danger1">
+                                        <td scope="col">Employee LWF</td>
+                                        <td> <input type="text" placeholder="0" class="form-control"></td>
+                                    </tr>
+                                    <tr class="danger1">
+                                        <td scope="col">TDS</td>
+                                        <td> <input type="text" placeholder="0" class="form-control"></td>
+                                    </tr>
+                                    <tr class="danger1">
+                                        <td scope="col">Insurance</td>
+                                        <td> <input type="text" placeholder="0" class="form-control"></td>
+                                    </tr>
+                                    <tr class="danger1">
+                                        <td scope="col">EWF</td>
+                                        <td> <input type="text" placeholder="0" class="form-control"></td>
+                                    </tr>
+                                    <tr class="danger1">
+                                        <td scope="col">Social Security Services</td>
+                                        <td> <input type="text" placeholder="0" class="form-control"></td>
+                                    </tr>
+                                    <tr class="danger3">
+                                        <th>Salary Bucket Total</th>
+                                        <th>50000 </th>
+                                    </tr>
+                                    <tr class="danger3">
+                                        <th>Salary In Hand</th>
+                                        <th>46250 </th>
+                                    </tr>
+                                </tbody>
+                                </table>
+
+
+                                    <div class="col-md-12 col-12 padd-top-15 text-center">
+                                        <a href="#" class="btn btn-primary">Submit</a>
+                                    </div>
+
+
+                                        </div>
+
+
+
+                            </div>
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+                </div>
+                <!-- /row -->
+            </div>
+        </div>
+        <!-- /#page-wrapper -->
+     </div>
+</section>
+<app-footer></app-footer>

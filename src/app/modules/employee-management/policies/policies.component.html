@@ -1,0 +1,183 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+    <div id="wrapper" [ngClass]="{'active': showSidebar == false}">
+        <div class="fakeLoader"></div>
+
+
+        <div id="page-wrapper">
+
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Policies</h3>
+                </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a [routerLink]="['/employee-mgmt/employees']">Home</a></li>
+                        <li class="breadcrumb-item active">Policies</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="container-fluid element" id="element">
+                <!-- /row -->
+                <div class="row">
+                
+                    <div class="col-md-12">
+                            <div class="card-header caded-innder-head-box"> 
+                            
+                            <div class="col-sm-9 text-left"><h3 class="list-name-text">Policies Preview</h3> </div>
+                            
+                            
+                            <div class="col-sm-3 text-right">
+                                
+                                    <a (click)="showUpdateModal('')" class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn"  style="margin-top: 10px;background: #1194f7;">Add Policy Category </a>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
+                    <div class="col-md-4 " *ngFor="let policy of policyList;">
+                        <div class="manage-list-row manage-pay-select clearfix list_view_de-box">
+                            
+                            <div class="net-pay-section">
+                            
+                                <div class="job-buttons action-btn-outer-box">
+                                                                
+                                    <a class="btn btn-shortlist manage-btn" title="Edit"
+                                    (click)="showUpdateModal(policy)"><i class="ti-pencil-alt"></i></a>
+                                    
+                                    <a class="btn btn-shortlist manage-btn" data-placement="top" title="delete"
+                                    (click)="deletePolicyCtg(policy)">
+                                        <i class="fa fa-trash" aria-hidden="true"></i></a>
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    <span class="font-mm head-enve-box ">
+                                        <img src="{{policy.policies_image}}" class="img-responsive pointer" alt="Logo"
+                                        style="height: 64px;" [routerLink]="['/employee-mgmt/policy',_encrypterService.aesEncrypt(policy.id.toString()+',' +policy.policies_type)]" > 
+                                    </span>
+                                </div>
+                                
+                                <div class="title-inn_box">
+                                    <span class="font-semibold font-mm pointer" [routerLink]="['/employee-mgmt/policy',_encrypterService.aesEncrypt(policy.id.toString()+',' +policy.policies_type)]" >{{policy.policies_type}}</span> 
+                                    
+                                </div>
+                                <div class="row net-pay-data-without-bt">
+                                    <div class="col-md-12">
+                                        <div class="text-uppercase font-ms payrun-label pointer" [routerLink]="['/employee-mgmt/policy',_encrypterService.aesEncrypt(policy.id.toString()+',' +policy.policies_type)]" >
+                                            Date- {{policy.createdon.substring(0,10).split('-').reverse().join('/')}} </div>
+                                        <div class="text-uppercase font-ms payrun-label pointer" [routerLink]="['/employee-mgmt/policy',_encrypterService.aesEncrypt(policy.id.toString()+',' +policy.policies_type)]" >
+                                            {{policy.policies_text}} &nbsp;</div>
+                                        
+                                    </div>
+                                    
+                                </div>
+                                    
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+           
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div [@grooveState]="isAddUpdate ? 'active' : 'inactive'" id="final-bill2" class="modal fade punchin-punchout-outer1-box in">
+    <div class="modal-dialog" [@dongleState]="isAddUpdate ? 'active' : 'inactive'">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header theme-bg">						
+                    <h4 class="modal-title">Add Policy</h4> 
+                    <span class="close-print-box">
+                    <!--<a onclick="printFinalBill()"><i class="fa fa-print"></i></a>-->
+                        <button type="button" class="close" (click)="hideModal()" aria-hidden="true">&times;</button>
+                    </span>
+         
+                </div>
+                <div class="modal-body final-bill-inner-box">	
+
+        <div class="card-body" [formGroup]="policyForm">
+        <div class="row">
+            <div class="col-sm-12"> 
+                    <div class="form-group">
+                         <label class="control-label col-sm-4">Policies Image :</label>
+                        <div class="col-sm-8">
+                                 <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                 (change)="onFileChange($event)" accept="image/*">
+                                <label class="custom-file-label" for="inputGroupFile01">{{policyForm.value.policyImgName ? policyForm.value.policyImgName : 'Choose File'}}</label>
+                              </div>
+                          </div>
+                    </div>
+            
+                    <!-- <div class="form-group">
+                         <label class="control-label col-sm-4">Applicable For :</label>
+                        <div class="col-sm-8">
+                                 
+                            <select class="form-control form-control-sm" formControlName="department">
+                                    <option value="Monday">All</option>
+                                     <option value="Monday">HR</option>
+                                    <option value="Tuesday">Marketing</option>
+                                    <option value="Wednesday">Management</option>
+                                    <option value="Thursday">IT</option>
+                                     
+                                </select>
+                                 
+                          </div>
+                    </div> -->
+                    <!-- <div class="form-group">
+                         <label class="control-label col-sm-4">Create Date :</label>
+                        <div class="col-sm-8">
+                                 
+                            <input type="date" class="form-control" placeholder="Leave Policy" value=""  >
+                                 
+                          </div>
+                    </div> -->
+             
+                    <div class="form-group">
+                         <label class="control-label col-sm-4">Policies Type :</label>
+                        <div class="col-sm-8">
+                                 
+                            <input type="text" class="form-control" placeholder=""  formControlName="policyType">
+                                 
+                          </div>
+                    </div>
+                    
+                    <div class="form-group">
+                         <label class="control-label col-sm-6">Acknowledgement is required?</label>
+                         
+                        <input type="checkbox" id="ack" class="Acknowledge" name="Acknowledge" value="Yes" formControlName="acknowledgement">
+                        &nbsp;&nbsp;<label class="normalLabel" for="0" style="vertical-align: middle;">Yes</label>
+                    
+                    </div>
+                    
+                    <div class="form-group">
+                         <label class="control-label col-sm-12">Policies Text :</label>
+                          <div class="col-sm-12">
+                                 
+                            <textarea class="form-control height-120 textarea" id="career" placeholder="Career"
+                            formControlName="policiesText"> </textarea>
+                                 
+                          </div> 
+                    </div>
+
+           </div> 
+           </div>
+        </div>
+
+                 
+                                         
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" (click)="hideModal()" value="Cancel">
+                    <input   type="button" (click)="managePolicies()" class="btn btn-success" value="Save">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<app-footer></app-footer>

@@ -1,0 +1,181 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+    <div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+        <div class="fakeLoader"></div>
+        <!-- Sidebar Navigation -->
+        <div id="page-wrapper">
+          <div class="row page-titles">
+            <div class="col-md-5 align-self-center">
+              <h3 class="text-themecolor">Employee Log</h3>
+            </div>
+            <div class="col-md-7 align-self-center">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)" [routerLink]="['/employees']">Employees</a>
+                </li>
+                <li class="breadcrumb-item active">Employee Log</li>
+              </ol>
+            </div>
+          </div>
+          <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3 no-padd" >
+                        <div class="card">
+                            <div class="col-md-12 card-box">
+                                <div class="col-md-4 no-padd">
+                                    <a><i class="fa fa-users fa-lg" aria-hidden="true"></i></a>
+                                </div>
+                                <div class="col-md-8 emp-desc">
+                                    <h4>Total</h4>
+                                    <span>{{totalRecords}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 no-padd">
+                        <div class="card">
+                            <div class="col-md-12 card-box">
+                                <div class="col-md-4 no-padd">
+                                    <a><i class="fa fa-user-plus fa-lg" aria-hidden="true"></i></a>
+                                </div>
+                                <div class="col-md-8 no-padd emp-desc">
+                                    <h4>Added</h4>
+                                    <span>{{totalRecords-pendingInCrm }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 no-padd">
+                        <div class="card">
+                            <div class="col-md-12 card-box">
+                                <div class="col-md-4 no-padd">
+                                    <a><i class="fa fa-user-times fa-lg" aria-hidden="true"></i></a>
+                                </div>
+                                <div class="col-md-8 no-padd emp-desc">
+                                    <h4>Pending</h4>
+                                    <span>{{pendingInCrm}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 no-padd">
+                        <div class="card">
+                            <div class="col-md-12 card-box">
+                                <div class="col-md-4 no-padd">
+                                    <a><i class="fa fa-user-times fa-lg" aria-hidden="true"></i></a>
+                                </div>
+                                <div class="col-md-8 no-padd emp-desc">
+                                    <h4>Partially Pending</h4>
+                                    <span>{{partiallyPending}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-2 no-padd">
+                        <div class="card">
+                            <div class="col-md-12 card-box">
+                                <div class="col-md-4 no-padd">
+                                    <a><i class="fa fa-users fa-lg" aria-hidden="true"></i></a>
+                                </div>
+                                <div class="col-md-8 no-padd emp-desc">
+                                    <h4>Duplicate Records</h4>
+                                    <span>{{duplicateCount}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <button class="btn btn-success" (click)="fetchEmployeesFromAPI(1)">
+                        <i class="bi bi-arrow-repeat"></i> Sync Data
+                    </button>
+                </div>
+                <div class="col-md-6" style="text-align: right;">
+                    <a class="btn btn-primary" (click)="uploadExcel()" *ngIf="!partialEmployees" [disabled]="isbuttonClicked">Add Employees</a>
+                    <a class="btn btn-primary" (click)="updateExisitingRecords()" *ngIf="!partialEmployees" [disabled]="isbuttonClicked">Update Employees</a>
+                    <!-- <a class="btn btn-primary" (click)="update_employee_details_direct(employeeList)" *ngIf="partialEmployees">Update Partially Added</a> -->
+                </div>
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body" style="overflow:auto;">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                      <!-- <th scope="col">
+                                        <input type="checkbox" name="employeeListCheck" id="employeeListCheck" class="employeeListCheckAll" (change)="checkallCheckbox($event.target.checked,0)">
+                                      </th> -->
+                                      <th scope="col">#</th>
+                                      <th scope="col"></th>
+                                      <th scope="col" style="width:10%">Employee Name</th>
+                                      <th scope="col">Father Name</th>
+                                      <th scope="col">Gender</th>
+                                      <th scope="col">DOB</th>
+                                      <th scope="col">Mobile</th>
+                                      <th scope="col">Email</th>
+                                      <th scope="col">Aadhar card no</th>
+                                      <th scope="col">Pancard no</th>
+                                      <th scope="col">Bank Account no</th>
+                                      <th scope="col">Org Emp code</th>
+                                      <th scope="col">Role</th>
+                                      <th scope="col">Academy</th>
+                                      <th scope="col">Is Employee Added</th>
+                                      <th scope="col">Is Employee details updated</th>
+                                      
+                                    </tr>
+                                </thead>
+                                  <tbody>
+                                    <tr *ngFor="let employee of employeeList| paginate: { itemsPerPage: 20, currentPage: page,totalItems:pendingInCrm+partiallyPending }; let i=index;"
+                                    [ngClass]="{'invalid':uniqueDetails[i] && (employee.error_record ||  !uniqueDetails[i]?.aadharCardNoStatus || !uniqueDetails[i]?.bankAccountNoStatus 
+                                    || !uniqueDetails[i]?.orgEmpCodeStatus || !uniqueDetails[i]?.panCardNoStatus) }"
+                                    [title]="errormsg[i]" (mouseover)="getErrorMsg(i)">
+                                      <!-- <td><input type="checkbox" name="employeeListCheck" id="employeeListCheck" class="employeeListCheck" (change)="checkallCheckbox($event.target.checked,i)"
+                                        *ngIf="employee.record_push_to_crm=='1' && !uniqueDetails[i]?.empMobileStatus && (uniqueDetails[i]?.aadharCardNoStatus && uniqueDetails[i]?.bankAccountNoStatus 
+                                        && uniqueDetails[i]?.orgEmpCodeStatus && uniqueDetails[i]?.panCardNoStatus)"></td> -->
+                                      <td>{{i+20*page-20+1}}</td>
+                                      <td><button class="update-btn" (click)="updateEmp(employee)">Update</button></td>
+                                      <td>{{employee.emp_name}}</td>
+                                      <td>{{employee.father_name}}</td>
+                                      <td>{{employee.gender}}</td>
+                                      <td>{{employee.date_of_birth}}</td>
+                                      <td>{{employee.mobile_number}}</td>
+                                      <td>{{employee.email_id}}</td>
+                                      <td>{{employee.aadhar_number}}</td>
+                                      <td>{{employee.pan_number}}</td>
+                                      <td>{{employee.account_number}}</td>
+                                      <td>{{employee.employee_id}}</td>
+                                      <td>{{employee.role}}</td>
+                                      <td>{{employee.academy}}</td>
+                                      <td class="text-center"><a><i class="fa fa-check" aria-hidden="true" *ngIf="employee.record_push_to_crm=='1'"
+                                        ></i>
+                                        <i class="fa fa-clock-o" aria-hidden="true" style="color: #ff7e00;"
+                                        *ngIf="employee.record_push_to_crm=='0'"></i></a></td>
+                                      <td class="text-center">
+                                        <a><i class="fa fa-check" aria-hidden="true" *ngIf="employee.record_push_to_hub=='1'"
+                                            ></i>
+                                            <i class="fa fa-clock-o" aria-hidden="true" style="color: #ff7e00;"
+                                            *ngIf="employee.record_push_to_hub=='0'"></i></a>
+                                      </td>
+                                    </tr>
+                                    <tr *ngIf="employeeList.length==0"><td colspan="8"
+                                        class="text-center">No record found to synchronize.</td></tr>
+                                    
+                                  </tbody>
+                            </table>
+                            <div class="flexbox padd-10">
+                                <pagination-controls (pageChange)="get_page($event)"
+                                    style="font-size: 2rem;padding: 6px;font-weight: bold"
+                                    class="float-right"></pagination-controls>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</section>
+
+<app-footer></app-footer>

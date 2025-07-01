@@ -1,0 +1,243 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+  <div id="wrapper" [ngClass]="{'active':showSidebar}">
+    <div class="fakeLoader"></div>
+    <div id="page-wrapper">
+      <div class="row page-titles">
+        <div class="col-md-4 align-self-center">
+          <h3 class="text-themecolor" style="font-size: 16px;"><a
+              routerLink="/attendance/bulk-deduction"></a>&nbsp;&nbsp;Bulk allowance and Deduction</h3>
+        </div>
+        <div class="col-md-8 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item" title="Attendance"><a [routerLink]="['/attendance']">Attendance</a></li>
+            <li class="breadcrumb-item active">Bulk allowance and Deduction</li>
+          </ol>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12 col-sm-12">
+            <div class="card">
+              <div class="card-header">
+                <div class="row">
+                  <div class="col-lg-12">
+
+
+                    <div class="row">
+                      <div class="col-md-2" style="text-align: left;">
+                        <span style="font-weight: bold;">Month</span>
+
+                        <select class="form-control" (change)="changeMonth($event)">
+
+                          <option *ngFor="let ma of monthsArray" [selected]="month==ma.id" [value]="ma.id">
+                            {{ma.month}}</option>
+                        </select>
+                      </div>
+                      <div class="col-md-2">
+                        <span style="font-weight: bold;">Year</span>
+                        <select class="form-control" (change)="changeYear($event)">
+
+                          <option *ngFor="let ya of yearsArray" [selected]="year==ya" [value]="ya">{{ya}}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-md-3">
+                        <span style="font-weight: bold;"></span>
+                        <!-- <div class="Marked-Manually-outer-box">
+                          <input type="radio" id="manually" name="type" value="manually" [(ngModel)]="attendanceFormat">
+                          <label for="manually">Marked Manually</label>
+                          <input type="radio" id="excel" name="type" value="excel" [(ngModel)]="attendanceFormat">
+                          <label for="excel"> Upload from Excel</label><br>
+                        </div> -->
+
+                      </div>
+
+                    </div>
+                    <!-- <p style="color: red;font-size: 1.1rem;"> <b>Note</b>* Only <b>Full Time [ Monthly ]</b> Employee(s)
+                      shows/
+                      can upload bulk attendnace using excel.
+                      . For work report / daily employee attendance will marked from <b>Tankhapay Mobile App</b>. </p> -->
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-11 col-md-offset-0 mrg-top-0 mrg-bot-1">
+                    <!-- General Information -->
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-md-12 padd-bot-10 padd-top-10">
+                            <h3>Bulk Upload allowance and Deduction</h3>
+                            <ul>
+                              <li style="color: #ff0c0c;font-weight: 500;"
+                                title="Click on template to download excel with list of employee">1. Please download the
+                                latest <a (click)="getAttExcel()"
+                                  style="font-weight: bold; cursor: pointer;">template</a>, with
+                                the list of employee(s)</li>
+                              <li>2. Edit this file in Excel, and add the deduction.
+                              </li>
+                              <li>3. Do not change any employee details already present in the template. This includes
+                                <b style="font-size: 1.2rem; color: #ff0c0c; font-weight: 500;"> the following columns -
+                                  Employee, EmpCode, OrgEmpCode, Mobile, Status, DOB, DOJ, DOR
+                                </b>
+                              </li>
+                              <!-- <li>3. Mark & Save employee attendance with attendance marking code <b
+                                  title="[ PP - Full Day Present, WFH - Work From Home, HD --(Half Day Present with Leave or Absent), LL - (Leave Code for Full Day Leave), AA - Absent, HO - Holiday, WO - Weekly-Off, CLS- Clear ]">[
+                                  PP, WFH, HD-(Leave Code OR AA), WO, AA, HO, CLS, LL-(Leave Code) ] </b> and upload
+                                this
+                                file below. Any other file with a different code will
+                                be rejected.
+                              </li>
+                              <li>4. Salary updates performed here will be effective from
+                                1st of the
+                                current month.
+                              </li> -->
+
+                            </ul>
+
+                            <h3 class="mrg-top-15">Template file instructions -</h3>
+
+                            <ul>
+                              <li>1. There is a list of employees with employee codes and joining dates.
+                                Please fill in the data accordingly.</li>
+                              <li>2. Please do not add/remove columns.</li>
+                              <li>3. Please enter the deduction amount.</li>
+                              <li>4. If there is no data for a particular cell, leave it
+                                empty. Don't enter "-", "NA" etc.</li>
+                              <!-- <li>5. <span class="text-info" style="font-weight: bold;"> Note .</span><span
+                                  style="color: rgba(136, 12, 253, 0.959); font-weight: 500;"> For bulk deduction, Excel
+                                  files with maximum 50 records allowed at a time. If records are > 50, then split the
+                                  file and upload. </span>
+                              </li> -->
+                            </ul>
+                            <div class="col-sm-10 mrg-bot-15 mrg-top-15" title="Bulk Deduction Upload.">
+                              <input type="file"
+                                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                                name="deduction_excel" class="allowed_jpg_jpeg_pdf form-control" id="deduction_excel"
+                                (change)="onFileChange($event)">
+                            </div>
+                            <div class="col-sm-2 mrg-bot-15 mrg-top-15">
+                              <button type="button" class="btn btn-secondary" (click)="clear_file()"
+                                style="border-color: black;">Clear</button>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+
+
+                    </div>
+
+                    <div class="card" *ngIf="excelToTableData.length>0">
+                      <span style="text-align: left; color: blue;font-weight: bold;"> Total Records :
+                        {{excelToTableData.length}}</span>
+                      <div class="card-body" style="overflow:auto;">
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <th><strong>Emp Code</strong></th>
+                              <th><strong>Name</strong></th>
+                              <th><strong>Org Emp Code</strong></th>
+                              <th><strong>Mobile</strong></th>
+                              <th><strong>Month</strong></th>
+                              <th><strong>Year</strong></th>
+                              <th><strong>DOB</strong></th>
+                              <th><strong>Overtime</strong></th>
+
+                              <ng-container *ngIf="IS_JIVO_ACCOUNT==true">
+                                <th><strong>OT</strong></th>
+                                <th><strong>Incentive</strong></th>
+                                <th><strong>DA Amount</strong></th>
+                                <th><strong>TA</strong></th>
+                                <th><strong>Phone</strong></th>
+                                <th><strong>Arrear</strong></th>
+                                <th><strong>Advance</strong></th>
+                                <th><strong>Retainership</strong></th>
+                                <th><strong>OT Advance</strong></th>
+                                <th><strong>Arrear Advance</strong></th>
+                                <th><strong>Travel Allowance</strong></th>
+                                <th><strong>Daily Allowance</strong></th>
+                                <th><strong>Remark</strong></th>
+                              </ng-container>
+                              <ng-container *ngIf="IS_JIVO_ACCOUNT==false">
+                                <th><strong>Allowance</strong></th>
+                                <th><strong>Deduction</strong></th>
+                                <th><strong>Travel Allowance</strong></th>
+                                <th><strong>Daily Allowance</strong></th>
+                                <th><strong>Remark</strong></th>
+                              </ng-container>
+
+
+                            </tr>
+                          </thead>
+
+                          <tbody>
+                            <ng-container *ngFor="let et of excelToTableData">
+                              <tr [ngStyle]="{'color': et.rowColor == false ? 'red' : 'green'}">
+                                <td>{{et.empcode}}</td>
+                                <td>{{et.employee}}</td>
+                                <td>{{et.orgempcode}}</td>
+                                <td>{{et.mobile}}</td>
+                                <td>{{et.month}}</td>
+                                <td>{{et.year}}</td>
+                                <td>{{et.dob}}</td>
+                                <td>{{et.overtime}}</td>
+                                <!-- <td>{{et.allowance}}</td>
+                                <td>{{et.deduction}}</td> -->
+                                <!-- <td>{{et.travel_allowance}}</td>
+                                <td>{{et.daily_allowance}}</td>
+                                <td>{{et.remark}}</td> -->
+                                <ng-container *ngIf="IS_JIVO_ACCOUNT==true">
+                                  <td>{{et.OT}}</td>
+                                  <td>{{et.Incentive}}</td>
+                                  <td>{{et.DAAmount}}</td>
+                                  <td>{{et.TA}}</td>
+                                  <td>{{et.Phone}}</td>
+                                  <td>{{et.Arrear}}</td>
+                                  <td>{{et.Advance}}</td>
+                                  <td>{{et.Retainership}}</td>
+                                  <td>{{et.OTAdvance}} </td>
+                                  <td>{{et.ArrearAdvance}}</td>
+                                  <td>{{et.travel_allowance}}</td>
+                                  <td>{{et.daily_allowance}}</td>
+                                  <td>{{et.remark}}</td>
+                                </ng-container>
+                                <ng-container *ngIf="IS_JIVO_ACCOUNT==false">
+                                  <td>{{et.allowance}}</td>
+                                  <td>{{et.deduction}}</td>
+                                  <td>{{et.travel_allowance}}</td>
+                                  <td>{{et.daily_allowance}}</td>
+                                  <td>{{et.remark}}</td>
+                                </ng-container>
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                        </table>
+                      </div>
+
+                    </div>
+
+                    <div *ngIf="(excelToTableData.length>0 && show_bulk_upload_btn)"
+                      class="col-md-12 col-12 padd-top-20 text-center">
+                      <button class="btn btn-primary btn-lg" (click)="uploadExcelBulkAtt()"><i
+                          class="fa fa-upload fa-lg">
+                        </i> Save Bulk Deduction</button>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- /#page-wrapper -->
+
+
+  </div>
+</section>
+<app-footer></app-footer>
+

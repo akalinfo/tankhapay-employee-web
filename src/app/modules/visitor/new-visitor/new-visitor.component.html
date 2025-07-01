@@ -1,0 +1,492 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<section>
+	<div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+		<div class="fakeLoader"></div>
+
+		<div id="page-wrapper">
+			<div class="row page-titles">
+				<div class="col-md-5 align-self-center">
+					<h3 class="text-themecolor">Visitor Registration </h3>
+				</div>
+				<div class="col-md-7 align-self-center">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a [routerLink]="['/dashboard']">Dashboard</a></li>
+
+						<li class="breadcrumb-item active">Visitor Registration</li>
+					</ol>
+				</div>
+			</div>
+
+			<div class="container-fluid">
+				<a onclick="location.reload();" class="location-reload-box"><i class="fa fa-refresh fa-lg"></i></a>
+				<!-- /row -->
+				<div class="row">
+				
+				<div class="col-md-8 col-md-offset-2  mrg-top-10 mrg-bot-10">
+				
+					<!-- General Information -->
+					<div class="card mrg-bot-10">
+					
+						<div class="card-header" style="display:flex;justify-content: space-between;">
+							<h4 *ngIf="visitorData?.r_is_mobile_verify!='true'">Enter Mobile Number</h4>
+							<h4 *ngIf="visitorData?.r_is_mobile_verify=='true'">Mobile Number : {{bf.p_visitor_mobile.value}}</h4>
+							<a class="verified" *ngIf="isVerified"><i class="fa fa-check" aria-hidden="true" 
+								style="vertical-align: baseline;"></i></a>
+						</div>
+						
+						<div class="card-body" *ngIf="visitorData?.r_is_mobile_verify!='true'">
+							<div class="row">
+							
+							<div class="col-md-12 padd-top-15" [formGroup]="basic_detail_form">
+							
+								<div class="col-sm-6 mrg-bot-15">
+									<!-- <label>Mobile Number <span  class="text-danger">*</span></label> -->
+									<input  type="text" placeholder="Enter 10 digit Mobile no." autocomplete="chrome-off" maxlength="10" class="form-control"
+									formControlName="p_visitor_mobile" [ngClass]="{'no-click':isVerified}">
+								</div>
+								
+								<div class="col-md-6 " *ngIf="!isVerified && !isEnterOtp">
+									<a class="btn btn-success" (click)="sendOTP()" style="height: 40px;
+									align-content: center;">Verify</a>
+								</div>
+								<div class="col-sm-6 mrg-bot-15" *ngIf="!isVerified && isEnterOtp">
+									<!-- <label>Enter OTP</label> -->
+									<input  type="text" placeholder="Enter OTP" maxlength="100" autocomplete="chrome-off" class="form-control"
+									formControlName="otp" maxlength="4" (keypress)="triggerVerifyOtp($event)">
+									<span *ngIf="formattedTime!=''" style="float:right;color:red;">&nbsp;{{formattedTime}}</span>
+									<a [ngClass]="{'read-only':formattedTime!=''}" class="cur-ptr"
+									style="float:right" (click)="sendOTP()">Resend OTP</a>
+								</div>
+							
+							</div>
+							
+							</div>		
+						</div>
+					</div>
+					
+					
+					
+					<div class="row" *ngIf="!isVerified && isEnterOtp">
+							
+						<div class="col-md-12 padd-bot-15 padd-top-0">
+
+							<div class="col-md-12 col-12 text-center">
+								<a class="btn btn-primary" (click)="verifyOtp()">Enter</a>
+							</div>
+						
+						</div>
+							
+					</div>
+					
+				</div>
+					
+				<div class="col-md-12 col-md-offset-0  mrg-top-0 mrg-bot-0" [formGroup]="basic_detail_form"
+				*ngIf="visitorData?.r_is_mobile_verify=='true'">
+				
+					<!-- General Information -->
+					<div class="card">
+					
+						<div class="card-header">
+							<h4>Personal Details</h4>
+						</div>
+						
+						<div class="card-body">
+							<div class="row">
+							
+							<div class="col-md-12 padd-top-15">
+							
+							<div class="col-sm-4 ">
+									<label>First Name <span  class="text-danger">*</span></label>
+									<input  type="text" placeholder="Enter First Name" autocomplete="chrome-off" maxlength="100" class="form-control"
+									formControlName="p_visitor_name">
+								</div>
+								
+							<div class="col-sm-4 ">
+									<label>Last Name </label>
+									<input  type="text" placeholder="Enter Last Name" autocomplete="chrome-off" maxlength="100" class="form-control"
+									formControlName="p_visitor_last_name">
+							</div>	
+								
+								<div class="col-sm-4 ">
+									<label>Email (Optional)</label>
+									<input  type="text" placeholder="Enter Email" maxlength="100" autocomplete="chrome-off" class="form-control"
+									formControlName="p_visitor_email">
+								</div>
+								
+								<!-- <div class="col-sm-6 mrg-bot-15">
+									<label>Address  <span  class="text-danger">*</span></label>
+									<input  type="text" placeholder="" maxlength="100" autocomplete="chrome-off" class="form-control" value="Jet Air House, 13 Community Centre, Yusuf Sarai, New Delhi – 110049. INDIA">
+								</div> -->
+								
+							</div>
+							
+							</div>	
+							<div class="row">
+							
+								<div class="col-md-12 padd-bot-15 padd-top-15">
+								
+								<div class="col-sm-4">
+									   <label>Address Line 1 <span class="text-danger">*</span></label>
+									   <input type="text" class="form-control" formControlName="p_address1" placeholder="Address Line 1"
+									   formControlName="p_address1">
+									</div>
+									
+								<div class="col-sm-4">
+									   <label>Address Line 2</label>
+									   <input type="text" class="form-control" formControlName="p_address2" placeholder="Address Line 2"
+									   formControlName="p_address2">
+									</div>
+									
+									<div class="col-sm-4">
+									   <label>City <span class="text-danger">*</span></label>
+									   <input type="text" class="form-control" formControlName="p_city" placeholder="City"
+									   formControlName="p_city">
+									</div>
+									
+									<div class="col-sm-4">
+									   <label>State <span class="text-danger">*</span></label>
+									   <input type="text" class="form-control" formControlName="p_state" placeholder="State"
+									   formControlName="p_state">
+									</div>
+									
+									<div class="col-sm-4">
+									   <label>Pincode <span class="text-danger">*</span></label>
+									   <input type="text" class="form-control" formControlName="p_pincode" placeholder="Pincode"
+									   formControlName="p_pincode">
+									</div>
+									
+									<div class="col-sm-4">
+										<label>Country  <span  class="text-danger">*</span></label>
+										<input type="text" class="form-control" formControlName="p_country" placeholder="Country"
+										formControlName="p_country">
+										<!-- <select class="form-control" formControlName="p_country">
+												<option value="1">India</option>
+												
+											</select> -->
+									</div>
+								
+								</div>
+								
+						
+									
+									
+								</div>	
+						</div>
+					</div>
+
+					<!-- <div class="card">
+						
+						<div class="card-header">
+							<h4>Address</h4>
+						</div>
+						
+						<div class="card-body" >
+									
+						</div>
+					</div> -->
+			
+					<!-- General Information -->
+					<div class="card">
+					
+						<div class="card-header">
+								<h4>To Meet</h4>
+								
+							</div>
+						
+						<div class="card-body">
+							<div class="row">
+							
+							<div class="col-md-12 padd-top-15">
+							
+								<div class="col-sm-4 ">
+									<label>Date & Time of Visit  <span  class="text-danger">*</span></label>
+									<input  type="date" placeholder="Select Date & Time" value="2024-05-09" autocomplete="chrome-off" maxlength="100" class="form-control"
+									formControlName="p_visit_date_time" id="date" min="{{currentDate}}">
+								</div>
+							
+								<div class="col-sm-4 ">
+									<label>Person to Meet  <span  class="text-danger">*</span></label>
+									<select class="form-control" formControlName="p_person_to_meet">
+										<option *ngFor="let employeeName of employeeNames" [value]="employeeName.emp_name">{{ employeeName.emp_name }}</option>
+									</select>
+								</div>
+								
+							
+								<div class="col-sm-4 ">
+								   <label>Purpose of Visit <span class="text-danger">*</span></label>
+								   <textarea class="form-control" rows="5" id="comment" formControlName="p_purpose_of_visit"></textarea>
+								</div>
+								
+								
+								<div class="col-sm-4 mrg-bot-15">
+									<label>Assign Visiting Card <span  class="text-danger">*</span></label>
+									<div class="multiselect-outerbox" >
+
+										<ng-multiselect-dropdown
+
+										  [placeholder]="'Select Visiting Cards'"
+										  [data]="dropdownList"
+										  [settings]="dropdownSettings"
+										  [(ngModel)]="selectedItems"
+										  (onSelect)="onItemSelect($event)"
+										  (onDeSelect)="onItemDeSelect($event)"
+										  formControlName="p_assign_visiting_card"
+										></ng-multiselect-dropdown>
+										<!-- <button type="button" class="btn btn-sm btn-primary ml-2" title="Add Visiting card" (click)="open_popup()">
+											+
+										</button> -->
+									</div>
+
+								</div>
+								
+								<div class="col-md-12 padd-bot-15 padd-top-15 ">
+									<div class="text-center ">
+									  <!-- Stream video via webcam -->
+									  <div class="video-wrap" [hidden]="!isCameraEnabled">
+										<video id="video" playsinline autoplay></video>
+									  </div>
+								  
+									  <!-- Button to open front web camera and take a picture p_identity_details-->
+									  <!-- <button id="snap" class="btn btn-info" style="margin-bottom:20px;"  (click)="this.imageDataUrl=''" *ngIf="this.imageDataUrl!=''">Try Another Picture</button> -->
+									  	<div class="controller" >
+										  <button id="snap" class="btn btn-info" style="margin-bottom:20px;"  (click)="takePicture()">Take Picture</button>
+										  <select class="form-control" style="width: 56%;margin: auto;" (change)="getCamera($event.target.value)">
+											<option value="front" selected >Front camera</option>
+											<option value="back" *ngIf="hasBackCamera">Back camera</option>
+										  </select>
+										</div>
+										<!-- <div class="controller" *ngIf="hasBackCamera">
+											<button (click)="useFrontCamera()" class="btn btn-info">Use Front Camera</button>
+											<button (click)="useBackCamera()" class="btn btn-info">Use Back Camera</button>
+										</div> -->
+									  <!-- Canvas to display the captured image -->
+									  <canvas class="canvas-box" style="display:none;" id="canvas" width="150" height="104">
+									</canvas>
+									<div class="take-picture-box" [ngStyle]="{'display':imageDataUrl=='' || imageDataUrl=='data:,'?'none':''}">
+									  <img *ngIf="imageDataUrl!='' && imageDataUrl!='data:,'" [src]="imageDataUrl" class="img-responsive"
+									  height="200">
+									</div>
+									</div>
+								  </div>	
+								
+								
+							</div>
+							
+							</div>		
+						</div>
+					</div>
+					
+					<div class="row" *ngIf="visitorData?.r_is_mobile_verify=='true'">
+							
+						<div class="col-md-12 padd-bot-15 padd-top-15">
+						
+							<div class="col-md-12 col-12 text-center">
+								<a class="btn btn-primary" (click)="update_visitor()">Add Visitor</a>
+							</div>
+						
+						</div>
+							
+					</div>
+					
+				</div>
+				
+				<div class="col-md-12 mrg-top-0 mrg-bot-25" style="display:none;">
+				
+				
+				<div class="card">
+					
+						<div class="card-body padd-bot-0 padd-top-0">
+						
+							<div class="row">
+							
+							<div class="col-md-12 padd-top-0">
+							
+							<div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+				
+								<table class="table user-list">
+								   <thead>
+									  <tr>
+										 <th>#</th>
+										 <th>Name</th>
+										
+										 <th>Card No.</th>
+										  <th>Person to Meet</th>
+										 <th>Date</th>
+										 <th>Check In Time</th>
+										 <th>Check Out Time</th>
+										 <th>Total Hours</th>
+										 <th>Action</th>
+										 
+									  </tr>
+								   </thead>
+								   <tbody>
+								   
+									<tr>
+										<td>1 
+										</td>
+										
+										 <td><div class="job-img">
+												<img src="assets/img/user-1.jpg" class="attachment-thumbnail" alt="">
+												 </div> Saxena Aarpit</td>
+												 <td>Card 1 </td>
+										 <td>Vinod Kumar</td>
+										 <td>05-09-2024</td>
+										 <td> 09:30 AM</td>
+										 <td>06:47 PM</td>
+										 <td>09:30</td>
+										 <td>
+										 
+										 <a href="#final-bill" data-toggle="modal" data-placement="top" title="Add" class="print-button-box">
+										  <i class="fa fa-eye"></i> </a></td>
+										 
+									 </tr>
+								   
+									  <tr>
+										<td>2 
+										</td>
+										
+										 <td><div class="job-img">
+												<img src="assets/img/user-1.jpg" class="attachment-thumbnail" alt="">
+												 </div> Vinod Kumar</td>
+												 <td>Card 1 </td>
+										 <td>Vinod Kumar</td>
+										 <td>17-04-2024</td>
+										 <td> 09:30 AM</td>
+										 <td>06:47 PM</td>
+										 <td>09:30</td>
+										 <td>-</td>
+									  </tr>
+									  
+									  <tr>
+										<td>3 
+										</td>
+										
+										 <td><div class="job-img">
+												<img src="assets/img/user-1.jpg" class="attachment-thumbnail" alt="">
+												 </div> Vinod Kumar</td>
+												 <td> Card 2</td>
+										 <td>Arpit Kumar</td>		 
+										 <td>11-03-2024</td>
+										 <td> 02:30 AM</td>
+										 <td>06:47 PM</td>
+										 <td>05:00</td>
+										  <td>-</td>
+										 
+									  </tr>
+									  
+									  
+									 <tr>
+										<td>4 
+										</td>
+										
+										 <td><div class="job-img">
+												<img src="assets/img/user-1.jpg" class="attachment-thumbnail" alt="">
+												 </div> Vinod Kumar</td>
+												 <td> Card 3</td>
+										  <td>Suman Kumar</td>
+										 <td>18-02-2024</td>
+										 <td> 11:30 AM</td>
+										 <td>06:47 PM</td>
+										 <td>07:30</td>
+										 <td>-</td>
+										 
+									  </tr>
+									 
+									  
+									  
+									  
+									 
+									<script>
+										function myFunction() {
+										confirm("Blacklist this visitor");
+										}
+									</script>
+
+
+									  
+								   </tbody>
+								   
+								</table>
+							
+							
+							</div>
+								
+								
+							</div>
+							
+							</div>		
+						</div>
+				</div>
+				
+				
+				</div>
+				
+				
+				
+				
+				</div>
+				<!-- /row -->
+			</div>	
+	
+        </div>
+    </div>
+</section>
+
+<!--------Dynamic card add Popup-------->
+ <div [@grooveState]="show_Popup?'active':'inactive'" id="allowanceDeduct" class="modal">
+	<div [@dongleState]="show_Popup?'active':'inactive'" class="modal-dialog"
+	  style="margin:auto auto auto auto;">
+	  <div class="modal-content" style="height:100%;">
+		<form>
+		  <div class="modal-header theme-bg">
+			<h4 class="modal-title">Visiting Card</h4>
+			<button type="button" class="close" (click)="close_Popup()" data-dismiss="modal"
+			  aria-hidden="true">&times;</button>
+		  </div>
+		  <alert></alert>
+		  <div class="modal-body">
+			<div class="row">
+  
+			  <form [formGroup]="card_Form" class="w-100">
+  
+				<div class="col-md-12 mrg-bot-15">
+
+					<div class="form-group d-flex align-items-center">
+
+					
+					<label class="mr-2">Card Number <span  class="text-danger">*</span> :</label>&nbsp;&nbsp;
+
+				  <input  type="text" rows="2" cols="60" placeholder="Enter Card Name" formControlName="card_name" maxlength="50" class="form-control">
+				  <ng-container *ngIf="card_Form.get('card_name').errors && card_Form.get('card_name').touched" class="text-danger">
+					<p class="text-danger">Card Number is required</p>
+				  </ng-container>
+				</div>
+
+				<div class="form-group d-flex align-items-center">
+				  <label class="mr-2">Card Type :</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				  <input type="text" rows="2" cols="60" placeholder="Enter Card Type" formControlName="card_type" maxlength="50"  class="form-control">
+				</div>
+				<div class="form-group d-flex align-items-center">
+				  <label class="mr-2">Remarks :</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  <input type="text" rows="2" cols="60" formControlName="remarks" placeholder="Enter Remarks..."   class="form-control">
+				</div>
+				</div>
+  
+			
+			  </form>
+  
+  
+			</div>
+		  </div>
+		  <div class="modal-footer">
+			<button class="btn btn-info" (click)="Save_visitor_card()">save</button>
+  
+			<button class="btn btn-cancel" (click)="close_Popup()">Cancel</button>
+		  </div>
+		</form>
+	  </div>
+	</div>
+  </div> 
+ 

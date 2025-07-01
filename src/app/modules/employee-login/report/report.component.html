@@ -1,0 +1,100 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+    <div id="wrapper" [ngClass]="{'active': showSidebar == false}">
+        <div class="fakeLoader"></div>
+
+        <!-- Sidebar Navigation -->
+
+        <div id="page-wrapper">
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Reports</h3>
+                </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a [routerLink]="['../employee-detail']">Employee Details</a></li>
+                        <li class="breadcrumb-item active">Reports</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <!-- /row -->
+
+
+
+
+                <div class="row" [ngClass]="{'blur': is_insufficient_fund}">
+                    <div class="col-md-4 col-sm-6">
+                        <div class="freelance-container style-2">
+                            <div class="freelance-box report-outer-box">
+                                <h4 class="flc-rate67 text-left">Attendance Reports</h4>
+                                <div class="freelance-inner-box">
+
+                                    <ul class="nav flex-column">
+
+                                        <li class="nav-item">
+                                            <a routerLink="../check-in" class="ember-view nav-link">
+                                                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                                                Check-In/Check-Out Report
+                                            </a>
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-6">
+                        <div class="freelance-container style-2">
+                            <div class="freelance-box report-outer-box">
+                                <h4 class="flc-rate67 text-left">Leave Reports</h4>
+                                <div class="freelance-inner-box">
+
+
+                                    <ul class="nav flex-column">
+
+                                        <li class="nav-item">
+                                            <a routerLink="../daily-leave-report" class="ember-view nav-link">
+                                                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                                                Applied Leaves Report
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a routerLink="../employee-leave-balance" class="ember-view nav-link">
+                                                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                                                Employee Leave Balance
+                                            </a>
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+            </div>
+            <!-- /#page-wrapper -->
+
+
+        </div>
+
+
+    </div>
+</section>
+<app-footer></app-footer>

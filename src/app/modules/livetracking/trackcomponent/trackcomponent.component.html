@@ -1,0 +1,25 @@
+
+<div class="container">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="menu-item monitoring" (click)="toggleSubTabs()">
+      Live
+      <span class="arrow-icon" [class.open]="showSubTabs">&#9662;</span>
+    </div>
+
+    <div *ngIf="showSubTabs" class="sub-tabs">
+      <div
+        *ngFor="let tab of subTabsList"
+        class="sub-tab"
+        (click)="selectTab(tab)"
+      >
+        {{ tab.label }}
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    
+    <router-outlet *ngIf="selectedTab"></router-outlet>
+  </div>
+ 
+</div>

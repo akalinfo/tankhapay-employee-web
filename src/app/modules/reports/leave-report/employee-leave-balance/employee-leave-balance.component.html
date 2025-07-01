@@ -1,0 +1,423 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<section>
+  <div id="wrapper" [ngClass]="{ active: showSidebar == false }">
+    <div class="fakeLoader"></div>
+
+    <div id="page-wrapper">
+      <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+          <h3 class="text-themecolor">Employee Leave Balance</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a [routerLink]="['/reports']">Reports</a>
+            </li>
+
+            <li class="breadcrumb-item active">Employee Leave Balance</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="container-fluid element" id="element">
+        <!-- /row -->
+        <div class="row">
+          <div class="col-md-12 mrg-top-0 mrg-bot-25">
+            <div class="card filter-outer-main-box">
+              <div class="card-header">
+                <div class="row">
+                  <div class="col-md-3">
+                    <input type="text" width="200px" placeholder="Search Employee" maxlength="50" class="form-control"
+                      (keyup)="search($event)" />
+                  </div>
+                  <div class="col-md-2">
+                    <span style="font-weight: bold">Total:
+                      {{ this.employee_leave_balance_data.length }}</span>
+                  </div>
+
+                  <div class="col-md-5" style="float: right">
+                    <div class="Show-Fields-top-outer-box">
+                      <div class="dropdown float-right-box">
+                        <div class="col-md-5">
+                          <a (click)="openSidebar()" class="btn excel-btn-box results filter-onlick-btn"
+                            style="padding-top: 9px;float:right;margin-right: 2rem;">Search<i
+                              class="fa fa-filter"></i></a>
+                        </div>
+
+                        <div class="col-md-7">
+                          <a class="btn btn-round btn-success excel-btn-box" style="padding-top: 9px;"
+                            style="float: right;" (click)="exportToExcel()">&nbsp;<i class="fa fa-file-excel-o"
+                              aria-hidden="true"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-body padd-bot-0 padd-top-0">
+                <div class="row">
+                  <div class="col-md-12 padd-top-0">
+                    <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box ">
+
+                      <table class="table user-list">
+                        <thead>
+                          <tr>
+                            <!-- <th>#</th> -->
+                            <!-- <th style="width: 20% !important;">Employee Name</th> -->
+                            <th style="min-width: 250px; white-space: nowrap;">Employee Name</th>
+                            <!-- <th>Email</th> -->
+                            <th>Org Unit Name</th>
+                            <!-- <th>Employee Code</th> -->
+                            <th *ngFor="let header of tableHeaders?.slice(2)">
+                              {{ header }}
+                            </th>
+                            <th>Vendor Name </th>
+                            <th>Project Name </th>
+                            <th>Salary Book Project </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            *ngFor="let data of filteredEmployees | paginate : { itemsPerPage: limit, currentPage: p };let i = index">
+                            <!-- <td> {{(p-1)*limit+(i+1)}}
+                            </td> -->
+
+                            <!-- <td  style="width: 20% !important;"> -->
+                            <td
+                              style="min-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+
+                              <h5 class="job-name emp-name-blue">
+                                <div class="job-img">
+                                  <img src="{{data.employee_detail.employee_photo }}" class="attachment-thumbnail"
+                                    alt="user-images"
+                                    *ngIf="data.employee_detail.employee_photo != '' && data.employee_detail.employee_photo !=  null" />
+                                  <div class="img-responsive txt circular-name" *ngIf="data.employee_detail.employee_photo == '' ||
+                                      data.employee_detail.employee_photo == null" alt="user">
+                                    {{ data.employee_detail.emp_name.charAt(0)
+                                    }}{{
+                                    data.employee_detail.emp_name.charAt(
+                                    data.employee_detail.emp_name.indexOf(
+                                    "
+                                    "
+                                    ) + 1
+                                    )
+                                    }}
+                                  </div>
+                                </div>
+                                <span>
+                                  <a (click)="get_leave_taken_history(data)" title="Click for leave history"
+                                    style="cursor: pointer;">
+                                    {{ data.employee_detail.emp_name }}
+                                  </a>
+                                  [
+                                  {{
+                                  data.employee_detail.orgempcode !== "" &&
+                                  data.employee_detail.orgempcode != null &&
+                                  data.employee_detail.orgempcode != undefined
+                                  ? data.employee_detail.orgempcode
+                                  : data.employee_detail.cjcode
+                                  }}
+                                  ]</span>
+                                <span>
+                                  {{ data?.employee_detail?.email }}
+                                </span>
+                              </h5>
+                            </td>
+
+                            <td>{{ data?.employee_detail?.assignedous }}</td>
+                            <!-- <td>
+                              {{ (data.employee_detail.orgempcode !== ''
+                              && data.employee_detail.orgempcode != null
+                              && data.employee_detail.orgempcode != undefined) ? data.employee_detail.orgempcode : data.employee_detail.cjcode }}
+                            </td> -->
+
+                            <!-- Loop through the balance_txt array to find the balance for each leave type -->
+
+                            <td *ngFor="let header of tableHeaders?.slice(2)">
+                              {{ getLeaveBalance(data.balance_txt, header) }}
+                            </td>
+                            <td>{{ data?.employee_detail?.vendor_name }}</td>
+                            <td>{{ data?.employee_detail?.project_name }}</td>
+                            <td>{{ data?.employee_detail?.salary_book_project }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flexbox padd-10" *ngIf="filteredEmployees.length > limit">
+                  <div class="flexbox padd-10">
+                    <pagination-controls (pageChange)="get_page($event)"
+                      style="font-size: 2rem; padding: 6px; font-weight: bold"
+                      class="float-right"></pagination-controls>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="flexbox padd-10">
+                                    <ul class="pagination">
+                                        <li class="page-item">
+                                          <a class="page-link" aria-label="Previous">
+                                            <i class="ti-arrow-left"></i>
+                                            <span class="sr-only">Previous</span>
+                                          </a>
+                                        </li>
+                                        <li class="page-item active"><a class="page-link" >1</a></li>
+                                        <li class="page-item"><a class="page-link" >2</a></li>
+                                        <li class="page-item"><a class="page-link" >3</a></li>
+                                        <li class="page-item">
+                                          <a class="page-link"  aria-label="Next">
+                                            <i class="ti-arrow-right"></i>
+                                            <span class="sr-only">Next</span>
+                                          </a>
+                                        </li>
+                                    </ul>
+                                </div> -->
+        </div>
+      </div>
+
+      <!-- /row -->
+    </div>
+  </div>
+</section>
+
+<!-- <div id="SendMessage" class="modal fade punchin-punchout-outer1-box">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header theme-bg">
+                     <h4 class="modal-title">Vinod Kumar</h4>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+
+
+                        <div class="form-group Earned-Leave-iiner-box">
+                           <div class="col-md-4">
+
+                                <select class="form-control">
+                                   <option value="0">Earned Leave </option>
+                                   <option value="1">Leave Without Pay </option>
+                                   <option value="2">Paternity Leave</option>
+                                   <option value="3">Sabbatical Leave </option>
+                                   <option value="4">Sick Leave </option>
+
+                                  </select>
+
+                           </div>
+
+                               <div class="col-md-4 padd-0 text-right"><input type="date" class="form-control" value="2024-01-01" placeholder="Select From Date"> </div>
+                               <div class="col-md-4 padd-0 text-left"><input type="date" class="form-control" value="2024-04-20" placeholder="Select To Date"></div>
+                           </div>
+
+
+
+
+
+                    <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+
+
+                        <table class="table user-list">
+                           <thead>
+                              <tr>
+                                 <th id="ember394" class="sortable header-user-role ember-view">Period </th>
+                                 <th id="ember395" class="sortable header-user-role ember-view text-center">Granted </th>
+                                 <th id="ember395" class="sortable header-user-role ember-view text-center">Booked </th>
+                                 <th class="header-actions text-center">Balance</th>
+                                 <th class="header-actions text-center">Lapsed</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <tr>
+                                 <td class="ZPLRow"> Jan 2024 </td>
+                                 <td class=" text-center">12</td>
+                                 <td class=" text-center">-</td>
+                                 <td class=" text-center">12 </td>
+                                 <td class=" text-center">-</td>
+                              </tr>
+
+
+                           </tbody>
+                        </table>
+
+                    </div>
+
+
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div> -->
+
+<!-----Employee Leave History------->
+<div class="modal contract-search-popup-box Contract-Panel-box" id="emp_history"
+  [@grooveState]="showEmpHistory ? 'active' : 'inactive'" aria-labelledby="myModalLabel1">
+  <div [@dongleState]="showEmpHistory ? 'active' : 'inactive'" class="modal-dialog modal-xl"
+    style="width: 100rem; height: 50vh">
+    <form>
+      <div class="modal-content" id="Milestone-Mapping">
+        <div class="modal-header theme-bg">
+          <h4 style="color: white">
+            <a title="Close" type="button" class="btn-close2" (click)="closeEmpHistory()">
+              <i class="fa fa-window-close" style="color: #fff"></i> </a>&nbsp;{{employee_name}} Leave Taken History
+          </h4>
+        </div>
+
+        <div *ngIf="currentEmp?.balance_txt?.length > 0" class="modal-body">
+          <div class="row" style="height: 4rem;">
+            <div class="col-md-12">
+              <div class="col-md-8">
+                <strong>Current Leave Balance :</strong>
+                <ng-container *ngFor="let bt of currentEmp?.balance_txt;">
+                  <span>
+                    {{bt?.type_code}} - {{bt?.cur_bal}} &nbsp;
+                  </span>
+                </ng-container>
+              </div>
+
+              <div class="col-md-3">
+                <strong>Total Leave Balance :</strong> &nbsp;
+                <span>{{get_tot_leave_balance()}}</span>
+              </div>
+
+              <div class="col-md-1">
+                <a (click)="downloadExcel()" style="cursor: pointer" *ngIf="leaveHistoryData?.length > 0"><i
+                    class="fa fa-2x fa-file-excel-o"></i></a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-body" style="margin-top: -25px;">
+          <div class="row" style="overflow: auto; height: 30rem;">
+            <div style="margin: 0 16px; overflow: auto">
+              <table class="table table-hover table-bordered" border="1">
+                <thead style="background: skyblue">
+                  <tr>
+                    <th style="font-size: 14px">Month-Year</th>
+                    <th style="font-size: 14px">Template Name</th>
+                    <th style="font-size: 14px; width: 40rem">Leave Taken</th>
+                    <!-- <th style="font-size: 14px">Total Leave</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let lhd of leaveHistoryData">
+                    <tr>
+                      <td>{{ lhd.att_date_txt }}</td>
+                      <td>{{ lhd.template_name }}</td>
+                      <td>
+                        {{ lhd.tot_leave_taken }}
+                        (
+                        <ng-container *ngFor="let x of lhd.leave_taken_txt">
+                          <span>{{ x.typecode }} - {{ x.leave_taken }}</span>
+                          &nbsp;
+                        </ng-container>
+                        )
+                      </td>
+                      <!-- <td>
+                        {{lhd.tot_leave_taken}}
+                      </td> -->
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="modal-footer" style="background: white">
+            <!-- <button class="btn btn-primary">
+              submit
+            </button> -->
+            <button title="Close" class="btn btn-close btn-danger" (click)="closeEmpHistory()">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-----Employee Leave History------->
+
+
+
+
+<!---------Sidebar Filter---------->
+<div id="sidebar" class="sidebar bg-dark text-white sidebar-menu_filter-box">
+  <h3 class="filter-menu-header-text-box">Filter</h3>
+  <!-- <button type="button" class="btn btn-user1 btn-round" (click)="resetFilter()">Clear</button>-->
+  <a class="clear-box-btn" title="Clear Filter" (click)="resetFilter()">Clear</a>
+  <button class="close-btn btn btn-danger1" (click)="closeSidebar()"><i class="fa fa-close"></i></button>
+  <div class="sidebar-content-box">
+
+    <div class="col-md-12 ">
+
+      <div id="filterComponent">
+        <div class="panel-group">
+
+          <div class="panel panel-default">
+            <div class="panel-heading panel_heading_gray  card-header" role="tab" id="headingOne2"
+              data-toggle="collapse" data-parent="#accordion2" href="#collapseOne2" aria-expanded="false"
+              aria-controls="collapseOne">
+              <h4>Employee Leave Balance Filter <i class="fa fa-angle-down"></i></h4>
+            </div>
+            <div id="collapseOne2" class="panel-collapse collapse card-body in" role="tabpane2">
+              <div class="row">
+                <div class="col-sm-12">
+<!-- *ngIf="decoded_token.isEmployer=='1'" -->
+                  <div class="form-group"  style="margin-top: 40px;">
+                    <label class="control-label col-sm-12">Organization Unit</label>
+                    <div class="col-sm-12 padd-0 userOrgUnit">
+                      <ng-multiselect-dropdown [placeholder]="'Select Organization Units'" [settings]="dropdownSettings"
+                        [data]="orgList" [(ngModel)]="orgName_copy" [ngModelOptions]="{standalone: true}">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-12">Department</label>
+                    <div class="col-sm-12 padd-0 userOrgUnit">
+                      <ng-multiselect-dropdown [placeholder]="'Select Department'" [settings]="deptDropdownSettings"
+                        [data]="deptList" [(ngModel)]="deptName_copy" [ngModelOptions]="{standalone: true}">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-12">Designation</label>
+                    <div class="col-sm-12 padd-0 userOrgUnit">
+                      <ng-multiselect-dropdown [placeholder]="'Select Designation'" [settings]="desgDropdownSettings"
+                        [data]="desgList" [(ngModel)]="desgName_copy" [ngModelOptions]="{standalone: true}">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+
+      <div class="text-center mrg-bot-25" style="margin-top: 10px;">
+        <button type="button" class="btn btn-user1 btn-round btn-primary" (click)="change_sidebar_filter()"
+          id="btnSetFilter">
+          &nbsp;Apply</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!---------Sidebar Filter---------->

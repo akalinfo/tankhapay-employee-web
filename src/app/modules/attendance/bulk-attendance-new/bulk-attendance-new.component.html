@@ -1,0 +1,1020 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+  <div id="wrapper" [ngClass]="{'active':showSidebar==false}">
+    <div class="fakeLoader"></div>
+    <div id="page-wrapper">
+      <div class="row page-titles">
+        <div class="col-md-4 align-self-center">
+          <!-- bulk-attendance -->
+          <h3 class="text-themecolor"><a routerLink="/attendance/bulk-attendance"></a>&nbsp;&nbsp;Bulk 
+            Attendance Summary</h3>
+        </div>
+        <div class="col-md-8 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item" title="Attendance"><a [routerLink]="['/attendance']">Attendance</a></li>
+            <li class="breadcrumb-item active">Bulk Attendance Summary</li>
+          </ol>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12 col-sm-12">
+            <div class="card">
+              <div class="card-header">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="row FilterBytext-box">
+                      <div class="col-md-1 col-sm-1 text-right padd-0 filter_by">
+                        <div class="form-group">
+                          <h3>Filter By :</h3>
+                        </div>
+                      </div>
+                      <div class="col-md-5">
+                        <!-- <span style="font-weight: bold;"></span> -->
+                        <div class="Marked-Manually-outer-box">
+                          <input type="radio" id="manually" name="type" value="manually" [(ngModel)]="attendanceFormat"
+                            (change)="change_att_format('all')">
+                          <label for="manually">Marked Manually (All)</label>
+                          <input type="radio" id="excel" name="type" value="excel" [(ngModel)]="attendanceFormat"
+                            (change)="change_att_format('all')">
+                          <label for="excel"> Upload from Excel</label>
+                          <input type="radio" id="bulkexcel_manual" name="type"
+                            (change)="change_att_format('bulkexcel')" value="bulkexcel_manual"
+                            [(ngModel)]="attendanceFormat">
+                          <label for="bulkexcel_manual">Show Records (Excel)</label>
+                          <!-- <input type="radio" id="excel_al_dud" name="type" value="excel" [(ngModel)]="attendanceFormat">
+                        <label for="excel"> Upload Allowance & Deduction from Excel</label> -->
+                          <br>
+                        </div>
+                      </div>
+                      <div class="col-md-1 col-sm-1 text-right padd-0 filter_by" *ngIf="is_payout_with_attendance=='P'">
+                        <div class="form-group">
+                          <h3>Type </h3>
+                        </div>
+                      </div>
+                      <div class="col-md-5" *ngIf="is_payout_with_attendance=='P'">
+                        <span style="font-weight: bold;"></span>
+                        <div class="Marked-Manually-outer-box">
+                          <input type="radio" id="attendance_purpose" name="att_sal_purpose" value="Attendance"
+                            [(ngModel)]="attendancePurpose" (change)="change_att_purpose('Attendance')">
+                          <label for="attendance_purpose">Attendance</label>
+                          <input type="radio" id="salary_purpose" name="att_sal_purpose" value="Salary"
+                            [(ngModel)]="attendancePurpose" (change)="change_att_purpose('Salary')">
+                          <label for="salary_purpose">Advance Attendance</label>
+                          <!-- Salary Purpose -->
+                          <br>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-12 FilterBytext-box">
+
+
+                    <div class="row">
+                      <div class="col-md-1 col-sm-1 text-right padd-0 filter_by ">
+                        <div class="form-group  ">
+                          <h3>Month :</h3>
+                        </div>
+                      </div>
+                      <div class="col-md-2" style="text-align: left;">
+
+
+                        <select class="form-control" (change)="changeMonth($event)">
+
+                          <option *ngFor="let ma of monthsArray" [selected]="month==ma.id" [value]="ma.id">
+                            {{ma.month}}</option>
+                        </select>
+                      </div>
+
+                      <div class="col-md-1 col-sm-1 text-right padd-0 filter_by ">
+                        <div class="form-group  ">
+                          <h3>Year :</h3>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+
+                        <select class="form-control" (change)="changeYear($event)">
+
+                          <option *ngFor="let ya of yearsArray" [selected]="year==ya" [value]="ya">{{ya}}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="col-md-2"
+                        *ngIf="attendanceFormat === 'manually' || attendanceFormat === 'bulkexcel_manual'">
+                        <button type="button" class="btn btn-primary manage-btn"
+                          (click)="call_employer_details()">Search</button>
+                      </div>
+
+
+                      <div class="col-md-2 col-sm-2 search-box-filter" style="  margin-top: 0;">
+                        <a (click)="openSidebar()" class="btn excel-btn-box results filter-onlick-btn"
+                          style="padding-top: 9px;">Filter<i class="fa fa-filter"></i></a>
+                      </div>
+
+                      <div class="col-md-4" *ngIf="attendanceFormat === 'excel' && sso_admin_id!=''">
+                        <br>
+                        <a class="btn btn-primary" (click)="go_to_upload_allowance()" style="border-color: black;">Bulk
+                          Upload Allowance & Deduction</a>
+
+                      </div>
+                      <!-- <div class="col-md-2"
+                        *ngIf="attendanceFormat === 'manually' || attendanceFormat === 'bulkexcel_manual'">
+                        <span style="font-weight: bold;">Search</span>
+                        <input type="text" class="form-control" value="" placeholder="Search Employee(s)"
+                          (keyup)="search($event)" maxlength="100" [(ngModel)]="searchKey">
+                      </div> -->
+
+                      <div class="col-md-2 col-sm-2" style="display:none;"
+                        *ngIf="attendanceFormat === 'manually' || attendanceFormat === 'bulkexcel_manual'">
+                        <span style="font-weight: bold;">Status</span>
+                        <select class="form-control" (change)="filter_emp($event.target.value)">
+                          <option value="1">All</option>
+                          <option value="2">Yet to Mark</option>
+                          <option value="3">Marked</option>
+                          <option value="4">Verified</option>
+                        </select>
+                      </div>
+
+
+                    </div>
+                    <!-- <p style="color: red;font-size: 1.1rem;"> <b>Note</b>* Only <b>Full Time [ Monthly ]</b> Employee(s)
+                      shows/
+                      can upload bulk attendnace using excel.
+                      . For work report / daily employee attendance will marked from <b>Tankhapay Mobile App</b>. </p> -->
+                  </div>
+
+                  <!-- <div class="col-lg-12">
+                    <div class="row">
+                      <div class="col-md-2">
+
+                      </div>
+
+                      <div class="col-md-3">
+                        <div class="Marked-Manually-outer-box">
+                          <input type="radio" id="bulkexcel_manual" name="type" (change)="change_att_format('bulkexcel')" value="bulkexcel_manual" [(ngModel)]="attendanceFormat">
+                          <label for="bulkexcel_manual"> Excel Uploaded Records</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div> -->
+
+                </div>
+                <div class="row">
+                  <div class="col-md-10 col-md-offset-0 mrg-top-0 mrg-bot-1" *ngIf="attendanceFormat === 'excel'">
+
+                    <div *ngIf="showSpinner" class="please-wait2">
+                      <i class="fa fa-spinner fa-spin fa-3x"></i>
+                      <b>Please wait...</b>
+                    </div>
+                    <!-- General Information -->
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-md-12 padd-bot-10 padd-top-10">
+                            <h3>Upload Bulk Attendance</h3>
+                            <ul>
+                              <li style="color: #ff0c0c;font-weight: 500;"
+                                title="Click on template to download excel with list of employee">1. Please download the
+                                latest template, with
+                                the list of employee(s)</li>
+                              <ul style="margin-left: 15px;">
+                                <li>
+                                  a. <a (click)="getEmployerMonthAttendance_for_excel('blank')"
+                                    style="font-weight: bold; cursor: pointer;">with blank attendance</a>
+                                </li>
+                                <li>
+                                  b. <a (click)="getEmployerMonthAttendance_for_excel('actual')"
+                                    style="font-weight: bold; cursor: pointer;">with actual attendance</a>
+                                </li>
+                                <!-- <li>
+                                    c. <a (click)="getEmployerMonthAttendance_for_excel()"
+                                  style="font-weight: bold; cursor: pointer;">with full present marked</a>
+                                  </li> -->
+                                <li>
+                                  c. <a (click)="getEmployerMonthAttendance_for_excel('actual_present_future')"
+                                    style="font-weight: bold; cursor: pointer;">with actual & present marked for
+                                    future</a>
+                                </li>
+                              </ul>
+                              <li>2. Edit this file in Excel, and add the attendance.
+                              </li>
+                              <li>3. Do not change any employee details already present in the template. This includes
+                                <b style="font-size: 1.2rem; color: #ff0c0c; font-weight: 500;"> the following columns -
+                                  Employee, EmpCode, OrgEmpCode, Mobile, Status, DOB, DOJ, DOR
+                                </b>
+                              </li>
+                              <li>3. Mark & Save employee attendance with attendance marking code <b
+                                  title="[ PP - Full Day Present, WFH - Work From Home, HD --(Half Day Present with Leave or Absent), HL- Half Day Leave, LL-CO (CompOff), OD - OnDuty, TR - OnTour, LWP - Leave Without Pay, ASL - A Study Leave, LL - (Leave Code for Full Day Leave), AA - Absent, HO - Holiday, WO - Weekly-Off, CLS- Clear ]">[
+                                  PP, WFH, HD-(Leave Code OR AA), HL-(Leave code), LL-CO, OD, WO, AA, HO,
+                                  CLS,ASL,TR,OD,LWP, LL-(Leave Code) ] </b> and
+                                upload
+                                this
+                                file below. Any other file with a different code will
+                                be rejected.
+                              </li>
+                              <li>4. Salary updates performed here will be effective from
+                                1st of the
+                                current month.
+                              </li>
+
+                            </ul>
+
+                            <h3 class="mrg-top-15">Template file instructions -</h3>
+
+                            <ul>
+                              <li>1. There is a list of employees with employee codes and joining dates.
+                                Please fill in the data accordingly.</li>
+                              <li>2. Please do not add/remove columns.</li>
+                              <li>3. Please enter the attendance code <b
+                                  title="[ PP - Full Day Present, WFH - Work From Home, HD -(Half Day Present with Leave or Absent),HL-(Leave Code) for Half Day Leave LL-CO (CompOff), OD - OnDuty, LWP - Leave Without Pay, ASL - A Study Leave, TR - OnTour, WO - Weekly-Off, LL-(Leave Code for Full Day Leave) , AA - Absent, HO - Holiday, CL- Clear/Remove ]">[
+                                  PP, WFH, HD-(Leave Code OR AA),HL-(Leave Code), LL-CO, OD, WO, AA, HO CLS, LL-(Leave
+                                  Code) ] </b> in
+                                Capital
+                                letters.
+                              </li>
+                              <li>4. If there is no data for a particular cell, leave it
+                                empty. Don't enter "-", "NA" etc.</li>
+                              <!-- <li>5. Please do not use all capital letters in remarks
+                                field </li> -->
+                              <li>5. Please use CLS to remove marked attendance </li>
+                              <li>6. <span class="text-info" style="font-weight: bold;"> Note .</span><span
+                                  style="color: rgba(136, 12, 253, 0.959); font-weight: 500;"> For bulk upload, Excel
+                                  files with maximum 200 records allowed at a time. If records are > 200, then split the
+                                  file and upload. </span>
+                              </li>
+                            </ul>
+                            <div class="col-sm-10 mrg-bot-15 mrg-top-15"
+                              title="For bulk upload, Excel files with maximum 200 records allowed at a time. If records are > 200, then split the file and upload.">
+                              <input type="file"
+                                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                                name="attendnace_excel" class="allowed_jpg_jpeg_pdf form-control" id="attendnace_excel"
+                                (change)="onFileChange($event)">
+                            </div>
+                            <div class="col-sm-2 mrg-bot-15 mrg-top-15">
+                              <button type="button" class="btn btn-secondary" (click)="clear_file()"
+                                style="border-color: black;">Clear</button>
+                            </div>
+                            <div class="col-md-12 col-12 padd-top-2 text-left">
+                              <span class="text-info" style="font-weight: bold;"> attendance marking codes .<span
+                                  style="color: #ff0c0c; font-weight: 500;"> [ PP -
+                                  Full Day Present, WFH - Work From Home, HD-(Half Day Present with Leave OR Absent) ,
+                                  LL-CO (CompOff), OD - OnDuty, TR - OnTour, LWP - Leave Without Pay, ASL - A Study
+                                  Leave
+                                  AA - Absent, HO -
+                                  Holiday, WO - Weekly-Off, CLS- Clear/Remove Att, LL-(Leave Code), HL-(Leave Code) for
+                                  Half Day Leave ] </span>
+                              </span>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+
+
+                    </div>
+
+                    <div class="card" *ngIf="excelToTableData.length>0">
+                      <span style="text-align: left; color: blue;font-weight: bold;"> Total Records :
+                        {{excelToTableData.length}}</span>
+                      <div class="card-body" style="overflow:auto;">
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <th><strong>Emp Code</strong></th>
+                              <th><strong>Name</strong></th>
+                              <th><strong>Mobile</strong></th>
+                              <th><strong>OrgUnit</strong></th>
+                              <th><strong>Department</strong></th>
+                              <th><strong>Designation</strong></th>
+                              <ng-container *ngFor="let ad of excelToTableData[0].attendanceDates">
+                                <th><strong>{{ad.attendancedate}}</strong></th>
+                              </ng-container>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+                            <ng-container *ngFor="let et of excelToTableData">
+                              <tr [ngStyle]="{'color': et.rowColor == false ? 'red' : 'green'}">
+                                <td>{{et.emp_code}}</td>
+                                <td>{{et.employee}}</td>
+                                <td>{{et.mobile}}</td>
+                                <td>{{et.OrganizationUnit}}</td>
+                                <td>{{et.department}}</td>
+                                <td>{{et.designation}}</td>
+                                <ng-container *ngFor="let ead of et.attendanceDates">
+                                  <td>{{ead.attendancetype}}
+                                    <ng-container *ngIf="ead.leavetype">
+                                      - {{ead?.leavetype}}
+                                    </ng-container>
+                                  </td>
+                                </ng-container>
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                        </table>
+                      </div>
+
+                    </div>
+                    <span class="text-info" style="color: lightcoral;font-size: 1.3rem;"
+                      *ngIf="!check_access_right_cdn()">
+                      You only have permission to view attendance records. Any changes or modifications are not allowed
+
+                    </span>
+                    <!-- {{excelToTableData.length}} {{show_bulk_upload_btn}} {{check_access_right_cdn()}} -->
+                    <div *ngIf="(excelToTableData.length>0 && show_bulk_upload_btn) && check_access_right_cdn()"
+                      class="col-md-12 col-12 padd-top-20 text-center">
+                      <button class="btn btn-primary  btn-lg" (click)="uploadExcelBulkAtt()"><i
+                          class="fa fa-upload fa-lg">
+                        </i> Save Bulk Attendance</button>
+                    </div>
+
+                  </div>
+
+                  <div class="col-lg-12"
+                    *ngIf="attendanceFormat === 'manually' || attendanceFormat == 'bulkexcel_manual'">
+                    <div *ngIf="showSpinner" class="please-wait">
+                      <i class="fa fa-spinner fa-spin fa-3x"></i>
+                      <b>Please wait...</b>
+                    </div>
+
+
+
+
+                    <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+
+                      <div class="col-md-12">
+                        <div class="col-md-6" style="margin-bottom: 2rem;">
+                   
+                          <a *ngIf="filter_emp_val != 4 && check_access_right_cdn() && filteredEmployees.length > 0"
+                          class="btn btn-success manage-btn myButton-box" (click)="save_approve_attendance_new()"
+                          style="border-color: black;">Approve Attendance</a> &nbsp; <a (click)="go_to_generate_payment_advice()" class="btn btn-primary manage-btn"
+                            style="padding-top: 9px;" title="Click to Generate Payment Advice" *ngIf="getApprovedRecords() > 0">
+                            Generate Payment Advice<i style="margin-left: 6px;" class="fa fa-arrow-right" aria-hidden="true"></i></a>&nbsp;
+                        </div>
+
+                        <div class="col-md-6" style="margin-top: 10px;">
+                          <span style="color: blue;font-weight: bold;"> Total Records :
+                            {{filteredEmployees.length}} </span>
+                          <span style="color: blue;font-weight: bold;"> | Selected Records :
+                            {{getSelectedRecords()}} </span>
+                          <span style="color: blue;font-weight: bold;"> | Approved Records :
+                            {{getApprovedRecords()}} </span>
+                        </div>
+                      </div>
+                      <!-- <div class="col-md-12"> -->
+                      <!-- <div class="input-block mb-3 form-focus"
+                        style="position: absolute;margin-left: 75%;margin-top: -5rem;">
+                        <input type="text" class="form-control wide-width" value="" placeholder="Search Employee(s)"
+                          (keyup)="search($event)" maxlength="100" [(ngModel)]="searchKey">
+                      </div> -->
+                      <!-- </div> -->
+
+
+                      <table class="table user-list table-striped table-bordered">
+                        <thead>
+                          <tr>
+                            <th *ngIf="filter_emp_val != 4"><input type="checkbox" name="checkempAll"
+                                (change)="checkEmployeeAll($event)"></th>
+                            <th>Employee(s)
+                            </th>
+                            <th>DOJ-DOL</th>
+                            <th>Dept. | Desig.</th>
+                            <!-- <th>Emp Code</th> -->
+
+                            <!-- <th *ngFor="let dd of month_days_master;"
+                              [ngStyle]="{'color': ((dd.dayname.toUpperCase()) == 'SUN' || (dd.dayname.toUpperCase()) =='SAT') ? 'red': ''}"
+                              class="text-center">
+                              <span style="font-size:12px;text-align: center;"> {{dd.day_cnt}} <br>
+                                {{dd.dayname.toUpperCase()}}</span>
+                            </th> -->
+
+
+                            <th title="Total Presents." style="font-size:12px;">Present</th>
+                            <th title="Total Leaves." style="font-size:12px;">Leave</th>
+                            <th title="Total Absents" style="font-size:12px;">Absent</th>
+                            <th title="Total Mispunch or Sandwich Leave" style="font-size:12px;">Discrepancy</th>
+                            <th title="Total Paid Days" style="font-size:12px;">Total Paid Days </th>
+                            <th title="Total Verified" style="font-size:12px;">Man Days</th>
+                            <th title="Status" style="font-size:12px;">Status</th>
+                            <th title="Attendance Status" style="font-size:12px;">Att Status</th>
+                            <th title="Payment Advice Status" style="font-size:12px;">Payment Advice</th>
+                            <th title="Payout Status" style="font-size:12px;">Payout Status</th>
+                            <!-- <th title="Voucher Details" style="font-size:12px;">Voucher Details</th> -->
+                            <!-- <th title="Leave Details" style="font-size:12px;">Leave Balance</th> -->
+                            <!-- <th title="Action" style="font-size:12px;">Action</th> -->
+                            <!-- <th>Action</th> -->
+                            <!--{'background-color': (emp_data.approved_attendance.split('')[0] > 0) ? '#b5ffb5' : (emp_data.monthly_att_approval_status == 'Y') ? '#f0ffed': (emp_data.monthly_att_approval_status == 'N' && (emp_data.marked_attendance_paid_days)>0) ? '#edf4ff' :  ''}" -->
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <ng-container *ngFor="let emp_data of filteredEmployees; let i=index;">
+                            <tr [ngClass]="{'read-only': emp_data.lockstatus == 'Locked'}"
+                              [ngStyle]="{'background-color' : emp_data.monthly_att_approval_status == 'Y' ? '#b5ffb5':  (emp_data.monthly_att_approval_status == 'N' && (emp_data.marked_attendance_paid_days) > 0) ? '#edf4ff' :  ''}">
+                              <td *ngIf="filter_emp_val != 4">
+                                <!-- *ngIf="emp_data.monthly_att_approval_status != 'Y' && emp_data.lockstatus != 'Locked'" -->
+                                <input
+                                  *ngIf="emp_data.monthly_att_approval_status == 'N' && (emp_data.marked_attendance_paid_days) > 0 && emp_data.lockstatus == 'Not Locked' && emp_data.advicelockstatus == 'Unlocked' && emp_data.payoutlockstatus == 'Unlocked'"
+                                  type="checkbox" name="checkemp" (change)="checkEmployee($event, i)">
+
+                              </td>
+                              <td>
+                                <h2 class="table-avatar">
+                                  <!-- <a class="avatar avatar-xs" href="profile.html"><img
+                                    src="{{emp_data.photopath == '' ? '/assets/img/user-1.jpg' : emp_data.photopath}}"
+                                    alt="User Image"></a> -->
+
+                                  <div class="job-img">
+                                    <!-- <img src="{{emp_data.photopath==''?'/assets/img/user-1.jpg':emp_data.photopath}}"
+                                        class="attachment-thumbnail" alt="user images"> -->
+
+                                    <!-- <img style="width: -webkit-fill-available;" src="{{emp_data.photopath}}"
+                                      class="attachment-thumbnail" alt="user-images"
+                                      *ngIf="(emp_data.photopath != '' && emp_data.photopath != null)"> -->
+                                    <!-- *ngIf="(emp_data.photopath == '' || emp_data.photopath == null)" -->
+                                    <div class="img-responsive img-circle txt" alt="user">
+                                      {{emp_data.emp_name.charAt(0)}}{{emp_data.emp_name.charAt(emp_data.emp_name.indexOf('
+                                      ') + 1)}}</div>
+
+
+                                  </div>
+                                  <a style="font-size:11px;">{{emp_data.emp_name}}
+                                    <span *ngIf="emp_data.orgempcode; else elseBlock">
+                                      [ {{emp_data.orgempcode}}]
+                                    </span>
+                                    <ng-template #elseBlock>
+                                      [{{emp_data.tp_code}}]
+                                    </ng-template>
+                                  </a>
+
+                                </h2>
+                              </td>
+                              <td>
+                                <a style="font-size:11px;">
+                                  {{emp_data.dateofjoining}} <ng-container *ngIf="emp_data.dateofrelieveing">-
+                                    {{emp_data.dateofrelieveing}}</ng-container>
+                                </a>
+                              </td>
+                              <td>
+                                <a style="font-size:11px;">
+                                  {{emp_data.posting_department}} |
+                                  {{emp_data.post_offered}}
+                                </a>
+                              </td>
+
+                              <!-- <td *ngFor="let ad of emp_data.att_details; let im=index;">
+
+                                <div
+                                  [ngClass]="{'disabled-date': validate_dates(emp_data.emp_name, emp_data?.dateofjoining, emp_data?.dateofrelieveing, ad.attday, ad.attmonth, ad.attyear) == false}"
+                                  class="job-buttons action-btn-outer-box">
+
+                                  <span *ngIf="ad.attendance_type=='PP'" class="present-btn">PP</span>
+                                  <span *ngIf="ad.attendance_type=='WFH'" class="wfh-btn">WFH</span>
+                                  <span *ngIf="ad.attendance_type=='MP'" class="leave-btn">MP</span>
+                                  <span *ngIf="ad.attendance_type=='HD'" class="hald-day-btn">HD</span>
+                                  <span *ngIf="ad.leavetype=='CO'" class="leave-btn">CO</span>
+                                  <span *ngIf="ad.attendance_type=='OD'" class="present-btn">OD</span>
+                                  <span *ngIf="ad.attendance_type=='TR'" class="ontour-btn">TR</span>
+                                  <span *ngIf="ad.attendance_type=='LWP'" class="onlwp-btn">LWP</span>
+                                  <span *ngIf="ad.attendance_type=='ASL'" class="onasl-btn">ASL</span>
+                                  <span *ngIf="ad.attendance_type=='AA'" class="absent-btn">AA</span>
+                                  <span *ngIf="ad.attendance_type=='HO'" class="holiday-btn">HO</span>
+                                  <span *ngIf="ad.attendance_type=='WO'" class="holiday-btn">WO</span>
+
+                                  <span class="leave-btn"
+                                    *ngIf="ad.attendance_type=='LL' && ad.leavetype!='CO'">LL</span>
+
+                                  <span *ngIf="ad.attendance_type=='HL' && ad.leavetype!='CO'"
+                                    class="leave-btn">HL</span>
+                                  <i *ngIf="ad.approval_status=='Approved'"
+                                    class="fa fa-check" aria-hidden="true"></i>
+
+                                </div>
+                              </td> -->
+
+                              <td style="font-size:12px;"><b>{{emp_data.marked_attendance_paid_days}}</b> </td>
+                              <td style="font-size:12px;"><b>{{emp_data.marked_attendance_leave_taken}}</b> </td>
+                              <td style="font-size:12px;"><b>{{emp_data.absent_days}}</b> </td>
+                              <td style="font-size:12px;"><b>{{emp_data.mispunch_days +emp_data.swl_days}} </b> </td>
+                              <!-- <td style="font-size:12px;"><b>{{emp_data.swl_days}}</b> </td> -->
+                              <td style="font-size:12px;"><b>{{emp_data.total_paid_days}}</b> </td>
+                              <!-- <td style="font-size:12px;"><b>{{emp_data.approved_attendance}}</b> </td> -->
+                              <td style="font-size:12px;">
+                                <b>{{emp_data.salary_days_opted=='N'?'full-day':emp_data.salarydays}}</b>
+                              </td>
+                              <td style="font-size:10px;"><b>
+                                  {{emp_data.monthly_att_approval_status == 'Y'?'Verified':
+                                  (emp_data.monthly_att_approval_status == 'N' && (emp_data.marked_attendance_paid_days)
+                                  >
+                                  0)?'Marked':'Yet to Mark'}}
+                                </b> </td>
+
+                              <td style="font-size:10px;"><b>{{emp_data.lockstatus}}</b></td>
+                              <td style="font-size:10px;"><b>{{emp_data.advicelockstatus}}</b></td>
+                              <td style="font-size:10px;"><b>{{emp_data.payoutlockstatus}}</b></td>
+                              <!-- <td style="font-size:9px;"><b innerHTML="{{emp_data.voucherdetails}}"></b> </td> -->
+                              <!-- <td style="font-size:9px; color: blue;">
+                                <ng-container *ngFor="let x of emp_data?.balance_txt">
+                                  <span>{{x.typecode}}</span> : <span>{{x.prev_bal}}</span>, &nbsp;
+                                </ng-container>
+                                <ng-container *ngIf='emp_data?.template_txt'>
+                                  <label>[WO] : </label>
+                                  <span>
+                                    {{emp_data?.template_txt[0].leave_details?.weekly_off_days_name?.split(',')}}</span>
+                                </ng-container>
+
+                              </td> -->
+                              <!-- <td style="font-size:12px;"><a class="btn btn-cancel btn-sm  manage-btn"
+                                  title="Click for Allowance & Deduct" style="border-color: #fda2a2;font-size: 12px; background: #f9dad8;
+                                  color: #000000; padding: 8px 8px;"
+                                  (click)="openAllowDeductPopup(emp_data.emp_code, emp_data.emp_name, emp_data.voucherdetails)">
+                                  Allowance & Deduction
+                                </a></td> -->
+                              <!-- <td>
+                              <div class="job-buttons action-btn-outer-box">
+                                <a class="btn btn-shortlist manage-btn" (click)="openAttCalendar()"
+                                  title="Edit"><i class="ti-pencil-alt" aria-hidden="true"></i>
+                                </a>
+                              </div>
+                            </td> -->
+                            </tr>
+                          </ng-container>
+                        </tbody>
+                      </table>
+                      
+                      <div *ngIf="filteredEmployees.length > 0" style=" margin-bottom: 10px;margin-left: 10px;">
+                        <span class="text-info" style="font-weight: bold;"> Note:</span>
+                        <span style="color: rgba(136, 12, 253, 0.959); font-weight: 500;"> For Attendance Bulk Approved maximum of
+                          {{selection_limit}} records allowed at a time. If records are > {{selection_limit}}, then select records <
+                            {{selection_limit}} then click on Approve Attendance. </span>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="attendanceFormat === 'manually' || attendanceFormat==='bulkexcel_manual'"
+            style="text-align: left;margin-left: 6rem;">
+            <span class="text-info" style="color: lightcoral;font-size: 1.3rem;" *ngIf="!check_access_right_cdn()">
+              You only have permission to view attendance records. Any changes or modifications are not allowed.
+            </span>
+
+            <!-- <a *ngIf="filter_emp_val != 4 && check_access_right_cdn()" class="btn btn-success manage-btn myButton-box"
+              (click)="save_approve_attendance_new()" style="border-color: black;">Approve Attendance</a>
+            &nbsp;
+            <a (click)="go_to_generate_payment_advice()" class="btn btn-primary manage-btn"
+              style="padding-top: 9px;border-color: lightblue;" title="Generate Payment Advice">
+              Generate Payment Advice</a> -->
+            <!-- <a (click)="confirmAlertButton()" class="btn btn-secondary manage-btn"
+              style="padding-top: 9px;border-color: lightblue;" title="Lock All Payment Advice">
+              Lock All Payment Advice</a> -->
+            
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /#page-wrapper -->
+
+
+  </div>
+</section>
+<app-footer></app-footer>
+
+
+<!------------Attendance Calendar-------->
+<div [@grooveState]="showAttCalendarPopup?'active':'inactive'" id="Attendance" class="modal">
+  <div [@dongleState]="showAttCalendarPopup?'active':'inactive'" class="modal-dialog"
+    style="margin:auto auto auto auto; width: 70rem;">
+    <div *ngIf="showAttCalendarPopup" class="modal-content" style="margin-top:100px;">
+      <form [formGroup]="attCalendarForm">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Update Attendance ({{attCalendarForm.value.emp_name}} -
+            {{attCalendarForm.value.emp_code}})</h4>
+          <button type="button" class="close" aria-hidden="true" (click)="closeAttCalendar()">&times;</button>
+        </div>
+        <div class="modal-body" style="height: 38rem; overflow: auto;">
+          <div class="col-md-6">
+            <label>Select Date</label>
+            <input class="form-control" type="text" autocomplete="off" formControlName="attendancedate" readonly>
+
+          </div>
+          <div class="form-group">
+            <label>Mark Attendance</label>
+            <div class="custom-radio">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="col-md-6">
+                    <input type="radio" id="present" name="att_options" value="PP" (change)="changeAttType('PP')"
+                      [checked]="attCalendarForm.controls.attendancetype.value=='PP'">
+                    <label for="present">Present [PP]</label>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="radio" id="wfh" name="att_options" value="WFH" (change)="changeAttType('WFH')"
+                      [checked]="attCalendarForm.controls.attendancetype.value=='WFH'">
+                    <label for="wfh">Work From Home [WFH]</label>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="col-md-6">
+                    <input type="radio" id="od" name="att_options" value="OD" (change)="changeAttType('OD')"
+                      [checked]="attCalendarForm.controls.attendancetype.value=='OD'">
+                    <label for="od">OnDuty [OD]</label>
+                  </div>
+                  <div class="col-md-6">
+                    <!-- <input type="radio" id="co" name="att_options" value="CO" (change)="changeAttType('CO')"
+                      [checked]="attCalendarForm.controls.leavetype.value=='CO'">
+                    <label for="co">CompOff [CO]</label> -->
+                    <input type="radio" id="week_off" name="att_options" value="WO" (change)="changeAttType('WO')"
+                      [checked]="attCalendarForm.controls.attendancetype.value=='WO'">
+                    <label for="week_off">Weekly-Off [WO]</label>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="col-md-6">
+                    <input type="radio" id="absent" name="att_options" value="AA" (change)="changeAttType('AA')"
+                      [checked]="attCalendarForm.controls.attendancetype.value=='AA'">
+                    <label for="absent">Absent [AA]</label>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="radio" id="holiday" name="att_options" value="HO" (change)="changeAttType('HO')"
+                      [checked]="attCalendarForm.controls.attendancetype.value=='HO'">
+                    <label for="holiday">Holiday [HO]</label>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="col-md-6">
+                    <input type="radio" id="clear" name="att_options" value="CLS" (change)="changeAttType('CLS')"
+                      [checked]="attCalendarForm.controls.attendancetype.value=='CLS'">
+                    <label for="clear">Clear [CLS]</label>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="radio" id="tr" name="att_options" value="TR" (change)="changeAttType('TR')"
+                      [checked]="attCalendarForm.controls.attendancetype.value=='TR'">
+                    <label for="tr">OnTour [TR]</label>
+                  </div>
+                </div>
+                <div class="col-md-12" style="margin-left: 1.5rem;">
+
+                  <input type="radio" id="half" name="att_options" value="HD" (change)="changeAttType('HD')"
+                    [checked]="attCalendarForm.controls.attendancetype.value=='HD'">
+                  <label for="half">Half Day [HD]</label><br>
+                  <div *ngIf="attCalendarForm.controls.attendancetype.value=='HD'"
+                    style="display: flex;flex-wrap: wrap;font-size: 11px;margin-left: 1rem;">
+                    <div class="row">
+
+                      <ng-container *ngFor="let fe of filteredEmployees[attCalendarForm.value.emp_index]?.balance_txt">
+
+                        <div class="col-md-12">
+
+                          <input type="radio" id="{{fe.typecode}}" name="leave_options" value="{{fe.typecode}}"
+                            (change)="changeLeaveType($event, fe.prev_bal)"
+                            [checked]="attCalendarForm.controls.leavetype.value==fe.typecode">
+                          <label for="{{fe.typecode}}">{{fe.typename}} [{{fe.typecode}}] -
+                            <strong>{{fe.prev_bal}}</strong>
+                            Days</label>
+
+                        </div>
+                      </ng-container>
+                      <div class="col-md-12">
+                        <input type="radio" id="AA" name="leave_options" value="AA"
+                          (change)="changeLeaveType($event,'')"
+                          [checked]="attCalendarForm.controls.leavetype.value==''">
+                        <label for="AA">Absent [AA] </label>
+                      </div>
+                    </div>
+
+
+
+                  </div>
+                </div>
+                <div class="col-md-12" style="margin-left: 1.5rem;">
+
+                  <input type="radio" id="leave" name="att_options" value="LL" (change)="changeAttType('LL')"
+                    [checked]="attCalendarForm.controls.attendancetype.value=='LL' || attCalendarForm.controls.attendancetype.value=='HL'">
+                  <label for="leave">Leave [LL]</label>
+
+                  <div
+                    *ngIf="attCalendarForm.controls.attendancetype.value=='LL' || attCalendarForm.controls.attendancetype.value=='HL'"
+                    style="display:flex;flex-wrap:wrap;font-size: 11px;margin-left: 1rem;">
+                    <div class="row">
+
+                      <div
+                        *ngIf="filteredEmployees && filteredEmployees.length>0 && filteredEmployees[attCalendarForm.value.emp_index].balance_txt && attCalendarForm.value.attendancetype !='HD'"
+                        style="margin-bottom:2rem; margin-left:1rem;">
+                        <div class="row">
+                          <div class="col-md-4" style="font-weight: bold;"> Select Leave Day Type</div>
+                          <div class="col-md-6"><input type="radio" id="full_day" name="full_half_day" value="LL"
+                              (change)="changeLeaveHalfFullDay($event)"
+                              [checked]="attCalendarForm.value.attendancetype=='LL'">
+                            <label for="full_day">Full-Day</label>
+
+                            <input type="radio" id="half_day" name="full_half_day" value="HL"
+                              (change)="changeLeaveHalfFullDay($event)"
+                              [checked]="attCalendarForm.value.attendancetype=='HL'">
+                            <label for="half_day">Half-Day</label>
+                          </div>
+                        </div>
+
+                      </div>
+
+
+                      <ng-container *ngFor="let fe of filteredEmployees[attCalendarForm.value.emp_index]?.balance_txt">
+                        <div class="col-md-12"> <input type="radio" id="{{fe?.typecode}}" name="leave_options"
+                            value="{{fe.typecode}}" (change)="changeLeaveType($event, fe.prev_bal)"
+                            [checked]="attCalendarForm.controls.leavetype?.value==fe.typecode">
+                          <label for="{{fe.typecode}}">{{fe.typename}} [{{fe.typecode}}] -
+                            <strong>{{fe.prev_bal}}</strong>
+                            Days</label>
+                        </div>
+                      </ng-container>
+                      <ng-container
+                        *ngIf="is_comp_off_applicable(filteredEmployees[attCalendarForm.value.emp_index]?.comp_off_txt)">
+                        <div class="col-md-12">
+                          <input type="radio" id="CO" name="leave_options" value="CO"
+                            (change)="changeLeaveType($event, get_tot_co_bal(filteredEmployees[attCalendarForm.value.emp_index]?.comp_off_txt))"
+                            [checked]="attCalendarForm.controls.leavetype.value=='CO'">
+                          <label for="CO">CompOff [CO] -
+                            <strong>{{get_tot_co_bal(filteredEmployees[attCalendarForm.value.emp_index]?.comp_off_txt)}}</strong></label>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+              <!-- <input type="radio" id="casual" name="att_options" value="CL" (change)="changeAttType('CL')"
+              [checked]="attCalendarForm.controls.attendancetype.value=='CL'">
+              <label for="casual">Casual Leave [CL]</label><br>
+              <input type="radio" id="privilege" name="att_options" value="PL" (change)="changeAttType('PL')"
+              [checked]="attCalendarForm.controls.attendancetype.value=='PL'">
+              <label for="privilege">Privilege Leave [PL]</label><br>
+              <input type="radio" id="medical" name="att_options" value="ML" (change)="changeAttType('ML')"
+              [checked]="attCalendarForm.controls.attendancetype.value=='ML'">
+              <label for="medical">Medical Leave [ML]</label><br>
+              <input type="radio" id="maternity" name="att_options" value="MatL" (change)="changeAttType('MatL')"
+              [checked]="attCalendarForm.controls.attendancetype.value=='MatL'">
+              <label for="maternity">Maternity Leave [MatL]</label><br> -->
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" (click)="closeAttCalendar()" value="Cancel">
+          <input type="submit" class="btn btn-success" (click)="updateAttendance()" value="Update"
+            *ngIf="check_access_right_cdn()">
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!------------Attendance Calendar-------->
+
+
+
+<!--------Allowance & Deduction Popup-------->
+<div [@grooveState]="showAllowDeductPopup?'active':'inactive'" id="allowanceDeduct" class="modal">
+  <div [@dongleState]="showAllowDeductPopup?'active':'inactive'" class="modal-dialog"
+    style="margin:auto auto auto auto;">
+    <div class="modal-content" style="height:100%;margin-top:100px;">
+      <form *ngIf="showAllowDeductPopup">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Allowance and Deduction ({{ad.emp_name.value}} - {{ad.emp_code.value}})</h4>
+          <button type="button" class="close" (click)="closeAllowanceDeductPopup()" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+
+            <form [formGroup]="allowanceDeductForm">
+
+              <div class="col-md-12">
+                <!-- <input id="adv_salary" type="radio" name="allowdeduct" [checked]="ad.type.value=='adv_salary'" (change)="allowDeductChange('adv_salary')">
+                <label for="adv_salary">Advance Salary</label> -->
+                <!-- {{allowanceDeductForm.value | json}} -->
+
+                <div class="col-md-12">
+                  <input id="overtime" type="radio" name="allowdeduct" [checked]="ad.type.value=='overtime'"
+                    (change)="allowDeductChange('overtime')">
+                  <label for="overtime">Overtime </label> <span>{{showTaxble('Overtime')}}</span>
+                </div>
+
+                <div class="col-md-12">
+                  <input id="allowance" type="radio" name="allowdeduct" [checked]="ad.type.value=='allowance'"
+                    (change)="allowDeductChange('allowance')">
+                  <label for="allowance">Allowance </label> <span>{{showTaxble('Allowance')}}</span>
+                </div>
+                <div class="col-md-12">
+                  <input id="deduction" type="radio" name="allowdeduct" [checked]="ad.type.value=='deduction'"
+                    (change)="allowDeductChange('deduction')">
+                  <label for="deduction">Deduction </label> <span>{{showTaxble('Deduction')}}</span>
+                </div>
+                <div class="col-md-12">
+                  <input id="travel_allowance" type="radio" name="allowdeduct"
+                    [checked]="ad.type.value=='travel allowance'" (change)="allowDeductChange('travel allowance')">
+                  <label for="travel_allowance">Travel Allowance </label> <span>{{showTaxble('Travel
+                    Allowance')}}</span>
+                </div>
+                <div class="col-md-12">
+                  <input id="daily_allowance" type="radio" name="allowdeduct"
+                    [checked]="ad.type.value=='daily allowance'" (change)="allowDeductChange('daily allowance')">
+                  <label for="daily_allowance">Daily Allowance </label> <span>{{showTaxble('Daily Allowance')}}</span>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <input class="form-control" formControlName="value" placeholder="Enter Amount (in Rs.)">
+              </div>
+
+              <div class="col-md-12">
+                <textarea rows="5" cols="77" formControlName="remarks" placeholder="Enter remark(s) if any..."
+                  style="width: 90%;"></textarea>
+              </div>
+            </form>
+
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-info" (click)="saveAllowDeduct()" *ngIf="check_access_right_cdn()">save</button>
+
+          <button class="btn btn-cancel" (click)="closeAllowanceDeductPopup()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--------Allowance & Deduction Popup-------->
+
+
+<!--------Sidebar Filter--------->
+<div id="sidebar" class="sidebar bg-dark text-white sidebar-menu_filter-box">
+  <h3 class="filter-menu-header-text-box">Filter</h3>
+  <!-- <button type="button" class="btn btn-user1 btn-round" (click)="resetFilter()">Clear</button>-->
+  <a class="clear-box-btn" title="Clear Filter" (click)="resetFilter()">Clear</a>
+  <button class="close-btn btn btn-danger1" (click)="closeSidebar()"><i class="fa fa-close"></i></button>
+  <div class="sidebar-content-box">
+
+    <div class="col-md-12 col-sm-12">
+      <input type="text" [(ngModel)]="searchKey_copy" placeholder="Search with employee(s)"
+        class="form-control wide-width" style="width: 100%;" maxlength="200">
+    </div>
+
+    <div class="col-md-12 ">
+
+      <div id="filterComponent">
+        <div class="panel-group">
+
+          <div class="panel panel-default">
+            <div class="panel-heading panel_heading_gray  card-header" role="tab" id="headingOne2"
+              data-toggle="collapse" data-parent="#accordion2" href="#collapseOne2" aria-expanded="false"
+              aria-controls="collapseOne">
+              <h4>Attendance Filter <i class="fa fa-angle-down"></i></h4>
+            </div>
+            <div id="collapseOne2" class="panel-collapse collapse card-body in" role="tabpane2">
+              <div class="row">
+                <div class="col-sm-12">
+
+
+                  <div class="col-md-12">
+                    <span style="margin: 10px;">Month-Year</span>
+                    <!-- (change)="changeMonth($event)"  (change)="changeYear($event)"-->
+                    <p style="display: inline-flex;">
+                      <select class="form-control" [(ngModel)]="month_copy" style="width: 15rem;">
+                        <!-- <option value="">Select</option> -->
+                        <option *ngFor="let ma of monthsArray" [selected]="month==ma.id" [value]="ma.id">{{ma.month}}
+                        </option>
+                      </select>
+                      <select class="form-control" [(ngModel)]="year_copy">
+                        <!-- <option value="">Select</option> -->
+                        <option *ngFor="let ya of yearsArray" [selected]="year==ya" [value]="ya">{{ya}}</option>
+
+                      </select>
+                    </p>
+
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-12">Status</label>
+                    <div class="col-sm-12 padd-0">
+                      <select class="form-control" [(ngModel)]="filter_emp_val_copy">
+                        <option value="All">All</option>
+                        <option value="UnMarked">Yet to Mark</option>
+                        <option value="Marked">Marked</option>
+                        <option value="Verified">Verified</option>
+                      </select>
+                    </div>
+                  </div>
+
+
+
+                  <!-- (change)="filter_emp($event.target.value)"-->
+
+                  <!-- <div class="form-group">
+                    <label class="control-label col-sm-12">Page Size</label>
+                    <div class="col-sm-12 padd-0">
+                      <select class="form-control" style="font-size: 12px;" [(ngModel)]="limit_copy">
+                        <option value="10" [selected]="limit_copy==10">10</option>
+                        <option value="20" [selected]="limit_copy==20">20</option>
+                        <option value="50" [selected]="limit_copy==50">50</option>
+                        <option value="100" [selected]="limit_copy==100">100</option>
+                      </select>
+                    </div>
+                  </div> --:
+
+
+                  <!--*ngIf="decoded_token.isEmployer=='1'"-->
+                  <div class="form-group">
+                    <label class="control-label col-sm-12">Organization Unit</label>
+                    <div class="col-sm-12 padd-0 userOrgUnit">
+
+                      <ng-multiselect-dropdown [placeholder]="'Select Organization Units'" [settings]="dropdownSettings"
+                        [data]="orgList" [(ngModel)]="orgName_copy" [ngModelOptions]="{standalone: true}">
+                      </ng-multiselect-dropdown>
+                      <!-- (onFilterChange)="getOrgUnitData()" -->
+
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-12">Department</label>
+                    <div class="col-sm-12 padd-0 userOrgUnit">
+
+                      <ng-multiselect-dropdown [placeholder]="'Select Department'" [settings]="deptDropdownSettings"
+                        [data]="deptList" [(ngModel)]="deptName_copy" [ngModelOptions]="{standalone: true}">
+                      </ng-multiselect-dropdown>
+
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-12">Designation</label>
+                    <div class="col-sm-12 padd-0 userOrgUnit">
+
+                      <ng-multiselect-dropdown [placeholder]="'Select Designation'" [settings]="desgDropdownSettings"
+                        [data]="desgList" [(ngModel)]="desgName_copy" [ngModelOptions]="{standalone: true}">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-12">Selection Limit</label>
+                    <div class="col-sm-12 padd-0">
+                      <select class="form-control" style="font-size: 12px;" [(ngModel)]="selection_limit">
+                        <option value="20" [selected]="selection_limit==20">20</option>
+                        <option value="50" [selected]="selection_limit==50">50</option>
+                        <option value="100" [selected]="selection_limit==100">100</option>
+                        <option value="150" [selected]="selection_limit==150">150</option>
+                        <option value="200" [selected]="selection_limit==200">200</option>
+                      </select>
+                    </div>
+                  </div>
+
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+
+      <div class="text-center mrg-bot-25"> <button type="button" class="btn btn-user1 btn-round btn-primary"
+          (click)="change_sidebar_filter()" id="btnSetFilter"> Apply</button>
+      </div>
+    </div>
+  </div>
+</div><!--------Sidebar Filter--------->
+
+<!-- Modal -->
+<div class="modal" id="myModal" role="dialog" [ngStyle]="{'display':alertModalStatus?'block':'none'}">
+  <div class="modal-dialog modal-sm">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" (click)="closeAlertModal()">&times;</button>
+        <h4 class="modal-title">Alert</h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to Lock All Payment Advice records? Please confirm</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="closeAlertModal()">No</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal"
+          (click)="Verify_Lock_Payment_attednace()">Yes</button>
+      </div>
+    </div>
+
+  </div>
+</div>

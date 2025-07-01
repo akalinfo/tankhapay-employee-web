@@ -1,0 +1,3109 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+  <div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+    <div class="fakeLoader"></div>
+    <!-- Sidebar Navigation -->
+    <div id="page-wrapper">
+      <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+          <h3 class="text-themecolor">View Employee</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)" [routerLink]="['/employees']">Employees</a>
+            </li>
+            <li class="breadcrumb-item active">View Employee</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="container-fluid">
+        <!-- /row -->
+
+        <div class="row">
+          <div class="col-md-12 col-md-offset-0 mrg-top-25 mrg-bot-25 employees-details-outer-box">
+
+            <!-- <div class="row mrg-bot-10">
+                     <div class="col-md-12">
+
+                        <div class="dropdown float-right-box">
+
+
+                           <ul class="nav nav-pills" role="tablist">
+
+                              <li role="presentation" class="dropdown"> <a href="#" class="dropdown-toggle btn btn-user btn-round btn-success" id="drop6" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Add Deduction <span class="caret"></span> </a>
+                              <ul class="dropdown-menu" id="menu3" aria-labelledby="drop6">
+                                 <li><a href="single-employee.html"> Post-Tax Deduction</a></li>
+
+                                 <li><a href="bulk-employee.html"> Pre-Tax Deduction</a></li>
+
+                              </ul>
+                              </li>
+                           </ul>
+
+                        </div>
+
+                     </div>
+                 </div> -->
+
+            <div class="row">
+              <div class="col-md-4">
+                <div class="card-header">
+                  <h4 class="sub-title-inn-box">Basic Information
+                    <!-- <a href="javascript:void(0)" class="btn btn-gary manage-btn emp-edit-btn-box"
+                          data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit">
+                          <i class="ti-pencil-alt"></i></a> -->
+
+                  </h4>
+                </div>
+
+                <div class="card">
+                  <div class="card-body" style="min-height: 555px;">
+                    <div class="row">
+                      <!-- col-md-6 -->
+                      <div class="col-md-12 col-12">
+                        <div class="form-group" style="margin-bottom: 0px;">
+                          <div class="contact-img">
+                            <img src="{{candidateDetails?.profilePhoto}}"
+                              *ngIf="candidateDetails?.profilePhoto!='' && candidateDetails?.profilePhoto!=null"
+                              class="attachment-thumbnail user-logo" alt="user-images">
+                            <div class="user-logo"
+                              *ngIf="candidateDetails?.profilePhoto=='' || candidateDetails?.profilePhoto==null">
+                              {{view_emp_data.basicDetails?.emp_name?.charAt(0)?.toUpperCase()}}{{
+                              view_emp_data.basicDetails?.emp_name?.split(
+                              " "
+                              )[1] != undefined &&
+                              view_emp_data.basicDetails?.emp_name?.split(
+                              " "
+                              )[1] != ""
+                              ? view_emp_data.basicDetails?.emp_name
+                              ?.split(" ")[1][0]
+                              ?.toUpperCase()
+                              : ""
+                              }}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <h3 class="text-center" style="margin-top: 0px;">
+                              {{candidateDetails?.emp_name}}</h3>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="row">
+                            <!-- <div class="col-md-6 col-12">
+                                             <div class="form-group">
+                                                <label><strong>Emp Code:  </strong> {{empId}}</label>
+                                             </div>
+                                          </div> -->
+
+
+                            <div class="col-md-12">
+                              <div class="form-group">
+                                <label><strong>Organization Emp Code: </strong><span id="employee_since">{{
+                                    candidateDetails?.orgempcode
+                                    }}</span></label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong><i class="ti ti-email"></i>&nbsp;</strong>{{ candidateDetails?.email
+                              }}</label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong><i class="ti ti-user"></i>&nbsp;</strong>{{ candidateDetails?.gender
+                              }}</label>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong><i class="ti ti-folder"></i>&nbsp;</strong>{{ candidateDetails?.dateofjoining
+                              }} (Date of
+                              Joining)
+                            </label>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong><i class="ti ti-ruler-pencil"></i>&nbsp;</strong>{{
+                              candidateDetails?.post_offered }}</label>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong>Location:
+                              </strong>{{view_emp_data.basicDetails?.emp_address}}</label>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong>Employee Since: </strong><span
+                                id="employee_since">{{view_emp_data.basicDetails?.dateofjoining}}</span></label>
+                          </div>
+                        </div>
+                        <div class="col-md-12 col-12" *ngIf="candidateDetails.joiningStatus=='RELIEVED'">
+                          <div class="form-group">
+                            <label><span class="com-tagline"><strong>Date Of Relieving:
+                                </strong>{{view_emp_data.basicDetails?.date_of_relieveing}} &nbsp;
+                              </span></label>
+                          </div>
+                        </div>
+                        <div class="col-md-12 col-12">
+                          <div class="form-group">
+                            <label><span class="com-tagline"><strong>TP Code:
+                                </strong>{{view_emp_data.basicDetails?.cjcode}} &nbsp;
+                                <i class="fa fa-info prevcjcodes"></i>
+                              </span></label>
+                          </div>
+                        </div>
+                        <div class="card" *ngIf="candidateDetails.joiningStatus!='RELIEVED'">
+                          <!--  -->
+
+                          <div class="col-md-12 col-12">
+
+                            <!-- <span> </span>
+                              <br> -->
+                            <div class="form-group" *ngIf="pf_details.is_epf_registered=='Y'">
+                              <label><span class="com-tagline"><strong>Provident Fund :
+                                  </strong>
+                                  <div class="center">
+                                    <input type="checkbox" [checked]="cf.pfOpted.value=='Y'"
+                                      (change)="getEpfVal($event.target.checked)" />
+                                  </div>
+                                </span>
+                              </label>
+                            </div>
+                          </div>
+                          <div class="col-md-12 col-12">
+                            <div class="form-group" *ngIf="esi_details.is_esi_registered=='Y'">
+                              <label><span class="com-tagline"><strong>Employees' State Insurance :
+                                  </strong>
+                                  <div class="center">
+                                    <input type="checkbox" [checked]="cf.esiOpted.value=='Y'"
+                                      (change)="getEsiVal($event.target.checked)" />
+                                  </div>
+                                </span>
+                              </label>
+                            </div>
+                          </div>
+
+                          <div class="col-md-12 col-12">
+                            <div class="form-group">
+                              <label><span class="com-tagline"><strong>Labour Welfare Fund :
+                                  </strong>
+                                  <div class="center">
+                                    <input type="checkbox" (change)="getLwfOnchange($event.target.checked)"
+                                      [checked]="cf.lwfOpted.value=='Y'" />
+                                  </div>
+                                </span>
+                              </label>
+                            </div>
+                          </div>
+                          <div class="col-md-12 col-12">
+                            <div class="form-group">
+                              <label><span class="com-tagline"><strong>Professional Tax :
+                                  </strong>
+                                  <div class="center">
+                                    <input type="checkbox" (change)="getPtOnChange($event.target.checked)"
+                                      [checked]="cf.ptApplied.value=='Y'" />
+                                  </div>
+                                </span>
+                              </label>
+                            </div>
+                          </div>
+                          <div class="col-md-12 col-12" *ngIf="pf_details.is_epf_registered=='Y'">
+                            <div class="form-group">
+                              <label><span class="com-tagline"><strong>PF Cap Applied :
+                                  </strong>
+                                  <div class="center">
+                                    <input type="checkbox" (change)="getPfCapOnChange($event.target.checked)"
+                                      [checked]="cf.pfCapApplied.value=='Y'" />
+                                  </div>
+                                </span>
+                              </label>
+                            </div>
+                          </div>
+                          <div class="col-md-12 col-12">
+                            <div class="form-group">
+                              <label><span class="com-tagline"><strong>Gratuity(Employer) :
+                                  </strong>
+                                  <div class="center">
+                                    <input type="checkbox" (change)="getEmployerGratuity($event.target.checked)"
+                                      [checked]="isEmployerGratuity" />
+                                  </div>
+                                </span>
+                              </label>
+                            </div>
+                          </div>
+
+                        </div>
+                        <!-- <div class="col-md-12">
+                                       <div class="form-group">
+                                          <label><strong>Organization Emp Code: </strong><span
+                                                id="employee_since">{{view_emp_data.basicDetails?.orgempcode}}</span></label>
+                                       </div>
+                                    </div>                               -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-8">
+                <div class="card-header">
+                  <h4 class="sub-title-inn-box">
+                    Personal Details
+                    <a (click)="editBasicData()" class="btn btn-gary manage-btn emp-edit-btn-box" data-placement="top"
+                      *ngIf="isCandidateDetailsEmpty() && candidateDetails.joiningStatus!='RELIEVED'"><i
+                        class="ti-pencil-alt"></i></a>
+                  </h4>
+                </div>
+
+                <div class="card">
+                  <div class="card-body" style="min-height: 555px">
+                    <div class="row">
+                      <!-- col-md-6 -->
+                      <div class="col-md-12 col-12">
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong>Date Of Birth: </strong>{{
+                              view_emp_data.basicDetails?.dateofbirth
+                              }}</label>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong>Father's Name: </strong>{{ candidateDetails?.fathername }}</label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong>Blood Group: </strong><span id="employee_since">{{
+                                candidateDetails?.blood_group
+                                }}</span></label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong>Emergency Contact No: </strong><span id="employee_since">{{
+                                candidateDetails?.emergency_contact
+                                }}</span></label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong>Relation Name: </strong><span id="employee_since">{{
+                                candidateDetails?.bloodrelationname
+                                }}</span></label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong>Emergency Contact Person Name: </strong><span id="employee_since">{{
+                                candidateDetails?.emergency_contact_person
+                                }}</span></label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong>Pan Card No.: </strong><span id="employee_since">{{
+                                candidateDetails?.pan_card
+                                }}</span></label>
+                          </div>
+                        </div>
+                        <!-- <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong>Aadhaar Card: </strong><span id="employee_since">{{
+                                candidateDetails?.aadhar_card
+                                }}</span></label>
+                          </div>
+                        </div> -->
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong>Official Email ID: </strong><span id="employee_since">{{
+                                candidateDetails?.email
+                                }}</span></label>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong>Personal Email ID: </strong><span id="employee_since">
+                                {{ candidateDetails?.personal_email }}</span></label>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong>Mobile Number: </strong><span id="employee_since">{{
+                                candidateDetails?.mobile
+                                }}</span></label>
+                          </div>
+                        </div>
+                        <!-- <div class="col-md-12">
+                            <div class="form-group">
+                               <label><strong>Marital Status: </strong><span id="employee_since">Unmarried</span></label>
+                            </div>
+                           </div> -->
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong>Residential Address: </strong><span id="employee_since">{{
+                                candidateDetails?.residential_address
+                                }}</span></label>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong>Permanent Address: </strong><span id="employee_since">{{
+                                candidateDetails?.emp_address
+                                }}</span></label>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong>ESIC Dependent Details: </strong><span id="employee_since">{{
+                                candidateDetails?.esic_dependent_details
+                                }}</span></label>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong>Reporting Manager: </strong><span id="employee_since">{{
+                                candidateDetails?.reporting_manager_name
+                                }}</span></label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12" *ngIf="candidateDetails?.GeoFenceName!=''">
+                          <div class="form-group">
+                            <label><strong>Geofencing Name: </strong><span id="employee_since">{{
+                                candidateDetails?.GeoFenceName
+                                }}</span></label>
+                          </div>
+                        </div>
+                        <div class="col-md-12" *ngIf="candidateDetails?.jobType!=''">
+                          <div class="form-group">
+                            <label><strong>Job Type: </strong><span id="employee_since">{{
+                                candidateDetails?.jobType
+                                }}</span></label>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label><strong>Project:
+                              </strong>
+                              <span id="employee_since">{{
+                                candidateDetails?.project_name
+                                }}</span></label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12" *ngIf="candidateDetails?.posting_department!=''">
+                          <div class="form-group">
+                            <label><strong>Posting Department: </strong><span id="employee_since">{{
+                                candidateDetails?.posting_department
+                                }}</span></label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12" *ngIf="showLiveLocation">
+                          <div class="form-group">
+                            <label><strong>Live Tracking: </strong>
+                              <span id="employee_since">
+                                {{(view_emp_data?.basicDetails?.live_tracking_enable == 'Y')?'Enabled':'Disabled'}}
+                              </span>
+                            </label>
+                          </div>
+                        </div>
+                        <!-- <div class="col-md-12 text-ellips" *ngIf="candidateDetails?.assigned_ou_ids_name!=''">
+                          <div class="form-group">
+                            <label><strong>Assigned Organization Units: </strong><span id="employee_since">{{
+                                candidateDetails?.assigned_ou_ids_name
+                                }}</span></label>
+                          </div>
+                        </div>
+                        <div class="col-md-12 text-ellips" *ngIf="candidateDetails?.assigned_geofence_ids_name!=''">
+                          <div class="form-group">
+                            <label><strong>Assigned Geo Fence: </strong><span id="employee_since">{{
+                                candidateDetails?.assigned_geofence_ids_name
+                                }}</span></label>
+                          </div>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12 no-padd">
+              <div class="card-header">
+                <h4 class="sub-title-inn-box">Payment Information</h4>
+              </div>
+
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <!-- col-md-6 -->
+                    <div class="col-md-12 col-12">
+                      <div class="col-md-12">
+                        <!-- <div class="form-group">
+                          <label><strong>Name as per Bank	: </strong>{{view_emp_data?.basicDetails?.emp_name}}</label>
+                        </div> -->
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label><strong>Bank Name: </strong><span id="employee_since">
+                              {{candidateDetails?.bank_name}}</span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label><strong>IFSC Code : </strong><span id="employee_since">
+                              {{ candidateDetails?.ifsccode }}</span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label><strong>Account Number: </strong><span id="employee_since">{{
+                              candidateDetails?.bank_account_no
+                              }}</span></label>
+                        </div>
+                      </div>
+                      <!-- <div class="col-md-12">
+                        <div class="form-group">
+                          <label><strong>PF Opted: </strong><span id="employee_since">{{
+                              candidateDetails?.pf_opted == "Y" ? "Y" : "N"
+                              }}</span></label>
+                        </div>
+                      </div> -->
+                      <!-- <div class="col-md-12">
+                        <div class="form-group">
+                          <label><strong>PF No. (If already Have) : </strong><span id="employee_since">{{
+                              candidateDetails?.pf_number
+                              }}</span></label>
+                        </div>
+                      </div> -->
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label><strong>UAN No. (if already Have): </strong><span id="employee_since">{{
+                              candidateDetails?.uan_number
+                              }}</span></label>
+                          &nbsp;
+                          <a title="Click to update UAN number"
+                            (click)="openUanNumberPopup(candidateDetails.uan_number)"><i
+                              class="fa fa-lg fa-edit"></i></a>
+                        </div>
+                      </div>
+                      <!-- <div class="col-md-12">
+                        <div class="form-group">
+                          <label><strong>ESI Opted: </strong><span id="employee_since">{{
+                              candidateDetails?.esi_opted
+                              }}</span></label>
+                        </div>
+                      </div> -->
+                      <!-- <div class="col-md-12">
+                        <div class="form-group">
+                          <label><strong>ESI No. (if already Have): </strong><span id="employee_since">{{
+                              candidateDetails?.esi_number
+                              }}</span></label>
+                        </div>
+                      </div> -->
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label><strong>ESI Card : </strong><a id="employee_since"
+                              href="{{candidateDetails?.esic_card_doc_path}}"
+                              *ngIf="candidateDetails?.esic_card_doc_path!=''" target="_blank">
+                              <i class="fa fa-id-card-o" aria-hidden="true"></i></a>
+                            {{candidateDetails?.esic_card_doc_path=='' ? 'Not Uploaded' :''}}
+                            {{candidateDetails?.esi_number}}</label>
+                        </div>
+                      </div>
+
+                      <!-- <div class="col-md-12">
+                                       <div class="form-group">
+                                          <label><strong>Remarks (Tranfer of P.F. or New P.F. Account); Pl z Write Tranfer/ New	: </strong><span id="employee_since">Details</span></label>
+                                       </div>
+                                    </div> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+            <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+              <div class="card" *ngIf="payout_method!='self' && candidateDetails.joiningStatus!='RELIEVED'">
+                <div class="panel-heading panel_heading_gray collapsed card-header" role="tab" id="headingOne8"
+                  data-toggle="collapse" data-parent="#accordion8" href="#collapseOne8" aria-expanded="false"
+                  aria-controls="collapseOne">
+                  <h4>KYC Details <i class="fa fa-angle-down"></i></h4>
+                </div>
+                <div id="collapseOne8" class="panel-collapse collapse card-body" role="tabpane8">
+                  <div class="row">
+                    <div class="row">
+                      <a class="edit-data" (click)="editkycdetails()" *ngIf="
+                                !edit_kyc_details &&
+                                view_emp_data.basicDetails?.joiningStatus == 'PENDING' &&
+                                ((this.aadharverfication_status == 'N' || this.aadharverfication_status == '' )
+                        && (this.pan_verification_status == 'N' || this.pan_verification_status == ''))
+                              "><i class="fa fa-pencil-square-o fa-lg"></i></a>
+                    </div>
+                    <div class="col-md-12 padd-bot-15 padd-top-15" [ngClass]="{ 'no-click': !edit_kyc_details }">
+                      <form [formGroup]="kycForm" *ngIf="((this.aadharverfication_status == 'N' || this.aadharverfication_status == '' )
+                        && (this.pan_verification_status == 'N' || this.pan_verification_status == ''))">
+                        <div class="col-md-12">
+                          <p style="
+                                    color: #e36161;
+                                    padding: 0.5rem;
+                                    font-size: 1.5rem;
+                                    margin-top: -3rem;
+                                  ">
+                            Please provide the employee's PAN or Aadhar (or both) to complete KYC
+                          </p>
+                        </div>
+
+                        <div class="col-sm-5">
+                          <label>Aadhaar Card
+                            <span class="text-info">*</span></label>
+                          <input type="email" class="form-control" placeholder="Enter Aadhaar no."
+                            formControlName="aadhar_no" maxlength="12" [ngClass]="{ 'no-click': !edit_kyc_details }" />
+                        </div>
+
+                        <div class="col-sm-5 m-clear">
+                          <label>Aadhaar Document
+                            <span class="text-info">*</span></label>&nbsp;
+                          <a (click)="openFile(kf['aadhar_file_path'].value)" target="_blank" title="Aadhaar doc"
+                            *ngIf="kf.aadhar_file_path.value != ''">
+                            <i class="fa fa-paperclip" aria-hidden="true"></i></a>
+                          <input type="file" accept="application/pdf, image/*" formControlName="aadhar_doc"
+                            class="allowed_jpg_jpeg_pdf form-control" id="aadharcard_doc"
+                            (change)="onFileSelect($event, 'aadhar')" [ngClass]="{ 'no-click': !edit_kyc_details }" />
+
+                          <!-- <div class="col-md-1 no-padd"><a class="upload-btn" (click)="uploadFile('aadhar')"
+                                                      ><i class="fa fa-upload" aria-hidden="true"></i></a></div> -->
+                        </div>
+
+                        <div class="col-md-2 m-clear" *ngIf="edit_kyc_details">
+                          <label></label><br />
+                          <button class="btn btn-success" style="margin-top: 4px"
+                            (click)="update_kyc_details('aadhar')">
+                            Update Aadhaar
+                          </button>
+                        </div>
+
+                        <div class="col-sm-5 m-clear">
+                          <label>Pancard <span class="text-info">*</span></label>
+                          <input type="text" class="form-control" formControlName="pan_no" placeholder="Enter Pan no."
+                            maxlength="10" [ngClass]="{ 'no-click': !edit_kyc_details }" />
+                        </div>
+
+                        <div class="col-sm-5 m-clear">
+                          <label>Pancard Document
+                            <span class="text-info">*</span></label>&nbsp;
+                          <a (click)="openFile(kf['pan_file_path'].value)" target="_blank" title="Pancard doc"
+                            *ngIf="kf.pan_file_path.value != ''">
+                            <i class="fa fa-paperclip" aria-hidden="true"></i></a>
+
+                          <input type="file" accept="application/pdf, image/*" formControlName="pan_doc"
+                            class="allowed_jpg_jpeg_pdf form-control" [ngClass]="{ 'no-click': !edit_kyc_details }"
+                            (change)="onFileSelect($event, 'pan')" />
+                          <!-- <div class="col-md-1 no-padd"><a class="upload-btn" (click)="uploadFile('pan')"
+                                                      ><i class="fa fa-upload" aria-hidden="true"></i></a></div> -->
+                        </div>
+                        <div class="col-md-2 m-clear" *ngIf="edit_kyc_details">
+                          <label></label><br />
+                          <button class="btn btn-success" style="margin-top: 4px" (click)="update_kyc_details('pan')">
+                            Update Pan
+                          </button>
+                        </div>
+
+                      </form>
+
+                      <div class="kyc-done-logo"
+                        *ngIf="this.aadharverfication_status == 'Y' || this.pan_verification_status == 'Y'">
+                        <!-- <img src="assets/img/KYC_logo.png"  height="200"> -->
+                        <h2>KYC Done <span class="kyc-done"><i class="fa fa-check" aria-hidden="true"></i></span></h2>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card" *ngIf="payout_method!='attendance' && candidateDetails.joiningStatus!='RELIEVED'">
+
+                <div class="panel-heading panel_heading_gray collapsed card-header" role="tab" id="headingOne9"
+                  data-toggle="collapse" data-parent="#accordion9" href="#collapseOne9" aria-expanded="false"
+                  aria-controls="collapseOne">
+                  <h4>Bank Details <i class="fa fa-angle-down"></i></h4>
+                </div>
+
+                <div id="collapseOne9" class="panel-collapse collapse card-body" role="tabpane9">
+                  <div class="row">
+                    <a class="edit-data" (click)="editbankdetails();" *ngIf="(!edit_bank_details )"><i
+                        class="fa fa-pencil-square-o fa-lg"></i></a>
+                    <div class="col-md-12 padd-bot-15 padd-top-15" [ngClass]="{'no-click': !edit_bank_details}">
+
+                      <form [formGroup]="bankDetailsForm">
+                        <div class="col-sm-6">
+                          <label>Bank Account Number <span class="text-danger">*</span></label>
+                          <input autocomplete="nope" type="password" maxlength="17" id="e_bankaccountno"
+                            formControlName="acc_no" placeholder="Bank Account Number"
+                            class="form-control acceptOnlyNumber">
+                        </div>
+                        <!-- <div class="col-sm-6 m-clear">
+                            <label>Gender</label>
+                            <select class="form-control customVal" name="gender" id="gender">
+                                <option value="">-Select Gender-</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div> -->
+                        <div class="col-sm-6 m-clear">
+                          <label>Confirm Bank Account Number <span class="text-danger">*</span></label>
+                          <input autocomplete="nope" type="text" maxlength="17" formControlName="check_acc_no"
+                            id="e_confirmbankaccountno" placeholder="Confirm Bank Account Number"
+                            class="form-control acceptOnlyNumber">
+                        </div>
+                        <div class="col-sm-6 m-clear">
+                          <label>Bank Name <span *ngIf="payout_method == 'standard'"
+                              class="text-danger">*</span></label>
+                          <input autocomplete="nope" type="text" id="e_bankname" formControlName="bank_name"
+                            placeholder="Bank Name" class="form-control">
+                        </div>
+                        <div class="col-sm-6 m-clear">
+                          <label>Bank Branch <span *ngIf="payout_method == 'standard'" class="text-danger">*</span>
+                            <span style="font-size: 10px; color: red;"> (Max 100 characters allowed)</span>
+                          </label>
+                          <input autocomplete="nope" type="text" id="e_bankbranch" formControlName="bank_branch"
+                            placeholder="Bank Branch" class="form-control">
+                        </div>
+                        <div class="col-sm-6 m-clear">
+                          <label>IFSC Code <span *ngIf="payout_method == 'standard'"
+                              class="text-danger">*</span></label>
+                          <input autocomplete="nope" type="text" id="e_ifsccode" placeholder="IFSC Code"
+                            formControlName="ifsc" class="form-control" maxlength="11">
+                        </div>
+                        <div class="col-sm-6 m-clear">
+                          <label>Attach Document </label>&nbsp;
+                          <a (click)="openFile(bf['bank_file_path'].value)" target="_blank" title="Bank doc"
+                            *ngIf="bf.bank_file_path.value!=''"> <i class="fa fa-paperclip" aria-hidden="true"></i></a>
+                          <input type="file" id="e_bankdoc" formControlName="bank_doc" class="form-control"
+                            style="display: unset;" (change)="onFileSelect($event,'bank')"
+                            accept="application/pdf, image/*">
+                        </div>
+                      </form>
+
+
+                      <div class="col-md-12 col-12 padd-top-15 text-center" *ngIf="edit_bank_details">
+                        <a (click)="updateBankDetails()" class="btn btn-primary">Update Bank Details</a>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row" *ngIf="payout_method!='attendance' && candidateDetails.joiningStatus!='RELIEVED'">
+                <div class="col-md-12" style="text-align: center;">
+                  <a class="btn btn-primary" (click)="addBasicSetupSalary()"
+                    *ngIf="view_emp_data.basicDetails?.joiningStatus=='PENDING' && !isAdvanceAllowed">Setup Salary</a>
+                </div>
+              </div>
+
+              <div class="card" *ngIf="isAdvanceAllowed && payout_method!='attendance' && candidateDetails.jobType!='Consultant' && candidateDetails.joiningStatus!='RELIEVED'
+              && candidateDetails.jobType!='Unit Parameter'">
+                <div class="panel-heading panel_heading_gray collapsed card-header" role="tab" id="headingOne6"
+                  data-toggle="collapse" data-parent="#accordion6" href="#collapseOne6" aria-expanded="false"
+                  aria-controls="collapseOne">
+                  <h4>Statutory Components <i class="fa fa-angle-down"></i></h4>
+                </div>
+                <div id="collapseOne6" class="panel-collapse collapse card-body" role="tabpane6">
+                  <div class="row">
+                    <a class="edit-data" (click)="editStatutoryCompliance()" *ngIf="!edit_statutory_compliances"><i
+                        class="fa fa-pencil-square-o fa-lg"></i></a>
+
+                    <div class="col-md-12 padd-bot-15 padd-top-15" style="top: 11px"
+                      [ngClass]="{ 'no-click': !edit_statutory_compliances }">
+                      <div class="Appointment-outer-box Salary-Details-outer-box">
+                        <div class="table-responsive">
+                          <form [formGroup]="statutoryComplianceForm">
+                            <table class="table equal-width-table" style="display:none;">
+                              <tbody>
+                                <tr>
+                                  <th scope="col">PF</th>
+                                  <td>
+                                    <span id="pfSelection">
+                                      <input [checked]="sf.pfOpted.value == 'Y'" id="pfyes" name="lst[0].pfopted"
+                                        [disabled]=" candidateDetails.pf_opted=='Y' && (candidateDetails.joiningStatus=='RESTRUCTURE' || candidateDetails.joiningStatus=='JOINED')"
+                                        type="radio" value="Y" (click)="getStatutoryPf('Y')" /><label
+                                        for="pfyes">Yes</label>
+                                      &nbsp;&nbsp;&nbsp;
+                                      <input [checked]="sf.pfOpted.value == 'N'" id="pfno" name="lst[0].pfopted"
+                                        type="radio" value="N" (click)="getStatutoryPf('N')"
+                                        [disabled]=" candidateDetails.pf_opted=='Y' && (candidateDetails.joiningStatus=='RESTRUCTURE' || candidateDetails.joiningStatus=='JOINED')" /><label
+                                        for="pfno">No</label>
+                                      &nbsp;&nbsp;&nbsp;
+                                    </span>
+                                  </td>
+                                  <th scope="col">ESI</th>
+                                  <td>
+                                    <input [checked]="sf.esiOpted.value == 'Y'" id="esiyes" name="lst[0].esiopted"
+                                      type="radio" value="Y" (click)="getStatutoryEsi('Y')" />
+                                    <label for="esiyes">Yes</label>&nbsp;&nbsp;&nbsp;
+                                    <input [checked]="sf.esiOpted.value == 'N'" id="esino" name="lst[0].esiopted"
+                                      type="radio" value="N" (click)="getStatutoryEsi('N')" /><label
+                                      for="esino">No</label>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+
+                            <div class="row" style="margin-bottom: 2rem">
+                              <div class="col-sm-12">
+                                <div class="row">
+                                  <div class="col-sm-3" style="
+                                            padding-top: 0.3rem;
+                                            margin-right: -13rem;
+                                          ">
+                                    <label>Other Variables:</label>
+                                  </div>
+                                  <div class="col-sm-3">
+                                    <select class="form-control" id="otherDeductionsSelect"
+                                      (change)="addVariable($event.target)">
+                                      <option value="-1">Select Option</option>
+                                      <option *ngFor="let ded of deductionsMaster" [value]="ded.id">
+                                        {{ ded.deduction_name }}
+                                      </option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <table class="table" id="otherDeductionTable">
+                                  <thead>
+                                    <tr>
+                                      <th width="35%;">Variable Name</th>
+                                      <th>Deduction Amount</th>
+                                      <th>Deduction Frequency</th>
+                                      <th>Included in CTC</th>
+                                      <th>Is Variable</th>
+                                      <th>Action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody formArrayName="otherVariablesDetails">
+                                    <ng-container *ngFor="
+                                              let v_f of variableForm.controls;
+                                              let i = index
+                                            ">
+                                      <tr [formGroupName]="i">
+                                        <td>
+                                          {{ v_f.get("deduction_name").value }}
+                                        </td>
+                                        <td>
+                                          <input type="number" class="form-control" formControlName="deduction_value"
+                                            placeholder="Enter Amount" />
+                                        </td>
+                                        <td>
+                                          <select formControlName="deduction_frequency" class="form-control">
+                                            <option value="">Select</option>
+                                            <option value="Monthly">
+                                              Monthly
+                                            </option>
+                                            <option value="Quarterly">
+                                              Quarterly
+                                            </option>
+                                            <option value="Half Yearly">
+                                              Half Yearly
+                                            </option>
+                                            <option value="Annually">
+                                              Annually
+                                            </option>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <select formControlName="includedinctc" class="form-control">
+                                            <option value="">Select</option>
+                                            <option value="Y">Yes</option>
+                                            <option value="N">No</option>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <select formControlName="isvariable" class="form-control">
+                                            <option value="">Select</option>
+                                            <option value="Y">Yes</option>
+                                            <option value="N">No</option>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <a class="btn btn-danger" (click)="removeVariable(i)"
+                                            [ngClass]="{ 'no-click': !edit_statutory_compliances }"><i
+                                              class="fa fa-times fa-lg"></i></a>
+                                        </td>
+                                      </tr>
+                                    </ng-container>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-5"></div>
+                              <div class="col-md-4" *ngIf="edit_statutory_compliances">
+                                <input class="btn btn-primary" type="submit" value="Save" name="submit"
+                                  (click)="saveStatutoryForm()" />
+                              </div>
+                              <div class="col-md-3"></div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card" *ngIf="isAdvanceAllowed && payout_method!='attendance' && candidateDetails.jobType!='Consultant' && candidateDetails.joiningStatus!='RELIEVED'
+                && token.sso_admin_id!='' && candidateDetails.jobType!='Unit Parameter'">
+                <div class="panel-heading panel_heading_gray collapsed card-header" role="tab" id="headingOne7"
+                  data-toggle="collapse" data-parent="#accordion7" href="#collapseOne7" aria-expanded="false"
+                  aria-controls="collapseOne">
+                  <h4>Salary Details <i class="fa fa-angle-down"></i></h4>
+                </div>
+                <div id="collapseOne7" class="panel-collapse collapse card-body" role="tabpane7">
+                  <div class="row">
+                    <div class="col-md-12 padd-bot-15 padd-top-15">
+                      <div class="Salary-Details-outer-box">
+                        <div class="col-md-12 padd-bot-15 padd-top-15">
+                          <div class="row">
+                            <div class="col-md-4">
+                              <label> Annual CTC: </label>
+                              <b>₹
+                                {{ candidateDetails.annualsalaryoffered }} per
+                                year</b>
+                            </div>
+                            <div class="col-md-4">
+                              <label> Monthly CTC: </label>
+                              <b>₹ {{ candidateDetails.offered_salary }} per
+                                month</b>
+                            </div>
+                            <!-- <div class="col-md-4 text-right" > -->
+                            <a class="btn btn-primary" (click)="addBasicSetupSalary()" *ngIf="
+                                candidateDetails.joiningStatus == 'PENDING'
+                              ">Inhand Salary Setup</a>
+                            <a class="edit-data" (click)="editSalaryRestructure()" *ngIf="
+                           !edit_salary_restructure &&
+                           candidateDetails.joiningStatus == 'PENDING'
+                         "><i class="fa fa-pencil-square-o fa-lg"></i></a>
+
+                            <button type="button" class="btn btn-primary" id="restructureCandidateSalary"
+                              style="position: absolute; right: 10px; top: 10px" *ngIf="
+                           ((candidateDetails.joiningStatus == 'JOINED') &&
+                           !isEditsal) || restructureMode=='CustomRestructureMode'
+                         " (click)="editSalary('Restructure')">
+                              Edit Advance Salary
+                            </button>
+                            <button type="button" class="btn btn-danger" id="restructureCandidateSalary"
+                              style="position: absolute; right: 10px; top: 10px" *ngIf="
+                                 ((candidateDetails.joiningStatus == 'JOINED') &&
+                                isEditsal) || restructureMode=='Restructure'
+                              " (click)="discardSalary()">
+                              Discard
+                            </button>
+                            <!-- </div> -->
+                          </div>
+                        </div>
+
+                        <div class="col-md-12 padd-bot-15 padd-top-15">
+                          <div class="table-responsive">
+                            <form [formGroup]="advanceSalaryform" class="form-horizontal" [ngClass]="{
+                                'no-click':
+                                  (!isEditsal ) && !edit_salary_restructure 
+                              }">
+                              <div>
+                                <table class="table table-lg table-striped" id="salHistoryTable">
+                                  <tbody>
+                                    <tr>
+                                      <th scope="col" style="line-height: 22px">
+                                        Pf Opted
+                                        <br />
+                                        ESI opted
+                                      </th>
+                                      <td width="20%;">
+                                        <input [checked]="sf.pfOpted.value == 'Y'" type="radio" name="pfOpted" id="pf_y"
+                                          (click)="getStatutoryPf('Y')"
+                                          [disabled]="candidateDetails.pf_opted=='Y' && candidateDetails?.uan_number!='Request For UAN' && candidateDetails?.uan_number!='' && (candidateDetails.joiningStatus=='RESTRUCTURE' || candidateDetails.joiningStatus=='JOINED')" />
+                                        <label for="pf_y">Yes</label>&nbsp;
+                                        <input [checked]="sf.pfOpted.value == 'N'" type="radio" name="pfOpted" id="pf_n"
+                                          (click)="getStatutoryPf('N')"
+                                          [disabled]="candidateDetails.pf_opted=='Y' && candidateDetails?.uan_number!='Request For UAN' && candidateDetails?.uan_number!='' && (candidateDetails.joiningStatus=='RESTRUCTURE' || candidateDetails.joiningStatus=='JOINED')" /><label
+                                          for="pf_n">No</label>
+                                        <br />
+                                        <input [checked]="sf.esiOpted.value == 'Y'" type="radio" name="esiOpted"
+                                          id="esi_y" (click)="getStatutoryEsi('Y')" />
+                                        <label for="esi_y">Yes</label>&nbsp;
+                                        <input [checked]="sf.esiOpted.value == 'N'" type="radio" name="esiOpted"
+                                          id="esi_n" (click)="getStatutoryEsi('N')" /><label for="esi_n">No</label>
+                                      </td>
+                                      <th scope="col">
+                                        <div class="minWageOriginalBlock" style="display: block">
+                                          <span>
+                                            Minimum Wage State <br>
+                                            {{!isEditsal && !edit_salary_restructure ? af.minWageState.value:''}}
+                                            <select class="form-control" (change)="
+                                                getMinWagesState($event.target)
+                                              " formControlName="minWageState"
+                                              *ngIf="isEditsal || edit_salary_restructure">
+                                              <option value="">
+                                                -- Select State --
+                                              </option>
+                                              <option [value]="state.statename"
+                                                [selected]="state.statename === af.minWageState.value" *ngFor="
+                                                  let state of statesMaster
+                                                ">
+                                                {{ state.statename}}
+                                              </option>
+                                            </select>
+                                          </span>
+                                        </div>
+                                      </th>
+                                      <td>
+                                        <div class="minWageOriginalBlock" style="display: block">
+                                          <strong> Minimum Wage Category <br>
+                                            <select class="form-control" formControlName="minWagesCtg"
+                                              (change)="calculateBasicSal(af.basicOption.value)">
+                                              <option value="">
+                                                -- Select Category --
+                                              </option>
+                                              <option [value]="ctg.minwagecategoryid" *ngFor="let ctg of minWagesCtg">
+                                                {{ ctg.wagesctgname }}
+                                              </option>
+                                            </select>
+                                          </strong>
+                                        </div>
+                                      </td>
+                                    </tr>
+
+                                    <tr>
+                                      <th scope="col" class="customVal">
+                                        Location Type
+                                      </th>
+                                      <td>
+                                        <select name="LocationTypes" id="LocationTypes" class="form-control"
+                                          formControlName="locationType">
+                                          <option value="">Select</option>
+                                          <option value="Metro">Metro</option>
+                                          <option value="Non Metro">
+                                            Non Metro
+                                          </option>
+                                        </select>
+                                      </td>
+                                      <th>
+                                        <span id="salDayLabel" style="
+                                            display: block;
+                                            margin-top: 2rem;
+                                          ">
+                                          Salary In Days:&nbsp;&nbsp;
+                                          <input [checked]="
+                                              this.af.SalDaysOpted.value == 'Y'
+                                            " type="radio" value="Y" name="salDayOption" id="salDayOptionYes"
+                                            (click)="salaryInDays('Y')" />
+                                          <label style="font-weight: normal"
+                                            for="salDayOptionYes">Yes</label>&nbsp;&nbsp;&nbsp;
+                                          <input [checked]="
+                                              this.af.SalDaysOpted.value == 'N'
+                                            " type="radio" value="N" name="salDayOption" id="salDayOptionNo"
+                                            (click)="salaryInDays('N')" />
+                                          <label style="font-weight: normal" for="salDayOptionNo">No</label>
+                                        </span>
+                                      </th>
+                                      <td>
+                                        <span id="salDayText" style="display: block; width: 90%">
+                                          <select formControlName="salInDays" class="form-control" (change)="
+                                              setSalDaysReq($event.target)
+                                            ">
+                                            <option value="">
+                                              -- Select Days --
+                                            </option>
+                                            <option [value]="days.mdays" *ngFor="let days of minWageDays">
+                                              {{days.daysdisplay}}
+                                            </option>
+                                            <!-- <option value="26" [disabled]="
+                                                af.SalDaysOpted.value === 'N'
+                                              ">
+                                              26 Days
+                                            </option>
+                                            <option value="30">30 Days</option> -->
+                                          </select>
+                                        </span>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <th scope="col">
+                                        <div>Monthly Offered Package(MOP)</div>
+                                      </th>
+                                      <td>
+                                        <input type="text" class="form-control" formControlName="monthlyOfferedpkg"
+                                          (keyup)="
+                                            calculateBasicSal(
+                                              af.basicOption.value
+                                            )
+                                          "
+                                          onkeyup="if (/[^0-9.]/g.test(this.value)) this.value = this.value.replace(/[^0-9.]/g, '')" />
+                                      </td>
+                                      <th scope="col" width="28%">
+                                        <input type="radio" [checked]="
+                                            af.basicOption.value == '1'
+                                          " class="basicOption" value="1" name="basicoption" id="basicoption1"
+                                          (click)="calculateBasicSal('1')" />
+                                        <label style="margin-right: 2.5rem" for="basicoption1"
+                                          class="basicOptionLabel">50% Basic of MOP</label>
+                                        <input type="radio" [checked]="
+                                            af.basicOption.value == '2'
+                                          " class="basicOption" value="2" name="basicoption" id="basicoption2"
+                                          (click)="calculateBasicSal('2')" />
+                                        <label for="basicoption2" class="basicOptionLabel">Basic + HRA</label><br />
+                                        <input type="radio" [checked]="
+                                            af.basicOption.value == '3'
+                                          " class="basicOption" value="3" name="basicoption" id="basicoption3"
+                                          (click)="calculateBasicSal('3')" />
+                                        <label style="margin-right: 4.45rem" for="basicoption3"
+                                          class="basicOptionLabel">Rs.15000 Basic</label>
+                                        <!-- <input
+                                          type="radio"
+                                          [checked]="
+                                            af.basicOption.value == '4'
+                                          " class="basicOption"
+                                          value="4"
+                                          name="basicoption"
+                                          id="basicoption4"
+                                          (click)="calculateBasicSal('4')"
+                                        />
+                                        <label for="basicoption4" class="basicOptionLabel"
+                                          >Change Basic</label
+                                        ><br /> -->
+                                        <input type="radio" class="basicOption" [checked]="
+                                            af.basicOption.value == '5'
+                                          " value="5" name="basicoption" id="basicoption5"
+                                          (click)="calculateBasicSal('5')" />
+                                        <label style="margin-right: 2.5rem" class="basicOptionLabel"
+                                          for="basicoption5">40% Basic of MOP</label>
+                                      </th>
+                                      <td>
+                                        <input type="text" id="basicSal" formControlName="basicSal" placeholder="Basic"
+                                          style="width: 80%" class="form-control" autocomplete="off"
+                                          onkeyup="if (/[^0-9.]/g.test(this.value)) this.value = this.value.replace(/[^0-9.]/g, '')" />
+                                      </td>
+                                    </tr>
+
+                                    <tr>
+                                      <th scope="col">PF Cap Applied</th>
+                                      <td>
+                                        <input [checked]="
+                                            af.pfCapApplied.value == 'Y'
+                                          " id="salaryStructure_sal_brkp_pfcapapplied_y"
+                                          name="salaryStructure.sal_brkp.pfcapapplied" type="radio" value="Y"
+                                          (click)="getPfCapValue('Y')" />
+                                        <label
+                                          for="salaryStructure_sal_brkp_pfcapapplied_y">Yes</label>&nbsp;&nbsp;&nbsp;
+                                        <input [checked]="
+                                            af.pfCapApplied.value == 'N'
+                                          " id="salaryStructure_sal_brkp_pfcapapplied_n"
+                                          name="salaryStructure.sal_brkp.pfcapapplied" type="radio" value="N"
+                                          (click)="getPfCapValue('N')" /><label
+                                          for="salaryStructure_sal_brkp_pfcapapplied_n">No</label>
+                                      </td>
+                                      <th>Effective Date</th>
+                                      <td>
+                                        <input id="effectiveFromCalcSal" formControlName="effectiveDate" type="text"
+                                          autocomplete="off" class="form-control" placeholder="dd/mm/yyyy" readonly />
+                                      </td>
+                                    </tr>
+
+                                    <tr>
+                                      <th scope="col">LWF State Applied
+                                      </th>
+                                      <td>
+                                        <input [checked]="af.lwfApplied.value == 'Y'" id="lwfapplied_y"
+                                          name="lwfapplied_yn_name" type="radio" value="Y"
+                                          (click)="get_lwfapplied_value('Y')" />
+                                        <label for="lwfapplied_y">Yes</label>&nbsp;&nbsp;&nbsp;
+                                        <input [checked]="af.lwfApplied.value == 'N'" id="lwfapplied_n"
+                                          name="lwfapplied_yn_name" type="radio" value="N"
+                                          (click)="get_lwfapplied_value('N')" /><label for="lwfapplied_n">No</label>
+                                        <br>
+                                        <br>
+                                        <ng-container *ngIf="af.lwfApplied.value=='Y'">
+                                          <div>Employer LWF Rate -
+                                            {{LWF_master_data!=''?LWF_master_data.employerlwfrate:'NA'}}</div>
+                                          <div>Employee LWF Rate -
+                                            {{LWF_master_data!=''?LWF_master_data.employeelwfrate:'NA'}}</div>
+                                          <div>Frequency - {{LWF_master_data!=''?LWF_master_data.frequency:'NA'}}</div>
+                                        </ng-container>
+                                        <ng-container *ngIf="af.lwfApplied.value=='N'">
+                                          <span class="text-danger">{{lwfmsg}}</span>
+                                        </ng-container>
+                                      </td>
+
+                                      <th>Professional Tax
+
+                                      </th>
+                                      <td>
+                                        <input [checked]="af.ptApplied.value == 'Y'" id="ptApplied_y"
+                                          name="ptApplied_yn_name" type="radio" value="Y"
+                                          (click)="get_ptApplied_value('Y')" />
+                                        <label for="ptApplied_y">Yes</label>&nbsp;&nbsp;&nbsp;
+                                        <input [checked]="af.ptApplied.value == 'N'" id="ptApplied_n"
+                                          name="ptApplied_yn_name" type="radio" value="N"
+                                          (click)="get_ptApplied_value('N')" /><label for="ptApplied_n">No</label>
+                                        <br>
+                                        <br>
+                                        <ng-container *ngIf="af.ptApplied.value=='Y'">
+                                          <div>Total Tax Amount -
+                                            {{PT_applied_master_data!=''?PT_applied_master_data.ptamount:'NA'}}</div>
+                                          <div>Tax Exemption Limit -
+                                            {{PT_applied_master_data!=''?PT_applied_master_data.ptexemptionlimit:'NA'}}
+                                          </div>
+                                          <div>Profession Tax Monthwise - <span
+                                              [innerHTML]="PT_applied_master_data!=''?PT_applied_master_data.monthwiseamount:'NA'"></span>
+                                          </div>
+                                        </ng-container>
+
+                                        <ng-container *ngIf="af.ptApplied.value=='N'">
+                                          <span class="text-danger">{{ptmsg}}</span>
+                                        </ng-container>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+
+                                <div class="col-md-12 col-12 padd-top-20 text-center"
+                                  *ngIf="isEditsal || edit_salary_restructure">
+                                  <button type="button" class="btn btn-primary" id="Submitform" name="Submitform"
+                                    (click)="calculateAdvanceSal()">
+                                    Calculate
+                                  </button>
+                                </div>
+                                <div class="col-md-12 text-center" id="MinMaxPerDayWagesHtml"
+                                  *ngIf="salarymsg!='' && salaryDetails==''" style="    margin-top: 20px;
+                                ">
+                                  <div class="alert alert-danger">{{salarymsg}}</div>
+                                </div>
+                                <div style="display: block" id="dvDetails" *ngIf="salaryDetails != ''">
+                                  <table class="table">
+                                    <tbody>
+                                      <tr class="danger1">
+                                        <th scope="col">
+                                          Salary Category Name
+                                        </th>
+                                        <td>
+                                          <label id="salarycategoryname" name="salarycategoryname">{{
+                                            salaryDetails.salarycategoryname
+                                            }}</label>
+                                        </td>
+                                        <th scope="col">
+                                          Monthly Offered Package
+                                        </th>
+                                        <td>
+                                          <label id="monthlyofferedpackage2" name="monthlyofferedpackage2">{{
+                                            salaryDetails.monthlyofferedpackage
+                                            }}</label>
+                                        </td>
+                                      </tr>
+
+                                      <tr class="danger1">
+                                        <th scope="col">
+                                          <span id="basicth" *ngIf="af.basicOption.value == '2'">Basic + HRA</span>
+                                          <span id="basicth" *ngIf="af.basicOption.value != '2'">Basic</span>
+                                        </th>
+                                        <td>
+                                          <label id="basic" name="basic" *ngIf="af.basicOption.value == '2'">{{
+                                            (+salaryDetails.basic || 0) +
+                                            (+salaryDetails.hra || 0)
+                                            }}</label>
+                                          <label id="basic" name="basic" *ngIf="af.basicOption.value != '2'">{{
+                                            salaryDetails.basic
+                                            }}</label>
+                                        </td>
+
+                                        <th scope="col">Gross</th>
+                                        <td>
+                                          <label id="gross" name="gross">{{
+                                            salaryDetails.gross==''? '0.00': salaryDetails.gross
+                                            }}</label>
+                                        </td>
+                                      </tr>
+
+                                      <tr class="danger1">
+                                        <th scope="col" *ngIf="af.basicOption.value == '2'">Allowances</th>
+                                        <th scope="col" *ngIf="af.basicOption.value != '2'">HRA</th>
+                                        <td>
+                                          <label id="allowances" name="allowances"
+                                            *ngIf="af.basicOption.value == '2'">{{
+                                            salaryDetails.allowances==''? '0.00': salaryDetails.allowances
+                                            }}</label>
+                                          <label id="hra" name="hra" *ngIf="af.basicOption.value != '2'">{{
+                                            salaryDetails.hra==''? '0.00': salaryDetails.hra
+                                            }}</label>
+                                        </td>
+
+                                        <th scope="col">CTC</th>
+                                        <td style="
+                                            background: rgb(
+                                              255,
+                                              255,
+                                              153
+                                            ) !important;
+                                          ">
+                                          <label id="CTC" name="CTC">{{
+                                            salaryDetails.ctc==''?'0.00':salaryDetails.ctc
+                                            }}</label>
+                                        </td>
+                                      </tr>
+
+                                      <tr class="danger" *ngIf="af.basicOption.value != '2'">
+                                        <th scope="col">Allowances</th>
+                                        <td>
+                                          <label id="allowances" name="allowances">{{
+                                            salaryDetails.allowances==''? '0.00': salaryDetails.allowances
+                                            }}</label>
+                                        </td>
+
+                                        <th scope="col">Special Category</th>
+                                        <td>
+                                          <label id="is_special_category">{{
+                                            salaryDetails.is_special_category
+                                            }}</label>
+                                        </td>
+                                      </tr>
+
+                                      <tr class="danger" style="background-color: #cfcfcf !important;">
+                                        <th colspan="4">Deductions</th>
+                                      </tr>
+
+                                      <tr class="danger">
+                                        <th scope="col">EPF Employer</th>
+                                        <td>
+                                          <input type="hidden" id="pfcapappliedlabel" value="Y" />
+                                          <label id="EPF_Employer" name="EPF_Employer">{{
+                                            salaryDetails.epf_employer==''? '0.00': salaryDetails.epf_employer
+                                            }}</label>
+                                        </td>
+                                        <th scope="col">EPF Employee</th>
+                                        <td>
+                                          <label id="EPF_Employee" name="EPF_Employee">{{
+                                            salaryDetails.epf_employee==''?'0.00': salaryDetails.epf_employee
+                                            }}</label>
+                                        </td>
+                                      </tr>
+
+                                      <tr class="danger">
+                                        <th scope="col">ESI Employer</th>
+                                        <td>
+                                          <label id="ESI_Employer" name="ESI_Employer">{{
+                                            salaryDetails.esi_employer==''? '0.00': salaryDetails.esi_employer
+                                            }}</label>
+                                        </td>
+                                        <th scope="col">ESI Employee</th>
+                                        <td>
+                                          <label id="ESI_Employee" name="ESI_Employee">{{
+                                            salaryDetails.esi_employee==''?'0.00':salaryDetails.esi_employee
+                                            }}</label>
+                                        </td>
+                                      </tr>
+
+                                      <tr class="danger" style="display: table-row">
+                                        <th scope="col">Employer LWF</th>
+                                        <td>
+                                          <label id="employerlwf_label">{{
+                                            salaryDetails.employerlwf==''? '0.00': salaryDetails.employerlwf
+                                            }}</label>
+                                        </td>
+                                        <th scope="col">Employee LWF</th>
+                                        <td>
+                                          <label id="employeelwf_label">{{
+                                            salaryDetails.employeelwf==''?'0.00': salaryDetails.employeelwf
+                                            }}</label>
+
+                                        </td>
+                                      </tr>
+
+                                      <tr class="danger3">
+                                        <th scope="col">Salary In Hand</th>
+                                        <td>
+                                          <label id="salary_in_hand" name="salary_in_hand">{{
+                                            salaryDetails.salary_in_hand
+                                            }}</label>
+                                        </td>
+                                        <th scope="col"></th>
+                                        <td>
+
+                                        </td>
+                                      </tr>
+
+                                    </tbody>
+                                  </table>
+                                  <div style="margin-top: 2rem">
+                                    <label id="esicaselabel" style="color: red; font-weight: bold">*Note: ESI
+                                      Exceptional Case</label>
+                                  </div>
+                                  <div style="
+                                      margin-top: 1.5rem;
+                                      margin-left: 0.5rem;
+                                      word-spacing: 0.2rem;
+                                    ">
+                                    <input type="checkbox" id="confirmSalBreakup" name="confirmSalBreakup"
+                                      (change)="toggleButton()" />&nbsp;<label style="
+                                        cursor: pointer;
+                                        font-weight: normal;
+                                      " for="confirmSalBreakup">I verify that the salary breakup is
+                                      correct.</label>
+                                  </div>
+
+                                  <div class="form-btn-outer-box">
+                                    <button disabled="" type="button" class="btn btn-success" id="SubmitSalary"
+                                      name="SubmitSalary" (click)="savesalarybreakup()">
+                                      Verify And Lock
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- && token.sso_admin_id!='' -->
+              <div class="card" *ngIf="isAdvanceAllowed && payout_method!='attendance' && candidateDetails.jobType!='Consultant' && candidateDetails.jobType!='Unit Parameter'
+               && candidateDetails.joiningStatus!='RELIEVED'">
+                <div class="panel-heading panel_heading_gray collapsed card-header" role="tab" id="headingOne7"
+                  data-toggle="collapse" data-parent="#accordion12" href="#collapseOne12" aria-expanded="false"
+                  aria-controls="collapseOne">
+                  <h4>Custom Salary <i class="fa fa-angle-down"></i></h4>
+                </div>
+                <div id="collapseOne12" class="panel-collapse collapse card-body" role="tabpane12">
+                  <div class="row">
+                    <div class="col-md-12 padd-bot-15">
+
+                      <div class="col-md-12 padd-bot-15">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <a class="edit-data" (click)="editCustomSalaryRestructure()" *ngIf="
+                              !edit_custom_salary &&
+                              candidateDetails.joiningStatus == 'PENDING'
+                            "><i class="fa fa-pencil-square-o fa-lg"></i></a>
+                            <button class="btn btn-primary" style="position: absolute; right: 183px; top: 0px"
+                              (click)="addBasicSetupSalary()" *ngIf="
+                            !edit_custom_salary &&
+                            candidateDetails.joiningStatus == 'PENDING'
+                          ">Inhand Salary Setup</button>
+                            <button type="button" class="btn btn-primary" id="restructureCandidateSalary"
+                              style="position: absolute; right: 10px; top: 0px" *ngIf="
+                              ((candidateDetails.joiningStatus == 'JOINED') &&
+                              !isCustomEditSal) || restructureMode=='Restructure'
+                            " (click)="editSalary('CustomRestructureMode')">
+                              Edit Custom Salary
+                            </button>
+                            <button type="button" class="btn btn-danger" id="restructureCandidateSalary"
+                              style="position: absolute; right: 10px; top: 0px" *ngIf="
+                                 ((candidateDetails.joiningStatus == 'RESTRUCTURE') &&
+                                 isCustomEditSal) || restructureMode=='CustomRestructureMode'
+                              " (click)="discardSalary()">
+                              Discard
+                            </button>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <form [formGroup]="customSalaryform" [ngClass]="{
+                              'no-click':
+                                !isCustomEditSal && !edit_custom_salary
+                            }">
+                            <div class="row">
+                              <div class="col-md-5 col-5">
+                                <div class="form-group">
+                                  <label><span class="com-tagline"><strong>Employer part excluded from the CTC
+                                        :</strong>
+                                      <div class="center">
+                                        <input type="checkbox" [checked]="isEmployerPartExcluded=='Y'"
+                                          (change)="getIsEmployerPart($event.target.checked)" />
+                                      </div>
+                                    </span></label>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="card Salary-Details-outer-box" style="margin-bottom:10px !important;">
+
+                              <div class="card-body">
+                                <div class="row">
+
+                                  <div class="col-md-6">
+                                    <label>Annually Offered Package<span class="text-danger">*</span> </label>
+                                    <div class="input-group">
+                                      <div class="input-group-addon">₹</div>
+                                      <input type="number" placeholder="Enter AOP" class="form-control"
+                                        autocomplete="off" formControlName="mop"
+                                        (blur)="calculateSal();isShowSalaryTable=true;">
+                                      <!-- <div class="input-group-addon enter-btn-box">GO</div> -->
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6" *ngIf="isCustomEditSal || edit_custom_salary">
+
+                                    <div class="col-md-6" style="padding-left:0;">
+                                      <label>
+                                        Minimum Wage State<span class="text-danger">*</span></label>
+                                      <div class="input-group" style="width: 100%;">
+                                        <strong>{{!isCustomEditSal && !edit_custom_salary ?
+                                          cf.minWageState.value:''}}</strong>
+                                        <select class="form-control" (change)="
+                                              getMinWagesState($event.target)
+                                            " formControlName="minWageState"
+                                          *ngIf="isCustomEditSal || edit_custom_salary">
+                                          <option value="">
+                                            -- Select State --
+                                          </option>
+                                          <option [value]="state.statename" *ngFor="
+                                                let state of statesMaster
+                                              ">
+                                            {{ state.statename}}
+                                          </option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6" style="padding:0;">
+
+                                      <label> Minimum Wage Category<span class="text-danger">*</span></label>
+                                      <div class="input-group" style="width: 100%;">
+                                        <select class="form-control" formControlName="minWagesCtg"
+                                          (change)="customCalculatedData ='';getuspccalcgrossfromctc_withoutconveyance()">
+                                          <option value="">
+                                            -- Select Category --
+                                          </option>
+                                          <option [value]="ctg.minwagecategoryid" *ngFor="let ctg of minWagesCtg">
+                                            {{ ctg.wagesctgname }}
+                                          </option>
+                                        </select>
+                                      </div>
+
+                                    </div>
+
+                                  </div>
+                                  <div class="col-md-6 input-margin" *ngIf="isCustomEditSal || edit_custom_salary">
+                                    <div class="col-md-8 no-padd">
+                                      <label>Salary Days<span class="text-danger">*</span>&nbsp;&nbsp; </label>
+                                      <input [checked]="
+                                                this.cf.salaryDaysOpted.value == 'Y'
+                                              " type="radio" value="Y" name="salDayOption" id="salDayOptionYes" />
+                                      <label style="font-weight: normal" for="salDayOptionYes"
+                                        (click)="salaryInDaysCustom('Y')">Yes</label>&nbsp;&nbsp;&nbsp;
+                                      <input [checked]="
+                                            this.cf.salaryDaysOpted.value == 'N'
+                                          " type="radio" value="N" name="salDayOption" id="salDayOptionNo" />
+                                      <label style="font-weight: normal" for="salDayOptionNo"
+                                        (click)="salaryInDaysCustom('N')">No</label>
+                                    </div>
+                                    <div class="input-group col-md-4">
+                                      <select formControlName="salaryDays" class="form-control" (change)="
+                                              setSalDaysReqCustom($event.target.value)
+                                            ">
+                                        <option value="">
+                                          -- Select Days --
+                                        </option>
+                                        <option [value]="days.mdays" *ngFor="let days of minWageDays">
+                                          {{days.daysdisplay}}
+                                        </option>
+                                        <!-- <option value="26" [disabled]="
+                                                cf.salaryDaysOpted.value === 'N'
+                                              ">
+                                              26 Days
+                                            </option> -->
+                                        <!-- <option value="30">30 Days</option> -->
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6 input-margin" *ngIf="isCustomEditSal || edit_custom_salary">
+                                    <div class="col-md-5 no-padd">
+                                      <label>Gratuity(Employee) :</label>
+                                    </div>
+                                    <div class="col-md-7">
+                                      <input type="radio" name="gratuity_employee" id="grauity_yes"
+                                        (change)="getGratuity(true)" [checked]="isGratuity" />
+                                      <label for="grauity_yes">Yes</label>
+                                      <input type="radio" name="gratuity_employee" id="grauity_no"
+                                        (change)="getGratuity(false)" [checked]="!isGratuity" />
+                                      <label for="grauity_no">No</label>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12 input-margin" *ngIf="isCustomEditSal || edit_custom_salary">
+                                    <div class="col-md-6 col-6 no-padd" *ngIf="isGrpInsuranceAllowed=='Y'">
+                                      <div class="no-padd" [ngClass]="isGrpInsurance ? 'col-md-3' : 'col-md-6'">
+                                        <label>Group Insurance &nbsp;
+                                          <input type="checkbox" (change)="getGrpInsurance($event.target.checked)"
+                                            [checked]="isGrpInsurance" style="top:3px" />
+                                        </label>
+                                      </div>
+
+                                      <div class="col-md-9 col-9" *ngIf="isGrpInsurance">
+                                        <div class="form-group col-md-6 no-padd">
+                                          <label>Employee Insurance
+                                          </label>
+                                          <input type="text" class="form-control" [(ngModel)]="employeeInsurance"
+                                            (blur)="customCalculatedData ='';getuspccalcgrossfromctc_withoutconveyance()"
+                                            appNumberonly style="width: 146px;" [ngModelOptions]="{standalone: true}" />
+                                        </div>
+                                        <div class="form-group col-md-6 no-padd">
+                                          <label>Employer Insurance
+                                          </label>
+                                          <input type="text" class="form-control" [(ngModel)]="employerInsurance"
+                                            (blur)="customCalculatedData ='';getuspccalcgrossfromctc_withoutconveyance()"
+                                            appNumberonly style="width: 146px;" [ngModelOptions]="{standalone: true}" />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6 no-padd">
+                                      <div class="col-md-6 no-padd">
+                                        <label>Salary Calculation on : </label>
+                                      </div>
+                                      <div class="col-md-6">
+
+                                        <input type="radio" name="salCalculation" id="percent"
+                                          [checked]="salaryCalcType=='percent'" (click)="salaryCalcType='percent';">
+                                        <label for="percent">Percentage</label>
+                                        <input type="radio" name="salCalculation" id="flat"
+                                          [checked]="salaryCalcType=='flat'" (click)="salaryCalcType='flat';">
+                                        <label for="flat">Flat</label>
+                                      </div>
+                                    </div>
+                                    <!--10 july 2024<div class="col-md-6 no-padd">
+                                        <div class="col-md-4 ">
+                                          <label >DA Rate</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                          <input type="text" class="form-control" formControlName="daRate" placeholder="Enter Daily Allowance Rate"
+                                          (keyup)="validateInput($event.target.value)">
+                                      </div>
+                                      </div> -->
+                                  </div>
+                                </div>
+                                <div class="row" style="margin: 0 auto;" *ngIf="customSalaryMsg!=''">
+                                  <p style="text-align: center;
+                                      background: #ff9191;
+                                      color: #fff;
+                                      width: 100%;">{{customSalaryMsg}}</p>
+                                </div>
+
+                              </div>
+                            </div>
+
+                            <div class="card"
+                              *ngIf="isShowSalaryTable && (this.edit_custom_salary || this.isCustomEditSal) && customSalaryMsg==''">
+                              <div class="card-body custom-salary-table">
+                                <table class="table">
+                                  <thead>
+                                    <tr>
+                                      <th>Salary Components</th>
+                                      <th *ngIf="salaryCalcType!='flat'">Calculation Type</th>
+                                      <th>Monthly Amount</th>
+                                      <th>Annual Amount</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody formArrayName="salarystructure">
+                                    <tr style="background-color: hsl(202, 100%, 90%) !important;">
+                                      <td colspan="3" *ngIf="salaryCalcType=='flat'"><strong>Earnings</strong></td>
+                                      <td colspan="4" *ngIf="salaryCalcType!='flat'"><strong>Earnings</strong></td>
+                                    </tr>
+                                    <ng-container *ngFor="
+                                      let v_f of salComponentHead.controls;
+                                      let i = index
+                                    ">
+                                      <tr [formGroupName]="i">
+                                        <td>
+                                          {{v_f.controls.earningType.value}} &nbsp;&nbsp;
+                                          <div style="display:inline-block"
+                                            *ngIf="v_f.controls.salary_component_name.value=='Gratuity In Hand'">
+                                            <input type="checkbox" [checked]="gratuityInHand"
+                                              (change)="getIsGratuityInHand($event.target.checked)" />
+                                          </div>
+                                        </td>
+                                        <td *ngIf="salaryCalcType!='flat'">
+                                          <div class="input-group" style="width: 100px;">
+                                            <input type="text" placeholder="Basic" class="form-control component-input"
+                                              formControlName="percentage_ctc" (blur)="calculateSal()"
+                                              onkeyup="if (/[^0-9.]/g.test(this.value)) this.value = this.value.replace(/[^0-9.]/g, '')"
+                                              *ngIf="v_f.controls.percentage_fixed.value!='Flat' && v_f.controls.salary_component_name.value!='Special Allowance'"
+                                              [ngClass]="{'no-click':v_f.controls.salary_component_name.value=='Gratuity In Hand' }"
+                                              [readonly]="v_f.controls.salary_component_name.value=='Gratuity In Hand'" />
+                                            {{v_f.controls.percentage_fixed.value=='Flat'?
+                                            v_f.controls.percentage_fixed.value :
+                                            v_f.controls.salary_component_name.value=='Special Allowance' ? 'Flat':''}}
+                                            <div class="input-group-addon"
+                                              *ngIf="v_f.controls.percentage_fixed.value!='Flat' && v_f.controls.salary_component_name.value!='HRA' && v_f.controls.salary_component_name.value!='Gratuity In Hand' && v_f.controls.salary_component_name.value!='Special Allowance'">
+                                              % of CTC</div>
+                                            <div class="input-group-addon" *ngIf="v_f.controls.percentage_fixed.value!='Flat' && v_f.controls.salary_component_name.value=='HRA' ||
+                                            v_f.controls.salary_component_name.value=='Gratuity In Hand'">% of Basic
+                                            </div>
+                                            <!-- <div class="input-group-addon enter-btn-box">GO</div> -->
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <input type="number" *ngIf="v_f.controls.percentage_fixed.value!='Flat'"
+                                            placeholder="Monthly Amount" class="form-control"
+                                            formControlName="salary_component_amount"
+                                            (blur)="clearCalculatedData(i,$event.target.value)"
+                                            onkeyup="if (/[^0-9.]/g.test(this.value)) this.value = this.value.replace(/[^0-9.]/g, '')"
+                                            [readonly]="((v_f.controls.salary_component_name.value=='BASIC SALARY' || v_f.controls.salary_component_name.value=='HRA'
+                                          || v_f.controls.salary_component_name.value=='Special Allowance') && salaryCalcType=='percent') || v_f.controls.salary_component_name.value=='Gratuity In Hand'"
+                                            [ngClass]="{'no-click':((v_f.controls.salary_component_name.value=='BASIC SALARY' || v_f.controls.salary_component_name.value=='HRA' || v_f.controls.salary_component_name.value=='Special Allowance') && salaryCalcType=='percent')|| v_f.controls.salary_component_name.value=='Gratuity In Hand'}" />
+                                          <input type="number" *ngIf="v_f.controls.percentage_fixed.value=='Flat'"
+                                            placeholder="Monthly Amount" class="form-control"
+                                            formControlName="percentage_ctc"
+                                            (blur)="clearCalculatedData(i,$event.target.value)"
+                                            onkeyup="if (/[^0-9.]/g.test(this.value)) this.value = this.value.replace(/[^0-9.]/g, '')">
+                                        </td>
+                                        <td>
+                                          <span>{{v_f.controls.percentage_fixed.value!='Flat' ?
+                                            (v_f.controls.salary_component_amount.value*12).toFixed(2):
+                                            (v_f.controls.percentage_ctc.value*12).toFixed(2)}}</span>
+                                        </td>
+                                      </tr>
+
+
+                                    </ng-container>
+                                    <tr *ngIf="grossSalary!=''">
+                                      <td colspan="2" *ngIf="salaryCalcType=='percent'">Gross Salary</td>
+                                      <td colspan="1" *ngIf="salaryCalcType=='flat'">Gross Salary</td>
+                                      <td colspan="1" *ngIf="salaryCalcType!='flat'">{{grossSalary}}</td>
+                                      <td colspan="2" *ngIf="salaryCalcType=='flat'">{{grossSalary}}</td>
+                                    </tr>
+                                    <tr style="background-color: #ceedff !important;" *ngIf="customCalculatedData">
+                                      <td colspan="4" *ngIf="salaryCalcType!='flat'"> <strong>Deductions</strong></td>
+                                      <td colspan="3" *ngIf="salaryCalcType=='flat'"> <strong>Deductions</strong></td>
+                                    </tr>
+                                    <tr *ngIf="customCalculatedData">
+                                      <td>ESI - Employer Contribution</td>
+                                      <td *ngIf="salaryCalcType!='flat'"></td>
+                                      <td>{{customCalculatedData.esi_employer.toFixed(2)}}</td>
+                                      <td><span></span></td>
+                                    </tr>
+                                    <tr *ngIf="customCalculatedData">
+                                      <td>ESI - Employee Contribution</td>
+                                      <td *ngIf="salaryCalcType!='flat'"></td>
+                                      <td>{{customCalculatedData.esi_employee.toFixed(2)}}</td>
+                                      <td><span></span></td>
+                                    </tr>
+                                    <tr *ngIf="customCalculatedData">
+                                      <td>PF - Employer Contribution</td>
+                                      <td *ngIf="salaryCalcType!='flat'"></td>
+                                      <td>{{customCalculatedData.epf_employer}}</td>
+                                      <td><span></span></td>
+                                    </tr>
+                                    <tr *ngIf="customCalculatedData">
+                                      <td>PF - Employee Contribution</td>
+                                      <td *ngIf="salaryCalcType!='flat'"></td>
+                                      <td>{{customCalculatedData.epf_employee}}</td>
+                                      <td><span></span></td>
+                                    </tr>
+                                    <tr *ngIf="customCalculatedData">
+                                      <td>LWF - Employer Contribution</td>
+                                      <td *ngIf="salaryCalcType!='flat'"></td>
+                                      <td>{{customCalculatedData.employerlwf}}</td>
+                                      <td><span></span></td>
+                                    </tr>
+                                    <tr *ngIf="customCalculatedData">
+                                      <td>LWF - Employee Contribution</td>
+                                      <td *ngIf="salaryCalcType!='flat'"></td>
+                                      <td>{{customCalculatedData.employeelwf}}</td>
+                                      <td><span></span></td>
+                                    </tr>
+                                    <tr *ngIf="customCalculatedData && isGrpInsurance">
+
+                                      <td>Group Insurance - Employer Contribution</td>
+                                      <td *ngIf="salaryCalcType!='flat'"></td>
+                                      <td>{{customCalculatedData.employerinsuranceamount}}</td>
+                                      <td><span></span></td>
+                                    </tr>
+                                    <tr *ngIf="customCalculatedData && isGrpInsurance">
+
+                                      <td>Group Insurance - Employee Contribution</td>
+                                      <td *ngIf="salaryCalcType!='flat'"></td>
+                                      <td>{{customCalculatedData.p_employeeinsuranceamount}}</td>
+                                      <td><span></span></td>
+                                    </tr>
+                                    <!-- <tr *ngIf="customCalculatedData">
+
+                                        <td>Conveyance Allowance</td>
+                                        <td *ngIf="salaryCalcType!='flat'"></td>
+                                        <td>{{customCalculatedData.conveyance_allowance}}</td>
+                                        <td ><span></span></td>
+                                      </tr> -->
+                                    <tr
+                                      *ngIf="customCalculatedData && (customCalculatedData.employergratuityopted=='Y' || customCalculatedData.gratuityopted=='Y')">
+                                      <td>Gratuity</td>
+                                      <td *ngIf="salaryCalcType!='flat'"></td>
+                                      <td>{{customCalculatedData.employergratuityopted=='Y'
+                                        ?customCalculatedData.employerGratuityRound:customCalculatedData.gratuityRound}}
+                                      </td>
+                                      <td><span></span></td>
+                                    </tr>
+
+                                  </tbody>
+                                  <tfoot *ngIf="customCalculatedData">
+                                    <tr style="background-color: #ceedff !important;">
+                                      <td colspan="2" *ngIf="salaryCalcType!='flat'"><strong>Salary In hand</strong>
+                                      </td>
+                                      <td colspan="1" *ngIf="salaryCalcType=='flat'"><strong>Salary In hand</strong>
+                                      </td>
+                                      <td>₹ {{customCalculatedData.salary_in_hand.toFixed(2)}}</td>
+                                      <td>₹ {{(customCalculatedData.salary_in_hand*12).toFixed(2)}}</td>
+                                    </tr>
+                                    <tr style="background-color: #ceedff !important;">
+                                      <td colspan="2" *ngIf="salaryCalcType!='flat'"><strong>Cost to Company</strong>
+                                      </td>
+                                      <td colspan="1" *ngIf="salaryCalcType=='flat'"><strong>Cost to Company</strong>
+                                      </td>
+                                      <td>₹ {{customCalculatedData.ctc.toFixed(2)}}</td>
+                                      <td>₹ {{(customCalculatedData.ctc*12).toFixed(2)}}</td>
+                                    </tr>
+                                  </tfoot>
+                                </table>
+                              </div>
+                            </div>
+
+                            <div class="card"
+                              [ngStyle]="{'display':customSalaryMsg!='' && (isCustomEditSal || edit_custom_salary)?'none':''}">
+
+                              <div class="card-header" style="border-bottom:none; margin-bottom: 10px;">
+                                <h4 class="card-title">Payout Preferences</h4>
+                              </div>
+
+                              <!-- *ngIf="tp_account_id == 653" start - Charity Contribution by Employee  dated 15.05.2025 by sidharth kaul -->
+                              <div class="col-md-12 m-clear mrg-bot-15 check-pad-box" style="margin-left: 15px;"
+                                *ngIf="show_charity_contribution">
+                                <input type="checkbox" name="charity_contri_emp" id="charity_contri_emp"
+                                  (click)="change_charityContributionEmp($event.target.checked)"
+                                  [checked]="charityContributionEmp('Y')" style="margin-top: 5px;">
+                                <label for="charity_contri_emp" style="margin-left: 10px;">Charity Contribution by
+                                  Employee</label><br />
+                                <span>📢 Note: If yes, then include a Deduction section for Charity Contribution by the
+                                  employee, which should be calculated as 1% of the basic salary.</span>
+                              </div>
+                              <!-- end - Charity Contribution by Employee -->
+
+                              <!-- start - hourly salary setup setting  dated 12.05.2025 by sidharth kaul -->
+                              <div class="col-md-12 m-clear mrg-bot-15 check-pad-box" style="margin-left: 0px;">
+                                <input type="checkbox" name="hourly_sal" id="hourly_sal"
+                                  (click)="change_hourlySalarySetup($event.target.checked)"
+                                  [checked]="hourlySalarySetup('Y')" style="margin-top: 5px;">
+                                <label for="hourly_sal" style="margin-left: 10px;">Enable Hourly Salary
+                                  Calculation</label><br />
+                                <span *ngIf="hourlySalarySetup('Y') == true">📢 Note: When enabled, salary will be
+                                  calculated and deducted based on actual hours worked instead of fixed monthly salary.
+                                  This applies to all attendance records.</span>
+                              </div>
+                              <!-- end - hourly salary setup setting -->
+
+                              <!-- start - custom salary tax percentage - dated 12.05.2025 by sidharth kaul -->
+                              <div class="col-md-6" *ngIf="candidateDetails?.jobType == 'Independent Contractors'">
+                                <label>Tax Percentage</label>
+                                <div class="input-group">
+                                  <input type="text" placeholder="Enter Percentage" class="form-control"
+                                    autocomplete="off" formControlName="customTaxPercent"
+                                    pattern="^(100(\.0{1,2})?|(\d{1,2})(\.\d{1,2})?)$"
+                                    title="Enter a number between 0 and 100 with up to 2 decimal places"
+                                    (blur)="validateTaxPercent()" />
+                                  <div class="input-group-addon">%</div>
+                                </div>
+                              </div>
+                              <!-- end - custom salary tax percentage -->
+
+                              <div class="col-md-6 payout-preference">
+                                <label for="">Effective Date</label>
+                                <input id="customEffectiveDate" formControlName="effectiveDate" type="text" readonly
+                                  autocomplete="off" class="form-control" placeholder="mm/yyyy"
+                                  (change)="onEffectiveDateChange()" />
+                              </div>
+
+                              <!-- <div class="col-md-6 payout-preference">
+                                  <label for="">Payout Date</label>
+                                  <input id="customPayoutDate" formControlName="payoutDate" type="text"
+                                  autocomplete="off" class="form-control" placeholder="dd/mm/yyyy" />
+                                </div> -->
+                            </div>
+
+                            <div class="col-md-12 col-12 text-center"
+                              *ngIf="isShowSalaryTable && (this.edit_custom_salary || this.isCustomEditSal) && customSalaryMsg==''">
+                              <button type="button" class="btn btn-primary" id="Submitform" name="Submitform"
+                                (click)="calculateCustomSal()"
+                                *ngIf="!customCalculatedData && ((candidateDetails.joiningStatus=='RESTRUCTURE' || candidateDetails.joiningStatus=='PENDING' ) && isCustomInputTrigger)">
+                                Calculate
+                              </button>
+                              <button type="button" class="btn btn-primary" id="Submitform" name="Submitform"
+                                (click)="saveCustomSal()" *ngIf="customCalculatedData">
+                                Save
+                              </button>
+                            </div>
+                          </form>
+
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card"
+                *ngIf="candidateDetails.jobType=='Consultant' && candidateDetails.joiningStatus!='RELIEVED'">
+                <div class="panel-heading panel_heading_gray collapsed card-header" role="tab" id="headingOne7"
+                  data-toggle="collapse" data-parent="#accordion13" href="#collapseOne13" aria-expanded="false"
+                  aria-controls="collapseOne">
+                  <h4>Consultant Salary<i class="fa fa-angle-down"></i></h4>
+                </div>
+                <div id="collapseOne13" class="panel-collapse collapse card-body" role="tabpane12">
+                  <div class="row">
+                    <div class="col-md-12 padd-bot-15 ">
+                      <div class="col-md-12 padd-bot-15 ">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <a class="edit-data" (click)="editConsultantSalary()" *ngIf="
+                            !isEditConsultantSalary
+                          "><i class="fa fa-pencil-square-o fa-lg"></i></a>
+                          </div>
+                        </div>
+                        <div class="row" style="margin-top:18px">
+                          <form [formGroup]="consultantform" [ngClass]="{
+                            'no-click':
+                            !isEditConsultantSalary
+                          }">
+
+                            <div class="card" style="margin-bottom:10px !important;">
+
+                              <div class="card-body">
+                                <div class="row">
+
+                                  <div class="col-md-6">
+                                    <label>Monthly Offered Package<span class="text-danger">*</span> </label>
+                                    <div class="input-group">
+                                      <div class="input-group-addon">₹</div>
+                                      <input type="text" placeholder="Enter MOP" class="form-control" autocomplete="off"
+                                        formControlName="mop"
+                                        onkeyup="if (/[^0-9.]/g.test(this.value)) this.value = this.value.replace(/[^0-9.]/g, '')">
+
+                                    </div>
+                                  </div>
+
+
+                                  <div class="col-sm-12 mrg-bot-15">
+
+                                    <label>Please select the payment purpose. </label>
+                                    <div
+                                      class="table__containter--inner table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+                                      <table class="table">
+                                        <thead>
+                                          <tr>
+                                            <th scope="Row">#</th>
+                                            <th>Purpose</th>
+                                            <th>TDS</th>
+                                            <th>Tax Code</th>
+                                          </tr>
+                                        </thead>
+                                        <!-- <thead>
+                                        </thead> -->
+                                        <tbody>
+                                          <tr *ngFor="let service of masterTDS">
+                                            <td><input formControlName="tdsId" type="radio" [value]="service.id"
+                                                style="display:block;"></td>
+                                            <td>{{service.purpose}}</td>
+                                            <td>{{service.tds }}%</td>
+                                            <td><a href="#" target="_blank">{{service.tax_code}}</a></td>
+                                          </tr>
+
+                                        </tbody>
+                                      </table>
+                                    </div>
+
+
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+
+
+                            <div class="col-md-12 col-12 text-center" *ngIf="isEditConsultantSalary">
+                              <button type="button" class="btn btn-primary" id="Submitform" name="Submitform"
+                                (click)="saveConsultantSalarySetup()">
+                                Save
+                              </button>
+                            </div>
+                          </form>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card" *ngIf="
+                  (candidateDetails.joiningStatus == 'JOINED' ||
+                  candidateDetails.joiningStatus == 'RESTRUCTURE' || candidateDetails.joiningStatus == 'RELIEVED') &&
+                  payout_method!='attendance'">
+                <div class="panel-heading panel_heading_gray collapsed card-header" role="tab" id="headingOne11"
+                  data-toggle="collapse" data-parent="#accordion11" href="#collapseOne11" aria-expanded="false"
+                  aria-controls="collapseOne">
+                  <h4>
+                    View Salary Structure <i class="fa fa-angle-down"></i>
+                  </h4>
+                </div>
+                <div id="collapseOne11" class="panel-collapse collapse card-body" role="tabpane11">
+                  <div class="row">
+                    <div class="card card-body" style="margin: 0 10px;">
+                      <div class="row form-padd" [formGroup]="otherDetailForm"
+                        *ngIf="candidateDetails.jobType != 'Consultant'">
+                        <!-- DA Rate Section -->
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-md-4 col-form-label">DA Rate</label>
+                            <div class="col-md-8">
+                              <input type="number" class="form-control" formControlName="daRate"
+                                (blur)="onBlur('daRate')" placeholder="Enter Daily Allowance Rate" maxlength="15">
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Salary Days Section -->
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-md-4 col-form-label">Salary Days</label>
+                            <div class="col-md-4">
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" value="Y" name="salDayOption"
+                                  id="salDayOptionYes" [checked]="of.salaryDaysOpted.value == 'Y'" />
+                                <label class="form-check-label" for="salDayOptionYes"
+                                  (click)="salaryInDaysOther('Y');onBlur('salaryDays');">Yes</label>
+                              </div>
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" value="N" name="salDayOption"
+                                  id="salDayOptionNo" [checked]="of.salaryDaysOpted.value == 'N'" />
+                                <label class="form-check-label" for="salDayOptionNo"
+                                  (click)="salaryInDaysOther('N');onBlur('salaryDays');">No</label>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <select class="form-control" formControlName="salaryDays"
+                                (change)="setSalDaysReqOther($event.target.value);onBlur('salaryDays')">
+                                <option value="">-- Select Days --</option>
+                                <option [value]="days.mdays" *ngFor="let days of minWageDays">{{ days.daysdisplay }}
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- KM Rate Section -->
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-md-4 col-form-label">KM Rate</label>
+                            <div class="col-md-8">
+                              <input type="number" class="form-control" formControlName="kmRate"
+                                (blur)="onBlur('kmRate')" placeholder="Enter Per Kilometer Rate" maxlength="15">
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Tea Allowance Section -->
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-md-4 col-form-label">Tea Allowance</label>
+                            <div class="col-md-8">
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="teaAllowYes" value='Y'
+                                  formControlName="teaAllowanceFlag" />
+                                <label class="form-check-label" for="teaAllowYes"
+                                  (click)="onBlur('teaAllowanceFlag');;">Yes</label>
+                              </div>
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="teaAllowNo" value="N"
+                                  formControlName="teaAllowanceFlag" />
+                                <label class="form-check-label" for="teaAllowNo"
+                                  (click)="onBlur('teaAllowanceFlag');;">No</label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!--------Manual TDS----------->
+                        <div class="col-md-6" *ngIf="tds_details.tds_enablestatus=='N'">
+                          <div class="form-group row">
+                            <label class="col-md-4 col-form-label">Manual TDS</label>
+                            <div class="col-md-8">
+                              <input class="form-control" type="number" id="manualTDS" value='Y'
+                                formControlName="manualTDS" (blur)="onBlur('manualTDS')" />
+                            </div>
+                          </div>
+                        </div>
+                        <!-- add by AK TDS Exemption -->
+                        <div class="col-md-12">
+                          <!-- ✅ Help Text -->
+                          <div style="padding-bottom: 15px;">
+                            <small class="form-text text-muted pl-1 mt-2 d-block">
+                              📢 Note: This option is for employees (e.g., in North East) who are exempt from TDS.
+                              Upload a valid exemption certificate.
+                            </small>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group row">
+                              <label class="col-md-4 col-form-label">TDS Exemption</label>
+                              <div class="col-md-4">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" id="isTdsExemptYes" value='Y'
+                                    formControlName="isTdsExempt" />
+                                  <label class="form-check-label" for="isTdsExemptYes"
+                                    (click)="onBlur('isTdsExempt');">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" id="isTdsExemptNo" value="N"
+                                    formControlName="isTdsExempt" />
+                                  <label class="form-check-label" for="isTdsExemptNo"
+                                    (click)="onBlur('isTdsExempt');">No</label>
+                                </div>
+
+
+                              </div>
+                            </div>
+                          </div>
+                          <!-- View Existing Document -->
+                          <div class="col-md-6" style="padding: 0px;"
+                            *ngIf="tds_exempted_docpath && !otherDetailForm.get('documentByteCode')?.value && !showTdsUploadForm">
+                            <div class="form-group row">
+                              <label for="tdsExceptionFile" class="col-md-6 col-form-label">TDS Exception
+                                Document</label>
+                              <div class="col-md-6">
+                                <a [href]="tds_exempted_docpath" target="_blank" class="btn btn-outline-primary btn-sm">
+                                  <i class="fa fa-file-pdf-o mr-1 text-danger"></i> View
+                                </a>
+                                <!-- Edit Button - only shown in edit mode -->
+                                <button *ngIf="isEditMode" class="btn btn-link text-primary ml-2" type="button"
+                                  (click)="showTdsUploadForm = true">
+                                  <i class="fa fa-pencil-square-o"></i> Edit
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Upload New Document -->
+                          <ng-container *ngIf="otherDetailForm.get('isTdsExempt')?.value === 'Y'">
+                            <div class="col-md-6" style="padding: 0px;"
+                              *ngIf="!tds_exempted_docpath || showTdsUploadForm">
+                              <div class="form-group row">
+                                <label for="tdsExceptionFile" class="col-md-6 col-form-label">Attachment TDS Exception
+                                </label>
+                                <div class="col-md-6">
+                                  <input type="file" accept="application/pdf" (change)="onTdsFileSelect($event)"
+                                    class="form-control" id="tdsExceptionFile" style="max-width: 342px;" />
+                                  <input type="hidden" formControlName="originalDocumentName" />
+                                  <input type="hidden" formControlName="documentByteCode" />
+
+                                  <!-- Preview newly selected document -->
+                                  <div *ngIf="otherDetailForm.get('documentByteCode')?.value" class="mt-3">
+                                    <a [href]="getPdfUrl(otherDetailForm.get('documentByteCode')?.value)"
+                                      target="_blank" class="text-primary">
+                                      <i class="fa fa-file-pdf-o mr-1"></i>
+                                      {{ otherDetailForm.get('originalDocumentName')?.value }}
+                                    </a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </ng-container>
+
+                          <!-- TDS Exemption Radio Options -->
+
+                        </div>
+
+                        <!-- add by AK TDS Exemption -->
+
+                        <!-- Common Save Button -->
+                        <div class="col-md-12 text-center" *ngIf="candidateDetails.joiningStatus != 'RELIEVED'">
+                          <button class="btn btn-primary" (click)="saveAllDetails()">Save</button>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="panel-body">
+                      <div class="row" style="text-align:right;">
+                        <a style="padding-right:16px" (click)="printSalaryStructure()"><i class="fa fa-print fa-lg"
+                            aria-hidden="true"></i></a>
+                      </div>
+                      <div class="Appointment-outer-box" id="salarystructure">
+
+                        <div class="table-responsive" *ngIf="salaryStructure != ''">
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>Salary Bucket</th>
+                                <th>Monthly</th>
+                                <th>Annually</th>
+                              </tr>
+                            </thead>
+                            <tbody id="roundedValues">
+                              <tr class="danger1" *ngIf="candidateDetails.jobType!='Consultant'">
+                                <th colspan="3">1. GROSS SALARY</th>
+                              </tr>
+                              <tr class="danger1" *ngIf="candidateDetails.jobType!='Consultant'">
+                                <td scope="col">{{ getEarningLabel('BASIC SALARY') }}</td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.basic) :
+                                  getRoundedVal(salaryStructure.basic)
+                                  }}
+                                </td>
+                                <!-- <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.basic * 12) :
+                        getRoundedVal(salaryStructure.basic * 12 )
+                        }}
+                      </td> -->
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.basic * 12) :
+                                  getRoundedVal(salaryStructure.basic) * 12 }}
+                                </td>
+
+                              </tr>
+                              <tr class="danger1" *ngIf="candidateDetails.jobType!='Consultant'">
+                                <td scope="col">{{ getEarningLabel('HRA') }}</td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.hra) :
+                                  getRoundedVal(salaryStructure.hra)
+                                  }}</td>
+                                <!-- <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.hra * 12)) :
+                        getRoundedVal(salaryStructure.hra * 12 )
+                        }}</td> -->
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals((salaryStructure.hra * 12)) :
+                                  getRoundedVal(salaryStructure.hra) * 12
+                                  }}</td>
+                              </tr>
+                              <tr class="danger1"
+                                *ngIf="salaryStructure.allowances!='' && salaryStructure.allowances!='0' && salaryStructure.allowances!='0.0000' ">
+                                <td scope="col">{{ getEarningLabel('Special Allowance') }}</td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.allowances) :
+                                  getRoundedVal(salaryStructure.allowances)
+                                  }}</td>
+                                <!-- <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.allowances * 12)) :
+                        getRoundedVal(salaryStructure.allowances * 12 )
+                        }}</td> -->
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals((salaryStructure.allowances * 12)) :
+                                  (getRoundedVal(salaryStructure.allowances)) * 12
+                                  }}</td>
+                              </tr>
+                              <!------->
+
+                              <!------->
+                              <tr class="danger1"
+                                *ngIf="salaryStructure?.conveyance_allowance!='' && salaryStructure?.conveyance_allowance!='0.0000' && salaryStructure?.conveyance_allowance!='0'">
+                                <td scope="col">{{ getEarningLabel('Conveyance') }}</td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.conveyance_allowance) :
+                                  getRoundedVal(salaryStructure.conveyance_allowance)
+                                  }}</td>
+                                <!-- <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.conveyance_allowance * 12)) :
+                        getRoundedVal(salaryStructure.conveyance_allowance * 12 )
+                        }} </td> -->
+
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals((salaryStructure.conveyance_allowance * 12)) :
+                                  (getRoundedVal(salaryStructure.conveyance_allowance)) * 12
+                                  }} </td>
+                              </tr>
+                              <tr class="danger1"
+                                *ngIf="salaryStructure?.medical_allowance!='' && salaryStructure?.medical_allowance!='0.0000' && salaryStructure?.medical_allowance!='0'">
+                                <td scope="col">{{ getEarningLabel('Medical Allowance') }}</td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.medical_allowance) :
+                                  getRoundedVal(salaryStructure.medical_allowance)
+                                  }} </td>
+                                <!-- <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.medical_allowance * 12)) :
+                        getRoundedVal(salaryStructure.medical_allowance * 12 )
+                        }} </td> -->
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals((salaryStructure.medical_allowance * 12)) :
+                                  (getRoundedVal(salaryStructure.medical_allowance)) * 12
+                                  }} </td>
+                              </tr>
+
+                              <tr class="danger1"
+                                *ngIf="salaryStructure.bonus!='' && salaryStructure.bonus!='0' && salaryStructure.bonus!='0.0000'">
+                                <td scope="col">Regular Bonus</td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.bonus) :
+                                  getRoundedVal(salaryStructure.bonus)
+                                  }} </td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.bonus *12):
+                                  (getRoundedVal(salaryStructure.bonus)) * 12
+                                  }} </td>
+                              </tr>
+                              <tr class="danger1"
+                                *ngIf="salaryStructure.mealvouchers!='' && salaryStructure.mealvouchers!='0' && salaryStructure.mealvouchers!='0.0000'">
+                                <td scope="col">Meal Voucher</td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.mealvouchers) :
+                                  getRoundedVal(salaryStructure.mealvouchers)
+                                  }} </td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals((salaryStructure.mealvouchers *12 )):
+                                  (getRoundedVal(salaryStructure.mealvouchers)) *12
+                                  }} </td>
+                              </tr>
+                              <tr class="danger1"
+                                *ngIf="salaryStructure.medicalinsurancepremium!='' && salaryStructure.medicalinsurancepremium!='0' && salaryStructure.medicalinsurancepremium!='0.0000'">
+                                <td scope="col">Medical Insurance Premium</td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.medicalinsurancepremium) :
+                                  getRoundedVal(salaryStructure.medicalinsurancepremium)
+                                  }} </td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals((salaryStructure.medicalinsurancepremium *12 )):
+                                  (getRoundedVal(salaryStructure.medicalinsurancepremium)) *12
+                                  }} </td>
+                              </tr>
+                              <tr class="danger1"
+                                *ngIf="salaryStructure.teaallowances!='' && salaryStructure.teaallowances!='0' && salaryStructure.teaallowances!='0.0000'">
+                                <td scope="col">Tea Allowances</td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.teaallowances) :
+                                  getRoundedVal(salaryStructure.teaallowances)
+                                  }} </td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals((salaryStructure.teaallowances *12 )):
+                                  (getRoundedVal(salaryStructure.teaallowances)) *12
+                                  }} </td>
+                              </tr>
+                              <!-----other 15 components excluding vpf and incentive from stetury components---->
+                              <tr class="danger1" *ngFor="let deduction of getFilteredDeductionsforothercomponents()"
+                                [ngStyle]="{'display': deduction.deduction_amount == 0 ? 'none' : ''}">
+                                <td scope="col">
+                                  {{ getEarningLabel(deduction.deduction_name) }}
+                                </td>
+                                <td>
+                                  {{ !isShowRoundedVal ? truncateToTwoDecimals(deduction.deduction_amount) :
+                                  getRoundedVal(deduction.deduction_amount) }}
+                                </td>
+                                <!-- <td>
+                        {{ !isShowRoundedVal ? truncateToTwoDecimals((deduction.deduction_amount * 12)) :
+                        getRoundedVal(deduction.deduction_amount * 12) }}
+                      </td> -->
+                                <td>
+                                  {{ !isShowRoundedVal ? truncateToTwoDecimals((deduction.deduction_amount * 12)) :
+                                  (getRoundedVal(deduction.deduction_amount)) * 12 }}
+                                </td>
+                              </tr>
+                              <!-------------------------->
+                              <tr
+                                *ngIf="salaryStructure.gross!='' && salaryStructure.gross!='0' && salaryStructure.gross!='0.0000' && candidateDetails.jobType!='Consultant'">
+                                <th scope="col">Gross Salary</th>
+                                <th>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.gross) :
+                                  getRoundedVal(salaryStructure.gross)
+                                  }} </th>
+                                <th>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.grossAnnual) :
+                                  getRoundedVal(salaryStructure.grossAnnual)
+                                  }} </th>
+                              </tr>
+                              <tr class="danger1"
+                                *ngIf="salaryStructure.gross!='' && salaryStructure.gross!='0' && salaryStructure.gross!='0.0000' && candidateDetails.jobType=='Consultant'">
+                                <td scope="col">Gross Earning</td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.gross) :
+                                  getRoundedVal(salaryStructure.gross)
+                                  }} </td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.grossAnnual) :
+                                  getRoundedVal(salaryStructure.grossAnnual)
+                                  }} </td>
+                              </tr>
+                              <!-------------gross end------------>
+                              <tr class="danger1">
+                                <th colspan="3">2. VARIABLE</th>
+                              </tr>
+                              <tr class="danger1" *ngFor="let deduction of getFilteredDeductionsforvariable()"
+                                [ngStyle]="{'display': deduction.deduction_amount == 0 ? 'none' : ''}">
+                                <td scope="col">
+                                  {{ getEarningLabel(deduction.deduction_name) }}
+                                </td>
+                                <td>
+                                  {{ !isShowRoundedVal ? truncateToTwoDecimals(deduction.deduction_amount) :
+                                  getRoundedVal(deduction.deduction_amount) }}
+                                </td>
+                                <!-- <td>
+                        {{ !isShowRoundedVal ? truncateToTwoDecimals((deduction.deduction_amount * 12)) :
+                        getRoundedVal(deduction.deduction_amount * 12) }}
+                      </td> -->
+                                <td>
+                                  {{ !isShowRoundedVal ? truncateToTwoDecimals((deduction.deduction_amount * 12)) :
+                                  (getRoundedVal(deduction.deduction_amount)) * 12 }}
+                                </td>
+                              </tr>
+
+
+                              <!-- <tr class="danger1"
+                      *ngIf="salaryStructure.total!='' && salaryStructure.total!='0' && salaryStructure.total!='0.0000'">
+                      <th scope="col">GRAND TOTAL</th>
+                      <th>
+                        {{ !isShowRoundedVal ?
+                        salaryStructure.total :
+                        getRoundedVal(salaryStructure.total)
+                        }}
+                      </th>
+                      <th>{{ !isShowRoundedVal ?
+                        salaryStructure.totalAnnual :
+                        getRoundedVal(salaryStructure.totalAnnual)
+                        }} </th>
+                    </tr> -->
+                              <tr class="danger1">
+                                <th colspan="3">EMPLOYER PART</th>
+                              </tr>
+                              <tr class="danger1"
+                                *ngIf="salaryStructure.employerinsuranceamount!='' && salaryStructure.employerinsuranceamount!='0' && salaryStructure.employerinsuranceamount!='0.0000' && salaryStructure.employerinsuranceamount!='0.00'">
+                                <td scope="col">Employer Group Insurance</td>
+                                <td>
+                                  {{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.employerinsuranceamount) :
+                                  getRoundedVal(salaryStructure.employerinsuranceamount)
+                                  }}
+                                </td>
+                                <td> {{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals((salaryStructure.employerinsuranceamount *12 )):
+                                  (getRoundedVal(salaryStructure.employerinsuranceamount)) *12
+                                  }} </td>
+                              </tr>
+                              <tr class="danger1"
+                                *ngIf="salaryStructure.employerepfrate!='' && salaryStructure.employerepfrate!='0' && salaryStructure.employerepfrate!='0.0000'">
+                                <td scope="col">Employer EPF Part</td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.employerepfrate) :
+                                  getRoundedVal(salaryStructure.employerepfrate)
+                                  }} </td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals((salaryStructure.employerepfrate *12 )):
+                                  (getRoundedVal(salaryStructure.employerepfrate)) *12
+                                  }} </td>
+                              </tr>
+                              <tr class="danger1"
+                                *ngIf="salaryStructure.employeresirate!='' && salaryStructure.employeresirate!='0' && salaryStructure.employeresirate!='0.0000'">
+                                <td scope="col">Employer ESIC Part</td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.employeresirate) :
+                                  getRoundedVal(salaryStructure.employeresirate)
+                                  }} </td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals((salaryStructure.employeresirate *12 )):
+                                  (getRoundedVal(salaryStructure.employeresirate)) *12
+                                  }} </td>
+                              </tr>
+                              <tr class="danger1"
+                                *ngIf="salaryStructure.employerlwf!='' && salaryStructure.employerlwf!='0' && salaryStructure.employerlwf!='0.0000' && salaryStructure.employerlwf!='0.00'">
+                                <td scope="col">Employer LWF</td>
+                                <td>
+                                  {{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.employerlwf) :
+                                  getRoundedVal(salaryStructure.employerlwf)
+                                  }} </td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals( (salaryStructure.employerlwf * 12 )):
+                                  (getRoundedVal(salaryStructure.employerlwf)) * 12
+                                  }}
+                                </td>
+                              </tr>
+                              <tr class="danger1"
+                                *ngIf="salaryStructure.employergratuity!='' && salaryStructure.employergratuity!='0' && salaryStructure.employergratuity!='0.0000' && salaryStructure.employergratuity!='0.00'">
+                                <td scope="col">Employer Gratuity</td>
+                                <td>
+                                  {{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.employergratuity) :
+                                  getRoundedVal(salaryStructure.employergratuity)
+                                  }}
+                                </td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals((salaryStructure.employergratuity *12 )):
+                                  (getRoundedVal(salaryStructure.employergratuity)) *12
+                                  }} </td>
+                              </tr>
+
+                              <tr class="danger1">
+                                <th colspan="3">3. DEDUCTION</th>
+                              </tr>
+
+                              <!-- <tr class="danger1"
+                      *ngIf="salaryStructure.taxes!='' && salaryStructure.taxes!='0' && salaryStructure.taxes!='0.0000'">
+                      <td scope="col">Tax</td>
+                      <td>
+                        {{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.taxes) :
+                        getRoundedVal(salaryStructure.taxes)
+                        }}
+                      </td>
+                      <td>
+                        {{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.taxes *12 )):
+                        (getRoundedVal(salaryStructure.taxes)) *12
+                        }}
+                      </td>
+                    </tr> -->
+                              <tr class="danger1"
+                                *ngIf="salaryStructure.employeeepfrate!='' && salaryStructure.employeeepfrate!='0' && salaryStructure.employeeepfrate!='0.0000' && salaryStructure.employeeepfrate!='0.00'">
+                                <td scope="col">Employee EPF </td>
+                                <td>
+                                  {{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.employeeepfrate) :
+                                  getRoundedVal(salaryStructure.employeeepfrate)
+                                  }}
+                                </td>
+                                <td>
+                                  {{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals((salaryStructure.employeeepfrate *12 )):
+                                  (getRoundedVal(salaryStructure.employeeepfrate)) *12
+                                  }}
+                                </td>
+                              </tr>
+
+                              <!-- Charity Contribution under Salary Struture Slip - sidharth kaul dated. 13.06.2025 -->
+                              <tr class="danger1"
+                                *ngIf="charityCheck(salaryStructure.charity_contribution_amount) && show_charity_contribution">
+                                <td scope="col">Charity Contribution</td>
+                                <td>
+                                  {{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.charity_contribution_amount) :
+                                  getRoundedVal(salaryStructure.charity_contribution_amount)
+                                  }}
+                                </td>
+                                <td>
+                                  {{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.charity_contribution_amount *12):
+                                  getRoundedVal(salaryStructure.charity_contribution_amount) *12
+                                  }}
+                                </td>
+                              </tr>
+                              <!-- Charity Contribution under Salary Struture Slip  -->
+
+
+                              <tr class="danger1"
+                                *ngIf="salaryStructure.vpfemployee!='' && salaryStructure.vpfemployee!='0' && salaryStructure.vpfemployee!='0.0000' && salaryStructure.vpfemployee!='0.00'">
+                                <td scope="col">Employee VPF</td>
+                                <td>
+                                  {{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.vpfemployee) :
+                                  getRoundedVal(salaryStructure.vpfemployee)
+                                  }}</td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals((salaryStructure.vpfemployee *12 )):
+                                  (getRoundedVal(salaryStructure.vpfemployee)) *12
+                                  }}
+                                </td>
+                              </tr>
+
+                              <tr class="danger1"
+                                *ngIf="salaryStructure.employeeesirate!='' && salaryStructure.employeeesirate!='0' && salaryStructure.employeeesirate!='0.0000' && salaryStructure.employeeesirate!='0.00'">
+                                <td scope="col">Employee ESIC</td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.employeeesirate) :
+                                  getRoundedVal(salaryStructure.employeeesirate)
+                                  }}</td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals((salaryStructure.employeeesirate *12 )):
+                                  (getRoundedVal(salaryStructure.employeeesirate)) *12
+                                  }} </td>
+                              </tr>
+
+                              <tr class="danger1"
+                                *ngIf="salaryStructure.employeelwf!='' && salaryStructure.employeelwf!='0' && salaryStructure.employeelwf!='0.0000' && salaryStructure.employeelwf!='0.00'">
+                                <td scope="col">Employee LWF</td>
+                                <td>
+                                  {{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.employeelwf) :
+                                  getRoundedVal(salaryStructure.employeelwf)
+                                  }}</td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals((salaryStructure.employeelwf *12 )):
+                                  (getRoundedVal(salaryStructure.employeelwf)) *12
+                                  }}
+                                </td>
+                              </tr>
+                              <tr class="danger1"
+                                *ngIf="salaryStructure.insuranceamount!='' && salaryStructure.insuranceamount!='0' && salaryStructure.insuranceamount!='0.0000' && salaryStructure.insuranceamount!='0.00'">
+                                <td scope="col">Employee Group Insurance</td>
+                                <td>
+                                  {{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.insuranceamount) :
+                                  getRoundedVal(salaryStructure.insuranceamount)
+                                  }} </td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals((salaryStructure.insuranceamount *12 )):
+                                  (getRoundedVal(salaryStructure.insuranceamount)) *12
+                                  }}
+                                </td>
+                              </tr>
+                              <tr class="danger1"
+                                *ngIf="salaryStructure.gratuity!='' && salaryStructure.gratuity!='0' && salaryStructure.gratuity!='0.0000' && salaryStructure.gratuity!='0.00'">
+                                <td scope="col">{{getEarningLabel('Gratuity In Hand')}}</td>
+                                <td>
+                                  {{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.gratuity) :
+                                  getRoundedVal(salaryStructure.gratuity)
+                                  }} </td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals((salaryStructure.gratuity *12 )):
+                                  (getRoundedVal(salaryStructure.gratuity)) *12
+                                  }}
+                                </td>
+                              </tr>
+
+
+                              <tr class="danger1" *ngFor="
+                        let deduction of getFilteredDeductionsfordedcution()
+                      " [ngStyle]="{'display':deduction.deduction_amount==0 ? 'none':''}">
+                                <td scope="col">
+                                  {{ getEarningLabel(deduction.deduction_name) }}
+                                </td>
+                                <td>{{
+                                  !isShowRoundedVal ? truncateToTwoDecimals(deduction.deduction_amount) :
+                                  getRoundedVal(deduction.deduction_amount)
+
+                                  }} </td>
+                                <td>{{ !isShowRoundedVal ? truncateToTwoDecimals((deduction.deduction_amount * 12)) :
+                                  (getRoundedVal(deduction.deduction_amount ))*12
+                                  }} </td>
+                              </tr>
+
+
+                              <tr class="danger1">
+                                <th scope="col">
+                                  Gross Deduction
+                                </th>
+                                <th>{{
+                                  !isShowRoundedVal ? truncateToTwoDecimals(this.salaryStructure.grossdeduction) :
+                                  getRoundedVal(this.salaryStructure.grossdeduction)
+
+                                  }} </th>
+                                <th>{{ !isShowRoundedVal ? truncateToTwoDecimals((this.salaryStructure.grossdeduction *
+                                  12)) :
+                                  (getRoundedVal(this.salaryStructure.grossdeduction ))*12
+                                  }} </th>
+                              </tr>
+
+                              <!-- <tr class="danger1">
+                      <th colspan="3">4. OTHER DEDUCTION</th>
+                    </tr> -->
+
+                              <!-- <tr class="danger1">
+                                    <td scope="col">TDS</td>
+                                    <td></td>
+                                </tr> -->
+                              <!-- <tr class="danger1">
+                                    <td scope="col">Insurance</td>
+                                    <td>{{salaryStructure.insuranceamount}}</td>
+                                </tr> -->
+                              <!-- <tr class="danger1">
+                                    <td scope="col">EWF</td>
+                                    <td></td>
+                                </tr>-->
+                              <!-- <tr class="danger1">
+                                    <td scope="col">Social Security Services</td>
+                                    <td></td>
+                                </tr>-->
+                              <tr class="danger3">
+                                <td>Salary Bucket Total (1+2)</td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.ctc) :
+                                  getRoundedVal(salaryStructure.ctc)
+                                  }} </td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.ctcAnnual) :
+                                  getRoundedVal(salaryStructure.ctcAnnual)
+                                  }} </td>
+                              </tr>
+                              <tr class="danger3">
+                                <td>Salary In Hand</td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.salaryinhand) :
+                                  getRoundedVal(salaryStructure.salaryinhand)
+                                  }}</td>
+                                <td>{{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(salaryStructure.inHandAnnual) :
+                                  getRoundedVal(salaryStructure.inHandAnnual)
+                                  }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="d-flex justify-content-between align-items-center">
+                                <div class="col-md-4">
+                                  <label><strong>Effective Date : &nbsp;</strong></label>
+                                  <span class="ml-2">
+                                    {{ salaryStructure?.effectivefrom ? formatCustomDate(salaryStructure.effectivefrom)
+                                    : '' }}
+                                  </span>
+                                </div>
+                                <div class="col-md-4">
+                                  <label><strong>Professional Tax Applied : &nbsp;</strong></label>
+                                  <span class="ml-2">{{ salaryStructure.is_professional_tax_applied }}</span>
+                                </div>
+                                <div class="col-md-4" *ngIf="salaryStructure.is_professional_tax_applied=='Y'">
+                                  <label><strong>Professional Tax State : &nbsp;</strong></label>
+                                  <span class="ml-2">{{ salaryStructure.professional_tax_state }}</span>
+                                </div>
+                                <div class="col-md-4">
+                                  <label><strong>LWF Applied :&nbsp;</strong></label>
+                                  <span class="ml-2">{{ salaryStructure.is_lwf_applied }}</span>
+                                </div>
+                                <div class="col-md-4" *ngIf="salaryStructure.is_lwf_applied=='Y'">
+                                  <label><strong>LWF State : &nbsp;</strong></label>
+                                  <span class="ml-2">{{ salaryStructure.lwf_state }}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="card" *ngIf="view_emp_data!='' && candidateDetails.joiningStatus!='RELIEVED'">
+
+                <div class="panel-heading panel_heading_gray collapsed card-header" role="tab" id="headingOne10"
+                  data-toggle="collapse" data-parent="#accordion10" href="#collapseOne10" aria-expanded="false"
+                  aria-controls="collapseOne10" (click)="open_leave_temp_tab()">
+                  <h4>Leave Template <i class="fa fa-angle-down"></i></h4>
+                </div>
+
+                <div id="collapseOne10" class="panel-collapse collapse card-body" role="tabpane10">
+                  <div class="row">
+                    <a class="edit-data" (click)="editLeaveTemplate();" title="Change Leave Template"><i
+                        class="fa fa-pencil-square-o fa-lg"></i></a>
+
+                    <div class="col-md-12 padd-bot-15 padd-top-15" [ngClass]="{'no-click': !editLeave}">
+
+                      <form [formGroup]="leaveTemplateForm">
+                        <div class="row">
+
+                          <div class="col-sm-6">
+                            <label>Leave Template <span class="text-danger">*</span></label>
+                            <select class="form-control" (change)="changeLeaveTemplate($event)">
+                              <option value="">--- Select ---</option>
+                              <option *ngFor="let leave of leaveTemplateData" [value]="leave|json"
+                                [selected]="leaveTemplateForm.value.leavetemplate_text.templateid == leave.templateid">
+                                {{leave.templatedesc}}
+                              </option>
+                            </select>
+                          </div>
+                          <!-- *ngIf="editLeave" -->
+                          <div class="col-sm-6">
+                            <label>Effective Date <span class="text-danger">*</span></label>
+                            <input type="hidden" id="recdate2" (click)="change_effectivedt()">
+                            <input type="text" formControlName="effective_dt" id="effective_dt" name="effective_dt"
+                              autocomplete="off" class="form-control" #ed>
+                          </div>
+
+                          <div class="col-md-12">
+                            <h3>Leave Template Details</h3>
+                            <div class="card">
+                              <div class="card-body">
+
+
+                                <div class="col-md-4">
+                                  <label><strong>Leaves Calendar:</strong></label>
+                                  <!-- {{leaveTemplateForm.value | json}} -->
+                                  {{leaveTemplateForm.value.leavetemplate_text?.leave_details?.leaves_calender}}
+                                </div>
+                                <!-- <div class="col-md-4">
+                                  <label><strong>Weekly Off Days:</strong></label>
+                                  {{leaveTemplateForm.value.leavetemplate_text?.leave_details?.weekly_off_days}}
+                                </div> -->
+                                <div class="col-md-4">
+                                  <label><strong>Weekly Off :</strong></label>
+                                  {{leaveTemplateForm.value.leavetemplate_text?.leave_details?.weekly_off_days_name}}
+                                </div>
+                                <!-- <div class="col-md-4">
+                                  <label><strong>Absent is equal to loss of Pay:</strong></label>
+                                  {{leaveTemplateForm.value.leavetemplate_text?.leave_details?.absent_is_equal_to_loss_of_pay}}
+                                </div>
+                                <div class="col-md-4">
+                                  <label><strong>Attendance approval reqd for payout:</strong></label>
+                                  {{leaveTemplateForm.value.leavetemplate_text?.leave_details?.attendance_approval_required_for_payout}}
+                                </div> -->
+
+                                <table class="table table-bordered">
+                                  <thead>
+                                    <tr>
+                                      <th>Leave Type</th>
+                                      <th>Days</th>
+                                      <th>Carry Forward</th>
+                                      <th>Accumulate</th>
+                                      <th>Max Limit</th>
+                                    </tr>
+                                  </thead>
+
+                                  <tbody>
+                                    <ng-container
+                                      *ngFor="let ltf of leaveTemplateForm.value.leavetemplate_text?.leave_details?.leave_type; let li=index;">
+                                      <tr>
+                                        <td>{{ltf.typename}} ({{ltf.typecode}})</td>
+                                        <td>{{ltf.days}}</td>
+                                        <td>{{ltf.is_carry_forward}}</td>
+                                        <td>{{ltf.accumulate}}</td>
+                                        <td>{{ltf.maximum_limit}}</td>
+                                      </tr>
+                                    </ng-container>
+                                  </tbody>
+
+                                  <tr>
+                                    <td class="no-data"
+                                      *ngIf="leaveTemplateForm.value.leavetemplate_text?.leave_details?.leave_type == null"
+                                      colspan="5">No Data Found</td>
+                                  </tr>
+                                </table>
+
+                                <!-- <ng-container
+                                        *ngFor="let ltf of leaveTemplateForm.value.leavetemplate_text?.leave_details?.leave_type; let li=index;">
+
+                                        <div class="col-md-12" style="border: 0.5px solid #a39e9e;"></div>
+
+                                        <div class="col-md-4">
+                                          <label><strong>Leave Type:</strong></label>&nbsp;
+                                          <span>{{ltf.typename}}
+                                            ({{ltf.typecode}})</span>
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label><strong>Days: </strong></label>&nbsp;
+                                          <span>{{ltf.days}}</span>
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label><strong>Carry Forward: </strong></label>&nbsp;
+                                          <span>{{ltf.is_carry_forward}}</span>
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label><strong>Accumulate: </strong></label>&nbsp;
+                                          <span>{{ltf.accumulate}}</span>
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label><strong>Maximum Limit: </strong></label>&nbsp;
+                                          <span>{{ltf.maximum_limit}}</span>
+                                        </div>
+                                      </ng-container> -->
+
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-12 col-12 padd-top-15 text-center" *ngIf="editLeave">
+                            <a (click)="updateLeaveTemplate()" class="btn btn-primary">Update Leave Template</a>
+                          </div>
+
+                          <div class="col-md-12">
+                            <h4>Current Leave Balance</h4>
+                            <div class="card">
+                              <div class="card-body">
+                                <table class="table table-bordered">
+                                  <thead>
+                                    <tr>
+                                      <th>Leave Type - (Code)</th>
+                                      <th>Days</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <ng-container *ngFor="let bd of leaveHistoryBalanceData?.current_balance;">
+                                      <tr>
+                                        <td>{{bd.typename}} - {{bd.typecode}}</td>
+                                        <td>{{bd.prev_bal}}</td>
+                                      </tr>
+                                    </ng-container>
+                                  </tbody>
+                                  <tr>
+                                    <td class="no-data" *ngIf="leaveHistoryBalanceData?.current_balance == null"
+                                      colspan="2">No Data Found</td>
+                                  </tr>
+                                </table>
+
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-12">
+                            <h4>Leave History</h4>
+                            <div class="card">
+                              <div class="card-body">
+
+                                <table class="table table-bordered">
+                                  <thead>
+                                    <tr>
+                                      <th>Month-Year</th>
+                                      <th>Leave Taken
+
+                                      </th>
+                                    </tr>
+                                  </thead>
+
+                                  <tbody>
+                                    <ng-container *ngFor="let bd of leaveHistoryBalanceData?.taken_history;">
+                                      <tr>
+                                        <td>{{bd.attmonth}}</td>
+                                        <td>
+                                          <ng-container *ngFor="let l of bd?.taken_leave;">
+                                            &nbsp;<span style="color: blue; font-weight: bold;">{{l.typecode}}</span> =>
+                                            <span style="color: blue;">{{l.leave_taken}} &nbsp;,</span>
+                                          </ng-container>
+
+                                        </td>
+                                      </tr>
+                                    </ng-container>
+                                  </tbody>
+
+                                  <tr>
+                                    <td class="no-data" *ngIf="leaveHistoryBalanceData?.taken_history == null"
+                                      colspan="2">No Data Found</td>
+                                  </tr>
+                                </table>
+
+                              </div>
+                            </div>
+                          </div>
+
+
+                        </div>
+
+                      </form>
+
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+
+<app-footer></app-footer>
+
+
+<div [@grooveState]="isUpdateEmp?'active':'inactive'" class="modal">
+  <div [@dongleState]="isUpdateEmp?'active':'inactive'" class="modal-dialog modal-lg">
+    <div class="modal-content modal-lg">
+
+      <div class="modal-header theme-bg">
+        <h4 class="modal-title">Update Employee Details</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+          (click)="isUpdateEmp=false;">&times;</button>
+      </div>
+      <div class="modal-body" style="overflow: auto;
+        max-height: 71vh;">
+
+        <table class="table table-responsive">
+          <thead>
+            <tr>
+              <th style="width:20% !important;"></th>
+              <th style="width:40% !important;">Current Details</th>
+              <th style="width:40% !important;">New Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              [ngClass]="{'different': candidateDetails.emp_name != (updatedEmpDetails.first_name + ' ' + updatedEmpDetails.last_name)}">
+              <th>Name</th>
+              <td>{{candidateDetails.emp_name}}</td>
+              <td>{{updatedEmpDetails.first_name + ' ' + updatedEmpDetails.last_name}}</td>
+            </tr>
+            <tr [ngClass]="{'different': candidateDetails.dateofbirth !== updatedEmpDetails.date_of_birth}">
+              <th>Date of Birth</th>
+              <td>{{candidateDetails.dateofbirth}}</td>
+              <td>{{updatedEmpDetails.date_of_birth}}</td>
+            </tr>
+            <tr [ngClass]="{'different': candidateDetails.gender?.trim() !== updatedEmpDetails.gender}">
+              <th>Gender</th>
+              <td>{{candidateDetails.gender}}</td>
+              <td>{{updatedEmpDetails.gender}}</td>
+            </tr>
+            <tr [ngClass]="{'different': candidateDetails.email !== updatedEmpDetails.email_id}">
+              <th>Email Id</th>
+              <td>{{candidateDetails.email}}</td>
+              <td>{{updatedEmpDetails.email_id}}</td>
+            </tr>
+            <tr [ngClass]="{'different': candidateDetails.mobile !== updatedEmpDetails.mobile_number}">
+              <th>Mobile</th>
+              <td>{{candidateDetails.mobile}}</td>
+              <td>{{updatedEmpDetails.mobile_number}}</td>
+            </tr>
+            <tr
+              [ngClass]="{'different': candidateDetails.emergency_contact !== updatedEmpDetails.alternate_mobile_number}">
+              <th>Emergency Contact</th>
+              <td>{{candidateDetails.emergency_contact}}</td>
+              <td>{{updatedEmpDetails.alternate_mobile_number}}</td>
+            </tr>
+            <!-- <tr [ngClass]="{'different': updatedEmpDetails.blood_relation && candidateDetails.bloodrelationname !== updatedEmpDetails.blood_relation}">
+                <th>Blood Relation</th>
+                <td>{{candidateDetails.bloodrelationname}}</td>
+                <td>{{updatedEmpDetails.blood_relation}}</td>
+              </tr> -->
+            <tr [ngClass]="{'different': candidateDetails.fathername !== updatedEmpDetails.father_name}">
+              <th>Father / Husband Name</th>
+              <td>{{candidateDetails.fathername}}</td>
+              <td>{{updatedEmpDetails.father_name}}</td>
+            </tr>
+            <tr [ngClass]="{'different': candidateDetails.post_offered !== updatedEmpDetails.role}">
+              <th>Post Offered</th>
+              <td>{{candidateDetails.post_offered}}</td>
+              <td>{{updatedEmpDetails.role}}</td>
+            </tr>
+            <tr
+              [ngClass]="{'different': candidateDetails.dateofjoining !== updatedEmpDetails.joining_date?.split('-').reverse().join('/')}">
+              <th>Date of Joining</th>
+              <td>{{candidateDetails.dateofjoining}}</td>
+              <td>{{updatedEmpDetails.joining_date?.split('-').reverse().join('/')}}</td>
+            </tr>
+            <tr [ngClass]="{'different': candidateDetails.emp_address !== updatedEmpDetails.permanent_address}">
+              <th>Permanent Address</th>
+              <td>{{candidateDetails.emp_address}}</td>
+              <td>{{updatedEmpDetails.permanent_address}}</td>
+            </tr>
+            <tr
+              [ngClass]="{'different': candidateDetails.residential_address !== updatedEmpDetails.communication_address}">
+              <th>Residential Address</th>
+              <td>{{candidateDetails.residential_address}}</td>
+              <td>{{updatedEmpDetails.communication_address}}</td>
+            </tr>
+            <tr [ngClass]="{'different': candidateDetails.orgempcode !== updatedEmpDetails.employee_id}">
+              <th>Organization Emp Code</th>
+              <td>{{candidateDetails.orgempcode}}</td>
+              <td>{{updatedEmpDetails.employee_id}}</td>
+            </tr>
+            <tr [ngClass]="{'different': candidateDetails.aadhar_number !== updatedEmpDetails.aadhar_number}">
+              <th>Aadhar Card No</th>
+              <td>{{candidateDetails.aadhar_number}}</td>
+              <td>{{updatedEmpDetails.aadhar_number}}</td>
+            </tr>
+            <tr [ngClass]="{'different': candidateDetails.pan_card !== updatedEmpDetails.pan_number}">
+              <th>Pan Card No</th>
+              <td>{{candidateDetails.pan_card}}</td>
+              <td>{{updatedEmpDetails.pan_number}}</td>
+            </tr>
+            <tr [ngClass]="{'different': candidateDetails.bank_account_no !== updatedEmpDetails.account_number}">
+              <th>Bank Account No</th>
+              <td>{{candidateDetails.bank_account_no}}</td>
+              <td>{{updatedEmpDetails.account_number}}</td>
+            </tr>
+            <tr [ngClass]="{'different': candidateDetails.ifsccode !== updatedEmpDetails.ifsc_code}">
+              <th>Bank IFSC</th>
+              <td>{{candidateDetails.ifsccode}}</td>
+              <td>{{updatedEmpDetails.ifsc_code}}</td>
+            </tr>
+            <tr [ngClass]="{'different': candidateDetails.bank_branch !== updatedEmpDetails.bank_branch_name}">
+              <th>Bank Branch</th>
+              <td>{{candidateDetails.bank_branch}}</td>
+              <td>{{updatedEmpDetails.bank_branch_name}}</td>
+            </tr>
+            <tr [ngClass]="{'different': candidateDetails.bank_name !== updatedEmpDetails.bank_name}">
+              <th>Bank Name</th>
+              <td>{{candidateDetails.bank_name}}</td>
+              <td>{{updatedEmpDetails.bank_name}}</td>
+            </tr>
+            <tr [ngClass]="{'different': candidateDetails.assigned_ou_ids_name !== updatedEmpDetails.academy}">
+              <th>Academy</th>
+              <td>{{candidateDetails.assigned_ou_ids_name}}</td>
+              <td>{{updatedEmpDetails.academy}}</td>
+            </tr>
+            <tr [ngClass]="{'different': candidateDetails.esi_number !== updatedEmpDetails.esi_number}">
+              <th>ESI Number</th>
+              <td>{{candidateDetails.esi_number}}</td>
+              <td>{{updatedEmpDetails.esi_number}}</td>
+            </tr>
+            <tr [ngClass]="{'different': candidateDetails.uan_number !== updatedEmpDetails.uan_number}">
+              <th>UAN Number</th>
+              <td>{{candidateDetails.uan_number}}</td>
+              <td>{{updatedEmpDetails.uan_number}}</td>
+            </tr>
+          </tbody>
+
+        </table>
+
+      </div>
+      <div class="modal-footer">
+        <input type="submit" class="btn btn-default" data-dismiss="modal" value="Update" (click)="updateUser()">
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!--------Add UAN number popup------------------>
+<div [@grooveState]="showUANNumberPopup ? 'active' : 'inactive'" class="modal">
+  <div [@dongleState]="showUANNumberPopup ? 'active' : 'inactive'" class="modal-dialog" style="margin:auto;">
+    <div class="modal-content" style="height: 100%; margin-top: 100px; max-height: 80vh; overflow-y: auto;">
+      <form>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Add UAN number</h4>
+          <button type="button" class="close" data-dismiss="modal" (click)="closeUanNumberPopup()">×</button>
+        </div>
+        <div class="modal-body card-body">
+          <div class="form-group">
+            <label class="control-label col-sm-4">UAN Number <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+              <ng-container>
+                <input class="form-control" type="text" maxlength="12" [(ngModel)]="uanNumber" [ngModelOptions]="{standalone: true}" placeholder="Enter UAN Number">
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" value="Add" (click)="addUanNumber()">
+          <input type="button" class="btn btn-default" value="Cancel" (click)="closeUanNumberPopup()">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-------Add UAN number ends---------->

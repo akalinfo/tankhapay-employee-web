@@ -1,0 +1,104 @@
+.container-fluid{
+    padding: 0 !important
+}
+
+.manage-list-row.manage-pay-select.clearfix.list_view_de-box {
+    padding: 10px;
+}
+
+.manage-list-row.manage-pay-select.clearfix.list_view_de-box .net-pay-section {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    height: auto;
+}
+
+.net-pay-section {
+    text-align: center;
+    border: 1px dashed #cfcfcf !important;
+    border-radius: 10px;
+}
+
+.net-pay-section {
+    position: relative;
+}
+
+.font-mm.head-enve-box {
+    padding: 25px 10px 10px 10px;
+    text-align: center;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+.manage-list-row.manage-pay-select.clearfix.list_view_de-box .net-pay-section .title-inn_box {
+    padding: 15px;
+    color: #004899;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+    padding: 10px 10px 0px 10px;
+}
+
+.manage-list-row.manage-pay-select.clearfix.list_view_de-box .net-pay-section .title-inn_box {
+    padding: 15px;
+    color: #004899;
+}
+
+.manage-list-row.manage-pay-select.clearfix.list_view_de-box .net-pay-section .title-inn_box a {
+    color: #004899;
+}
+
+.manage-list-row.manage-pay-select.clearfix.list_view_de-box .net-pay-section .title-inn_box span.font-mm {
+    font-size: 18px !important;
+}
+
+.manage-list-row.manage-pay-select.clearfix.list_view_de-box .net-pay-section .row.net-pay-data-without-bt {
+    margin: 0 0 20px 0;
+}
+
+.manage-list-row.manage-pay-select.clearfix.list_view_de-box .net-pay-section .row.net-pay-data-without-bt .text-uppercase.font-ms.payrun-label {
+    opacity: inherit;
+    font-size: 14px;
+    text-transform: capitalize;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 34px;
+    text-align: center;
+}
+
+.training-content-box{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding-left: 25px;
+}
+
+.status-complete{
+    border: 1px dashed #26c333;
+    padding: 2px 5px;
+    color: #26c333 !important;
+    text-decoration: none !important;
+}
+.status-pending{
+    border: 1px dashed #c38426;
+    padding: 2px 5px;
+    color: #c38426 !important;
+    text-decoration: none !important;
+}
+.status-expired{
+    border: 1px dashed #e22121;
+    padding: 2px 5px;
+    color: #e22121 !important;
+    text-decoration: none !important;
+}
+
+.img-responsive{
+    display: block;
+    max-width: 100%;
+    object-fit: cover !important;
+    height: 133px !important;
+    width: 100%;
+}

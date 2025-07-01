@@ -1,0 +1,2533 @@
+<div id="menu1" class="tab-pane fade1">
+
+  <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+
+
+    <div class="card" *ngIf="payout_method!='attendance' && candidateDetails.jobType!='Consultant' && candidateDetails.jobType!='Unit Parameter'
+         && candidateDetails.joiningStatus!='RELIEVED'">
+      <div class="panel-heading panel_heading_gray collapsed card-header" role="tab" id="headingOne20"
+        data-toggle="collapse" data-parent="#accordion12" href="#collapseOne20" aria-expanded="false"
+        aria-controls="collapseOne">
+        <h4>Compliance Setting<i class="fa fa-angle-down"></i></h4>
+      </div>
+      <div id="collapseOne20" class="panel-collapse collapse card-body in" role="tabpane12">
+        <div class="row">
+          <div class="col-md-6 col-6">
+
+            <!-- <span> </span>
+                    <br> -->
+            <div class="form-group" *ngIf="pf_details.is_epf_registered=='Y'">
+              <label><span class="com-tagline"><strong>Provident Fund :
+                  </strong>
+                  <input type="checkbox" [checked]="cf.pfOpted.value=='Y'"
+                    (change)="getEpfVal($event.target.checked)" />
+                </span>
+              </label>
+            </div>
+          </div>
+          <div class="col-md-6 col-6">
+            <div class="form-group" *ngIf="esi_details.is_esi_registered=='Y'">
+              <label><span class="com-tagline"><strong>Employees' State Insurance :
+                  </strong>
+                  <input type="checkbox" [checked]="cf.esiOpted.value=='Y'"
+                    (change)="getEsiVal($event.target.checked)" />
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-6" [title]="restrictedAccountIds.includes(tp_account_id) ? 'LWF change is restricted for this account' : 'Toggle LWF option'">
+            <div class="form-group">
+              <label><span class="com-tagline"><strong>Labour Welfare Fund :
+                  </strong>
+                  <input type="checkbox" (change)="getLwfOnchange($event.target.checked)"
+                    [checked]="cf.lwfOpted.value=='Y'" [disabled]="restrictedAccountIds.includes(tp_account_id)"
+                    />
+                </span>
+              </label>
+            </div>
+          </div>
+          <div class="col-md-6 col-6">
+            <div class="form-group">
+              <label><span class="com-tagline"><strong>Professional Tax :
+                  </strong>
+                  <input type="checkbox" (change)="getPtOnChange($event.target.checked)"
+                    [checked]="cf.ptApplied.value=='Y'" />
+                </span>
+              </label>
+            </div>
+          </div>
+          <div class="col-md-6 col-6" *ngIf="pf_details.is_epf_registered=='Y'">
+            <div class="form-group">
+              <label><span class="com-tagline"><strong>PF Cap Applied :
+                  </strong>
+                  <input type="checkbox" (change)="getPfCapOnChange($event.target.checked)"
+                    [checked]="cf.pfCapApplied.value=='Y'" />
+                </span>
+              </label>
+            </div>
+          </div>
+          <div class="col-md-6 col-6">
+            <div class="form-group">
+              <label><span class="com-tagline"><strong>Gratuity(Employer) :
+                  </strong>
+                  <input type="checkbox" (change)="getEmployerGratuity($event.target.checked)"
+                    [checked]="isEmployerGratuity" />
+
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-6" *ngIf="isGrpInsuranceAllowed=='Y'">
+            <div class="form-group">
+              <label><span class="com-tagline"><strong>Group Insurance :
+                  </strong>
+                  <input type="checkbox" (change)="getGrpInsurance($event.target.checked)" [checked]="isGrpInsurance" />
+                </span>
+              </label>
+            </div>
+          </div>
+        <!-- *ngIf="tp_account_id == 653" - Charity Contribution by Employee  dated 15.05.2025 by sidharth kaul -->
+          <div  class="col-md-6 col-6" *ngIf="show_charity_contribution">
+            <div class="form-group">
+              <label><span class="com-tagline" for="charity_contri_emp"><strong>Charity Contribution by Employee
+                    :</strong>
+                  <input type="checkbox" id="charity_contri_emp"
+                    (click)="change_charityContributionEmp($event.target.checked)"
+                    [checked]="charityContributionEmp('Y')" [disabled]="restructureMode == ''"
+                    style="margin-left: 15px;" />
+                </span>
+              </label>
+            </div>
+          </div>
+
+
+
+          <div class="col-md-6 col-6" *ngIf="isGrpInsurance">
+            <div class="form-group col-md-6">
+              <label><span class="com-tagline"><strong>Employee Insurance :
+                  </strong>
+                  <input type="text" class="form-control" [(ngModel)]="employeeInsurance"
+                    (blur)="customCalculatedData ='';getuspccalcgrossfromctc_withoutconveyance()" appNumberonly />
+                </span>
+              </label>
+            </div>
+            <div class="form-group col-md-6">
+              <label><span class="com-tagline"><strong>Employer Insurance :
+                  </strong>
+                  <input type="text" class="form-control" [(ngModel)]="employerInsurance"
+                    (blur)="customCalculatedData ='';getuspccalcgrossfromctc_withoutconveyance()" appNumberonly />
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" *ngIf="candidateDetails.joiningStatus!='RELIEVED'">
+
+      <div class="panel-heading panel_heading_gray  card-header" role="tab" id="headingOne6" data-toggle="collapse"
+        data-parent="#accordion6" href="#collapseOne6" aria-expanded="false" aria-controls="collapseOne">
+        <h4>Statutory Components <i class="fa fa-angle-down"></i></h4>
+      </div>
+      <div id="collapseOne6" class="panel-collapse collapse card-body" role="tabpane6">
+        <div class="row">
+
+          <div class="col-md-12 padd-bot-15 padd-top-15" style="top: 11px">
+            <div class="Appointment-outer-box Salary-Details-outer-box">
+              <div class="table-responsive">
+                <form [formGroup]="statutoryComplianceForm">
+                  <table class="table equal-width-table" style="display:none;">
+                    <tbody>
+                      <tr>
+                        <th scope="col">PF</th>
+                        <td>
+                          <span id="pfSelection">
+                            <input [checked]="sf.pfOpted.value == 'Y'" id="pfyes" name="lst[0].pfopted"
+                              [disabled]="candidateDetails.pf_opted=='Y' && (candidateDetails.joiningStatus=='RESTRUCTURE' || candidateDetails.joiningStatus=='JOINED')"
+                              type="radio" value="Y" (click)="getStatutoryPf('Y')" /><label for="pfyes">Yes</label>
+                            &nbsp;&nbsp;&nbsp;
+                            <input [checked]="sf.pfOpted.value == 'N'" id="pfno" name="lst[0].pfopted" type="radio"
+                              value="N" (click)="getStatutoryPf('N')"
+                              [disabled]=" candidateDetails.pf_opted=='Y' && (candidateDetails.joiningStatus=='RESTRUCTURE' || candidateDetails.joiningStatus=='JOINED')" /><label
+                              for="pfno">No</label>
+                            &nbsp;&nbsp;&nbsp;
+                          </span>
+                        </td>
+                        <th scope="col">ESI</th>
+                        <td>
+                          <input [checked]="sf.esiOpted.value == 'Y'" id="esiyes" name="lst[0].esiopted" type="radio"
+                            value="Y" (click)="getStatutoryEsi('Y')" />
+                          <label for="esiyes">Yes</label>&nbsp;&nbsp;&nbsp;
+                          <input [checked]="sf.esiOpted.value == 'N'" id="esino" name="lst[0].esiopted" type="radio"
+                            value="N" (click)="getStatutoryEsi('N')" /><label for="esino">No</label>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <div class="row" style="margin-bottom: 2rem">
+                    <div class="col-sm-12">
+                      <div class="row">
+                        <div class="col-sm-3" style="
+                                  padding-top: 0.3rem;
+                                  margin-right: -13rem;
+                                ">
+                          <label>Other Variables:</label>
+                        </div>
+                        <div class="col-sm-3">
+                          <select class="form-control" id="otherDeductionsSelect" (change)="addVariable($event.target)">
+                            <option value="-1">Select Option</option>
+                            <option *ngFor="let ded of deductionsMaster" [value]="ded.id">
+                              {{ ded.deduction_name }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <table class="table" id="otherDeductionTable">
+                        <thead>
+                          <tr>
+                            <th width="35%;">Variable Name</th>
+                            <th>Deduction Amount</th>
+                            <th>Deduction Frequency</th>
+                            <th>Included in CTC</th>
+                            <th>Is Variable</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody formArrayName="otherVariablesDetails">
+                          <ng-container *ngFor="let v_f of variableForm.controls; let i = index">
+                            <tr [formGroupName]="i">
+                              <td>{{ v_f.get("deduction_name").value }}</td>
+                              <td>
+                                <input type="number" class="form-control" formControlName="deduction_value"
+                                  placeholder="Enter Amount" />
+                              </td>
+                              <td>
+                                <select formControlName="deduction_frequency" class="form-control" 
+                                [ngClass]="{ 'disabled-select': v_f.get('deduction_name').value === 'VPF' }">
+                                  <option value="">Select</option>
+                                  <option value="Monthly">
+                                    Monthly
+                                  </option>
+                                  <option value="Quarterly">
+                                    Quarterly
+                                  </option>
+                                  <option value="Half Yearly">
+                                    Half Yearly
+                                  </option>
+                                  <option value="Annually">
+                                    Annually
+                                  </option>
+                                </select>
+                              </td>
+                              <td>
+                                <!-- <select formControlName="includedinctc" class="form-control">
+                                  <option value="">Select</option>
+                                  <option value="Y">Yes</option>
+                                  <option value="N">No</option>
+                                </select> -->
+                                <!---To Get value when monthly is selected then yes and no are avilable other wise only yes--->
+                                <select formControlName="includedinctc" class="form-control"
+                                 [ngClass]="{'disabled-select': v_f.get('deduction_name').value === 'VPF' || v_f.get('deduction_frequency').value !== 'Monthly'}">
+                                  <option value="">Select</option>
+                                  <option
+                                    *ngFor="let opt of getIncludedInCtcOptions(variableForm.controls[i].get('deduction_frequency').value)"
+                                    [value]="opt.value">
+                                    {{ opt.label }}
+                                  </option>
+                                </select>
+                                <!----end----->
+                              </td>
+                              <td>
+                                <select formControlName="isvariable" class="form-control"
+                                [ngClass]="{ 'disabled-select': v_f.get('deduction_name').value === 'VPF' }">
+                                  <option value="">Select</option>
+                                  <option
+                                    *ngFor="let opt of getIsVariableOptions(variableForm.controls[i].get('deduction_name')?.value)"
+                                    [value]="opt.value">
+                                    {{ opt.label }}
+                                  </option>
+                                </select>
+                              </td>
+                              <td>
+                                <a class="btn btn-danger" (click)="removeVariable(i)"
+                                  [ngClass]="{ 'no-click': !edit_statutory_compliances }"><i
+                                    class="fa fa-times fa-lg"></i></a>
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-5"></div>
+                    <div class="col-md-4" style="margin-bottom: 10px;">
+                      <button class="btn btn-primary" (click)="saveStatutoryForm()">Save</button>
+                    </div>
+                    <div class="col-md-3"></div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" *ngIf="payout_method!='attendance' && candidateDetails.jobType!='Consultant' && candidateDetails.jobType!='Unit Parameter'
+         && candidateDetails.joiningStatus!='RELIEVED'">
+      <div class="panel-heading panel_heading_gray collapsed card-header" role="tab" id="headingOne7"
+        data-toggle="collapse" data-parent="#accordion12" href="#collapseOne12" aria-expanded="false"
+        aria-controls="collapseOne">
+        <h4>Custom Salary <i class="fa fa-angle-down"></i></h4>
+      </div>
+      <div id="collapseOne12" class="panel-collapse collapse card-body" role="tabpane12">
+        <div class="row">
+          <div class="col-md-12 padd-bot-15">
+
+            <div class="col-md-12 padd-bot-15">
+              <div class="row">
+                <div class="col-md-12">
+                  <a class="edit-data" (click)="editCustomSalaryRestructure()" *ngIf="
+                        !edit_custom_salary &&
+                        candidateDetails.joiningStatus == 'PENDING'
+                      "><i class="fa fa-pencil-square-o fa-lg"></i></a>
+                  <button type="button" class="btn btn-primary" id="restructureCandidateSalary"
+                    style="position: absolute; right: 10px; top: 0px" *ngIf="
+                        ((candidateDetails.joiningStatus == 'JOINED') &&
+                        !isCustomEditSal)
+                      " (click)="editSalary('CustomRestructureMode')">
+                    Edit Custom Salary
+                  </button>
+                  <button type="button" class="btn btn-danger" id="restructureCandidateSalary"
+                    style="position: absolute; right: 10px; top: 0px" *ngIf="
+                           ((candidateDetails.joiningStatus == 'RESTRUCTURE') &&
+                           isCustomEditSal)
+                        " (click)="discardSalary()">
+                    Discard
+                  </button>
+                </div>
+              </div>
+              <div class="row">
+                <form [formGroup]="customSalaryform" [ngClass]="{
+                        'no-click':
+                          !isCustomEditSal && !edit_custom_salary
+                      }">
+                  <div class="row">
+                    <div class="col-md-5 col-5">
+                      <div class="form-group">
+                        <label><span class="com-tagline"><strong>Employer part excluded from the CTC :</strong>
+                            <div class="center">
+                              <input type="checkbox" [checked]="isEmployerPartExcluded=='Y'"
+                                (change)="getIsEmployerPart($event.target.checked)" />
+                            </div>
+                          </span></label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="card Salary-Details-outer-box" style="margin-bottom:10px !important;">
+
+                    <div class="card-body">
+                      <div class="row">
+
+                        <div class="col-md-6">
+                          <label>Annually Offered Package<span class="text-danger">*</span> </label>
+                          <div class="input-group">
+                            <div class="input-group-addon">₹</div>
+                            <input type="text" placeholder="Enter AOP" class="form-control" autocomplete="off"
+                              formControlName="mop" (blur)="calculateSal();isShowSalaryTable=true;" appNumberonly>
+                            <!-- <div class="input-group-addon enter-btn-box">GO</div> -->
+                          </div>
+                        </div>
+                        <div class="col-md-6" *ngIf="isCustomEditSal || edit_custom_salary">
+
+                          <div class="col-md-6" style="padding-left:0;">
+                            <label>
+                              Minimum Wage State<span class="text-danger">*</span></label>
+                            <div class="input-group" style="width: 100%;">
+                              <strong>{{!isCustomEditSal && !edit_custom_salary ? cf.minWageState.value:''}}</strong>
+                              <select class="form-control" (change)="
+                                        getMinWagesState($event.target)
+                                      " formControlName="minWageState" *ngIf="isCustomEditSal || edit_custom_salary">
+                                <option value="">
+                                  -- Select State --
+                                </option>
+                                <option [value]="state.statename" *ngFor="
+                                          let state of statesMaster
+                                        ">
+                                  {{ state.statename}}
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-6" style="padding:0;">
+
+                            <label> Minimum Wage Category<span class="text-danger">*</span></label>
+                            <div class="input-group" style="width: 100%;">
+                              <select class="form-control" formControlName="minWagesCtg"
+                                (change)="customCalculatedData ='';getuspccalcgrossfromctc_withoutconveyance()">
+                                <option value="">
+                                  -- Select Category --
+                                </option>
+                                <option [value]="ctg.minwagecategoryid" *ngFor="let ctg of minWagesCtg">
+                                  {{ ctg.wagesctgname }}
+                                </option>
+                              </select>
+                            </div>
+
+                          </div>
+
+                        </div>
+                        <div class="col-md-6 input-margin" *ngIf="isCustomEditSal || edit_custom_salary">
+                          <div class="col-md-8 no-padd">
+                            <label>Salary Days<span class="text-danger">*</span>&nbsp;&nbsp; </label>
+                            <input [checked]="
+                                          this.cf.salaryDaysOpted.value == 'Y'
+                                        " type="radio" value="Y" name="salDayOption" id="salDayOptionYes" />
+                            <label style="font-weight: normal" for="salDayOptionYes"
+                              (click)="salaryInDaysCustom('Y')">Yes</label>&nbsp;&nbsp;&nbsp;
+                            <input [checked]="
+                                      this.cf.salaryDaysOpted.value == 'N'
+                                    " type="radio" value="N" name="salDayOption" id="salDayOptionNo" />
+                            <label style="font-weight: normal" for="salDayOptionNo"
+                              (click)="salaryInDaysCustom('N')">No</label>
+                          </div>
+                          <div class="input-group col-md-4">
+                            <select formControlName="salaryDays" class="form-control" (change)="
+                                        setSalDaysReqCustom($event.target.value)
+                                      ">
+                              <option value="">
+                                -- Select Days --
+                              </option>
+                              <option [value]="days.mdays" *ngFor="let days of minWageDays">
+                                {{days.daysdisplay}}
+                              </option>
+                              <!-- <option value="26" [disabled]="
+                                          cf.salaryDaysOpted.value === 'N'
+                                        ">
+                                        26 Days
+                                      </option> -->
+                              <!-- <option value="30">30 Days</option> -->
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-6 input-margin" *ngIf="isCustomEditSal || edit_custom_salary">
+                          <div class="col-md-5 no-padd">
+                            <label>Gratuity(Employee) :</label>
+                          </div>
+                          <div class="col-md-7">
+                            <input type="radio" name="gratuity_employee" id="grauity_yes" (change)="getGratuity(true)"
+                              [checked]="isGratuity" />
+                            <label for="grauity_yes">Yes</label>
+                            <input type="radio" name="gratuity_employee" id="grauity_no" (change)="getGratuity(false)"
+                              [checked]="!isGratuity" />
+                            <label for="grauity_no">No</label>
+                          </div>
+                        </div>
+                        <div class="col-md-12 input-margin" *ngIf="isCustomEditSal || edit_custom_salary">
+                          <div class="col-md-6 no-padd">
+                            <div class="col-md-6 no-padd">
+                              <label>Salary Calculation on : </label>
+                            </div>
+                            <div class="col-md-6">
+
+                              <input type="radio" name="salCalculation" id="percent"
+                                [checked]="salaryCalcType=='percent'" (click)="salaryCalcType='percent';">
+                              <label for="percent">Percentage</label>
+                              <input type="radio" name="salCalculation" id="flat" [checked]="salaryCalcType=='flat'"
+                                (click)="salaryCalcType='flat';">
+                              <label for="flat">Flat</label>
+                            </div>
+                          </div>
+                          <!--10 july 2024<div class="col-md-6 no-padd">
+                                  <div class="col-md-4 ">
+                                    <label >DA Rate</label>
+                                  </div>
+                                  <div class="col-md-8">
+                                    <input type="text" class="form-control" formControlName="daRate" placeholder="Enter Daily Allowance Rate"
+                                    (keyup)="validateInput($event.target.value)">
+                                </div>
+                                </div> -->
+                        </div>
+                      </div>
+                      <div class="row" style="margin: 0 auto;" *ngIf="customSalaryMsg!=''">
+                        <p style="text-align: center;
+                                background: #ff9191;
+                                color: #fff;
+                                width: 100%;">{{customSalaryMsg}}</p>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <div class="card"
+                    *ngIf="isShowSalaryTable && (this.edit_custom_salary || this.isCustomEditSal) && customSalaryMsg==''">
+                    <div class="card-body custom-salary-table">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Salary Components</th>
+                            <th *ngIf="salaryCalcType!='flat'">Calculation Type</th>
+                            <th>Monthly Amount</th>
+                            <th>Annual Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody formArrayName="salarystructure">
+                          <tr style="background-color: hsl(202, 100%, 90%) !important;">
+                            <td colspan="3" *ngIf="salaryCalcType=='flat'"><strong>Earnings</strong></td>
+                            <td colspan="4" *ngIf="salaryCalcType!='flat'"><strong>Earnings</strong></td>
+                          </tr>
+                          <ng-container *ngFor="
+                                let v_f of salComponentHead.controls;
+                                let i = index
+                              ">
+                            <tr [formGroupName]="i">
+                              <td>
+                                {{v_f.controls.earningType.value}} &nbsp;&nbsp;
+                                <div style="display:inline-block"
+                                  *ngIf="v_f.controls.salary_component_name.value=='Gratuity In Hand'">
+                                  <input type="checkbox" [checked]="gratuityInHand"
+                                    (change)="getIsGratuityInHand($event.target.checked)" />
+                                </div>
+                              </td>
+                              <td *ngIf="salaryCalcType!='flat'">
+                                <div class="input-group" style="width: 100px;">
+                                  <input type="text" placeholder="Basic" class="form-control component-input"
+                                    formControlName="percentage_ctc" (blur)="calculateSal()" appNumberonly
+                                    *ngIf="v_f.controls.percentage_fixed.value!='Flat' && v_f.controls.salary_component_name.value!='Special Allowance'"
+                                    [ngClass]="{'no-click':v_f.controls.salary_component_name.value=='Gratuity In Hand' }"
+                                    [readonly]="v_f.controls.salary_component_name.value=='Gratuity In Hand'" />
+                                  {{v_f.controls.percentage_fixed.value=='Flat'? v_f.controls.percentage_fixed.value :
+                                  v_f.controls.salary_component_name.value=='Special Allowance' ? 'Flat':''}}
+                                  <div class="input-group-addon"
+                                    *ngIf="v_f.controls.percentage_fixed.value!='Flat' && v_f.controls.salary_component_name.value!='HRA' && v_f.controls.salary_component_name.value!='Gratuity In Hand' && v_f.controls.salary_component_name.value!='Special Allowance'">
+                                    % of CTC</div>
+                                  <div class="input-group-addon" *ngIf="v_f.controls.percentage_fixed.value!='Flat' && v_f.controls.salary_component_name.value=='HRA' ||
+                                      v_f.controls.salary_component_name.value=='Gratuity In Hand'">% of Basic</div>
+                                  <!-- <div class="input-group-addon enter-btn-box">GO</div> -->
+                                </div>
+                              </td>
+                              <td>
+                                <input type="text" *ngIf="v_f.controls.percentage_fixed.value!='Flat'"
+                                  placeholder="Monthly Amount" class="form-control"
+                                  formControlName="salary_component_amount"
+                                  (blur)="clearCalculatedData(i,$event.target.value)" appNumberonly
+                                  [readonly]="((v_f.controls.salary_component_name.value=='BASIC SALARY' || v_f.controls.salary_component_name.value=='HRA' 
+                                    || v_f.controls.salary_component_name.value=='Special Allowance') && salaryCalcType=='percent') || v_f.controls.salary_component_name.value=='Gratuity In Hand'"
+                                  [ngClass]="{'no-click':((v_f.controls.salary_component_name.value=='BASIC SALARY' || v_f.controls.salary_component_name.value=='HRA' || v_f.controls.salary_component_name.value=='Special Allowance') && salaryCalcType=='percent')|| v_f.controls.salary_component_name.value=='Gratuity In Hand'}" />
+                                <input type="text" *ngIf="v_f.controls.percentage_fixed.value=='Flat'"
+                                  placeholder="Monthly Amount" class="form-control" formControlName="percentage_ctc"
+                                  (blur)="clearCalculatedData(i,$event.target.value)" appNumberonly>
+                              </td>
+                              <!-- <td>
+                                <span>{{v_f.controls.percentage_fixed.value!='Flat' ?
+                                  (v_f.controls.salary_component_amount.value*12).toFixed(2):
+                                  (v_f.controls.percentage_ctc.value*12).toFixed(2)}}</span>
+                              </td> -->
+                              <td>
+                                <span>{{v_f.controls.percentage_fixed.value!='Flat' ?
+                                  ((this.getRoundedVal(v_f.controls.salary_component_amount.value))*12).toFixed(2) :
+                                  ((this.getRoundedVal(v_f.controls.percentage_ctc.value))*12).toFixed(2)}}</span>
+                              </td>
+
+                            </tr>
+
+
+                          </ng-container>
+                          <tr *ngIf="grossSalary!=''">
+                            <td colspan="2" *ngIf="salaryCalcType=='percent'">Gross Salary</td>
+                            <td colspan="1" *ngIf="salaryCalcType=='flat'">Gross Salary</td>
+                            <td colspan="1" *ngIf="salaryCalcType!='flat'">{{grossSalary}}</td>
+                            <td colspan="2" *ngIf="salaryCalcType=='flat'">{{grossSalary}}</td>
+                          </tr>
+                          <tr style="background-color: #ceedff !important;" *ngIf="customCalculatedData">
+                            <td colspan="4" *ngIf="salaryCalcType!='flat'"> <strong>Deductions</strong></td>
+                            <td colspan="3" *ngIf="salaryCalcType=='flat'"> <strong>Deductions</strong></td>
+                          </tr>
+                          <tr *ngIf="customCalculatedData">
+                            <td>ESI - Employer Contribution</td>
+                            <td *ngIf="salaryCalcType!='flat'"></td>
+                            <td>{{customCalculatedData.esi_employer.toFixed(2)}}</td>
+                            <td><span></span></td>
+                          </tr>
+                          <tr *ngIf="customCalculatedData">
+                            <td>ESI - Employee Contribution</td>
+                            <td *ngIf="salaryCalcType!='flat'"></td>
+                            <td>{{customCalculatedData.esi_employee.toFixed(2)}}</td>
+                            <td><span></span></td>
+                          </tr>
+                          <tr *ngIf="customCalculatedData">
+                            <td>PF - Employer Contribution</td>
+                            <td *ngIf="salaryCalcType!='flat'"></td>
+                            <td>{{customCalculatedData.epf_employer}}</td>
+                            <td><span></span></td>
+                          </tr>
+                          <tr *ngIf="customCalculatedData">
+                            <td>PF - Employee Contribution</td>
+                            <td *ngIf="salaryCalcType!='flat'"></td>
+                            <td>{{customCalculatedData.epf_employee}}</td>
+                            <td><span></span></td>
+                          </tr>
+                          <tr *ngIf="customCalculatedData">
+                            <td>LWF - Employer Contribution</td>
+                            <td *ngIf="salaryCalcType!='flat'"></td>
+                            <td>{{customCalculatedData.employerlwf}}</td>
+                            <td><span></span></td>
+                          </tr>
+                          <tr *ngIf="customCalculatedData">
+                            <td>LWF - Employee Contribution</td>
+                            <td *ngIf="salaryCalcType!='flat'"></td>
+                            <td>{{customCalculatedData.employeelwf}}</td>
+                            <td><span></span></td>
+                          </tr>
+                          
+                          <!-- Charity Contribution under Custom Salary - sidharth kaul dated. 13.06.2025 -->
+                          <tr *ngIf="customCalculatedData && charityCheck(customCalculatedData.charity_contribution_amount) && show_charity_contribution">
+                            <td>Charity Contribution</td>
+                            <td *ngIf="salaryCalcType!='flat'"></td>
+                            <td>{{customCalculatedData.charity_contribution_amount}}</td>
+                            <td><span></span></td>
+                          </tr>      
+                          <!-- Charity Contribution under Salary Struture Slip - sidharth kaul dated. 13.06.2025 -->
+
+                          <tr *ngIf="customCalculatedData && isGrpInsurance">
+                            <td>Group Insurance - Employer Contribution</td>
+                            <td *ngIf="salaryCalcType!='flat'"></td>
+                            <td>{{customCalculatedData.employerinsuranceamount}}</td>
+                            <td><span></span></td>
+                          </tr>
+                          <tr *ngIf="customCalculatedData && isGrpInsurance">
+
+                            <td>Group Insurance - Employee Contribution</td>
+                            <td *ngIf="salaryCalcType!='flat'"></td>
+                            <td>{{customCalculatedData.p_employeeinsuranceamount}}</td>
+                            <td><span></span></td>
+                          </tr>
+                          <tr
+                            *ngIf="customCalculatedData && (customCalculatedData.employergratuityopted=='Y' || customCalculatedData.gratuityopted=='Y')">
+                            <td>Gratuity</td>
+                            <td *ngIf="salaryCalcType!='flat'"></td>
+                            <td>{{(customCalculatedData.employergratuityopted == 'Y'
+                              ? customCalculatedData.employerGratuityRound
+                              : customCalculatedData.gratuityRound)
+                              | number:'1.0-0' }}</td>
+                            <td><span></span></td>
+                          </tr>
+
+                        </tbody>
+                        <tfoot *ngIf="customCalculatedData">
+                          <tr style="background-color: #ceedff !important;">
+                            <td colspan="2" *ngIf="salaryCalcType!='flat'"><strong>Salary In hand</strong></td>
+                            <td colspan="1" *ngIf="salaryCalcType=='flat'"><strong>Salary In hand</strong></td>
+                            <td>₹ {{customCalculatedData.salary_in_hand.toFixed(2)}}</td>
+                            <!-- <td>₹ {{(customCalculatedData.salary_in_hand*12).toFixed(2)}}</td> -->
+                            <td>₹ {{((this.getRoundedVal(customCalculatedData.salary_in_hand))*12).toFixed(2)}}</td>
+
+                          </tr>
+                          <tr style="background-color: #ceedff !important;">
+                            <td colspan="2" *ngIf="salaryCalcType!='flat'"><strong>Cost to Company</strong></td>
+                            <td colspan="1" *ngIf="salaryCalcType=='flat'"><strong>Cost to Company</strong></td>
+                            <td>₹ {{customCalculatedData.ctc.toFixed(2)}}</td>
+                            <!-- <td>₹ {{(customCalculatedData.ctc*12)}}</td> -->
+                             <td>₹ {{((this.getRoundedVal(customCalculatedData.ctc))*12)}}</td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div class="card"
+                    [ngStyle]="{'display':customSalaryMsg!='' && (isCustomEditSal || edit_custom_salary)?'none':''}">
+                    <div class="card-header" style="border-bottom:none;">
+                      <h4 class="card-title">Payout Preferences</h4>
+                    </div>
+
+
+                    <!-- start - Charity Contribution by Employee dated 15.05.2025 by sidharth kaul -->
+                    <!-- <div class="col-md-12 m-clear mrg-bot-15 check-pad-box" style="margin-left: 15px;">
+                    <input type="checkbox" name="charity_contri_emp" id="charity_contri_emp"
+                      (click)="change_charityContributionEmp($event.target.checked)" [checked]="charityContributionEmp('Y')"
+                      style="margin-top: 5px;">
+                    <label for="charity_contri_emp" style="margin-left: 10px;">Charity Contribution by Employee  
+                    </label><br/>
+                    <span>📢 Note: If yes, then include a Deduction section for Charity Contribution by the employee, which should be calculated as 1% of the basic salary.</span>
+                  </div> -->
+                    <!-- end - Charity Contribution by Employee -->
+
+                    <!-- start - hourly salary setup setting  dated 06.05.2025 by sidharth kaul -->
+                    <div class="col-md-12 m-clear mrg-bot-15 check-pad-box" style="margin-left: 15px;">
+                      <input type="checkbox" name="hourly_sal" id="hourly_sal"
+                        (click)="change_hourlySalarySetup($event.target.checked)" [checked]="hourlySalarySetup('Y')"
+                        style="margin-top: 5px;">
+                      <label for="hourly_sal" style="margin-left: 10px;">Enable Hourly Salary Calculation</label><br />
+                      <span *ngIf="hourlySalarySetup('Y') == true">📢 Note: When enabled, salary will be calculated and
+                        deducted based on actual hours worked instead of fixed monthly salary. This applies to all
+                        attendance records.</span>
+                    </div>
+                    <!-- end - hourly salary setup setting -->
+
+                    <!-- start - custom salary tax percentage - dated 08.05.2025 by sidharth kaul -->
+                    <div class="col-md-6" *ngIf="candidateDetails?.jobType == 'Independent Contractors'">
+                      <label>Tax Percentage</label>
+                      <div class="input-group">
+                        <input type="text" placeholder="Enter Percentage" class="form-control" autocomplete="off"
+                          formControlName="customTaxPercent" pattern="^(100(\.0{1,2})?|(\d{1,2})(\.\d{1,2})?)$"
+                          title="Enter a number between 0 and 100 with up to 2 decimal places"
+                          (blur)="validateTaxPercent()" />
+                        <div class="input-group-addon">%</div>
+                      </div>
+                    </div>
+                    <!-- end - custom salary tax percentage -->
+
+                    <div class="col-md-6 payout-preference">
+                      <label for="">Effective Date</label>
+                      <input id="customEffectiveDate" formControlName="effectiveDate" type="text" readonly
+                        autocomplete="off" class="form-control" placeholder="mm/yyyy" />
+                    </div>
+
+                    <!-- <div class="col-md-6 payout-preference">     
+                            <label for="">Payout Date</label>
+                            <input id="customPayoutDate" formControlName="payoutDate" type="text"
+                            autocomplete="off" class="form-control" placeholder="dd/mm/yyyy" />
+                    </div> -->
+
+                  </div>
+
+                  <div class="col-md-12 col-12 text-center"
+                    *ngIf="isShowSalaryTable && (this.edit_custom_salary || this.isCustomEditSal) && customSalaryMsg==''">
+                    <button type="button" class="btn btn-primary" id="Submitform" name="Submitform"
+                      (click)="calculateCustomSal()"
+                      *ngIf="!customCalculatedData && ((candidateDetails.joiningStatus=='RESTRUCTURE' || candidateDetails.joiningStatus=='PENDING' ) && isCustomInputTrigger)">
+                      Calculate
+                    </button>
+                    <button type="button" class="btn btn-primary" id="Submitform" name="Submitform"
+                      (click)="saveCustomSal()" *ngIf="customCalculatedData">
+                      Save
+                    </button>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" *ngIf="candidateDetails.jobType=='Consultant' && candidateDetails.joiningStatus!='RELIEVED'">
+      <div class="panel-heading panel_heading_gray collapsed card-header" role="tab" id="headingOne7"
+        data-toggle="collapse" data-parent="#accordion13" href="#collapseOne13" aria-expanded="false"
+        aria-controls="collapseOne">
+        <h4>Consultant Salary<i class="fa fa-angle-down"></i></h4>
+      </div>
+      <div id="collapseOne13" class="panel-collapse collapse card-body" role="tabpane12">
+        <div class="row">
+          <div class="col-md-12 padd-bot-15 ">
+            <div class="col-md-12 padd-bot-15 ">
+              <div class="row">
+                <div class="col-md-12">
+                  <a class="edit-data" (click)="editConsultantSalary()" *ngIf="
+                !isEditConsultantSalary
+              "><i class="fa fa-pencil-square-o fa-lg"></i></a>
+                </div>
+              </div>
+              <div class="row" style="margin-top:18px">
+                <form [formGroup]="consultantform" [ngClass]="{
+                'no-click':
+                !isEditConsultantSalary
+              }">
+
+                  <div class="card" style="margin-bottom:10px !important;">
+
+                    <div class="card-body">
+                      <div class="row">
+
+                        <div class="col-md-6">
+                          <label>Monthly Offered Package<span class="text-danger">*</span> </label>
+                          <div class="input-group">
+                            <div class="input-group-addon">₹</div>
+                            <input type="text" placeholder="Enter MOP" class="form-control" autocomplete="off"
+                              formControlName="mop" appNumberonly>
+
+                          </div>
+                        </div>
+
+
+                        <div class="col-sm-12 mrg-bot-15">
+
+                          <label>Please select the payment purpose. </label>
+                          <div
+                            class="table__containter--inner table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+                            <table class="table">
+                              <thead>
+                                <tr>
+                                  <th scope="Row">#</th>
+                                  <th>Purpose</th>
+                                  <th>TDS</th>
+                                  <th>Tax Code</th>
+                                </tr>
+                              </thead>
+                              <!-- <thead>
+                            </thead> -->
+                              <tbody>
+                                <tr *ngFor="let service of masterTDS">
+                                  <td><input formControlName="tdsId" type="radio" [value]="service.id"
+                                      style="display:block;"></td>
+                                  <td>{{service.purpose}}</td>
+                                  <td>{{service.tds }}%</td>
+                                  <td><a href="#" target="_blank">{{service.tax_code}}</a></td>
+                                </tr>
+
+                              </tbody>
+                            </table>
+                          </div>
+
+
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="col-md-12 col-12 text-center" *ngIf="isEditConsultantSalary">
+                    <button type="button" class="btn btn-primary" id="Submitform" name="Submitform"
+                      (click)="saveConsultantSalarySetup()">
+                      Save
+                    </button>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" *ngIf="
+          (candidateDetails.joiningStatus == 'JOINED' ||
+          candidateDetails.joiningStatus == 'RESTRUCTURE' || candidateDetails.joiningStatus=='RELIEVED') &&
+          payout_method!='attendance'">
+      <div class="panel-heading panel_heading_gray collapsed card-header" role="tab" id="headingOne11"
+        data-toggle="collapse" data-parent="#accordion11" href="#collapseOne11" aria-expanded="false"
+        aria-controls="collapseOne">
+        <h4>
+          View Salary Structure <i class="fa fa-angle-down"></i>
+        </h4>
+      </div>
+      <div id="collapseOne11" class="panel-collapse collapse card-body" role="tabpane11">
+        <div class="row">
+          <div class="card card-body" style="margin: 0 10px;">
+            <div class="row form-padd" [formGroup]="otherDetailForm" *ngIf="candidateDetails.jobType != 'Consultant'">
+              <!-- DA Rate Section -->
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-md-4 col-form-label">DA Rate</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" formControlName="daRate" (blur)="onBlur('daRate')"
+                      placeholder="Enter Daily Allowance Rate" maxlength="15" appNumberonly>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Salary Days Section -->
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-md-4 col-form-label">Salary Days</label>
+                  <div class="col-md-4">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" value="Y" name="salDayOption" id="salDayOptionYes"
+                        [checked]="of.salaryDaysOpted.value == 'Y'" />
+                      <label class="form-check-label" for="salDayOptionYes"
+                        (click)="salaryInDaysOther('Y');onBlur('salaryDays');">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" value="N" name="salDayOption" id="salDayOptionNo"
+                        [checked]="of.salaryDaysOpted.value == 'N'" />
+                      <label class="form-check-label" for="salDayOptionNo"
+                        (click)="salaryInDaysOther('N');onBlur('salaryDays');">No</label>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <select class="form-control" formControlName="salaryDays"
+                      (change)="setSalDaysReqOther($event.target.value);onBlur('salaryDays')">
+                      <option value="">-- Select Days --</option>
+                      <option [value]="days.mdays" *ngFor="let days of minWageDays">{{ days.daysdisplay }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- KM Rate Section -->
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-md-4 col-form-label">KM Rate</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" formControlName="kmRate" (blur)="onBlur('kmRate')"
+                      placeholder="Enter Per Kilometer Rate" maxlength="15" appNumberonly>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tea Allowance Section -->
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-md-4 col-form-label">Tea Allowance</label>
+                  <div class="col-md-8">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" id="teaAllowYes" value='Y'
+                        formControlName="teaAllowanceFlag" />
+                      <label class="form-check-label" for="teaAllowYes"
+                        (click)="onBlur('teaAllowanceFlag');;">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" id="teaAllowNo" value="N"
+                        formControlName="teaAllowanceFlag" />
+                      <label class="form-check-label" for="teaAllowNo" (click)="onBlur('teaAllowanceFlag');;">No</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!--------Manual TDS----------->
+              <div class="col-md-6" *ngIf="tds_details.tds_enablestatus=='N'">
+                <div class="form-group row">
+                  <label class="col-md-4 col-form-label">Manual TDS</label>
+                  <div class="col-md-8">
+                    <input class="form-control" type="text" id="manualTDS" value='Y' formControlName="manualTDS"
+                      (blur)="onBlur('manualTDS')" appNumberonly />
+                  </div>
+                </div>
+              </div>
+
+              <!-- add by AK TDS Exemption -->
+              <div class="col-md-12">
+                <!-- ✅ Help Text -->
+                  <div style="padding-bottom: 15px;">
+                  <small class="form-text text-muted pl-1 mt-2 d-block">
+                    📢 Note: This option is for employees (e.g., in North East) who are exempt from TDS. Upload a valid exemption certificate.
+                  </small>
+                </div>
+                <!-- TDS Exemption Radio Options -->
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-4 col-form-label">TDS Exemption</label>
+                    <div class="col-md-4">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="isTdsExemptYes" value='Y' formControlName="isTdsExempt" />
+                        <label class="form-check-label" for="isTdsExemptYes" (click)="onBlur('isTdsExempt');">Yes</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="isTdsExemptNo" value="N" formControlName="isTdsExempt" />
+                        <label class="form-check-label" for="isTdsExemptNo" (click)="onBlur('isTdsExempt');">No</label>
+                      </div>
+
+                        
+                    </div>
+                  </div>
+                </div>
+                <!-- View Existing Document -->
+                <div class="col-md-6" style="padding: 0px;" 
+                    *ngIf="tds_exempted_docpath && !otherDetailForm.get('documentByteCode')?.value && !showTdsUploadForm">
+                  <div class="form-group row">
+                    <label for="tdsExceptionFile" class="col-md-6 col-form-label">TDS Exception Document</label>
+                    <div class="col-md-6">
+                      <a [href]="tds_exempted_docpath" target="_blank" class="btn btn-outline-primary btn-sm">
+                        <i class="fa fa-file-pdf-o mr-1 text-danger"></i> View
+                      </a>
+                      <!-- Edit Button - only shown in edit mode -->
+                      <button *ngIf="isEditMode" class="btn btn-link text-primary ml-2" type="button" (click)="showTdsUploadForm = true">
+                        <i class="fa fa-pencil-square-o"></i> Edit
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Upload New Document -->
+                <ng-container *ngIf="otherDetailForm.get('isTdsExempt')?.value === 'Y'">
+                  <div class="col-md-6" style="padding: 0px;" *ngIf="!tds_exempted_docpath || showTdsUploadForm">
+                    <div class="form-group row">
+                      <label for="tdsExceptionFile" class="col-md-6 col-form-label">Attachment TDS Exception </label>
+                      <div class="col-md-6">
+                        <input type="file" accept="application/pdf" (change)="onTdsFileSelect($event)"
+                              class="form-control" id="tdsExceptionFile" style="max-width: 342px;" />
+                        <input type="hidden" formControlName="originalDocumentName" />
+                        <input type="hidden" formControlName="documentByteCode" />
+
+                        <!-- Preview newly selected document -->
+                        <div *ngIf="otherDetailForm.get('documentByteCode')?.value" class="mt-3">
+                          <a [href]="getPdfUrl(otherDetailForm.get('documentByteCode')?.value)" target="_blank" class="text-primary">
+                            <i class="fa fa-file-pdf-o mr-1"></i>
+                            {{ otherDetailForm.get('originalDocumentName')?.value }}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+
+                
+              </div>
+
+              <!-- add by AK TDS Exemption -->
+
+              <!-- Common Save Button -->
+              <div class="col-md-12 text-center" *ngIf="candidateDetails.joiningStatus != 'RELIEVED'">
+                <button class="btn btn-primary" (click)="saveAllDetails()">Save</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-body">
+            <div class="row" style="text-align:right;">
+              <a style="padding-right:16px" (click)="printSalaryStructure()"><i class="fa fa-print fa-lg"
+                  aria-hidden="true"></i></a>
+              <div class="col-md-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="showRoundedVal" [(ngModel)]="isShowRoundedVal" />
+                  <label class="form-check-label" for="showRoundedVal">&nbsp; Show
+                    rounded
+                    values</label>
+                </div>
+              </div>
+            </div>
+            <div class="Appointment-outer-box" id="salarystructure">
+
+              <div class="table-responsive" *ngIf="salaryStructure != ''">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Salary Bucket</th>
+                      <th>Monthly</th>
+                      <th>Annually</th>
+                    </tr>
+                  </thead>
+                  <tbody id="roundedValues">
+
+                    <!-- <td>{{v_f.controls.salary_component_name.value}}</td> -->
+
+                    <tr class="danger1" *ngIf="candidateDetails.jobType!='Consultant'">
+                      <th colspan="3">1. GROSS SALARY</th>
+                    </tr>
+                    <tr class="danger1" *ngIf="candidateDetails.jobType!='Consultant'">
+                      <td scope="col">{{ getEarningLabel('BASIC SALARY') }}</td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.basic) :
+                        getRoundedVal(salaryStructure.basic)
+                        }} 
+                      </td>
+                      <!-- <td>{{ !isShowRoundedVal ? 
+                        truncateToTwoDecimals(salaryStructure.basic * 12) :
+                        getRoundedVal(salaryStructure.basic * 12 ) 
+                        }}
+                      </td> -->
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.basic * 12) :
+                        getRoundedVal(salaryStructure.basic) * 12  }} 
+                      </td>
+                      
+                    </tr>
+                    <tr class="danger1" *ngIf="candidateDetails.jobType!='Consultant'">
+                      <td scope="col">{{ getEarningLabel('HRA') }}</td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.hra) :
+                        getRoundedVal(salaryStructure.hra)
+                        }}</td>
+                      <!-- <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.hra * 12)) :
+                        getRoundedVal(salaryStructure.hra * 12 )
+                        }}</td> -->
+                            <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.hra * 12)) :
+                        getRoundedVal(salaryStructure.hra) * 12 
+                        }}</td>
+                    </tr>
+                    <tr class="danger1"
+                      *ngIf="salaryStructure.allowances!='' && salaryStructure.allowances!='0' && salaryStructure.allowances!='0.0000' ">
+                      <td scope="col">{{ getEarningLabel('Special Allowance') }}</td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.allowances) :
+                        getRoundedVal(salaryStructure.allowances)
+                        }}</td>
+                      <!-- <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.allowances * 12)) :
+                        getRoundedVal(salaryStructure.allowances * 12 )
+                        }}</td> -->
+                         <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.allowances * 12)) :
+                        (getRoundedVal(salaryStructure.allowances)) * 12 
+                        }}</td>
+                    </tr>
+                    <!------->
+
+                    <!------->
+                    <tr class="danger1"
+                      *ngIf="salaryStructure?.conveyance_allowance!='' && salaryStructure?.conveyance_allowance!='0.0000' && salaryStructure?.conveyance_allowance!='0'">
+                      <td scope="col">{{ getEarningLabel('Conveyance') }}</td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.conveyance_allowance) :
+                        getRoundedVal(salaryStructure.conveyance_allowance)
+                        }}</td>
+                      <!-- <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.conveyance_allowance * 12)) :
+                        getRoundedVal(salaryStructure.conveyance_allowance * 12 )
+                        }} </td> -->
+
+                        <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.conveyance_allowance * 12)) :
+                        (getRoundedVal(salaryStructure.conveyance_allowance)) * 12 
+                        }} </td>
+                    </tr>
+                    <tr class="danger1"
+                      *ngIf="salaryStructure?.medical_allowance!='' && salaryStructure?.medical_allowance!='0.0000' && salaryStructure?.medical_allowance!='0'">
+                      <td scope="col">{{ getEarningLabel('Medical Allowance') }}</td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.medical_allowance) :
+                        getRoundedVal(salaryStructure.medical_allowance)
+                        }} </td>
+                      <!-- <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.medical_allowance * 12)) :
+                        getRoundedVal(salaryStructure.medical_allowance * 12 )
+                        }} </td> -->
+                         <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.medical_allowance * 12)) :
+                        (getRoundedVal(salaryStructure.medical_allowance)) * 12 
+                        }} </td>
+                    </tr>
+
+                    <tr class="danger1"
+                      *ngIf="salaryStructure.bonus!='' && salaryStructure.bonus!='0' && salaryStructure.bonus!='0.0000'">
+                      <td scope="col">Regular Bonus</td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.bonus) :
+                        getRoundedVal(salaryStructure.bonus)
+                        }} </td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.bonus *12):
+                        (getRoundedVal(salaryStructure.bonus)) * 12
+                        }} </td>
+                    </tr>
+                    <tr class="danger1"
+                      *ngIf="salaryStructure.mealvouchers!='' && salaryStructure.mealvouchers!='0' && salaryStructure.mealvouchers!='0.0000'">
+                      <td scope="col">Meal Voucher</td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.mealvouchers) :
+                        getRoundedVal(salaryStructure.mealvouchers)
+                        }} </td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.mealvouchers *12 )):
+                        (getRoundedVal(salaryStructure.mealvouchers)) *12
+                        }} </td>
+                    </tr>
+                    <tr class="danger1"
+                      *ngIf="salaryStructure.medicalinsurancepremium!='' && salaryStructure.medicalinsurancepremium!='0' && salaryStructure.medicalinsurancepremium!='0.0000'">
+                      <td scope="col">Medical Insurance Premium</td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.medicalinsurancepremium) :
+                        getRoundedVal(salaryStructure.medicalinsurancepremium)
+                        }} </td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.medicalinsurancepremium *12 )):
+                        (getRoundedVal(salaryStructure.medicalinsurancepremium)) *12
+                        }} </td>
+                    </tr>
+                    <tr class="danger1"
+                      *ngIf="salaryStructure.teaallowances!='' && salaryStructure.teaallowances!='0' && salaryStructure.teaallowances!='0.0000'">
+                      <td scope="col">Tea Allowances</td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.teaallowances) :
+                        getRoundedVal(salaryStructure.teaallowances)
+                        }} </td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.teaallowances *12 )):
+                        (getRoundedVal(salaryStructure.teaallowances)) *12
+                        }} </td>
+                    </tr>
+                    <!-----other 15 components excluding vpf and incentive from stetury components---->
+                    <tr class="danger1" *ngFor="let deduction of getFilteredDeductionsforothercomponents()"
+                      [ngStyle]="{'display': deduction.deduction_amount == 0 ? 'none' : ''}">
+                      <td scope="col">
+                        {{ getEarningLabel(deduction.deduction_name) }}
+                      </td>
+                      <td>
+                        {{ !isShowRoundedVal ? truncateToTwoDecimals(deduction.deduction_amount) :
+                        getRoundedVal(deduction.deduction_amount) }}
+                      </td>
+                      <!-- <td>
+                        {{ !isShowRoundedVal ? truncateToTwoDecimals((deduction.deduction_amount * 12)) :
+                        getRoundedVal(deduction.deduction_amount * 12) }}
+                      </td> -->
+                        <td>
+                        {{ !isShowRoundedVal ? truncateToTwoDecimals((deduction.deduction_amount * 12)) :
+                       (getRoundedVal(deduction.deduction_amount)) * 12 }}
+                      </td>
+                    </tr>
+                    <!-------------------------->
+                    <tr
+                      *ngIf="salaryStructure.gross!='' && salaryStructure.gross!='0' && salaryStructure.gross!='0.0000' && candidateDetails.jobType!='Consultant'">
+                      <th scope="col">Gross Salary</th>
+                      <th>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.gross) :
+                        getRoundedVal(salaryStructure.gross)
+                        }} </th>
+                      <th>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.grossAnnual) :
+                        getRoundedVal(salaryStructure.grossAnnual)
+                        }} </th>
+                    </tr>
+                    <tr class="danger1"
+                      *ngIf="salaryStructure.gross!='' && salaryStructure.gross!='0' && salaryStructure.gross!='0.0000' && candidateDetails.jobType=='Consultant'">
+                      <td scope="col">Gross Earning</td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.gross) :
+                        getRoundedVal(salaryStructure.gross)
+                        }} </td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.grossAnnual) :
+                        getRoundedVal(salaryStructure.grossAnnual)
+                        }} </td>
+                    </tr>
+                    <!-------------gross end------------>
+                    <tr class="danger1">
+                      <th colspan="3">2. VARIABLE</th>
+                    </tr>
+                    <tr class="danger1" *ngFor="let deduction of getFilteredDeductionsforvariable()"
+                      [ngStyle]="{'display': deduction.deduction_amount == 0 ? 'none' : ''}">
+                      <td scope="col">
+                        {{ getEarningLabel(deduction.deduction_name) }}
+                      </td>
+                      <td>
+                        {{ !isShowRoundedVal ? truncateToTwoDecimals(deduction.deduction_amount) :
+                        getRoundedVal(deduction.deduction_amount) }}
+                      </td>
+                      <!-- <td>
+                        {{ !isShowRoundedVal ? truncateToTwoDecimals((deduction.deduction_amount * 12)) :
+                        getRoundedVal(deduction.deduction_amount * 12) }}
+                      </td> -->
+                       <td>
+                        {{ !isShowRoundedVal ? truncateToTwoDecimals((deduction.deduction_amount * 12)) :
+                        (getRoundedVal(deduction.deduction_amount)) * 12 }}
+                      </td>
+                    </tr>
+
+
+                    <!-- <tr class="danger1"
+                      *ngIf="salaryStructure.total!='' && salaryStructure.total!='0' && salaryStructure.total!='0.0000'">
+                      <th scope="col">GRAND TOTAL</th>
+                      <th>
+                        {{ !isShowRoundedVal ?
+                        salaryStructure.total :
+                        getRoundedVal(salaryStructure.total)
+                        }}
+                      </th>
+                      <th>{{ !isShowRoundedVal ?
+                        salaryStructure.totalAnnual :
+                        getRoundedVal(salaryStructure.totalAnnual)
+                        }} </th>
+                    </tr> -->
+                    <tr class="danger1">
+                      <th colspan="3">EMPLOYER PART</th>
+                    </tr>
+                    <tr class="danger1"
+                      *ngIf="salaryStructure.employerinsuranceamount!='' && salaryStructure.employerinsuranceamount!='0' && salaryStructure.employerinsuranceamount!='0.0000' && salaryStructure.employerinsuranceamount!='0.00'">
+                      <td scope="col">Employer Group Insurance</td>
+                      <td>
+                        {{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.employerinsuranceamount) :
+                        getRoundedVal(salaryStructure.employerinsuranceamount)
+                        }}
+                      </td>
+                      <td> {{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.employerinsuranceamount *12 )):
+                        (getRoundedVal(salaryStructure.employerinsuranceamount)) *12
+                        }} </td>
+                    </tr>
+                    <tr class="danger1"
+                      *ngIf="salaryStructure.employerepfrate!='' && salaryStructure.employerepfrate!='0' && salaryStructure.employerepfrate!='0.0000'">
+                      <td scope="col">Employer EPF Part</td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.employerepfrate) :
+                        getRoundedVal(salaryStructure.employerepfrate)
+                        }} </td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.employerepfrate *12 )):
+                        (getRoundedVal(salaryStructure.employerepfrate)) *12
+                        }} </td>
+                    </tr>
+                    <tr class="danger1"
+                      *ngIf="salaryStructure.employeresirate!='' && salaryStructure.employeresirate!='0' && salaryStructure.employeresirate!='0.0000'">
+                      <td scope="col">Employer ESIC Part</td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.employeresirate) :
+                        getRoundedVal(salaryStructure.employeresirate)
+                        }} </td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.employeresirate *12 )):
+                        (getRoundedVal(salaryStructure.employeresirate)) *12
+                        }} </td>
+                    </tr>
+                    <tr class="danger1"
+                      *ngIf="salaryStructure.employerlwf!='' && salaryStructure.employerlwf!='0' && salaryStructure.employerlwf!='0.0000' && salaryStructure.employerlwf!='0.00'">
+                      <td scope="col">Employer LWF</td>
+                      <td>
+                        {{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.employerlwf) :
+                        getRoundedVal(salaryStructure.employerlwf)
+                        }} </td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals( (salaryStructure.employerlwf * 12 )):
+                        (getRoundedVal(salaryStructure.employerlwf)) * 12
+                        }}
+                      </td>
+                    </tr>
+                    <tr class="danger1"
+                      *ngIf="salaryStructure.employergratuity!='' && salaryStructure.employergratuity!='0' && salaryStructure.employergratuity!='0.0000' && salaryStructure.employergratuity!='0.00'">
+                      <td scope="col">Employer Gratuity</td>
+                      <td>
+                        {{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.employergratuity) :
+                        getRoundedVal(salaryStructure.employergratuity)
+                        }}
+                      </td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.employergratuity *12 )):
+                        (getRoundedVal(salaryStructure.employergratuity)) *12
+                        }} </td>
+                    </tr>
+
+                    <tr class="danger1">
+                      <th colspan="3">3. DEDUCTION</th>
+                    </tr>
+
+                    <!-- <tr class="danger1"
+                      *ngIf="salaryStructure.taxes!='' && salaryStructure.taxes!='0' && salaryStructure.taxes!='0.0000'">
+                      <td scope="col">Tax</td>
+                      <td>
+                        {{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.taxes) :
+                        getRoundedVal(salaryStructure.taxes)
+                        }}
+                      </td>
+                      <td>
+                        {{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.taxes *12 )):
+                        (getRoundedVal(salaryStructure.taxes)) *12
+                        }}
+                      </td>
+                    </tr> -->
+                    <tr class="danger1"
+                      *ngIf="salaryStructure.employeeepfrate!='' && salaryStructure.employeeepfrate!='0' && salaryStructure.employeeepfrate!='0.0000' && salaryStructure.employeeepfrate!='0.00'">
+                      <td scope="col">Employee EPF </td>
+                      <td>
+                        {{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.employeeepfrate) :
+                        getRoundedVal(salaryStructure.employeeepfrate)
+                        }}
+                      </td>
+                      <td>
+                        {{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.employeeepfrate *12 )):
+                        (getRoundedVal(salaryStructure.employeeepfrate)) *12
+                        }}
+                      </td>
+                    </tr>
+
+                    <!-- Charity Contribution under Salary Struture Slip - sidharth kaul dated. 13.06.2025 -->
+                    <tr class="danger1" *ngIf="charityCheck(salaryStructure.charity_contribution_amount) && show_charity_contribution">
+                      <td scope="col">Charity Contribution</td>
+                      <td>
+                        {{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.charity_contribution_amount) :
+                        getRoundedVal(salaryStructure.charity_contribution_amount)
+                        }}
+                      </td>
+                      <td>
+                        {{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.charity_contribution_amount *12):
+                        getRoundedVal(salaryStructure.charity_contribution_amount) *12
+                        }}
+                      </td>
+                    </tr>
+                    <!-- Charity Contribution under Salary Struture Slip  -->
+
+
+                    <tr class="danger1"
+                      *ngIf="salaryStructure.vpfemployee!='' && salaryStructure.vpfemployee!='0' && salaryStructure.vpfemployee!='0.0000' && salaryStructure.vpfemployee!='0.00'">
+                      <td scope="col">Employee VPF</td>
+                      <td>
+                        {{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.vpfemployee) :
+                        getRoundedVal(salaryStructure.vpfemployee)
+                        }}</td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.vpfemployee *12 )):
+                        (getRoundedVal(salaryStructure.vpfemployee)) *12
+                        }}
+                      </td>
+                    </tr>
+
+                    <tr class="danger1"
+                      *ngIf="salaryStructure.employeeesirate!='' && salaryStructure.employeeesirate!='0' && salaryStructure.employeeesirate!='0.0000' && salaryStructure.employeeesirate!='0.00'">
+                      <td scope="col">Employee ESIC</td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.employeeesirate) :
+                        getRoundedVal(salaryStructure.employeeesirate)
+                        }}</td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.employeeesirate *12 )):
+                        (getRoundedVal(salaryStructure.employeeesirate)) *12
+                        }} </td>
+                    </tr>
+
+                    <tr class="danger1"
+                      *ngIf="salaryStructure.employeelwf!='' && salaryStructure.employeelwf!='0' && salaryStructure.employeelwf!='0.0000' && salaryStructure.employeelwf!='0.00'">
+                      <td scope="col">Employee LWF</td>
+                      <td>
+                        {{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.employeelwf) :
+                        getRoundedVal(salaryStructure.employeelwf)
+                        }}</td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.employeelwf *12 )):
+                        (getRoundedVal(salaryStructure.employeelwf)) *12
+                        }}
+                      </td>
+                    </tr>
+                    <tr class="danger1"
+                      *ngIf="salaryStructure.insuranceamount!='' && salaryStructure.insuranceamount!='0' && salaryStructure.insuranceamount!='0.0000' && salaryStructure.insuranceamount!='0.00'">
+                      <td scope="col">Employee Group Insurance</td>
+                      <td>
+                        {{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.insuranceamount) :
+                        getRoundedVal(salaryStructure.insuranceamount)
+                        }} </td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.insuranceamount *12 )):
+                        (getRoundedVal(salaryStructure.insuranceamount)) *12
+                        }}
+                      </td>
+                    </tr>
+                    <tr class="danger1"
+                      *ngIf="salaryStructure.gratuity!='' && salaryStructure.gratuity!='0' && salaryStructure.gratuity!='0.0000' && salaryStructure.gratuity!='0.00'">
+                      <td scope="col">{{getEarningLabel('Gratuity In Hand')}}</td>
+                      <td>
+                        {{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.gratuity) :
+                        getRoundedVal(salaryStructure.gratuity)
+                        }} </td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals((salaryStructure.gratuity *12 )):
+                        (getRoundedVal(salaryStructure.gratuity)) *12
+                        }}
+                      </td>
+                    </tr>
+
+
+                    <tr class="danger1" *ngFor="
+                        let deduction of getFilteredDeductionsfordedcution()
+                      " [ngStyle]="{'display':deduction.deduction_amount==0 ? 'none':''}">
+                      <td scope="col">
+                        {{ getEarningLabel(deduction.deduction_name) }}
+                      </td>
+                      <td>{{
+                        !isShowRoundedVal ? truncateToTwoDecimals(deduction.deduction_amount) :
+                        getRoundedVal(deduction.deduction_amount)
+
+                        }} </td>
+                      <td>{{ !isShowRoundedVal ? truncateToTwoDecimals((deduction.deduction_amount * 12)) :
+                        (getRoundedVal(deduction.deduction_amount ))*12
+                        }} </td>
+                    </tr>
+                    <!--  harsh dated. 27.06.2025-->
+                    <tr class="danger1">
+                      <th scope="col">
+                        Gross Deduction
+                      </th>
+                      <th>{{
+                        !isShowRoundedVal ? truncateToTwoDecimals(this.salaryStructure.grossdeduction) :
+                        getRoundedVal(this.salaryStructure.grossdeduction)
+
+                        }} </th>
+                      <th>{{ !isShowRoundedVal ? truncateToTwoDecimals((this.salaryStructure.grossdeduction * 12)) :
+                        (getRoundedVal(this.salaryStructure.grossdeduction ))*12
+                        }} </th>
+                    </tr>
+<!--  harsh dated. 27.06.2025-->
+                    <!-- <tr class="danger1">
+                      <th colspan="3">4. OTHER DEDUCTION</th>
+                    </tr> -->
+
+                    <!-- <tr class="danger1">
+                                    <td scope="col">TDS</td>
+                                    <td></td>
+                                </tr> -->
+                    <!-- <tr class="danger1">
+                                    <td scope="col">Insurance</td>
+                                    <td>{{salaryStructure.insuranceamount}}</td>
+                                </tr> -->
+                    <!-- <tr class="danger1">
+                                    <td scope="col">EWF</td>
+                                    <td></td>
+                                </tr>-->
+                    <!-- <tr class="danger1">
+                                    <td scope="col">Social Security Services</td>
+                                    <td></td>
+                                </tr>-->
+                    <tr class="danger3">
+                      <td>Salary Bucket Total (1+2)</td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.ctc) :
+                        getRoundedVal(salaryStructure.ctc)
+                        }} </td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.ctcAnnual) :
+                        getRoundedVal(salaryStructure.ctcAnnual)
+                        }} </td>
+                    </tr>
+                    <tr class="danger3">
+                      <td>Salary In Hand</td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.salaryinhand) :
+                        getRoundedVal(salaryStructure.salaryinhand)
+                        }}</td>
+                      <td>{{ !isShowRoundedVal ?
+                        truncateToTwoDecimals(salaryStructure.inHandAnnual) :
+                        getRoundedVal(salaryStructure.inHandAnnual)
+                        }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="col-md-4">
+                        <label><strong>Effective Date : &nbsp;</strong></label>
+                        <span class="ml-2">
+                          {{ salaryStructure?.effectivefrom ? formatCustomDate(salaryStructure.effectivefrom) : '' }}
+                        </span>
+                      </div>
+                      <div class="col-md-4">
+                        <label><strong>Professional Tax Applied : &nbsp;</strong></label>
+                        <span class="ml-2">{{ salaryStructure.is_professional_tax_applied }}</span>
+                      </div>
+                      <div class="col-md-4" *ngIf="salaryStructure.is_professional_tax_applied=='Y'">
+                        <label><strong>Professional Tax State : &nbsp;</strong></label>
+                        <span class="ml-2">{{ salaryStructure.professional_tax_state }}</span>
+                      </div>
+                      <div class="col-md-4">
+                        <label><strong>LWF Applied :&nbsp;</strong></label>
+                        <span class="ml-2">{{ salaryStructure.is_lwf_applied }}</span>
+                      </div>
+                      <div class="col-md-4" *ngIf="salaryStructure.is_lwf_applied=='Y'">
+                        <label><strong>LWF State : &nbsp;</strong></label>
+                        <span class="ml-2">{{ salaryStructure.lwf_state }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Payslip Block By ARPIT -->
+    <div class="card"
+      *ngIf="this.candidateDetails.joiningStatus == 'JOINED' || this.candidateDetails.joiningStatus == 'RELIEVED'">
+
+
+      <div class="panel-heading panel_heading_gray collapsed card-header" role="tab" id="headingOne821"
+        data-toggle="collapse" data-parent="#accordion821" href="#collapseOne821" aria-expanded="false"
+        aria-controls="collapseOne">
+        <h4>Payslips <i class="fa fa-angle-down"></i></h4>
+      </div>
+      <div id="collapseOne821" class="panel-collapse collapse card-body" role="tabpane21">
+        <div class="row">
+
+          <div class="col-md-12 padd-bot-15 padd-top-15">
+            <div class="col-sm-6 mrg-bot-15 ">
+              <label><strong>Payslips</strong></label>
+
+            </div>
+            <div class="col-sm-6 mrg-bot-15">
+              <div class="Financial-Year-inn-box" style="display: flex; align-items: center;">
+                <span style="margin-right: 1.5rem; font-weight: bold;">Month - Year</span>
+
+                <!-- Month dropdown -->
+                <select class="form-control" style="margin: 0 0.6rem; width: 150px;" (change)="changeMonth($event)">
+                  <option *ngFor="let ma of monthsArray" [selected]="month == ma.id" [value]="ma.id">
+                    {{ma.month}}
+                  </option>
+                </select>
+
+                <!-- Year dropdown -->
+                <select class="form-control" style="margin: 0 0.6rem; width: 100px;" (change)="changeYear($event)">
+                  <option *ngFor="let ya of yearsArray" [selected]="year == ya" [value]="ya">{{ya}}</option>
+                </select>
+
+                <!-- Search button -->
+                <button class="btn btn-primary" style="margin-left: 10px;" (click)="pay_salary_slip()">Search</button>
+              </div>
+            </div>
+
+            <div class="col-sm-12 mrg-bot-15">
+              <!-- Show this block when there is no payslip data -->
+              <div *ngIf="!flag" class="no-pay-slips-inn-box">
+                <img src="assets/img/no-pay-slip.png" class="img-circle img-responsive" alt="">
+                <p>There are no payslips available for this financial year.</p>
+              </div>
+
+              <!-- Show this block when there is payslip data (i.e., a PDF link) -->
+              <div *ngIf="flag">
+                <iframe [src]="payslip_data" height="600" width="100%" title="Payslip PDF"></iframe>
+              </div>
+            </div>
+
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- Form 16 Block By ARPIT -->
+    <div class="card"
+      *ngIf="this.candidateDetails.joiningStatus == 'JOINED' || this.candidateDetails.joiningStatus == 'RELIEVED'">
+
+      <div class="panel-heading panel_heading_gray collapsed card-header" role="tab" id="headingOne31"
+        data-toggle="collapse" data-parent="#accordion31" href="#collapseOne31" aria-expanded="false"
+        aria-controls="collapseOne">
+        <h4>Forms 16 <i class="fa fa-angle-down"></i></h4>
+      </div>
+      <div id="collapseOne31" class="panel-collapse collapse card-body" role="tabpane3">
+        <div class="row">
+          <div class="col-md-12 padd-bot-15 padd-top-15">
+            <div class="col-sm-4 mrg-bot-15 ">
+              <label><strong>Form 16</strong></label>
+
+            </div>
+            <div class="col-sm-6 mrg-bot-15">
+              <div class="Financial-Year-inn-box" style="display: flex; align-items: center;">
+                <span style="margin-right: 1.5rem; font-weight: bold;">Financial Year</span>
+
+                <!-- Financial Year dropdown -->
+                <select class="form-control" style="margin: 0 0.6rem; width: 150px;"
+                  (change)="changeFinancialYear($event)">
+                  <option *ngFor="let fy of financialYearsArray" [selected]="selectedFinancialYear == fy" [value]="fy">
+                    {{fy}}
+                  </option>
+                </select>
+
+                <!-- Search button -->
+                <button class="btn btn-primary" style="margin-left: 10px; float: right;"
+                  (click)="GetForm16_Details()">Search</button>
+                <div class="col-md-2 text-right" style="float: right;" *ngIf="selectedFinancialYear !== 'All'">
+
+                  <a *ngIf="this.GetForm16_data == ''" data-toggle="modal" class="btn btn-primary" data-placement="top"
+                    title="Add Form 16" (click)="open_form_popup(this.empDataFromParent)">Add Form 16</a>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-sm-12 mrg-bot-15">
+              <!-- || this.GetForm16_data[0]?.form_16_row_id!='' -->
+
+
+              <div class="no-pay-slips-inn-box" *ngIf="!form16_flag">
+
+                <img src="assets/img/no-pay-slip.png" class="img-circle img-responsive" alt="">
+
+                <p>Forms 16 hasn't been generated for this employee
+                  yet!</p>
+              </div>
+              <div *ngIf="form16_flag">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <th>TP / Org Emp Code</th>
+                      <th>Financial Year</th>
+                      <th>Form 16 Part A</th>
+                      <th>Form 16 Part B</th>
+                      <th *ngIf="selectedFinancialYear !== 'All'">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let record of GetForm16_data; let i = index">
+                      <td>{{ i + 1 }}</td> <!-- Serial Number -->
+                      <td>{{this.candidateDetails.cjcode}}</td> <!-- TP / Org Emp Code -->
+                      <td>{{ record.financial_year }}</td> <!-- Financial Year -->
+                      <td>
+                          <a *ngIf="record.form16path" [href]="record.form16path" target="_blank">
+                            <i class="fa fa-eye"></i> View
+                          </a>
+                        </td>
+                        <td>
+                          <a *ngIf="record.form16b_path" [href]="record.form16b_path" target="_blank">
+                              <i class="fa fa-eye"></i> View
+                          </a>
+                        </td>
+                      <td *ngIf="selectedFinancialYear !== 'All'">
+                        <a (click)="openEditPopup(record)" style="cursor: pointer;">
+                          <i class="ti-pencil-alt"></i>
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Add Form 16 popup by ARPIT -->
+    <div [@grooveState]="open_form16_popup ? 'active' : 'inactive'" id="allowanceDeduct" class="modal">
+      <div [@dongleState]="open_form16_popup ? 'active' : 'inactive'" class="modal-dialog" style="margin:auto;">
+        <div class="modal-content" style="height: 100%; margin-top: 100px; max-height: 80vh; overflow-y: auto;">
+          <form *ngIf="open_form16_popup" [formGroup]="Exit_form">
+            <div class="modal-header theme-bg">
+              <h4 class="modal-title">Add Form 16</h4>
+              <button type="button" class="close" data-dismiss="modal" (click)="close_form16_popup()">×</button>
+            </div>
+            <div class="modal-body card-body">
+              <div class="form-group">
+                <label class="control-label col-sm-4">Employee Name: <span class="text-danger">*</span></label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" [value]="this.empDataFromParent?.emp_name" readonly>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label col-sm-4">Form 16 copy: <span class="text-danger">*</span></label>
+                <div class="col-sm-7">
+                  <div class="custom-file">
+                    <input type="file" name="form16File" class="custom-file-input form-control"
+                      id="inputGroupFileForm16" (change)="onForm16FileSelected($event)" />
+                  </div>
+
+                  <!-- Display PDF icon if Form 16 is a PDF -->
+                  <span *ngIf="originalDocumentNameForm16 && isPdf(originalDocumentNameForm16)">
+                    <span class="ml-2">
+                      <!-- Show either the base64 document or the direct file link -->
+                      <a *ngIf="base64DataForm16;">
+                        <i class="fa fa-file-pdf-o" style="font-size:24px;color:red"></i>
+                      </a>
+                    </span>
+
+                    <!-- Remove file icon -->
+                    <i class="fa fa-times remove ml-2" style="cursor: pointer;" (click)="removeForm16File()"></i>
+                  </span>
+
+
+                </div>
+              </div>
+
+
+            </div>
+
+            <div class="modal-footer">
+              <input type="button" class="btn btn-default" value="Submit" (click)="Add_Form16()">
+              <input type="button" class="btn btn-default" value="Cancel" (click)="close_form16_popup()">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Edit Fom16 popup by Arpit -->
+    <div [@grooveState]="form16_edit_popup ? 'active' : 'inactive'" id="allowanceDeduct" class="modal">
+      <div [@dongleState]="form16_edit_popup ? 'active' : 'inactive'" class="modal-dialog" style="margin:auto;">
+        <div class="modal-content" style="height: 100%; margin-top: 100px; max-height: 80vh; overflow-y: auto;">
+          <form *ngIf="form16_edit_popup" [formGroup]="Exit_form">
+            <div class="modal-header theme-bg">
+              <h4 class="modal-title">Edit Form 16</h4>
+              <button type="button" class="close" data-dismiss="modal" (click)="closeEditPopup()">×</button>
+            </div>
+            <div class="modal-body card-body">
+              <div class="form-group">
+                <label class="control-label col-sm-4">Employee Name: <span class="text-danger">*</span></label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" [value]="this.empDataFromParent?.emp_name" readonly>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-4">Financial Year: <span class="text-danger">*</span></label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" [value]="fin_year" readonly />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label col-sm-4">Form 16 copy: <span class="text-danger">*</span></label>
+                <div class="col-sm-7">
+                  <div class="custom-file">
+                    <input type="file" name="form16File" class="custom-file-input form-control"
+                      id="inputGroupFileForm16" (change)="onForm16FileSelected($event)" />
+                  </div>
+
+                  <!-- Display PDF icon if Form 16 is a PDF -->
+                  <span *ngIf="originalDocumentNameForm16 && isPdf(originalDocumentNameForm16)">
+                    <span class="ml-2">
+                      <!-- Show either the base64 document or the direct file link -->
+                      <a *ngIf="base64DataForm16;">
+                        <i class="fa fa-file-pdf-o" style="font-size:24px;color:red"></i>
+                      </a>
+                    </span>
+
+                    <!-- Remove file icon -->
+                    <i class="fa fa-times remove ml-2" style="cursor: pointer;" (click)="removeForm16File()"></i>
+                  </span>
+
+
+                </div>
+              </div>
+
+
+            </div>
+
+            <div class="modal-footer">
+              <input type="button" class="btn btn-default" value="Submit" (click)="Edit_Form16()">
+              <input type="button" class="btn btn-default" value="Cancel" (click)="closeEditPopup()">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exit Process By Arpit -->
+    <div class="card"
+      *ngIf="this.candidateDetails.joiningStatus == 'JOINED' || this.candidateDetails.joiningStatus == 'RELIEVED'">
+
+      <div class="panel-heading panel_heading_gray collapsed card-header" role="tab" id="headingOne311"
+        data-toggle="collapse" data-parent="#accordion311" href="#collapseOne311" aria-expanded="false"
+        aria-controls="collapseOne">
+        <h4>Exit Process <i class="fa fa-angle-down"></i></h4>
+      </div>
+      <div id="collapseOne311" class="panel-collapse collapse card-body" role="tabpane3">
+        <div class="row">
+
+
+          <div class="col-sm-12 mrg-bot-15">
+            <div class="col-md-12 text-right">
+
+              <a *ngIf="exit_detail_data.exit_status_id != '6' && candidateDetails.joiningStatus!='RELIEVED'"
+                data-toggle="modal" class="btn btn-gary manage-btn emp-edit-btn-box" data-placement="top"
+                title="Edit Exit Process" (click)="open_exit_popup(this.empDataFromParent)"><i
+                  class="ti-pencil-alt"></i></a>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Employee: </strong>{{this.empDataFromParent?.emp_name}}</label>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="this.exit_detail_data?.exit_type_name">
+              <div class="form-group">
+                <label><strong>Resignation Type: </strong><span
+                    id="employee_since">{{this.exit_detail_data?.exit_type_name}}</span></label>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group"
+                *ngIf="this.exit_detail_data?.exit_type_name !== 'Termination' &&  this.exit_detail_data?.resignation_date">
+                <label>
+                  <strong>
+                    {{ getDynamicLabel() }}:
+                  </strong>
+                  {{ this.exit_detail_data?.resignation_date }}
+                </label>
+              </div>
+              <div class="form-group"
+                *ngIf="this.exit_detail_data?.exit_type_name == 'Termination' && this.exit_detail_data?.termination_date">
+                <label>
+                  <strong>Termination Date:</strong>
+                  {{ this.exit_detail_data?.termination_date }}
+                </label>
+              </div>
+
+            </div>
+            <div class="col-md-12" *ngIf="this.exit_detail_data?.exit_type_id=='1'">
+              <div class="form-group">
+                <label><strong>Notice Period: </strong><span
+                    id="employee_since">{{this.exit_detail_data?.notice_period}} Days
+                  </span></label>
+              </div>
+            </div>
+            <div class="col-md-12" *ngIf="this.exit_detail_data?.exit_type_id =='1' ">
+              <div class="form-group">
+                <label><strong>Relieving Date: </strong><span id="employee_since">{{
+                    this.exit_detail_data?.exit_status_id === '6' ? this.exit_detail_data?.exit_date :
+                    this.exit_detail_data?.agreed_relieving_date }}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12" *ngIf="this.exit_detail_data?.exit_type_id=='1' ">
+              <div class="form-group">
+                <label><strong>Resignation copy: </strong>
+                  <span id="employee_since">
+                    <a href="{{ this.exit_detail_data?.resignation_doc_path }}" target="_blank">
+                      <i class="fa fa-download" style="font-size:20px; margin: 0 5px 0 0;"></i>
+                    </a>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+
+            <div class="col-md-12"
+              *ngIf="this.exit_detail_data?.exit_type_id=='1' ||this.exit_detail_data?.exit_type_id=='3'">
+              <div class="form-group">
+                <label><strong>Separation Reason: </strong><span
+                    id="employee_since">{{this.exit_detail_data?.reason_of_leaving}}
+                  </span></label>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <!-- <div class="form-group" *ngIf="this.exit_detail_data?.exit_type_id=='1' ||this.exit_detail_data?.exit_type_id=='3'">
+                                <label><strong>Acceptance: </strong><span
+                                        id="employee_since">
+                                        <input type="checkbox"
+                                            name="SearchBy-new65"
+                                            class="SearchBy-new65" value="ALL"
+                                            checked>
+                                        <label for="Search-ByAllnew">Notify
+                                            email to
+                                            candidate</label>&nbsp;&nbsp;
+
+                                    </span></label>
+                            </div> -->
+            </div>
+            <div class="col-md-12" *ngIf="this.exit_detail_data.noc_clearance_date">
+              <div class="form-group">
+                <label><strong>NOC Clearance date:
+                  </strong><span id="employee_since">{{this.exit_detail_data?.noc_clearance_date}}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12" *ngIf="this.exit_detail_data.noc_doc_path">
+              <div class="form-group">
+                <label>
+                  <strong>NOC sheet: </strong>
+                  <span id="employee_since">
+                    <a href="{{ this.exit_detail_data?.noc_doc_path }}" target="_blank">
+                      <i class="fa fa-download" style="font-size:20px; margin: 0 5px 0 0;"></i>
+                    </a>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+
+            <div class="col-md-12" *ngIf="this.exit_detail_data.relieving_experience_letter_path">
+              <div class="form-group">
+                <label><strong>Relieving/ Experience Letter:</strong></label>
+                <span id="employee_since">
+                  <a href="{{ this.exit_detail_data?.relieving_experience_letter_path }}" target="_blank">
+                    <i class="fa fa-download" style="font-size:20px; margin: 0 5px 0 0;"></i>
+                  </a>
+                </span>
+              </div>
+            </div>
+
+
+
+            <div class="col-md-12"
+              *ngIf="this.exit_detail_data.exit_status_id == '5'|| this.exit_detail_data.exit_status_id == '6'">
+              <div class="form-group">
+                <label><strong>Final Dues: </strong><span
+                    id="employee_since">{{this.exit_detail_data?.final_dues}}</span></label>
+              </div>
+            </div>
+            <div class="col-md-12"
+              *ngIf="this.exit_detail_data.exit_status_id == '5'|| this.exit_detail_data.exit_status_id == '6'">
+              <div class="form-group">
+                <label><strong>Clearance date: </strong><span
+                    id="employee_since">{{this.exit_detail_data?.final_dues_clearance_date}}</span></label>
+              </div>
+            </div>
+
+
+
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+    <!-- Exit Popup -->
+    <div [@grooveState]="openPopup?'active':'inactive'" id="allowanceDeduct" class="modal">
+      <div [@dongleState]="openPopup?'active':'inactive'" class="modal-dialog" style="margin:auto auto auto auto;">
+        <div class="modal-content"
+          style="height: 100%; margin-top: 100px; max-height: 80vh; overflow-y: auto;width: 900px">
+          <form *ngIf="openPopup">
+            <form [formGroup]="Exit_form">
+              <div class="modal-header theme-bg">
+                <h4 class="modal-title">Edit Exit Process</h4>
+                <button type="button" class="close" data-dismiss="modal" (click)="close_exit_popup()">×</button>
+              </div>
+              <div class="modal-body card-body">
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Employee Name: <span class="text-danger">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" [value]="emp_name" readonly>
+                  </div>
+                </div>
+
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Resignation Type: <span class="text-danger">*</span></label>
+                  <div class="col-sm-8">
+                    <select id="selector" class="form-control" formControlName="exitTypeId"
+                      (change)="onResignationTypeChange($event)">
+                      <option value="">Select Resignation Type</option>
+                      <option *ngFor="let item of master_data" [value]="item.id">{{item.exittype}}</option>
+                    </select>
+
+
+                  </div>
+                </div>
+
+                <div class="outer_Resignation_Received_box">
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">
+                      {{ getDateLabel() }}: <span class="text-danger">*</span>
+                    </label>
+                    <div class="col-sm-8">
+                      <input id="resignationDate" #rd formControlName="resignationDate" placeholder="dd-mm-yyyy"
+                        autocomplete="off" style="cursor: pointer;" autocomplete="chrome-off" class="form-control" />
+                    </div>
+                  </div>
+
+                  <div class="form-group" *ngIf="!isSeparationReasonHidden() && selectedExitType != 'Termination'">
+                    <label class="control-label col-sm-4">Notice Period <span class="text-danger">*</span></label>
+                    <div class="col-sm-7">
+                      <input type="number" class="form-control" formControlName="noticePeriod">
+                    </div>
+                    <span class="col-sm-1">Days</span>
+                  </div>
+
+                  <div class="form-group" *ngIf="!isSeparationReasonHidden() && selectedExitType != 'Termination'">
+                    <label class="control-label col-sm-4">Relieving Date: <span class="text-danger">*</span></label>
+                    <div class="col-sm-8">
+                      <input id="relievingDate" formControlName="relievingDate" placeholder="dd-mm-yyyy"
+                        autocomplete="off" style="cursor: pointer;" autocomplete="chrome-off" class="form-control"
+                        (change)="onRelievingDateChange($event)" />
+                    </div>
+                  </div>
+
+                  <div class="form-group" *ngIf="!isSeparationReasonHidden() && selectedExitType != 'Termination'">
+                    <label class="control-label col-sm-4">Resignation copy: <span class="text-danger">*</span></label>
+                    <div class="col-sm-7">
+                      <div class="custom-file">
+                        <input type="file" name="resignationFile" class="custom-file-input form-control"
+                          id="inputGroupFile01" (change)="onResignationFileSelected($event)"
+                          [placeholder]="!this.exit_detail_data?.resignation_doc_path ? 'No file chosen' : 'Upload New File'" />
+                      </div>
+
+                      <!-- PDF Display -->
+                      <span *ngIf="isPdf(documentNameResignation)">
+                        <a *ngIf="!resignationBase64Data; else base64PdfLinkResignation"
+                          href="{{ resignationFilePath }}" target="_blank">
+                          <i class="fa fa-file-pdf-o" style="font-size:24px;color:red"></i>
+                        </a>
+                      </span>
+                      <ng-template #base64PdfLinkResignation>
+                        <div class="attached-pdf">
+                          <i class="fa fa-times remove" (click)="removeResignationFile()"></i>
+                          <i class="fa fa-file-pdf-o" style="font-size:24px;color:red"></i>
+                        </div>
+                      </ng-template>
+
+                      <!-- Image Display -->
+                      <span *ngIf="isImage(documentNameResignation)">
+                        <i class="fa fa-times remove" (click)="removeResignationFile()"></i>
+                        <img [src]="'data:image/' + resignationDocumentType + ';base64,' + resignationBase64Data"
+                          alt="Uploaded Resignation Image" />
+                      </span>
+                    </div>
+                    <span *ngIf="this.exit_detail_data?.resignation_doc_path" class="col-md-1">
+                      <button type="button" class="btn btn-link"
+                        (click)="openFileInNewTab(this.exit_detail_data.resignation_doc_path)">
+                        <i class="fa fa-eye"></i>
+                      </button>
+                    </span>
+                  </div>
+
+
+
+                  <!-- <div class="form-group"  *ngIf="this.selectedExitType === 'Resignation Received'">
+                     <label class="control-label col-sm-4">Acceptance:<span class="text-danger">*</span></label>
+                  <div class="col-sm-8">
+                       <div class="Search-By-all-box">
+                         <input type="checkbox" name="SearchBy-new65" class="SearchBy-new65" value="ALL">
+                        <label for="Search-ByAllnew">Notify email to candidate</label>&nbsp;&nbsp;
+                         
+                       </div>
+                    </div>
+                </div> -->
+
+                </div>
+
+                <!-- <div class="outer_Contract_Closure_box hidden">
+                
+              <div class="form-group">
+                     <label class="control-label col-sm-4">Contract Closure date: <span class="text-danger">*</span></label>
+                  <div class="col-sm-8">
+                       <input type="date" class="form-control" placeholder="2024-08-12 " value="2024-07-22">
+                       
+                      
+                       
+                       
+                    </div>
+                    
+                </div>
+                
+               <div class="form-group" *ngIf="this.selectedExitType === 'Termination'">
+                     <label class="control-label col-sm-4">Notify to Candidate:<span class="text-danger">*</span></label>
+                  <div class="col-sm-8">
+                       <div class="Search-By-all-box">
+                         <input type="checkbox" name="SearchBy-new651" class="SearchBy-new651" value="ALL">
+                        <label for="SearchBy-new651">Notification email</label>&nbsp;&nbsp;
+                         
+                       </div>
+                    </div>
+                     
+                </div> 
+                
+                
+                
+              </div> -->
+                <!-- <div class="outer_Termination_box ">
+                
+                <div class="form-group" *ngIf="selectedExitType == 'Termination'">
+                     <label class="control-label col-sm-4">Notify to Candidate:<span class="text-danger">*</span></label>
+                  <div class="col-sm-8">
+                       <div class="Search-By-all-box">
+                         <input type="checkbox" name="SearchBy-new651" class="SearchBy-new651" value="ALL">
+                        <label for="SearchBy-new651">Notification email</label>&nbsp;&nbsp;
+                        
+                       </div>
+                    </div>   
+                </div>
+                
+                
+              </div> -->
+                <div class="outer_Absconding_box ">
+
+
+                  <div class="form-group" *ngIf="this.selectedExitType == 'Absconding' ">
+                    <label class="control-label col-sm-4">Absconding reported Date: <span
+                        class="text-danger">*</span></label>
+                    <div class="col-sm-8">
+                      <input id="resignationDate" #rd formControlName="resignationDate" placeholder="dd-mm-yyyy"
+                        autocomplete="off" style="cursor: pointer;" autocomplete="chrome-off" class="form-control"
+                        (change)="onResignationDateChange($event)">
+                    </div>
+
+                  </div>
+
+
+                </div>
+
+                <div class="form-group" *ngIf="!isSeparationReasonHidden()">
+                  <label class="control-label col-sm-4">Separation Reason: <span class="text-danger">*</span></label>
+                  <div class="col-sm-8">
+                    <select class="form-control form-control-sm" formControlName="exitReason">
+                      <option value="">-- Select --</option>
+                      <option *ngFor="let reason of reason_of_leaving_data" [value]="reason.exitreason"
+                        [selected]="reason.exitreason == Exit_form.value.exitReason">{{reason.exitreason}}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">NOC Clearance date: <span class="text-danger">*</span></label>
+                  <div class="col-sm-8">
+                    <input id="NOCClearanceDate" #rd placeholder="dd-mm-yyyy" autocomplete="off"
+                      style="cursor: pointer;" autocomplete="chrome-off" class="form-control"
+                      formControlName="NOCClearanceDate">
+                  </div>
+
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">NOC sheet: <span class="text-danger">*</span></label>
+                  <div class="col-sm-7">
+                    <div class="d-flex align-items-center">
+                      <div class="custom-file">
+                        <input type="file" name="nocFile" class="custom-file-input form-control" id="inputGroupFile02"
+                          (change)="onNOCFileSelected($event)"
+                          [placeholder]="!this.exit_detail_data?.noc_doc_path ? 'No file chosen' : 'Upload New File'" />
+
+
+                      </div>
+                    </div>
+                    <!-- Display for PDF files -->
+                    <span *ngIf="isPdf(originalDocumentNameNOC)">
+                      <a *ngIf="!base64DataNOC; else base64PdfLinkNOC" href="{{ nocFilePath }}" target="_blank">
+                        <i class="fa fa-file-pdf-o" style="font-size:24px;color:red"></i>
+                      </a>
+                    </span>
+
+                    <ng-template #base64PdfLinkNOC>
+                      <div class="attached-pdf">
+                        <i class="fa fa-times remove" (click)="removeNOCImage()"></i>
+                        <i class="fa fa-file-pdf-o" style="font-size:24px;color:red"></i>
+                      </div>
+                    </ng-template>
+
+                    <!-- Display for Image files -->
+                    <span *ngIf="isImage(originalDocumentNameNOC)">
+                      <i class="fa fa-times remove" (click)="removeNOCImage()"></i>
+                      <img [src]="'data:image/' + documentTypeNOC + ';base64,' + base64DataNOC"
+                        alt="Uploaded NOC Image" />
+                    </span>
+                  </div>
+                  <span *ngIf="this.exit_detail_data?.noc_doc_path" class="col-md-1">
+                    <button type="button" class="btn btn-link"
+                      (click)="openFileInNewTab(this.exit_detail_data.noc_doc_path)">
+                      <i class="fa fa-eye"></i>
+                    </button>
+                  </span>
+                </div>
+
+                <!-- <div class="form-group">
+                     <label class="control-label col-sm-4">Relieving date: <span class="text-danger">*</span></label>
+                  <div class="col-sm-8">
+                       <input type="date" class="form-control" placeholder="2024-08-12 " value="2024-07-22">
+                    </div>
+                    
+                </div> -->
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Relieving/Experience Letter: <span
+                      class="text-danger">*</span></label>
+                  <div class="col-sm-7">
+                    <div class="custom-file">
+                      <input type="file" name="relievingFile" class="custom-file-input form-control"
+                        id="inputGroupFileRelieving" (change)="onRelievingFileSelected($event)"
+                        [placeholder]="!this.exit_detail_data?.relieving_experience_letter_path ? 'No file chosen' : 'Upload New File'" />
+                    </div>
+
+                    <!-- PDF Display -->
+                    <span *ngIf="isPdf(originalDocumentNameRelievingLetter)">
+                      <a *ngIf="!relievingBase64Data; else base64PdfLinkRelieving" href="{{ relievingFilePath }}"
+                        target="_blank">
+                        <i class="fa fa-file-pdf-o" style="font-size:24px;color:red"></i>
+                      </a>
+                    </span>
+                    <ng-template #base64PdfLinkRelieving>
+                      <div class="attached-pdf">
+                        <i class="fa fa-times remove" (click)="removeRelievingFile()"></i>
+                        <i class="fa fa-file-pdf-o" style="font-size:24px;color:red"></i>
+                      </div>
+                    </ng-template>
+
+                    <!-- Image Display -->
+                    <span *ngIf="isImage(originalDocumentNameRelievingLetter)">
+                      <i class="fa fa-times remove" (click)="removeRelievingFile()"></i>
+                      <img [src]="'data:image/' + relievingDocumentType + ';base64,' + relievingBase64Data"
+                        alt="Uploaded Relieving Image" />
+                    </span>
+                  </div>
+                  <span *ngIf="this.exit_detail_data?.relieving_experience_letter_path" class="col-md-1">
+                    <button type="button" class="btn btn-link"
+                      (click)="openFileInNewTab(this.exit_detail_data.relieving_experience_letter_path)">
+                      <i class="fa fa-eye"></i>
+                    </button>
+                  </span>
+                </div>
+
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Final Dues: </label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" formControlName="finalDues">
+                  </div>
+
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Clearance date: </label>
+                  <div class="col-sm-8">
+                    <input id="clearanceDate" #cd formControlName="clearanceDate" placeholder="dd-mm-yyyy"
+                      autocomplete="off" style="cursor: pointer;" class="form-control" />
+                  </div>
+
+                </div>
+                <!----kolkove editor start with select---->
+                <div class="row" *ngIf="selectedExitType == 'Termination'">
+                  <div class="col-md-3" style="display:flex;"><label>Select Letter</label>
+                    <select class="form-control" (change)="getTemplateById($event.target.value)"
+                      formControlName="template">
+                      <option value="">Select letter</option>
+                      <option [value]="letter.row_id" *ngFor="let letter of masterTemplateList">
+                        {{letter.template_name}}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-md-12">
+
+                    <angular-editor id="attachment" class="jdbanktoolbarsize" formControlName="template_html"
+                      [config]="editorConfig">
+                    </angular-editor>
+                    <div id="appointment-container"></div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group" style="margin-top: 10px;text-align: center;">
+
+                      <button class="btn btn-primary" (click)="previewCurrentLetter2()"><i
+                          class="fa fa-eye"></i>&nbsp;Download
+                        PDF</button>&nbsp;&nbsp;
+                      <!-- <button type="submit" class="btn btn-user1 btn-round btn-success"
+                        (click)="manageCandidateAppointmentLetter('SAVE')"
+                        *ngIf="candidateDetails.appointment_letter_issued!='Y'">
+                        Save
+                      </button>&nbsp;&nbsp;
+                      <button type="submit" class="btn btn-user1 btn-round"
+                        *ngIf="candidateDetails.appointment_letter_issued!='Y'"
+                        (click)="manageCandidateAppointmentLetter('RESET')">
+                        Reset
+                      </button>&nbsp;&nbsp; -->
+
+
+                    </div>
+                  </div>
+                </div>
+                <!----kolkove editor end---->
+
+                <div class="modal-footer">
+                  <input type="button" class="btn btn-default" data-dismiss="modal" value="Submit"
+                    (click)="handleExitDetails()">
+                  <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel"
+                    (click)="close_exit_popup()">
+                  <button *ngIf="exit_detail_data.exit_status_id == '5'" class="btn btn-default" data-dismiss="modal"
+                    (click)="verify_and_lock()">
+                    <i class="fa fa-lock"></i> Verify and Lock
+                  </button>
+
+                </div>
+                <!-- </form> -->
+              </div>
+            </form>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Probation-->
+    <div class="card" *ngIf="tp_account_id=='5567'|| tp_account_id=='3088' || tp_account_id=='653'">
+
+      <div class="panel-heading panel_heading_gray collapsed card-header" role="tab" id="headingOne311"
+        data-toggle="collapse" data-parent="#accordion311" href="#collapseOneexperience" aria-expanded="false"
+        aria-controls="collapseOne">
+        <h4>Probation<i class="fa fa-angle-down"></i></h4>
+      </div>
+      <div id="collapseOneexperience" class="panel-collapse collapse card-body" role="tabpane3">
+        <div class="row">
+          <div class="col-sm-12 mrg-bot-15">
+            <div class="col-md-12 text-right">
+
+              <a *ngIf="exit_detail_data.exit_status_id != '6' && candidateDetails.joiningStatus!='RELIEVED'"
+                data-toggle="modal" class="btn btn-gary manage-btn emp-edit-btn-box" data-placement="top"
+                title="Experience and relieving" (click)="open_probation_popup(this.empDataFromParent)"><i
+                  class="ti-pencil-alt"></i></a>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Employee: </strong>{{this.empDataFromParent?.emp_name}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--end-->
+
+    <!-- probation Popup -->
+    <div [@grooveState]="openprobationPopup?'active':'inactive'" id="allowanceDeduct" class="modal">
+      <div [@dongleState]="openprobationPopup?'active':'inactive'" class="modal-dialog"
+        style="margin:auto auto auto auto;">
+        <div class="modal-content"
+          style="height: 100%; margin-top: 100px; max-height: 80vh; overflow-y: auto;width: 900px">
+          <form *ngIf="openprobationPopup">
+            <form [formGroup]="probation_form">
+              <div class="modal-header theme-bg">
+                <h4 class="modal-title">Probation</h4>
+                <button type="button" class="close" data-dismiss="modal" (click)="close_probation_popup()">×</button>
+              </div>
+              <div class="modal-body card-body">
+                <!----kolkove editor start with select---->
+                <div class="row">
+                  <div class="col-md-3" style="display:flex;"><label>Select Letter</label>
+                    <select class="form-control" (change)="getTemplateByIdforprobation($event.target.value)"
+                      formControlName="template_for_probation">
+                      <option value="">Select letter</option>
+                      <option [value]="letter.row_id" *ngFor="let letter of masterTemplateListforprobation">
+                        {{letter.template_name}}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-md-12">
+
+                    <angular-editor id="attachment" class="jdbanktoolbarsize" formControlName="template_html"
+                      [config]="editorConfig">
+                    </angular-editor>
+                    <div id="appointment-container"></div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group" style="margin-top: 10px;text-align: center;">
+
+                      <button class="btn btn-primary" (click)="previewCurrentLetter3()"><i
+                          class="fa fa-eye"></i>&nbsp;Download
+                        PDF</button>&nbsp;&nbsp;
+
+
+
+                    </div>
+                  </div>
+                </div>
+                <!----kolkove editor end---->
+
+              </div>
+            </form>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    <!---end-->
+
+    <!-- Relieving Experience-->
+    <div class="card" *ngIf="tp_account_id=='5567'|| tp_account_id=='3088' || tp_account_id=='653'">
+
+      <div class="panel-heading panel_heading_gray collapsed card-header" role="tab" id="headingOne311"
+        data-toggle="collapse" data-parent="#accordion311" href="#collapseOneexperience1" aria-expanded="false"
+        aria-controls="collapseOne">
+        <h4>Relieving Experience<i class="fa fa-angle-down"></i></h4>
+      </div>
+      <div id="collapseOneexperience1" class="panel-collapse collapse card-body" role="tabpane3">
+        <div class="row">
+          <div class="col-sm-12 mrg-bot-15">
+            <div class="col-md-12 text-right">
+
+              <a *ngIf="exit_detail_data.exit_status_id != '6' && candidateDetails.joiningStatus!='RELIEVED'"
+                data-toggle="modal" class="btn btn-gary manage-btn emp-edit-btn-box" data-placement="top"
+                title="Experience and relieving" (click)="open_Experience_popup(this.empDataFromParent)"><i
+                  class="ti-pencil-alt"></i></a>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>Employee: </strong>{{this.empDataFromParent?.emp_name}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--end-->
+
+    <!--Experience Popup -->
+    <div [@grooveState]="openExperiencePopup?'active':'inactive'" id="allowanceDeduct" class="modal">
+      <div [@dongleState]="openExperiencePopup?'active':'inactive'" class="modal-dialog"
+        style="margin:auto auto auto auto;">
+        <div class="modal-content"
+          style="height: 100%; margin-top: 100px; max-height: 80vh; overflow-y: auto;width: 900px">
+          <form *ngIf="openExperiencePopup">
+            <form [formGroup]="Experience_form">
+              <div class="modal-header theme-bg">
+                <h4 class="modal-title">Experience</h4>
+                <button type="button" class="close" data-dismiss="modal" (click)="close_Experience_popup()">×</button>
+              </div>
+              <div class="modal-body card-body">
+                <!----kolkove editor start with select-------->
+                <div class="row">
+                  <div class="col-md-3" style="display:flex;"><label>Select Letter</label>
+                    <select class="form-control" (change)="getTemplateByIdforExperience($event.target.value)"
+                      formControlName="template_for_Experience">
+                      <option value="">Select letter</option>
+                      <option [value]="letter.row_id" *ngFor="let letter of masterTemplateListforExperience">
+                        {{letter.template_name}}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-md-12">
+
+                    <angular-editor id="attachment" class="jdbanktoolbarsize" formControlName="template_html"
+                      [config]="editorConfig">
+                    </angular-editor>
+                    <div id="appointment-container"></div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group" style="margin-top: 10px;text-align: center;">
+                      <!-- previewLetter1 -->
+                      <button class="btn btn-primary" (click)="previewCurrentLetter1()"><i
+                          class="fa fa-eye"></i>&nbsp;Download
+                        PDF</button>&nbsp;&nbsp;
+
+
+
+                    </div>
+                  </div>
+                </div>
+                <!----kolkove editor end---->
+
+              </div>
+            </form>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    <!---end-->
+
+  </div>
+  <!------------Download PDF Start------------------------>
+  <div class="modal" [ngStyle]="{'display':confirmationModal?'block':'none'}">
+    <div class="modal-dialog modal-lg ">
+      <div class="modal-content ">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title"></h4>
+          <button type="button" class="close modal-close-btn" data-dismiss="modal" aria-label="Close"
+            data-bs-dismiss="modal" (click)="closeConfirmModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12" style="min-height:100px;">
+              <iframe *ngIf="pdfUrl" [src]="pdfUrl" width="100%" height="550px" style="border: none;"></iframe>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!------------Download PDF End-------------------------->

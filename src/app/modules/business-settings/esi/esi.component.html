@@ -1,0 +1,113 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+  <div class="fakeLoader"></div>
+
+  <div id="page-wrapper">
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Business Settings</h3>
+      </div>
+      <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="['/dashboard']">Home</a></li>
+          <li class="breadcrumb-item active">Employees' State Insurance</li>
+        </ol>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <!-- /row -->
+      <div class="row">
+
+
+        <div class="col-md-10 col-md-offset-1 mrg-top-10 mrg-bot-10">
+
+
+          <div class="card">
+
+            <div class="card-header">
+              <h4>Employees' State Insurance</h4>
+
+            </div>
+
+            <div class="card-body">
+              <div class="row">
+
+                <div class="col-md-12 padd-bot-15 padd-top-15">
+                  <alert></alert>
+                  <form [formGroup]="ESI_Form">
+                    <div class="col-sm-6">
+                      <label>ESI Number <span class="text-danger">*</span></label>
+                      <input autocomplete="off" formControlName="ESI_Number" type="text"
+                        placeholder="00-00-000000-000-0000" class="form-control">
+                    </div>
+                    <div class="col-sm-6 m-clear">
+                      <label>Deduction Cycle</label>
+                      <select class="form-control" formControlName="deduction_cycle">
+                        <option value="Monthly">Monthly</option>
+
+                      </select>
+                    </div>
+                    <div class="col-sm-12 m-clear">
+                      <label>Employees' Contribution</label>
+                      <div class="Contribution-btn-box">
+                        <input autocomplete="off" type="text" formControlName="employee_contribution"
+                          placeholder="0.75%" class="form-control" >
+                        <!-- <span>of Gross Pay</span> -->
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12 m-clear">
+                      <label>Employer's Contribution</label>
+                      <div class="Contribution-btn-box">
+                        <input autocomplete="off" type="text" formControlName="employer_contribution"
+                          placeholder="3.25%" class="form-control acceptOnlyNumber" >
+                        <!-- <span>of Gross Pay</span> -->
+                      </div>
+                    </div>
+
+                    <!-- <div class="col-sm-12 m-clear">
+                                   <div class="custom-radio Include-checkbox-btn">
+                <label class="form-check-label">
+            <input id="ember899" class="ember-checkbox ember-view form-check-input" type="checkbox"> Include employer's contribution in the CTC
+          </label>
+                </div>
+
+                                </div> -->
+
+
+
+
+
+                    <!-- <div class="col-sm-12 m-clear">
+
+                 <div class="salary-component-disable-note">
+                <div class="help-text">
+                  <b>Note:</b>
+                  <span>ESI deductions will be made only if the employee’s monthly salary is less than or equal to ₹21,000. If the employee gets a salary revision which increases their monthly salary above ₹21,000, they would have to continue making ESI contributions till the end of the contribution period in which the salary was revised (April-September or October-March).</span>
+                </div>
+                </div>
+               </div> -->
+
+                    <div class="col-md-12 col-12 padd-top-15 text-center">
+                      <a class="btn btn-primary" (click)="UpdateEmployer_Esi_Details()"
+                        [ngClass]="{'disabled-link': esi_challan_generated === 'Y'}">Update</a>
+                    </div>
+                  </form>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+
+
+        </div>
+
+
+      </div>
+      <!-- /row -->
+    </div>
+  </div>

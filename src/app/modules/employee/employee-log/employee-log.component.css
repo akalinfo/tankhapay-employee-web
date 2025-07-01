@@ -1,0 +1,32 @@
+.card-box{
+    display:  flex;
+    align-items: center;
+    height: 86px;
+}
+
+.invalid{
+    background: #e92f2f;
+    color: #fff;
+}
+
+.invalid a i {
+    color: #fff;
+}
+
+.emp-desc h4{
+    font-size:15px;
+}
+
+.update-btn{
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 4px 7px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}

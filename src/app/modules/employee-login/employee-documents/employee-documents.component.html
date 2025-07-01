@@ -1,0 +1,159 @@
+<div id="menu5" class="tab-pane fade1"  >
+
+
+
+    <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="card" *ngFor="let category of document_master_data; let i = index" [ngStyle]="{'display': category.master_documents_details && category.master_documents_details.length > 0 ? 'block' : 'none'}">
+          <!-- Safe check for array using ?.length to handle undefined/null cases -->
+          <div class="panel-heading panel_heading_gray card-header"
+              [ngClass]="{'collapsed': !isPanelOpen[i]}" 
+              (click)="togglePanel(i)"
+              aria-expanded="{{isPanelOpen[i] ? 'true' : 'false'}}"
+              role="tab"
+              *ngIf="category.master_documents_details && category.master_documents_details?.length > 0">
+            <h4>{{ category.document_category_name }} <i class="fa fa-angle-down"></i></h4>
+          </div>
+          
+          <!-- Content of the panel -->
+          <div id="collapseOne0025" class="panel-collapse card-body" 
+              [ngClass]="{'collapse': !isPanelOpen[i], 'in': isPanelOpen[i]}" 
+              aria-expanded="{{isPanelOpen[i] ? 'true' : 'false'}}" 
+              role="tabpane2"
+              *ngIf="category.master_documents_details && category.master_documents_details?.length > 0">
+              
+            <div class="row">
+              <div class="col-md-12 padd-bot-15 padd-top-15">
+                <div class="table-responsive challan-table-outer-box Documents-listing-table-box">
+                  <table class="table table-lg table-hover">
+                    <thead>
+                      <tr>
+                        <th>Sno</th>
+                        <th style="width: 200px;">Name</th>
+                        <th>File</th>
+                        <th>Date</th>
+                        <th>Remarks</th>
+                        <th>Document Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let document of category.master_documents_details; let j = index">
+                        <td>{{ j + 1 }}</td>
+                        <td>{{ document.master_document_name }}</td>
+                        <td>
+                          <a href="{{ document.document_path }}" target="_blank" *ngIf="document.document_path" data-toggle="modal" data-placement="top">
+                            View Document
+                            <!-- Display Image icon for jpg, jpeg, png -->
+                            <i *ngIf="isImage(document.document_path)" class="fa fa-file-image-o" aria-hidden="true" style="font-size:16px;color:blue"></i>
+                            <!-- Display PDF icon for PDF files -->
+                            <i *ngIf="!isImage(document.document_path) && isPdf(document.document_path)" class="fa fa-file-pdf-o" aria-hidden="true" style="font-size: 16px; color: #b90707;"></i>
+                          </a>
+                          <span *ngIf="!document.document_path">No document uploaded</span>
+                        </td>
+                        
+                        <td>{{ document.created_date }}</td>
+                        <td>{{ document.document_remarks }}</td>
+                        <td>
+                          <span *ngIf="document.document_path"
+                          [ngStyle]="{'color': document.accept_status=='A' ? 'green' : (document.accept_status=='R' ?'red':'#b1860e')}" style="font-weight: 700;">{{document.accept_status=='A' ? 'Accepted' : (document.accept_status=='R'?'Rejected' :'Pending')}}</span>
+                        </td>
+                        <td *ngIf="this.empDataFromParent.joiningStatus != 'RELIEVED'; else relievedStatus">
+                          <ng-container *ngIf="(document.accept_status!='A')">
+                            <input 
+                              type="file" 
+                              accept=".jpg,.jpeg,.png,.pdf" 
+                              (change)="onDocumentFileSelected($event, document, category)" 
+                              style="display: none;" 
+                              #fileInput />
+                            <a (click)="fileInput.click()">
+                              <i class="fa fa-upload" style="font-size:20px; margin: 0 5px 0 0;"></i>
+                            </a>
+                           
+                          </ng-container>
+                          
+                        </td>
+                        
+                        <ng-template #relievedStatus>
+                          <td>
+                            <span style="color: red; font-weight: bold;">RELIEVED</span>
+                          </td>
+                        </ng-template>
+                        
+                          
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
+
+</div>
+
+<!-- Popup -->
+<div class="modal" [ngStyle]="{'display':checkbox_Confirm_popup?'block':'none'}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- <form> -->
+      <div class="modal-header theme-bg">
+        <h4 class="modal-title"> Document Upload</h4>
+        <button type="button" class="close" (click)="close_checkbox_Confirm_popup()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="row text-center">
+          <h3>Document Upload</h3>
+          <p>Are you sure you want to upload this document?</p>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button class="btn btn-primary"  data-dismiss="modal" (click)="AddEdit_Document()">Yes</button>
+        <button type="button" class="btn btn-info" (click)="close_checkbox_Confirm_popup()">No</button>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- <div class="no-pay-slips-inn-box" *ngIf="(this.empDataFromParent.joiningStatus == 'RELIEVED')">
+
+  <img src="assets/img/no-pay-slip.png"
+      class="img-circle img-responsive" alt="">
+
+  <p>Documents cannot be uploaded for a relieved employee!</p>
+</div> -->
+
+<!------------Add Remarks Modal starts----------------->
+<div [@grooveState]="addRemarks?'active':'inactive'" id="addApprovalWorkflow" class="modal add-address-form-box">
+  <div [@dongleState]="addRemarks?'active':'inactive'" class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Add Remarks</h4>
+          <button (click)="addRemarks=false;remarks=''" type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+        <div class="modal-body">
+
+          <div class="row">
+
+              <div class="col-md-12 ">
+                  <input type="text" maxlength="200" class="form-control" placeholder="Enter remarks"
+                  [(ngModel)]="remarks" [ngModelOptions]="{standalone:true}">
+              </div>
+          </div>
+          </div>
+          <div class="modal-footer">
+              <input type="button" class="btn btn-default" data-dismiss="modal" value="Submit" (click)="changeDocumentStatusAcceptReject()">
+              <input type="button" class="btn btn-default" data-dismiss="modal" value="Close" (click)="addRemarks=false;remarks=''">
+          </div>
+     </form>
+   </div>
+  </div>
+</div>
+<!------------Add Remarks Modal ends----------------->

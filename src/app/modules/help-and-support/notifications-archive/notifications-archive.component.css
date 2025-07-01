@@ -1,0 +1,686 @@
+textarea.form-control-box {
+    border: 1px solid #dde6ef;
+    margin-bottom: 10px;
+    box-shadow: none;
+    border-radius: 0;
+    background: #fbfdff;
+    font-size: 15px;
+    color: #6b7c8a;
+    font-weight: 400;
+    width: 100%;
+    vertical-align: top;
+    padding: 6px 12px;
+    line-height: 1.42857143;
+}
+
+td.CP {
+    color: #000;
+}
+
+.alwd_dur span.alwd_tg {
+    border: 1px solid #ddd;
+    padding: 1px 10px;
+    border-radius: 12px;
+    background: #f9f9f9;
+    display: inline-block;
+    margin: 0 3px 5px 0;
+    width: auto !important;
+    font-size: 12px !important;
+}
+
+.ZPusrName {
+
+    padding-top: 9px;
+}
+
+.ZPLRow img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid #e3e3e3;
+}
+
+.ZSdte {
+    display: block;
+    margin-top: 8px;
+    color: #999;
+    font-size: 13px;
+}
+
+.multiple-select-dropdown-btn :nth-of-type(2) {
+    display: none;
+}
+
+.multiple-select-dropdown-btn button.btn.dropdown-toggle.btn-default {
+    height: 40px;
+    border: 1px solid #dde6ef;
+    margin-bottom: 10px;
+    box-shadow: none;
+    border-radius: 0;
+    background: #fbfdff;
+    font-size: 15px;
+    color: #6b7c8a;
+    font-weight: 400;
+    line-height: 18px;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.multiple-select-dropdown-btn .dropdown-menu {
+
+    left: 14px;
+    float: left;
+    min-width: 271px;
+    padding: 5px 0;
+    margin: -10px 0 0;
+
+}
+
+.multiple-select-dropdown-btn .dropdown-menu li a label {
+    padding: 0 18px !important;
+    font-weight: 400;
+    font-size: 14px;
+    margin: 6px 0;
+}
+
+.multiple-select-dropdown-btn .dropdown-menu li a label input {
+    height: 16px;
+    width: 18px;
+}
+
+.multiple-select-dropdown-btn .dropdown-menu>.active>a,
+.multiple-select-dropdown-btn .dropdown-menu>.active>a:hover,
+.multiple-select-dropdown-btn .dropdown-menu>.active>a:focus {
+    background-color: #d1cfff;
+}
+
+table.Users-dashboard-outer-box span.badge.bg-primary1 {
+    font-size: 15px;
+    padding: 10px 20px;
+    background: transparent;
+
+}
+
+table.Users-dashboard-outer-box h3 {
+    font-size: 15px;
+    margin: 0;
+    color: #636363;
+    font-weight: 400;
+}
+
+table.table.table-lg tr th,
+table.table tr td {
+    border-color: #eaeff5;
+    padding: 7px 10px;
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+span.multiselect-native-select select#dates-field2 {
+    display: none;
+}
+
+.multiple-select-dropdown-btn .dropdown-menu li a {
+    padding: 3px 16px;
+
+}
+
+.ZPusrName span b {
+    color: #999;
+    margin-right: 5px;
+    font-weight: 600;
+}
+
+.PL15 {
+    border: 1px solid #dde6ef;
+    margin: 40px 0;
+    box-shadow: none;
+    border-radius: 0;
+    font-size: 14px;
+    color: #181818;
+    font-weight: 400;
+    width: 100%;
+    vertical-align: top;
+    padding: 40px;
+    line-height: 1.42857143;
+}
+
+label.checkbox.DIBI.VM input {
+    margin: 3px 0 0 0;
+}
+
+label.checkbox.DIBI.VM span {
+    padding: 0 0 0 22px;
+}
+
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 15px;
+    width: 15px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #2196F3;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+a.icnpkr {
+    border: 1px solid #dde6ef;
+    padding: 5px 10px;
+    background: #fbfdff;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+a.icnpkr:hover {
+    border: 1px solid #afceed;
+    background: #d5e9fb;
+}
+
+ul.ZPCP.dropdown-menu {
+    padding: 10px;
+    background: #f9f9f9;
+}
+
+li#changeDropDown {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+ul.ZPCP.dropdown-menu .icons {
+    height: auto;
+    width: auto;
+    text-align: center;
+    font-size: 20px;
+    color: #000;
+    padding: 5px;
+    margin: 2px;
+    transition: 1s all;
+    border: 1px solid #ddd;
+    background: #fff;
+}
+
+ul.ZPCP.dropdown-menu .icons:hover {
+    border: 1px solid #0084ff;
+    background: #e3f1fd;
+}
+
+ul.ZPCP.dropdown-menu .icons img {
+    width: 25px;
+    margin: 0;
+}
+
+.Start-Time-end-time-box {
+    background: #FCFCFC;
+    border: 1px solid #efefef;
+    padding: 15px 10px 0;
+    margin: 0 0px 20px 6px;
+    display: inline-block;
+}
+
+h4.top-shif-title-box {
+    border-bottom: 1px solid #F6F7F8;
+    padding-bottom: 4px;
+    margin: 15px 0px 20px 0;
+    font-size: 15px;
+    color: #000;
+    font-weight: 500;
+}
+
+span.shift-sun-box {
+    color: #1194f7;
+}
+
+span.oeweek {
+    display: block;
+    padding: 5px 0;
+}
+
+
+textarea.push-notification-box {
+    border: 1px solid #dde6ef;
+    margin-bottom: 10px;
+    box-shadow: none;
+    border-radius: 0;
+    background: #fbfdff;
+    color: #6b7c8a;
+    font-weight: 400;
+    width: 100%;
+    text-align: left !important;
+    vertical-align: middle;
+    line-height: 15px;
+    padding: 6px 12px;
+    height: 100px;
+}
+
+
+
+
+
+
+
+
+
+
+.multiselect {
+    position: relative;
+    display: inline-block;
+}
+
+.selectBox {
+    position: relative;
+}
+
+.selectBox select {
+    width: 100%;
+    font-weight: bold;
+}
+
+.overSelect {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+#checkboxes {
+    display: none;
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    z-index: 100;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    max-height: 200px;
+    /* Setting max-height to make it scrollable */
+    overflow-y: auto;
+    /* Enable vertical scrolling */
+}
+
+#checkboxes label {
+    display: block;
+}
+
+.table-responsive.Reimbursements-outer-box .table tr td {
+    padding: 0.8rem 1rem !important;
+    font-size: 12px;
+}
+
+#checkboxes label:hover {
+    background-color: #1e90ff;
+}
+
+.multiselect.multiselect-inner-box select.form-control {
+    font-weight: 400;
+    margin: 0;
+}
+
+.multiselect.multiselect-inner-box .multiselect-target-box label {
+    padding: 5px 10px;
+    margin: 0;
+    min-width: 144px;
+}
+
+.multiselect.multiselect-inner-box .multiselect-target-box label input {
+    margin: 0 5px 0 0;
+    height: 16px;
+    width: 16px;
+    vertical-align: text-top;
+}
+
+.multiselect.multiselect-inner-box .multiselect-target-box label:hover {
+    background: #efefef !important;
+    cursor: pointer;
+}
+
+.overSelect.form-control12 {
+    cursor: pointer;
+}
+
+.multiselect-target-box {
+    margin-top: -5px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+
+.bulk-attendance-outer-box thead tr th {
+    background: #fff;
+    font-weight: 500;
+    white-space: nowrap;
+    border-top: 1px solid #e2e5e8 !important;
+    padding: 1.5rem 1rem;
+    color: #000;
+}
+
+a.btn.active-btn-box {
+    padding: 2px 10px;
+    font-size: 10px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+
+span.pend-btn-ved1 {
+    color: #dbae00;
+}
+
+span.appro-btn-ved {
+    color: #10a300;
+}
+
+span.appro-btn-ved1 {
+    color: #b90000;
+}
+
+svg.icon {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+.dropleft .dropdown-menu {
+    left: auto;
+    right: 29px;
+    padding: 10px 0px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    min-width: 100px;
+}
+
+.dropleft .dropdown-menu li {
+    padding: 4px 10px;
+    cursor: pointer;
+    color: #000;
+    font-size: 12px;
+
+}
+
+.dropleft .dropdown-menu li:hover {
+    background: #f7f7f7;
+    color: #1d17ff;
+}
+
+a.eye-btn-menu {
+    font-size: 16px;
+    vertical-align: bottom;
+    margin-left: 3px;
+}
+
+a.eye-btn-menu:hover {
+    color: #1194f7;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+h4.sub-title-inn-box.View-Roles-list-outer-box {
+
+    line-height: 42px;
+}
+
+
+
+
+.toggle-slide-btn-box input[type=checkbox] {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+}
+
+.toggle-slide-btn-box label {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 50px;
+    height: 20px;
+    background: grey;
+    display: block;
+    border-radius: 100px;
+    position: relative;
+}
+
+.toggle-slide-btn-box label:after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 90px;
+    transition: 0.3s;
+}
+
+.toggle-slide-btn-box input:checked+label {
+    background: #bada55;
+}
+
+.toggle-slide-btn-box input:checked+label:after {
+    left: calc(100% - 5px);
+    transform: translateX(-100%);
+}
+
+.toggle-slide-btn-box label:active:after {
+    width: 130px;
+}
+
+.form-control {
+    height: 30px;
+
+    font-size: 12px;
+
+}
+
+.bulk-attendance-outer-box table.table tr th,
+.bulk-attendance-outer-box table.table tr td {
+    padding: 1.5rem 1rem;
+}
+
+.table-responsive.Reimbursements-outer-box tr th {
+    background: #ceeaff !important;
+}
+
+.bulk-attendance-outer-box thead tr th {
+    background: #fff;
+    font-weight: 500;
+    white-space: nowrap;
+    border-top: 1px solid #e2e5e8 !important;
+    padding: 1.5rem 1rem;
+    color: #000;
+}
+
+.bulk-attendance-outer-box thead tr th {
+    background: #fff;
+    font-weight: 700;
+    white-space: nowrap;
+    border-top: 1px solid #e2e5e8 !important;
+    padding: 1.5rem 1rem;
+}
+
+.table>thead>tr>th {
+    border-bottom: 1px solid #e8edef;
+    font-weight: 500;
+}
+
+a {
+    color: #67757c !important;
+    text-decoration: none;
+}
+
+.form-control {
+    height: 30px !important;
+    font-size: 12px !important;
+}
+
+.form-control {
+    height: 50px;
+    border: 1px solid #dde6ef;
+    margin-bottom: 10px;
+    box-shadow: none;
+    border-radius: 0;
+    background: #fbfdff;
+    font-size: 15px;
+    color: #6b7c8a;
+    font-weight: 400;
+}
+
+.form-control {
+    color: #607d8b;
+    font-size: 15px;
+    height: 40px;
+    box-shadow: none;
+    border-radius: 2px;
+    border: 1px solid #e8eef1;
+}
+
+
+
+a.job_name_tag {
+    font-weight: 500;
+    color: #0047ab !important;
+}
+
+.page-titles h3.text-themecolor {
+    margin-top: 0;
+}
+
+[type="radio"] {
+    display: inline !important
+}
+
+h3.text-themecolor {
+    margin-bottom: 0;
+    font-weight: 500;
+    color: #1a6bb7 !important;
+}
+
+.table-responsive.Reimbursements-outer-box {
+    margin-top: 20px;
+}
+
+/* .active {
+    font-weight: bold;
+    color: blue;
+} */
+
+.pagination-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.pagination-button {
+    cursor: pointer;
+    padding: 8px 15px;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+    transition: background-color 0.3s, border-color 0.3s;
+    font-size: 14px;
+}
+
+.pagination-button:hover {
+    background-color: #ddd;
+}
+
+.pagination-button.disabled {
+    pointer-events: none;
+    color: #999;
+    background-color: #f9f9f9;
+    border-color: #ddd;
+}
+
+.pagination-text {
+    font-size: 14px;
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+.pagination-text.active {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+.pagination-text.disabled {
+    color: #999;
+    cursor: not-allowed;
+}
+
+.pagination-button:focus,
+.pagination-text:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+}
+
+.form-control {
+    height: 40px !important;
+    border: 1px solid #dde6ef;
+    margin-bottom: 10px;
+    box-shadow: none;
+    border-radius: 0;
+    background: #fbfdff;
+    font-size: 15px;
+    color: #6b7c8a;
+    font-weight: 400;
+    border-radius: 0px !important;
+}

@@ -1,0 +1,348 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+<div id="wrapper" [ngClass]="{'active': showSidebar == true}">
+  <div class="fakeLoader"></div>
+
+  <div class="loader-overlay" *ngIf="!isDataLoaded">
+    <div class="loader"></div>
+  </div>
+  <div id="page-wrapper" style="margin-left: 5px;">
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Add Imprest Request</h3>
+      </div>
+      <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="['/dashboard']">Home</a></li>
+          <li class="breadcrumb-item active">Add Imprest Request</li>
+        </ol>
+      </div>
+    </div>
+
+  
+<div class="row" style="margin-left: 10px; margin-right: 10px;">
+  <div class="col-md-12">
+    <div class="card-header caded-innder-head-box">
+
+      <div class="col-md-3">
+        <input type="hidden" id="recdate" (click)="filterFromToDateRequests('FromDate', 'ToDate')">
+
+        <label style="color:#000; font-weight: 500;">From Date</label>
+        <input id="FromDate" class="form-control" type="text" style="cursor: pointer;" placeholder="dd-mm-yyyy"
+          autocomplete="off" readonly>
+      </div>
+      <div class="col-md-3">
+        <label style="color:#000; font-weight: 500;">To Date</label>
+        <input id="ToDate" class="form-control" type="text" style="cursor: pointer;" placeholder="dd-mm-yyyy"
+          autocomplete="off" readonly>
+      </div>
+
+      <div class="col-sm-2">
+        <label style="color:#000; font-weight: 500;">Status</label>
+        <select class="wide form-control" (change)="changeStatusFilter()" [(ngModel)]="statusFilter"  [ngModelOptions]="{standalone: true}">
+          <option value="All">All</option>
+          <option value="Pending">Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+
+      <div class="col-sm-2" style="margin-top: 35px;">
+        <strong>Total:</strong>  {{imprestsRequests?.length || ''}}
+      </div>
+
+      <div class="col-sm-2 text-right">
+        <a data-placement="top" class="btn btn-user btn-round btn-primary btn-primary-Add-Roles-btn"
+          (click)="openAddImprestRequestModal()" style="margin-top: 28px;">Create Request</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="col-md-12 mrg-top-0 mrg-bot-25">
+    <div class="card">
+      <div class="card-header" style="padding: 10px;">
+        <h4 class="sub-title-inn-box View-Roles-list-outer-box"> All Imprest Requests</h4>
+      </div>
+      <div class="card-body padd-bot-0 padd-top-0">
+        <div class="row">
+          <div class="col-md-12 padd-top-0">
+            <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+              <table class="table user-list">
+                <thead>
+                  <tr>
+                    <th>S No.</th>
+                    <th>Expense Category</th>
+                    <th>Expense Description</th>
+                    <th>Expense Amount</th>
+                    <th>Date of Expense</th>
+                    <th>Created On</th>
+                    <th>Payment Mode</th>
+                    <th>Attachments</th>
+                    <th>Approval Status</th>
+                    <th>Action &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;  </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- <tr *ngFor="let imprest of imprestsRequests; let i = index" [ngClass]="{'pending': imprest?.approval_status == 'Pending', 'approved': imprest?.approval_status == 'Approved', 'rejected': imprest?.approval_status == 'Rejected'}"> -->
+                  <tr *ngFor="let imprest of imprestsRequests; let i = index">
+                    <td style="color: rgb(80, 77, 77);">{{ i+1 }}</td>
+                    <td>
+                      {{ imprest?.expense_category_name }}
+                      <div *ngIf="imprest?.expense_category_name == 'Others'">{{imprest?.other_expense_category_name}}</div>
+                    </td>
+                    <td>{{ imprest?.imprest_reim_description }}</td>
+                    <td>{{ imprest?.amount_spent }}</td>
+                    <td>{{ imprest?.date_of_expense }}</td>
+                    <td>{{ imprest?.createdon }}</td>
+                    <td>{{ imprest?.payment_mode }}</td>
+                    
+                    <!-- <td>
+                      <ng-container *ngIf="imprest.attachments?.length > 0; else noFiles">
+                        <span *ngFor="let file of imprest.attachments" style="margin-right: 8px;">
+                          <a [href]="file.dbpath"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            [title]="file.originalDocName"
+                            style="color: blue; font-size: 18px; text-decoration: none;">
+                            <i class="fa fa-file-pdf-o" aria-hidden="true" style="color: red;"></i>
+                          </a>
+                        </span>
+                      </ng-container>
+                      <ng-template #noFiles></ng-template>
+                    </td> -->
+
+                    <td>
+                      <ng-container *ngIf="imprest.attachments?.length > 0; else noFiles">
+                        <span *ngFor="let file of imprest.attachments" style="margin-right: 8px;">
+                          <!-- <i class="fa fa-file-pdf-o"
+                            aria-hidden="true"
+                            (click)="openPdf(file.dbpath)"
+                            [title]="file.originalDocName"
+                            style="color: red; font-size: 18px; cursor: pointer;"></i> -->
+                             <!-- PDF Icon -->
+                          <i *ngIf="isPdfFile(file)"
+                            class="fa fa-file-pdf-o"
+                            aria-hidden="true"
+                            (click)="openPdf(file.dbpath)"
+                            [title]="file.originalDocName"
+                            style="color: red; font-size: 18px; cursor: pointer;"></i>
+
+                          <!-- Image Icon -->
+                          <i *ngIf="isImageFile(file)"
+                            class="fa fa-file-image-o"
+                            aria-hidden="true"
+                            (click)="openPdf(file.dbpath)"  
+                            [title]="file.originalDocName"
+                            style="color: #3399ff; font-size: 18px; cursor: pointer;"></i>
+                        </span>
+                      </ng-container>
+                      <ng-template #noFiles></ng-template>
+                    </td>
+
+                    <td [ngClass]="{
+                      'status-pending': imprest?.approval_status === 'Pending',
+                      'status-rejected': imprest?.approval_status === 'Rejected',
+                      'status-approved': imprest?.approval_status === 'Approved'
+                    }">
+                      {{ imprest?.approval_status }}
+                    </td>
+
+
+                    <td>
+                      <a (click)="viewImprestRequest(imprest)" title="Click to view" style="color:#17a2b8;">
+                        <i class="fa fa-lg fa-eye"></i>
+                      </a> &nbsp;
+                      <ng-container *ngIf="imprest?.approval_status == 'Pending'">
+                        <a (click)="openUpdateImprestRequestModal(imprest)" title="Click to update" style="color:#007bff;">
+                          <i class="fa fa-lg fa-edit"></i>
+                        </a> &nbsp;
+                        <a (click)="openRemoveImprestRequestModal(imprest)" title="Click to remove" style="color:red;">
+                          <i class="fa fa-lg fa-times"></i>
+                        </a>
+                      </ng-container>
+                    </td>
+                
+                  </tr>
+                  <tr *ngIf="imprestsRequests?.length == 0">
+                    <td colspan="5" style="text-align: center; font-weight: 500">No Data Found</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Imprest Request Modal -->
+<div id="addImprestModal" class="modal fade add-address-form-box in">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form [formGroup]="addImprestForm">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">{{imprest_title}} Imprest Request</h4>
+          <button type="button" class="close" (click)="hideAddImprestRequestModal()">×</button>
+        </div>
+
+        <!-- <div class="modal-body" [ngClass]="{ 'view-only': isViewImprest }"> -->
+          <div class="modal-body" [ngClass]="{ 'view-only': isViewImprest }" 
+          style="max-height: 70vh; overflow-y: auto;">
+
+
+           <div class="form-group">
+            <label class="control-label col-sm-4">Category <span style="color: red;">*</span></label>
+            <div class="col-sm-8">
+              <select class="wide form-control" formControlName="category">
+                 <option *ngFor="let data of categoryListData" [value]="data.category_row_id">{{data?.expense_category_name_disp}}</option>  
+              </select>
+              <ng-container *ngIf="addImprestForm.get('category').errors && addImprestForm.get('category').touched"
+              class="text-danger">
+              <p class="text-danger">Category is required</p>
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="form-group" *ngIf="addImprestForm.value.category == '4'">
+            <label class="control-label col-sm-4">Other Category Name<span style="color: red;">*</span></label>
+            <div class="col-sm-8">
+              <input id="other_category_name" type="text" class="form-control" formControlName="otherCategoryName">
+              <ng-container *ngIf="addImprestForm.get('otherCategoryName').errors && addImprestForm.get('otherCategoryName').touched"
+              class="text-danger">
+              <p class="text-danger">Other Category Name is required</p>
+              </ng-container>
+            </div>
+          </div>
+       
+          
+          <!-- <input type="hidden" id="imprest_date" (click)="filterFromToDateRequests('expenseDate','wfh_toDate')"> -->
+          <input type="hidden" id="imprest_date">
+          <div class="form-group">
+            <label class="control-label col-sm-4">Expense Date<span style="color: red;">*</span></label>
+            <div class="col-sm-8" [ngClass]="{ 'view-only': imprest_title == 'Remove' }">
+              <input type="text" id="expenseDate" class="form-control" formControlName="expenseDate" placeholder="dd-mm-yyyy" autocomplete="off" readonly>
+              <ng-container *ngIf="addImprestForm.get('expenseDate').errors && addImprestForm.get('expenseDate').touched"
+									class="text-danger">
+									<p class="text-danger">Expense Date is required</p>
+							</ng-container>
+            </div>
+          </div>
+
+         <div class="form-group">
+            <label class="control-label col-sm-4">Payment Mode<span style="color: red;">*</span></label>
+            <div class="col-sm-8">
+              <select class="wide form-control"  formControlName="paymentMode">
+                <option *ngFor="let data of paymentListData" [value]="data.payment_mode_id">{{data?.payment_mode_name}}</option>  
+              </select>
+              <ng-container *ngIf="addImprestForm.get('paymentMode').errors && addImprestForm.get('paymentMode').touched"
+              class="text-danger">
+              <p class="text-danger">Payment Mode is required</p>
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Expense Amount<span style="color: red;">*</span></label>
+            <div class="col-sm-8">
+              <input id="expense_amt" type="text" class="form-control" formControlName="expenseAmount"
+                (input)="validateAmount($event)">
+              <ng-container
+                *ngIf="addImprestForm.get('expenseAmount').errors && addImprestForm.get('expenseAmount').touched"
+                class="text-danger">
+                <p class="text-danger">Expense Amount is required</p>
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Expense Description <span style="color: red;">*</span></label>
+            <div class="col-sm-8">
+              <textarea class="form-control" formControlName="expenseDesc" rows="4"
+                style="height:8rem !important;"></textarea>
+              <ng-container *ngIf="addImprestForm.get('expenseDesc').errors && addImprestForm.get('expenseDesc').touched"
+              class="text-danger">
+              <p class="text-danger">Description is required</p>
+              </ng-container>
+            </div>
+          </div>
+ 
+          <div class="form-group">
+            <label class="control-label col-sm-4">Supporting Document</label>
+            <div class="col-sm-6">
+              <input id="compoff_doc" type="file" class="form-control" multiple (change)="readFiles($event)">
+              <ng-container *ngIf="imprest_title !== 'Add'">
+                <span>{{attachmentData?.length || 'No'}} files uploaded</span>
+                &nbsp;
+                <!-- <span *ngFor="let file of attachmentData" style="margin-right: 8px;">
+                  <i class="fa fa-file-pdf-o"
+                    aria-hidden="true"
+                    (click)="openPdf(file.dbpath)"
+                    [title]="file.originalDocName"
+                    style="color: red; font-size: 18px; cursor: pointer;"></i>
+                </span> -->
+                <span *ngFor="let file of attachmentData" style="margin-right: 8px;">
+                    <!-- PDF Icon -->
+                    <i *ngIf="isPdfFile(file)"
+                      class="fa fa-file-pdf-o"
+                      aria-hidden="true"
+                      (click)="openPdf(file.dbpath)"
+                      [title]="file.originalDocName"
+                      style="color: red; font-size: 18px; cursor: pointer;"></i>
+
+                    <!-- Image Icon -->
+                    <i *ngIf="isImageFile(file)"
+                      class="fa fa-file-image-o"
+                      aria-hidden="true"
+                      (click)="openPdf(file.dbpath)"  
+                      [title]="file.originalDocName"
+                      style="color: #3399ff; font-size: 18px; cursor: pointer;"></i>
+                  </span>
+
+              </ng-container>
+            </div>
+            <div class="col-sm-2" style="margin-top:5px;" *ngIf="addImprestForm.value.attachment_url">
+              <a href="{{addImprestForm.value.attachment_url}}" target="_blank" title="Click to view file">
+                <i class="fa fa-lg fa-file"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <!-- <button *ngIf="imprest_title != 'View'" type="button" class="btn btn-primary" (click)="uploadImprestDocument()">{{imprest_title}}</button> -->
+          <button *ngIf="imprest_title != 'View'" type="button" class="btn btn-primary" (click)="saveImprestRequest()">{{imprest_title}}</button>
+          <button type="button" class="btn btn-secondary" (click)="hideAddImprestRequestModal()">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- PDF Viewer Modal -->
+<div id="pdfModal" class="modal fade add-address-form-box" tabindex="-1" role="dialog" [ngClass]="{'in': pdfUrl}" [ngStyle]="{'display': pdfUrl ? 'block' : 'none'}">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Attachment</h4>
+        <button type="button" class="close" (click)="closePdf()">&times;</button>
+      </div>
+      <div class="modal-body" style="height: 500px; overflow: hidden;">
+        <ng-container *ngIf="isPdf(pdfUrl); else imageViewer">
+          <iframe [src]="pdfUrl | safeUrl" width="100%" height="100%" frameborder="0"></iframe>
+        </ng-container>
+        <ng-template #imageViewer>
+          <img [src]="pdfUrl" alt="Attachment" style="max-width: 100%; max-height: 100%; display: block; margin: auto;" />
+        </ng-template>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+</div>
+</section>
+
+<app-footer></app-footer>

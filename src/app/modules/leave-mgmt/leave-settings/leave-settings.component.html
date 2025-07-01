@@ -1,0 +1,239 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+  <div class="fakeLoader"></div>
+
+  <div id="page-wrapper">
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Leave Settings</h3>
+      </div>
+      <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="['/dashboard']">Home</a></li>
+          <li class="breadcrumb-item active">Leave Settings</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- <div class="row" *ngIf="showAddNewLeaveTemplate">
+      <button class="btn bck-btn" (click)="addNewLeaveTemplate()"><i class="fa fa-arrow-left"></i> Back</button>
+    </div> -->
+
+    <div *ngIf="leave_template_data.length>0" class="container-fluid">
+      <div class="row " style="height: 16rem;">
+
+          <div class="col-md-12 col-sm-12" >
+            <div class="card leave-templates-box">
+              <div class="card-header">  <h4 class="mb-0">Set Leave Template
+                 <span  style=" position: relative;"
+                class="badge badge-action default-btn set-default-btn" (click)="routeToBulkLeave()">>
+                <a class="btn btn-user btn-default btn-round btn-outline">Leave Template Bulk Assign</a>
+              </span></h4>
+              </div>
+              <div class="card-body" style="height: 12.5rem;">
+                <ol style="padding-top: 1rem;">
+                  <li>Use the standard leave template or create a custom template.</li>
+                  <li>Click on set as default to use the template for all your employees.</li>
+                  <li> Alternatively, you can use the "Leave Template Bulk Assign" option to select multiple employees
+                    and
+                    assign a
+                    specific template to them.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+
+      </div>
+
+      <div class="row">
+
+        <ng-container *ngFor="let ltd of leave_template_data;">
+          <div class="col-md-6 col-sm-12">
+            <div class="card leave-templates-box">
+              <div class="card-header">
+                <h4 class="mb-0">{{ltd.templatedesc}}
+                  <span *ngIf=" ltd?.default_template == true;" style=" position: relative;"
+                    class="badge badge-action default-btn">
+                    <a class="btn btn-user btn-default btn-round btn-outline">Default</a>
+                  </span>
+
+                  <span *ngIf=" ltd?.default_template == false;" style=" position: relative;"
+                    class="badge badge-action default-btn set-default-btn" (click)="set_default_template(ltd)">
+                    <a class="btn btn-user btn-default btn-round btn-outline">Set As Default</a>
+                  </span>
+
+                </h4>
+              </div>
+              <div class="card-body">
+
+                <div class="widget standard-widget">
+                  <div class="row">
+                    <div class="widget-caption danger">
+                      <div class="col-xs-4 no-pad">
+                        <i class="icon icon-calendar"></i>
+                      </div>
+                      <div class="col-xs-8 no-pad">
+                        <div class="widget-detail">
+                          <ng-container *ngFor="let ll of ltd.leave_details.leave_type">
+                            <span>{{ll.typecode}} <b class="badge bg-purple">{{ll.days}}</b></span>
+                          </ng-container>
+
+                          <p>Weekly off <strong>
+                            <!-- {{ ltd.leave_details.weekly_off_days_name}} -->
+                            {{display_week_off(ltd?.leave_details?.weekly_off_days_name_txt)}}
+                          </strong>
+                            <!-- <b class="badge bg-purple pull-right">{{ ltd.weekly_off_days}}</b> -->
+                            </p>
+                          <p>Leave Calendar <strong> {{ ltd.leave_details.leaves_calender}}</strong></p>
+                          <p>Attendance Approval
+                            <strong *ngIf=" ltd.leave_details.attendance_approval_required_for_payout=='N'">
+                              Not Required</strong>
+                            <strong *ngIf=" ltd.leave_details.attendance_approval_required_for_payout=='Y'">
+                              Required</strong>
+                          </p>
+                          <p>&nbsp;</p>
+
+                        </div>
+                      </div>
+                      <div class="col-xs-12">
+                        <div class="widget-line bg-danger">
+                          <span style="width:90%;" class="bg-primary widget-horigental-line"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="badge badge-action template-btn">
+                  <!-- ltd?.is_used != '1' && -->
+                  <a *ngIf="ltd.templateid !='2'" class="btn btn-user btn-round leave-edit-btn"
+                    (click)="update_leave_template_by_id(ltd.templateid)">View</a>
+
+                  <!-- <a *ngIf="ltd?.is_used != '1' && ltd.templateid !='2'" class="btn btn-user btn-round btn-primary"
+                    (click)="openRemoveTemplatePopup(ltd)">Remove</a> -->
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </ng-container>
+
+
+
+        <div class="col-md-6 col-sm-12">
+          <div class="card leave-templates-box add-template-outer-box">
+
+            <div class="card-body" style="height: 32.5rem;">
+
+              <div class="widget standard-widget">
+                <div class="row">
+                  <div class="widget-caption danger add-new-box">
+
+                    <a (click)="addNewLeaveTemplate()" class="add-template-more"><img src="assets/img/plus.png"
+                        class="img-responsive" alt="Add">
+                      <p class="create-new-tem-box">Create a New Template</p>
+                    </a>
+
+
+                  </div>
+                </div>
+
+              </div>
+
+
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-md-12 col-sm-12">
+          <div *ngIf="showAssistantBtn" class="flex justify-between align-center">
+            <a routerLink="/dashboard/welcome" class="btn btn-outline-primary">Back</a>
+            <a class="btn btn-primary" (click)="routeToAddEmp()">Save &amp; Next</a>
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+  <!-- /#page-wrapper -->
+
+  <app-footer></app-footer>
+  <!--------Remove Leave Template Popup-------->
+  <div [@grooveState]="showRemoveTemplatePopup?'active':'inactive'" id="removeLeaveTemplate" class="modal">
+    <div [@dongleState]="showRemoveTemplatePopup?'active':'inactive'" class="modal-dialog"
+      style="margin:auto auto auto auto;">
+      <div class="modal-content" style="height:100%;margin-top:100px;">
+        <form [formGroup]="leaveTemplateForm">
+          <div class="modal-header theme-bg">
+            <h4 class="modal-title">Remove Template - {{ltf.templatedesc.value}}</h4>
+            <button type="button" class="close" (click)="closeRemoveTemplatePopup()" data-dismiss="modal"
+              aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+
+              <!-- <div class="col-md-6">
+                <label for="templatedesc">Template Name:</label>
+                <span>{{ltf.templatedesc.value}}</span>
+              </div> -->
+
+              <div class="col-md-6">
+                <label for="leaves_calender">Leaves Calendar:</label>
+                <span>{{ltf.leaves_calender.value}}</span>
+              </div>
+
+              <div class="col-md-6">
+                <label for="weekly_off_days">Weekly off days:</label>
+                <span>{{ltf.weekly_off_days.value}}</span>
+              </div>
+
+              <div class="col-md-6">
+                <label for="weekly_off_days_name">Weekly off days name:</label>
+                <span>{{ltf.weekly_off_days_name.value}}</span>
+              </div>
+
+              <div class="col-md-6">
+                <label for="absent_is_equal_to_loss_of_pay">Absent is equal to loss of pay:</label>
+                <span>{{ltf.absent_is_equal_to_loss_of_pay.value}}</span>
+              </div>
+
+              <div class="col-md-6">
+                <label for="attendance_approval_required_for_payout">Att approval reqd for payout:</label>
+                <span>{{ltf.attendance_approval_required_for_payout.value}}</span>
+              </div>
+
+              <div class="col-md-12">
+                <label for="leave_type">Leave Type:</label>
+                <ng-container *ngFor="let ll of ltf.leave_type.value">
+                  <span>{{ll.typecode}} <b class="badge bg-purple">{{ll.days}}</b></span>
+                </ng-container>
+                <!-- <span>{{ltf.leave_type.value}}</span> -->
+              </div>
+
+              <div class="col-md-12">
+                <span><span class="text-danger">*</span>Are you sure you want to remove leave template -
+                  <strong>{{ltf.templatedesc.value}}</strong> ?</span>
+              </div>
+
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-info" (click)="remove_template_by_id()">Remove</button>
+
+            <button class="btn btn-cancel" (click)="closeRemoveTemplatePopup()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!--------Remove Leave Template Popup-------->

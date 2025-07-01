@@ -1,0 +1,282 @@
+a {
+  cursor: pointer;
+}
+
+.txt {
+  color: rgb(26 107 183);
+  font-size: 10px;
+  border: 1rem;
+  width: 3rem;
+  height: 3rem;
+  background-color: #46464627 !important;
+  padding: 2px 5px !important;
+  text-align: center !important;
+  line-height: 25px !important;
+  margin-right: 5px !important;
+}
+
+a.btn.btn-shortlist.manage-btn {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+.job-buttons.action-btn-outer-box .btn.manage-btn {
+  padding: 0 !important;
+}
+
+span.leave-btn,
+span.present-btn,
+span.hald-day-btn,
+span.absent-btn,
+span.holiday-btn {
+  height: 22px !important;
+  width: 23px !important;
+  font-size: 10px !important;
+}
+
+.bulk-attendance-outer-box table.table tr th,
+.bulk-attendance-outer-box table.table tr td {
+  padding: 0.5rem 0.5rem !important;
+}
+
+/* .bulk-attendance-outer-box thead tr th {
+  background: #ccdcff !important;
+} */
+.Marked-Manually-outer-box {
+  margin-top: 13px !important;
+}
+
+.read-only {
+  pointer-events: none;
+  background: #efefef;
+}
+
+.job-img {
+  height: 35px;
+  width: 38px;
+}
+
+.cst-xlsx {
+  cursor: pointer;
+  font-size: 25px;
+  margin-left: 65px;
+  margin-top: 35px;
+  color: #30be30;
+}
+
+.table-bordered {
+  border: 1px solid #e8edef;
+}
+
+.table-border tr th,
+td {
+  vertical-align: middle;
+  border: 1px solid #e8edef;
+  /* text-align: center; */
+  font-size: 12px;
+}
+
+.table-responsive.Reimbursements-outer-box tr th {
+  background: #f5fbff;
+}
+
+.bulk-attendance-outer-box table.table tr th,
+.bulk-attendance-outer-box table.table tr td {
+
+  vertical-align: middle;
+}
+
+td.WKend.WStripe {
+  background: repeating-linear-gradient(42deg, transparent 0, #dddddd 1px, transparent -25em, transparent calc(.25em + -1px), transparent 6px) !important;
+  background: -webkit-repeating-linear-gradient(42deg, transparent 0, #dddddd 1px, transparent -25em, transparent calc(.25em + -1px), transparent 6px) !important;
+  background: -moz-repeating-linear-gradient(42deg, transparent 0, #dddddd 1px, transparent -25em, transparent calc(.25em + -1px), transparent 6px) !important;
+  background-color: #fffff0 !important;
+}
+
+.bulk-attendance-outer-box .table tbody td h2 {
+  display: flex;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+  min-width: 260px;
+  vertical-align: middle;
+  justify-content: left;
+  align-items: center;
+}
+
+.job-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #e3e3e3;
+  overflow: hidden;
+  margin: 0 5px 0 0;
+}
+
+.txt {
+  color: rgb(26 107 183);
+  font-size: 10px;
+  border: 1rem;
+  width: 32px !important;
+  height: 32px;
+  background-color: #46464627 !important;
+  padding: 2px 5px !important;
+  text-align: center !important;
+  line-height: 25px !important;
+  margin-right: 5px !important;
+}
+
+img.attachment-thumbnail {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.cst-xlsx {
+  cursor: pointer;
+  font-size: 25px;
+  margin-left: 0;
+  margin-top: 35px;
+  color: #30be30;
+  text-align: center;
+}
+
+.table-responsive.Reimbursements-outer-box::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.table-responsive.Reimbursements-outer-box::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.table-responsive.Reimbursements-outer-box::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+
+.table-responsive.Reimbursements-outer-box::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+td:has(div):has(a):has(span.WKend.WStripe) {
+  background: repeating-linear-gradient(42deg, transparent 0, #dddddd 1px, transparent -25em, transparent calc(.25em + -1px), transparent 6px) !important;
+  background: -webkit-repeating-linear-gradient(42deg, transparent 0, #dddddd 1px, transparent -25em, transparent calc(.25em + -1px), transparent 6px) !important;
+  background: -moz-repeating-linear-gradient(42deg, transparent 0, #dddddd 1px, transparent -25em, transparent calc(.25em + -1px), transparent 6px) !important;
+  background-color: #fffff0 !important;
+}
+
+.weekend {
+  background: #fff9f9;
+}
+
+span.DB.MB3 {
+  margin-bottom: 3px;
+  display: block;
+  color: #3a3a3a;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+span.DB.dgry.ZPreg {
+  font-weight: 500;
+}
+
+.job-details h3.job-name span.full-time-btn {
+  background-color: transparent;
+  color: #30ab4a;
+  font-weight: 500;
+  border-radius: 0;
+}
+a.job_name_tag {
+  font-weight: 500;
+  color: #0047ab;
+}
+
+/* .filter-onlick-btn {
+  margin-left: 10px;
+  color: #000 !important;
+  font-size: 15px !important;
+  padding: 10px 15px !important;
+  background-color: #e1e1e1;
+} */
+
+#sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: #f1f5fa;
+  overflow-x: hidden;
+  transition: 0.5s;
+  z-index: 1000;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 9px -1px, rgba(0, 0, 0, 0.3) -10px 6px 10px 0px, rgba(0, 0, 0, 0.12) -7px 1px 18px 0px;
+}
+
+h3.filter-menu-header-text-box {
+  padding: 21px 15px;
+  margin-bottom: 0;
+}
+
+#sidebar .close-btn {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+}
+
+.sidebar-menu_filter-box label.control-label {
+  font-weight: 500;
+  padding: 0;
+}
+
+.sidebar-menu_filter-box .form-group {
+  margin-bottom: 0px;
+}
+
+.sidebar-content-box .form-group {
+  font-size: 13px;
+}
+
+.sidebar-menu_filter-box .panel-default>.panel-heading h4 {
+  font-size: 14px;
+  color: #000;
+}
+
+.sidebar-menu_filter-box .panel-heading h4 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar-menu_filter-box .panel-default>.panel-heading {
+  color: #333;
+  background-color: #deedff;
+  border-color: #fff;
+  border: 1px solid #fff;
+}
+
+.sidebar-menu_filter-box .panel-heading {
+  cursor: pointer;
+}
+
+
+#sidebar a.clear-box-btn {
+  position: absolute;
+  top: 53px;
+  right: 25px;
+  color: #1372dd;
+  font-size: 14px;
+  cursor: pointer;
+}
+.top-right-outer-box a.btn.btn-round.btn-success.excel-btn-box, .top-right-outer-box .mag-left-5 {
+  margin-right: 5px;
+}
+
+.filter-onlick-btn  {  margin-left: 2px;}
+.top-right-outer-box .mag-left-5 ul  li a:hover {
+  color: #606060;
+  background-color: #8eccf5;
+  border-color: #8eccf5;
+}
+

@@ -1,0 +1,333 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+    <div id="wrapper" [ngClass]="{'active': showSidebar == false}">
+        <div class="fakeLoader"></div>
+        <div id="page-wrapper">
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Master Designation</h3>
+                </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a [routerLink]="['/mgmt/user']">User Management</a></li>
+                        <li class="breadcrumb-item active">Master Designation</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- Align the button to the right with ml-auto -->
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h4 class="card-title">Designation List
+
+                                    </h4>
+                                    <button class="btn btn-primary ml-auto" style="float: right;"
+                                        (click)="openInNewTab()" title="Add Designation">
+                                        <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Add Designation
+                                    </button>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+                                        <!-- <input type="checkbox" (change)="getBulkCheckBox($event.target.checked)"
+                                            id="multidesignation">&nbsp; <label for="multidesignation">Add designation
+                                            to multiple
+                                            departments</label> -->
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th *ngIf="isChecked"></th>
+                                                    <th>S.No.</th>
+                                                    <th style="width: 60px;">Designation Name</th>
+                                                    <th>Department Count</th>
+                                                    <th>Employee Count</th>
+                                                    <!-- <th *ngIf="!isChecked">Action</th> -->
+                                                    <!-- <th *ngIf="isChecked"><button class="btn btn-primary ml-auto"
+                                                            style="float: center" (click)="addDesignation(department)"
+                                                            title="Add Designation">
+                                                            <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i>
+                                                            Add Designation
+                                                        </button></th> -->
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <ng-container
+                                                    *ngFor="let designationwithdept of designation_with_dept; let i = index">
+
+
+                                                    <tr [id]="'desig-' + (i + 1)">
+                                                        <td><a style="cursor: pointer;" (click)="toggleNestedTable(i)">
+                                                                {{ i + 1 }}</a></td>
+                                                        <td><a style="cursor: pointer;"
+                                                                (click)="toggleNestedTable(i)">{{
+                                                                designationwithdept.designationname
+                                                                || 'N/A' }} </a></td>
+                                                        <td><a style="cursor: pointer;"
+                                                                (click)="showdepartmentnames(designationwithdept,i)">{{
+                                                                designationwithdept.department_count ||
+                                                                '0'
+                                                                }} </a></td>
+                                                        <td><a style="cursor: pointer;"
+                                                                (click)="showEmployeeList(department.empids)">{{
+                                                                designationwithdept.empcount }}</a></td>
+                                                        <!-- <td *ngIf="!isChecked">
+                                                            <a class="btn" title="Edit department"
+                                                                (click)="openInNewTab(department)"><i
+                                                                    class="fa fa-lg fa-pencil-square-o"
+                                                                    aria-hidden="true"></i></a>&nbsp;
+                                                            <button class="btn box-shadow-btn ml-auto"
+                                                                style="float: center"
+                                                                (click)="addDesignation(department,i)"
+                                                                title="Add Designation">
+                                                                <i class="fa fa-plus-circle fa-lg" aria-hidden="true"
+                                                                    style="color: #000;"></i> Add
+                                                                Designation
+                                                            </button>
+                                                        </td> -->
+
+                                                        <!-- <td><a style="cursor: pointer;" title="Add Designation" (click)="addDesignation(department)"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i></a></td> -->
+                                                    </tr>
+                                                    <!-- Nested Table -->
+                                                    <tr [ngStyle]="{'display': activeDepartment === i ? 'table-row' : 'none'}"
+                                                        class="panel-collapse collapse" aria-labelledby="designing">
+                                                        <td colspan="6">
+                                                            <div class="panel-body Check-In-Check-Out-table-inner-box">
+                                                                <div class="box-body">
+                                                                    <table class="table table-lg table-hover">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>S.No.</th>
+                                                                                <th>Department Name</th>
+                                                                                <th>Designation Name</th>
+                                                                                <th>Functional Designation Name</th>
+                                                                                <th>Action</th>
+                                                                                <th>Add Functional Desigantion</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr
+                                                                                *ngFor="let dept of dept_list_combined; let j = index">
+                                                                                <td>{{ j + 1 }}</td>
+                                                                                <td>{{ dept.name }}</td>
+                                                                                <td>{{ dept.desgname }}</td>
+                                                                                <td>{{ dept.func_designation }}</td>
+                                                                                <td>
+                                                                                    <a style="cursor:pointer;"
+                                                                                        (click)="updateDesg(dept.desgId, dept,designationwithdept)"
+                                                                                        title="Edit Designation">
+                                                                                        <i class="fa fa-pencil-square-o"
+                                                                                            aria-hidden="true"></i>
+                                                                                    </a>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <a style="cursor:pointer;"
+                                                                                        (click)="addfunctionaldesignation(dept.desgId, dept,designationwithdept)"
+                                                                                        title="Edit Designation">
+                                                                                        <i class="fa fa-pencil-square-o"
+                                                                                            aria-hidden="true"></i>
+                                                                                    </a>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </ng-container>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</section>
+
+<!-- Popup Code -->
+<div class="modal fade" id="add-department" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header theme-bg">
+                <h4 class="modal-title">{{addDepartmentForm.value.id ? 'Update' : 'Add'}} Designation</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                    (click)="closeNewDesignationModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="addDesignationForm" (ngSubmit)="savenewDesignation()">
+
+
+                    <div class="form-group">
+                        <label for="post_offered" class="control-label col-sm-4">Department <span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-7" style="padding-right:0;">
+                            <ng-select [items]="deptartmentList" bindLabel="departmentname" bindValue="id"
+                                formControlName="posting_department" placeholder="Select Department ">
+                            </ng-select>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="designation" class="control-label col-sm-4">Designation Name:</label>
+                        <div class="col-md-7" style="padding-right:0;">
+                            <input type="text" class="form-control" id="designation" formControlName="roleName"
+                                autocomplete="off" placeholder="Enter Designation Name" required>
+                        </div>
+                    </div>
+                    <div class="form-group userOrgUnit" *ngIf="addDepartmentForm.value.id">
+                        <ng-multiselect-dropdown [placeholder]="'Select users'" [settings]="dropdownSettings"
+                            [data]="empList" [(ngModel)]="selectedval" [ngModelOptions]="{standalone: true}"
+                            (onFilterChange)="onFilterChange($event)">
+                        </ng-multiselect-dropdown>
+                    </div>
+                    <button type="submit" class="btn btn-primary"
+                        [disabled]="addDesignationForm.invalid">{{addDesignationForm.value.id ? 'Update' : 'Add'}}
+                        Designation</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-----------Designation Modal------------->
+<div class="modal fade" id="add-designation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header theme-bg">
+                <h4 class="modal-title">{{isAddDesg ? 'Add' : 'Update'}} Designation</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                    (click)="closeNewDesignationModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="addDesignationwithempForm" (ngSubmit)="updateDesignation()">
+                    <div class="form-group">
+                        <label for="department">Designation Name:</label>
+                        <input type="text" class="form-control" id="department" formControlName="roleName"
+                            placeholder="Enter Designation Name" autocomplete="off" required>
+                        <div *ngIf="addDesignationwithempForm.get('roleName')?.errors?.required" class="text-danger">
+                            Designation name is required.
+                        </div>
+                    </div>
+                    <div class="form-group userOrgUnit" *ngIf="!isAddDesg">
+                        <ng-multiselect-dropdown [placeholder]="'Select users'" [settings]="dropdownSettings"
+                            [data]="empList" [(ngModel)]="selectedval" [ngModelOptions]="{standalone: true}"
+                            (onFilterChange)="onFilterChange($event)">
+                        </ng-multiselect-dropdown>
+                    </div>
+                    <!-- <div class="form-group">
+                        <input type="checkbox" id="isFunctional" formControlName="isFunctional">
+                        <label for="isFunctional">Mark as Functional Designation</label>
+                    </div> -->
+                    <!-- <div class="form-group" *ngIf="addDesignationwithempForm.get('isFunctional')?.value">
+                        <label for="department">Functional Designation Name:</label>
+                        <input type="text" class="form-control" id="func_designation" formControlName="func_designation"
+                            placeholder="Enter Functional Designation" autocomplete="off">
+
+                    </div> -->
+                    <button type="submit" class="btn btn-primary"
+                        [disabled]="addDesignationwithempForm.invalid">{{isAddDesg ?
+                        'Add' :
+                        'Update'}} Designation</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-----------Designation Modal Ends------------->
+
+<!-----------fucntional Designation Modal------------->
+<div class="modal fade" id="add-funcdesignation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header theme-bg">
+                <h4 class="modal-title">{{isAddDesg ? 'Add' : 'Update'}} Designation</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                    (click)="closefunNewDesignationModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="addfuncDesignationwithempForm" (ngSubmit)="addfunctionalDesignation()">
+                    <div class="form-group">
+                        <label for="func_designation">Functional Designation Name:</label>
+                        <input type="text" class="form-control" id="func_designation" formControlName="func_designation"
+                            placeholder="Enter Functional Designation Name" autocomplete="off" required>
+                        <div *ngIf="addfuncDesignationwithempForm.get('func_designation')?.errors?.required"
+                            class="text-danger">
+                            Functional Designation name is required.
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary"
+                        [disabled]="addfuncDesignationwithempForm.invalid">{{isAddDesg ?
+                        'Add' :
+                        'Update'}} Designation</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-----------fucntional Designation Modal Ends------------->
+
+<!--------------Employee List modal--------------->
+<div class="modal" [@grooveState]="isShowEmp?'active':'inactive'">
+    <div [@dongleState]="isShowEmp?'active':'inactive'" class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header theme-bg">
+                <h4 class="modal-title">Employee List</h4>
+                <button type="button" class="close"
+                    (click)="isShowEmp=false;mappedEmpList=[];pageIndex=1;">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 320px;">
+                <div class="table" style="max-height: 237px;
+          overflow: auto;
+          margin-bottom: 0;">
+                    <table class="table table-responsive" id="otherDeductionTable">
+                        <thead style="position:sticky;top:0px;background: #fff;">
+                            <tr>
+                                <th id="ember1089" class="sortable ember-view" style="width: 10%;">
+                                    #
+                                </th>
+                                <th id="ember1089" class="sortable ember-view">
+                                    Employee Name
+                                </th>
+                                <th id="ember1089" class="sortable ember-view">
+                                    Org Emp Code/TP Code
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let emp of mappedEmpList | paginate: { itemsPerPage: 10, currentPage: pageIndex,totalItems: mappedEmpList.length };let i=index;"
+                                class="emp-item">
+                                <td>{{(pageIndex-1)*10+i+1}}</td>
+                                <td>{{emp.emp_name}}</td>
+                                <td>{{emp.orgempcode ? emp.orgempcode : emp.cjcode}}</td>
+                            </tr>
+                            <tr *ngIf="mappedEmpList.length==0">
+                                <td colspan="3" style="text-align: center;">No Data Found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flexbox padd-10" *ngIf="mappedEmpList.length > 0">
+                    <pagination-controls (pageChange)="get_page($event)"
+                        style="font-size: 2rem; padding: 6px; font-weight: bold"
+                        class="float-right"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--------------Employee List modal Ends--------------->
+
+<app-footer></app-footer>

@@ -1,0 +1,92 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+  <div id="wrapper" [ngClass]="{'active':showSidebar==false}">
+    <div class="fakeLoader"></div>
+    <div id="page-wrapper">
+      <div class="row page-titles">
+        <div class="col-md-4 align-self-center">
+          <!-- bulk-attendance -->
+          <h3 class="text-themecolor"><a routerLink="/attendance/bulk-attendance"></a>&nbsp;&nbsp;Gallops Sync
+            Attendance</h3>
+        </div>
+        <div class="col-md-8 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item" title="Biometric Punch Logs"><a [routerLink]="['/reports/biometric_punches']">Biometric Punch Logs</a></li>
+            <li class="breadcrumb-item active">Gallops Sync Attendance</li>
+          </ol>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12 col-sm-12">
+            <div class="card">
+              <div class="card-header">
+                <div class="row" style="display: flex; align-items: center;">
+
+                  <div class="col-md-3">
+                    <input type="hidden" id="recdate" (click)="filterFromToDateLeads()">
+
+                    <label style="color:#000;">From Date</label>
+                    <input id="FromDate" class="form-control" type="text" style="cursor: pointer;"
+                      placeholder="dd-mm-yyyy" autocomplete="off" readonly>
+                  </div>
+                  <div class="col-md-3">
+                    <label style="color:#000;">To Date</label>
+                    <input id="ToDate" class="form-control" type="text" style="cursor: pointer;"
+                      placeholder="dd-mm-yyyy" autocomplete="off" readonly>
+                  </div>
+
+                  <div class="col-md-3">
+                    <label style="color:#000;">&nbsp;<br></label><br>
+                    <button class="btn btn-primary" (click)="saveAttendancefromClient()">Save & Synced Attendance</button>
+                  </div>
+
+                </div>
+
+                <div class="row">
+
+
+                </div>
+              </div>
+
+
+              <div class="card-body" style="overflow:auto;">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th><strong>S.No.</strong></th>
+                      <th><strong>Emp Code</strong></th>
+                      <th><strong>Log Date</strong></th>
+                      <th><strong>Serial Number</strong></th>
+                      <th><strong>Device Name</strong></th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <ng-container *ngFor="let ad of att_data; let i=index;">
+                      <tr>
+                        <td>{{i+1}}</td>
+                        <td>{{ad.UserId}}</td>
+                        <td>{{ad.LogDate}}</td>
+                        <td>{{ad.SerialNumber}}</td>
+                        <td>{{ad.DeviceSName}}</td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+  <!-- /#page-wrapper -->
+
+
+</section>
+<app-footer></app-footer>

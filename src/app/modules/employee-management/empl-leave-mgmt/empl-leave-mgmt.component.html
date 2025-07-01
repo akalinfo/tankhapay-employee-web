@@ -1,0 +1,799 @@
+<div id="home" class="tab-pane fade1 in active">
+  <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="card">
+
+      <div class="panel-heading panel_heading_gray  card-header" role="tab" id="heading3" data-toggle="collapse"
+        data-parent="#accordion3" href="#collapse3" aria-expanded="true" aria-controls="collapse3"
+        (click)="open_leave_temp_tab()">
+        <h4>Leave Details <i class="fa fa-angle-down"></i></h4>
+      </div>
+
+
+
+      <div id="collapse3" class="panel-collapse card-body" role="collapse3">
+        <div class="row">
+          <a class="edit-data" (click)="editLeaveTemplate();" title="Change Leave Template"
+          *ngIf="view_emp_data.basicDetails.joiningStatus!='RELIEVED'"><i
+              class="fa fa-pencil-square-o fa-lg"></i></a>
+
+          <div class="col-md-12 padd-bot-15 padd-top-15" [ngClass]="{'no-click': !editLeave}">
+
+            <form [formGroup]="leaveTemplateForm">
+              <div class="row">
+
+                <div class="col-sm-6">
+                  <label>Leave Template <span class="text-danger">*</span></label>
+                  <select class="form-control" (change)="changeLeaveTemplate($event)">
+                    <option value="">--- Select ---</option>
+                    <option *ngFor="let leave of leaveTemplateData" [value]="leave|json"
+                      [selected]="leaveTemplateForm.value.leavetemplate_text.templateid == leave.templateid">
+                      {{leave.templatedesc}}
+                    </option>
+                  </select>
+                </div>
+                <!-- *ngIf="editLeave" -->
+                <div class="col-sm-6">
+                  <label>Effective Date <span class="text-danger">*</span></label>
+                  <input type="hidden" id="recdate2" (click)="change_effectivedt()">
+                  <input type="text" formControlName="effective_dt" id="effective_dt" name="effective_dt"
+                    autocomplete="off" class="form-control" #ed>
+                </div>
+
+                <div class="col-md-12">
+                  <h3>Leave Template Details</h3>
+                  <div class="card">
+                    <div class="card-body">
+
+
+                      <div class="col-md-4">
+                        <label><strong>Leaves Calendar:</strong></label>
+                        <!-- {{leaveTemplateForm.value | json}} -->
+                        {{leaveTemplateForm.value.leavetemplate_text?.leave_details?.leaves_calender}}
+                      </div>
+                      <!-- <div class="col-md-4">
+                      <label><strong>Weekly Off Days:</strong></label>
+                      {{leaveTemplateForm.value.leavetemplate_text?.leave_details?.weekly_off_days}}
+                    </div> -->
+                      <div class="col-md-4">
+                        <label><strong>Weekly Off :</strong></label>
+                        {{leaveTemplateForm.value.leavetemplate_text?.leave_details?.weekly_off_days_name}}
+                      </div>
+                      <!-- <div class="col-md-4">
+                      <label><strong>Absent is equal to loss of Pay:</strong></label>
+                      {{leaveTemplateForm.value.leavetemplate_text?.leave_details?.absent_is_equal_to_loss_of_pay}}
+                    </div>
+                    <div class="col-md-4">
+                      <label><strong>Attendance approval reqd for payout:</strong></label>
+                      {{leaveTemplateForm.value.leavetemplate_text?.leave_details?.attendance_approval_required_for_payout}}
+                    </div> -->
+
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Leave Type</th>
+                            <th>Days</th>
+                            <th>Carry Forward</th>
+                            <th>Accumulate</th>
+                            <!-- <th>Max Limit</th> -->
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          <ng-container
+                            *ngFor="let ltf of leaveTemplateForm.value.leavetemplate_text?.leave_details?.leave_type; let li=index;">
+                            <tr>
+                              <td>{{ltf.typename}} ({{ltf.typecode}})</td>
+                              <td>{{ltf.days}}</td>
+                              <td>{{ltf.is_carry_forward}}</td>
+                              <td>{{ltf.accumulate}}</td>
+                              <!-- <td>{{ltf.maximum_limit}}</td> -->
+                            </tr>
+                          </ng-container>
+                        </tbody>
+
+                        <tr>
+                          <td class="no-data"
+                            *ngIf="leaveTemplateForm.value.leavetemplate_text?.leave_details?.leave_type == null"
+                            colspan="5">No Data Found</td>
+                        </tr>
+                      </table>
+
+                      <!-- <ng-container
+                            *ngFor="let ltf of leaveTemplateForm.value.leavetemplate_text?.leave_details?.leave_type; let li=index;">
+
+                            <div class="col-md-12" style="border: 0.5px solid #a39e9e;"></div>
+
+                            <div class="col-md-4">
+                              <label><strong>Leave Type:</strong></label>&nbsp;
+                              <span>{{ltf.typename}}
+                                ({{ltf.typecode}})</span>
+                            </div>
+                            <div class="col-md-4">
+                              <label><strong>Days: </strong></label>&nbsp;
+                              <span>{{ltf.days}}</span>
+                            </div>
+                            <div class="col-md-4">
+                              <label><strong>Carry Forward: </strong></label>&nbsp;
+                              <span>{{ltf.is_carry_forward}}</span>
+                            </div>
+                            <div class="col-md-4">
+                              <label><strong>Accumulate: </strong></label>&nbsp;
+                              <span>{{ltf.accumulate}}</span>
+                            </div>
+                            <div class="col-md-4">
+                              <label><strong>Maximum Limit: </strong></label>&nbsp;
+                              <span>{{ltf.maximum_limit}}</span>
+                            </div>
+                          </ng-container> -->
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12 col-12 padd-top-15 text-center" *ngIf="editLeave">
+                  <a (click)="updateLeaveTemplate()" class="btn btn-primary">Update Leave Template</a>
+                </div>
+
+                <div class="col-md-12">
+                  <h4>Current Leave Balance</h4>
+                  <!-- {{leaveHistoryBalanceData|json}} -->
+                  <div class="card">
+                    <div class="card-body">
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Leave Type - (Code)</th>
+                            <th>Days</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <ng-container *ngFor="let bd of leaveHistoryBalanceData?.current_balance;">
+                            <tr>
+                              <td>
+                                <!-- {{bd | json}} -->
+                                {{bd.typename}} - {{bd.typecode}}</td>
+                              <td>{{bd.prev_bal}}</td>
+                            </tr>
+                          </ng-container>
+                        </tbody>
+                        <tr>
+                          <td class="no-data" *ngIf="leaveHistoryBalanceData?.current_balance == null" colspan="2">No Data
+                            Found</td>
+                        </tr>
+                      </table>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <h4>Leave History</h4>
+                  <div class="card">
+                    <div class="card-body">
+
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Month-Year</th>
+                            <th>Leave Taken
+
+                            </th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          <ng-container *ngFor="let bd of leaveHistoryBalanceData?.taken_history;">
+                            <tr>
+                              <td>{{bd.attmonth}}</td>
+                              <td>
+                                <ng-container *ngFor="let l of bd?.taken_leave;">
+                                  &nbsp;<span style="color: blue; font-weight: bold;">{{l.typecode}}</span> => <span
+                                    style="color: blue;">{{l.leave_taken}} &nbsp;,</span>
+                                </ng-container>
+
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </tbody>
+
+                        <tr>
+                          <td class="no-data" *ngIf="leaveHistoryBalanceData?.taken_history == null" colspan="2">No Data
+                            Found</td>
+                        </tr>
+                      </table>
+
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+
+            </form>
+
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="card">
+      <div class="panel-heading panel_heading_gray  card-header" role="tab" id="headingOne2" data-toggle="collapse"
+        data-parent="#accordion2" href="#collapseOne2" aria-expanded="false" aria-controls="collapseOne">
+        <h4>Leave Application <i class="fa fa-angle-down"></i></h4>
+      </div>
+      <!-- /row -->
+      <!-- panel-collapse collapse card-body in -->
+      <div id="collapseOne2" class="collapse" role="tabpane2">
+
+        <div class="row">
+
+          <div class="col-md-12">
+            <div class="card-header caded-innder-head-box">
+
+
+              <div class="col-sm-2 text-right">
+                <label style="font-size:14px;padding-top:14px; text-align:right;">Application Status</label>
+              </div>
+              <div class="col-sm-2">
+                <select class="wide form-control" (change)="changeStatusFilter($event.target.value)">
+                  <option value="All">All</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Approved">Approved</option>
+                  <option value="Rejected">Rejected</option>
+                </select>
+              </div>
+
+              <div class="col-sm-2 text-right" style="display:none">
+                <label style="font-size:14px;padding-top:14px; text-align:right;">Employee : </label>
+              </div>
+              <div class="col-sm-3 " style="display:none">
+                <label style="font-size:14px;padding-top:14px; text-align:left;"> {{this.empDataFromParent.emp_name}}
+                </label>
+                <!-- <select class="wide form-control" (change)="changeEmp($event.target.value)">
+                      <option *ngFor="let ed of employee_data;" [value]="ed.emp_id" [selected]="ed.emp_id==emp_id">
+                        {{ed.emp_name}}</option>
+                    </select> -->
+
+                <!-- <angular2-multiselect [data]="employee_data" [settings]="settings" [(ngModel)]="selectedItem"
+                    [ngModelOptions]="{standalone: true}" (onSelect)="onItemSelect($event)"
+                    (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                    (onDeSelectAll)="onDeSelectAll($event)">
+                  </angular2-multiselect> -->
+              </div>
+
+            </div>
+          </div>
+
+          <ng-container
+            *ngIf="leave_balance_data && leave_balance_data.balance_txt && leave_balance_data.balance_txt.length>0">
+
+            <ng-container *ngFor="let lbd of leave_balance_data.balance_txt; let i=index;">
+
+              <div class="col-md-4 ">
+                <div class="manage-list-row manage-pay-select clearfix list_view_de-box">
+
+                  <div class="net-pay-section">
+                    <div class="title-inn_box">
+                      <span class="font-mm"><i class="fa fa-calendar"></i> </span> <span
+                        class="font-semibold font-mm">&nbsp; {{lbd.type_name}}</span>
+                    </div>
+
+                    <div class="row net-pay-data-without-bt">
+                      <div class="col-md-6">
+                        <div class="text-uppercase font-ms payrun-label">Available : <strong>{{lbd.cur_bal}}</strong>
+                        </div>
+
+                      </div>
+                      <div class="col-md-6">
+                        <div class="text-uppercase font-ms payrun-label">Booked : <strong>{{lbd.leave_taken}}</strong>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </ng-container>
+          </ng-container>
+
+          <div class="col-md-12 mrg-top-0 mrg-bot-25">
+
+            <div class="card">
+
+              <div class="card-header">
+                <h4 class="sub-title-inn-box View-Roles-list-outer-box"> All Leaves
+
+
+                  <!--<a href="#SendMessage1" data-toggle="modal" class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn" data-placement="top">Add User  </a>-->
+                </h4>
+              </div>
+
+              <div class="card-body padd-bot-0 padd-top-0">
+
+                <div class="row">
+
+                  <div class="col-md-12 padd-top-0">
+
+
+                    <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+
+
+                      <table class="table user-list">
+
+                        <tbody>
+
+                          <ng-container *ngIf="leave_appl_empid_list_data.length>0">
+
+                            <ng-container *ngFor="let lae of leave_appl_empid_list_data; let i=index;">
+                              <tr>
+                                <td width="17%" style="font-size: 13px;">
+                                  <strong>{{(lae.fromdate)}}</strong>
+                                  <ng-container *ngIf="lae.fromdate != lae.todate">
+                                    <p class="to-btn">to</p>
+                                    <strong>{{(lae.todate)}}</strong>
+                                  </ng-container>
+                                </td>
+
+                                <td width="23%">
+                                  <!-- {{lae|json}} -->
+                                  <div class="Dtyps ZPBC10"><span class="DB" data-toggle="tooltip"
+                                      data-placement="bottom" title="">{{lae.leavetypename}}</span>
+                                    <small class="dgry">
+                                      <!-- {{lae.leave_days}} -->
+                                      <i *ngIf="lae.appl_detail" class="fa fa-eye fa-lg" (click)="openPanel(i, lae)"
+                                        title="Click to View details" style="cursor: pointer;vertical-align: 0;"> </i> View Detail
+                                    </small>
+                                  </div>
+                                </td>
+
+                                <td width="30%" style="font-size: 13px;">
+                                  <span class="DB"> <b>{{lae.leave_subject}}</b>
+                                    <p> {{lae.leave_description}}</p>
+                                  </span>
+                                </td>
+
+
+
+                                <td style="font-size: 12px;">
+                                  <span
+                                    [ngClass]="{'pend-btn-ved1': lae.approval_status=='Pending', 'appro-btn-ved': lae.approval_status=='Approved', 'appro-btn-ved1': lae.approval_status=='Rejected'}">
+                                    {{lae.approval_status}}</span>
+                                  &nbsp;
+                                  <!-- {{lae.attachemnt_url}} -->
+                                  <a *ngIf="lae.attachemnt_url" (click)="openDocumentPopup(lae.attachemnt_url)"
+                                    title="Click to view document"><i class="fa fa-file cur-ptr"></i></a>
+
+                                </td>
+                                <td class="text-right">
+                                  <a *ngIf="lae.approval_status=='Pending'" type="button"
+                                    class="btn btn-success btn-sm Generate-Bill-btn-inner"
+                                    (click)="openApproveRejectPopup('Approve', lae)">Approve</a>
+
+                                  <a *ngIf="lae.approval_status=='Pending'" type="button"
+                                    class="btn btn-warning btn-sm Generate-Bill-btn-inner"
+                                    (click)="openApproveRejectPopup('Reject', lae)">Reject</a>
+
+                                  <a *ngIf="lae.approval_status!='Pending'" type="button" style="color:#ffffff;"
+                                    class="btn theme-bg btn-sm Generate-Bill-btn-inner"
+                                    (click)="openApproveRejectPopup('View', lae)">View</a>
+                                </td>
+                              </tr>
+
+                              <tr id="collapseOne{{i}}" class="panel-collapse collapse" role="tabpanel"
+                                aria-labelledby="designing">
+                                <td colspan="6">
+
+                                  <div>
+
+                                    <div class="panel-body Leave-Application-table-inner-box">
+                                      <div class="box-body">
+
+
+                                        <table class="table table-lg table-hover">
+                                          <thead>
+                                            <tr>
+                                              <th>Applied Date</th>
+                                              <th>Half Type</th>
+                                              <th>Day Type</th>
+                                              <th>Start Time</th>
+                                              <th>End Time</th>
+                                              <th>Work Hrs</th>
+                                              <th>Action</th>
+
+                                            </tr>
+                                          </thead>
+
+                                          <tbody>
+
+
+                                            <ng-container *ngFor="let ipd of innerPanelData.appl_detail; let j=index;">
+                                              <tr>
+                                                <td>
+                                                  <div class="punchin-Button-job-company-box">
+                                                    <strong>{{ipd.leave_applied_date}} </strong>
+                                                  </div>
+                                                </td>
+
+                                                <td>
+                                                  <div class="punchin-Button-job-company-box">
+                                                    <strong>{{ipd.leave_day_half_type}} </strong>
+                                                  </div>
+                                                </td>
+
+                                                <td>{{ipd.leave_day_type}} </td>
+                                                <td>{{ipd.leave_starttime}}</td>
+                                                <td>{{ipd.leave_endtime}}</td>
+                                                <td>{{ipd.leave_work_hrs}}</td>
+
+                                                <td>
+                                                  <i *ngIf="ipd.leave_day_type=='Short Leave'" class="fa fa-eye"
+                                                    title="Gate Pass Data"
+                                                    (click)="openGatePassModal(ipd.leave_applied_date)"></i>
+                                                </td>
+
+                                              </tr>
+                                            </ng-container>
+
+
+
+                                          </tbody>
+                                          <tfoot style="display:none;">
+                                            <tr>
+
+                                            </tr>
+                                          </tfoot>
+
+
+                                        </table>
+
+                                      </div>
+                                    </div>
+
+
+                                  </div>
+
+
+                                </td>
+                              </tr>
+
+                            </ng-container>
+
+                          </ng-container>
+
+
+                          <tr *ngIf="leave_appl_empid_list_data.length==0">
+                            <td style="text-align: center;" colspan="4">No Data Found</td>
+                          </tr>
+
+                        </tbody>
+
+                      </table>
+
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+
+
+          </div>
+
+
+
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
+
+
+
+
+
+
+<div [@grooveState]="showApproveRejectPopup?'active':'inactive'" id="openBalance" class="modal" style="z-index:1000;">
+  <div [@dongleState]="showApproveRejectPopup?'active':'inactive'" class="modal-dialog"
+    style="margin:auto auto auto auto;">
+    <div class="modal-content" style="height:100%;margin-top:50px;width:75rem;margin-left:-5rem;">
+      <form *ngIf="showApproveRejectPopup" [formGroup]="approveRejectForm">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">{{approve_reject_title}} Leave</h4>
+          <button type="button" class="close" aria-hidden="true" (click)="closeApproveRejectPopup()">&times;</button>
+        </div>
+        <div class="modal-body" style="overflow: auto;height: 32rem;">
+
+          <div class="row" style="font-size: 13px;  padding-inline: 1rem;">
+            <div class="col-md-4">
+              <strong> Leave Type </strong>
+            </div>
+            <div class="col-md-8" style="height: 25px;">
+              {{ar.leavetypename.value}} [ {{ar.leavetypecode.value}}]
+              <br>
+            </div>
+            <div class="col-md-4">
+              <strong> Subject </strong>
+            </div>
+            <div class="col-md-8" style="height: 25px;">
+              {{ar.leave_subject.value}}
+
+              <br>
+            </div>
+
+            <div class="col-md-4">
+
+              <strong> Description </strong>
+            </div>
+            <div class="col-md-8" style="padding: 1rem;">
+              {{ar.leave_description.value}}
+              <br>
+            </div>
+            <div class="col-md-4">
+              <strong> Period [From date -Todate] </strong>
+            </div>
+            <div class="col-md-8" style="height: 25px;">
+
+              {{(ar.fromdate.value)}} to {{(ar.todate.value)}} | {{ar.leave_days .value}}
+              <br>
+            </div>
+
+            <div class="col-md-4">
+              <strong> Application Status </strong>
+            </div>
+            <div class="col-md-8" style="height: 25px;">
+              {{ar.approval_status.value}}
+            </div>
+
+            <div class="col-md-4">
+              <strong> Attachment (if any) </strong>
+            </div>
+
+            <div *ngIf="ar.attachemnt_url.value" class="col-md-8">
+
+              <span><a target="_blank" [href]="ar.attachemnt_url.value"><i style="color:blue;" class="fa fa-pdf"></i>
+                </a></span>
+            </div>
+          </div>
+
+
+          <div class="col-md-12">
+            <br>
+            <strong>Remark :</strong> <br>
+            <textarea formControlName="remark" class="form-control" rows="3" placeholder="Enter Remark..."></textarea>
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" (click)="closeApproveRejectPopup()" value="Cancel">
+          <input *ngIf="mark_approval_status" type="submit" (click)="approved_leave_appl_by_applid()"
+            class="btn btn-success" value="Submit">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!------Leave Document------>
+<div [@grooveState]="showDocumentPopup?'active':'inactive'" id="showDoc" class="modal" style="z-index:1000;">
+  <div [@dongleState]="showDocumentPopup?'active':'inactive'" class="modal-dialog" style="margin:auto auto auto auto;">
+    <div class="modal-content" style="height:100%;margin-top:50px;width:75rem;margin-left:-5rem;">
+
+      <div class="modal-header theme-bg">
+        <h4 class="modal-title">Leave Document</h4>
+        <button type="button" class="close" aria-hidden="true" (click)="closeDocumentPopup()">&times;</button>
+      </div>
+      <div class="modal-body" style="overflow: auto;height: 32rem;">
+
+        <iframe class="iframe-container" *ngIf="document_url" [src]="document_url"></iframe>
+
+
+      </div>
+      <div class="modal-footer">
+        <input type="button" class="btn btn-default" (click)="closeDocumentPopup()" value="Close">
+      </div>
+    </div>
+  </div>
+</div>
+<!------Leave Document------>
+
+
+<!---Gate Pass--->
+<div [@grooveState]="showGatePassModal?'active':'inactive'" id="final-bill" class="modal" style="z-index:1000;">
+  <div [@dongleState]="showGatePassModal?'active':'inactive'" class="modal-dialog modal-lg"
+    style="margin:auto auto auto auto;">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Print Gate Pass</h4>
+
+
+          <span class="close-print-box">
+
+            <a (click)="onPrint('gatePassModal')"><i class="fa fa-print"></i></a>
+            <button (click)="closeGatePassModal()" type="button" class="close" data-dismiss="modal"
+              aria-hidden="true">×</button>
+          </span>
+
+
+        </div>
+        <div id="gatePassModal" class="modal-body final-bill-inner-box" style="overflow-y: scroll; height: 45rem;">
+
+          <div class="card-body">
+            <div class="card-sales-split">
+
+              <table class="table mb-0" style=" width: 100%;">
+
+                <thead>
+                  <tr>
+                    <th style=" text-align: left;">
+                      <div class="header-left-logo">
+                        <a href="" class="logo logo-normal">
+                          <img [src]="gatePassModalData.employer_logo_path" alt="Logo" style="width: 100px;">
+                        </a>
+
+                      </div>
+
+                    </th>
+
+                    <th style=" text-align: right;">
+                      <h3 style="margin: 0;font-size: 20px;">{{gatePassModalData.company_name}}.</h3>
+                      <h3 style="margin: 0;font-size: 15px;font-weight: 600;">Gate Pass (Short Leave)</h3>
+                    </th>
+                  </tr>
+
+
+
+
+                </thead>
+              </table>
+
+            </div>
+
+            <div class="table-responsive top-table-date-box">
+              <hr style="  margin: 20px 0;">
+              <table class="table mb-0" style=" width: 100%;">
+
+                <tbody>
+
+                  <tr>
+
+                    <th style="text-align: left; ">User id </th>
+                    <td style="text-align: left; ">{{gatePassModalData.leave_applid}}</td>
+
+
+                    <td rowspan="5" style=" text-align: right;">
+
+                      <div class="take-picture-box e-pass-img">
+                        <img [src]="gatePassModalData.employee_photo" class="img-responsive" alt="Logo"
+                          style=" width: 100px;height: 95px;">
+                      </div>
+
+                    </td>
+                  </tr>
+
+                  <tr>
+
+                    <th style="   text-align: left; ">Staff Name </th>
+                    <td style="   text-align: left; ">{{gatePassModalData.emp_name}}</td>
+
+                  </tr>
+
+                  <tr>
+                    <th style="   text-align: left; ">Mobile No. </th>
+                    <td style="   text-align: left; ">{{gatePassModalData.mobile}}</td>
+
+
+                  </tr>
+
+                  <tr>
+
+                    <th style="text-align: left; ">Date</th>
+                    <td style="text-align: left; ">{{gatePassModalData.leave_applied_date}}</td>
+
+                  </tr>
+
+                  <tr>
+                    <th style="  text-align: left; ">Permission Given By </th>
+                    <td style=" text-align: left;">{{gatePassModalData.permission_given_by}}</td>
+
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+            <div class="table-responsive top-table-date-box">
+              <hr>
+              &nbsp;
+              <table class="table mb-0">
+                <tbody>
+                  <tr>
+
+                    <th style="text-align: left; ">Start Time </th>
+                    <td style="text-align: left; ">{{gatePassModalData.leave_starttime}}</td>
+                    <th style="text-align: left; ">Actual out time </th>
+                    <td style="text-align: left; "><input type="text" placeholder=" "
+                        [value]="gatePassModalData.actual_out_time" autocomplete="chrome-off" class="form-control"
+                        disabled=""></td>
+                  </tr>
+                  <tr>
+
+                    <th style="text-align: left; ">End Time </th>
+                    <td style="text-align: left; ">{{gatePassModalData.leave_endtime}}</td>
+                    <th style="text-align: left; ">Actual in time </th>
+                    <td style="text-align: left; "> <input type="text" placeholder=" "
+                        [value]="gatePassModalData.actual_in_time" autocomplete="chrome-off" class="form-control"
+                        disabled=""></td>
+                  </tr>
+
+
+                  <tr>
+
+                    <th style="   text-align: left; width: 148px; vertical-align: top;">Purpose of Leave </th>
+                    <td colspan="3">{{gatePassModalData.leave_description}} </td>
+
+
+
+                  </tr>
+
+                  <tr>
+                    <th colspan="4" style=" text-align: right;">Authorized Signature </th>
+                  </tr>
+
+
+                </tbody>
+              </table>
+              <hr>
+            </div>
+
+
+            <div class="table-responsive top-table-date-box">
+
+              <table class="table mb-0" style=" width: 100%;">
+
+                <tbody>
+                  <tr>
+                    <th colspan="4" style=" text-align: right;">&nbsp;</th>
+                  </tr>
+                  <tr>
+                    <th colspan="4" style=" text-align: right;">{{gatePassModalData.authorized_signature}} </th>
+                  </tr>
+
+
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+
+
+
+
+
+        </div>
+        <div class="modal-footer">
+          <input (click)="closeGatePassModal()" type="button" class="btn btn-default" data-dismiss="modal"
+            value="Cancel">
+          <input (click)="onPrint('gatePassModal')" type="submit" class="btn btn-success" value="Print">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--END-->

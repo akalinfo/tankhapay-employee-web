@@ -1,0 +1,183 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+    <div id="wrapper" [ngClass]="{'active':showSidebar==false}">
+        <div class="fakeLoader"></div>
+
+        <div id="page-wrapper">
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Master Voucher Type</h3>
+                </div>
+
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item" title="Dashboard"><a [routerLink]="['/dashboard']">Home</a></li>
+                        <li class="breadcrumb-item active">Master Voucher Type</li>
+                    </ol>
+                </div>
+
+            </div>
+
+
+
+            <div class="col-md-12 col-sm-12">
+                <a href="javascript:window.history.back();" class="btn btn-primary"
+                    style="float: left; margin-bottom: 2rem;"><i class="fa fa-reply" aria-hidden="true"></i></a>
+
+            </div>
+
+
+            <div class="container-fluid">
+                <div class="row">
+                    <form [formGroup]="TransactionForm">
+                        <div class="col-md-8 col-md-offset-2 mrg-top-25 mrg-bot-25">
+                            <div class="card">
+
+                                <div class="card-body add-voucher-outer-box">
+
+
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <label>Credit or Debit</label>
+                                            <select class="wide form-control" id="MasterTransactionTypeDataSelect"
+                                                formControlName="selectedTransaction"
+                                                (change)="GetMaster_Ledger_Name()">
+                                                <option value="">Select Option</option>
+                                                <option *ngFor="let option of data" [value]="option.transactiontype">{{
+                                                    option.transactiontype }}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-12"
+                                            *ngIf="this.TransactionForm.get('selectedTransaction')?.value != ''">
+
+                                            <div
+                                                *ngIf="this.TransactionForm.get('selectedTransaction')?.value == 'Credit'">
+                                                <label>Types</label>
+                                                <select class="wide form-control" formControlName="selectedMasterLedger"
+                                                    (change)="GetSubLedger_Name()">
+                                                    <option value="">Select Option</option>
+                                                    <option *ngFor="let option of MasterLedger_data"
+                                                        [value]="option.masterledgername">{{ option.masterledgername }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12"
+                                            *ngIf="this.TransactionForm.get('selectedTransaction')?.value  != ''">
+                                            <div
+                                                *ngIf="this.TransactionForm.get('selectedTransaction')?.value == 'Debit'">
+                                                <label>Types</label>
+                                                <select class="wide form-control" formControlName="selectedMasterLedger"
+                                                    (change)="GetSubLedger_Name()">
+                                                    <option value="">Select Option</option>
+                                                    <option *ngFor="let option of MasterLedger_data"
+                                                        [value]="option.masterledgername">{{ option.masterledgername }}
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-sm-12"
+                                        *ngIf="TransactionForm.get('selectedTransaction')?.value != '' && TransactionForm.get('selectedMasterLedger')?.value !='' && master_voucher_flag">
+                                       <label>Subledger</label>
+                                       <select class="wide form-control" formControlName="selectedSubLedger" (change)="addSkills()">
+                                           <option value="">Select Option</option>
+                                           <ng-container *ngFor="let subledgerOption of SubLedger_data">
+                                               <!-- <ng-container *ngIf="subledgerOption.deduction_name !== 'Other (Deduction)' && subledgerOption.deduction_name !== 'Other' && subledgerOption.deduction_name !== 'Others'"> -->
+                                                   <option [value]="subledgerOption.id">{{ subledgerOption.deduction_name }}</option>
+                                               <!-- </ng-container> -->
+                                           </ng-container>
+                                       </select>
+                                   </div>
+                                 </div>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Emp list Popup Made by Arpit  -->
+
+        <div class="modal contract-search-popup-box Contract-Panel-box" id="employee"
+            [@grooveState]="show_Emp_Popup?'active':'inactive'" aria-labelledby="myModalLabel1">
+            <div [@dongleState]="show_Emp_Popup?'active':'inactive'" class="modal-dialog modal-xl"
+                style="width: 100rem; margin-right: 0; margin-top: 0; height: 50vh;">
+                <form [formGroup]="save_ledger">
+                    <div class="modal-content" id="Milestone-Mapping">
+                        <div class="modal-header theme-bg">
+                            <h4 style="color: white;">
+                                <a type="button" class="btn-close2" (click)="closeEmpPopup()">
+                                    <i class="fa fa-window-close" aria-hidden="true" style="color: #fff;"></i>
+                                </a>&nbsp;Employee Lists
+                            </h4>
+                        </div>
+
+                        <div class="modal-body" style="overflow: auto;">
+                            <div class="row">
+                                <div style="margin: 0 16px; overflow: auto;">
+
+                                    <table class="table table-hover table-bordered" border="1">
+                                        <thead style="background: skyblue;">
+                                            <tr>
+                                                <th style="font-size: 14px;">Master Ledger Name</th>
+                                                <th style="font-size: 14px;">Ledger Type Name</th>
+                                                <th style="font-size: 14px;">Parent ledger Name</th>
+                                                <th style="font-size: 14px;">Ledger Name</th>
+                                                <th style="font-size: 14px;">Is Taxable</th>
+                                            </tr>
+
+                                        </thead>
+                                        <tbody>
+
+
+                                            <tr>
+                                                <td> {{this.TransactionForm.get('selectedTransaction')?.value}}</td>
+                                                <td> {{this.TransactionForm.get('selectedMasterLedger')?.value}}</td>
+                                                <!-- <td> {{this.TransactionForm.get('selectedSubLedger')?.value}}</td> -->
+                                                <td>{{ selectedSubLedgerData?.deduction_name }}</td>
+
+                                                <td> <input type="text" formControlName="saveLedger" /></td>
+                                                <td>
+                                                    {{ TransactionForm.get('selectedMasterLedger')?.value === 'Additional income' ? 'Yes' : 'No' }}
+                                                  </td>
+                                                  
+
+                                            </tr>
+                                            <!-- SaveOther_LedgerName -->
+
+
+
+                                        </tbody>
+
+                                    </table>
+                                    <alert></alert>
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer" style="background: white;">
+                                <button class="btn btn-primary" (click)="SaveOtherLedgerCustomer_Specific()">submit</button>
+                                <button class="btn btn-close btn-danger" (click)="closeEmpPopup()">Cancel</button>
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</section>
+<app-footer></app-footer>

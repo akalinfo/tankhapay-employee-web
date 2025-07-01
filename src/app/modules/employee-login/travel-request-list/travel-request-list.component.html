@@ -1,0 +1,337 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+    <div id="wrapper" [ngClass]="{'active': showSidebar == false}">
+        <div class="fakeLoader"></div>
+
+
+        <div id="page-wrapper">
+
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Travel Request</h3>
+                </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a [routerLink]="['/profile/travel']">Travel</a></li>
+                        <li class="breadcrumb-item active">Travel Request</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="container-fluid element" id="element">
+                <!-- /row -->
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="card-header caded-innder-head-box">
+
+                            <div class="col-md-3" style="padding-right:0;">
+
+                                <input type="date" class="form-control" value="2024-12-20"
+                                    placeholder="Select From Date" [(ngModel)]="fromDate" (change)="filterDataByDate()">
+
+                            </div>
+
+                            <div class="col-md-3" style="padding-left:0;">
+                                <input type="date" class="form-control" value="" placeholder="Select To Date"
+                                    [(ngModel)]="toDate" (change)="filterDataByDate()">
+
+                            </div>
+
+
+                            <div class="col-sm-2 text-right">
+                                <label style="font-size:14px;padding-top:14px; text-align:right;">Status</label>
+
+                            </div>
+                            <div class="col-sm-2 ">
+
+
+                                <select class="wide form-control" (change)="getTravelSummary()"
+                                    [(ngModel)]="statusFilter">
+                                    <option value="">All</option>
+                                    <option value="A">Approved</option>
+                                    <option value="R">Rejected</option>
+                                    <option value="P">Pending</option>
+
+                                </select>
+                            </div>
+
+                            <div class="col-sm-2 text-right">
+                                <a (click)="showAddEditRequestModal()" data-placement="top"
+                                    class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn" style=" margin-top: 10px;background-color: #0084ff !important;
+    border-color: #0084ff !important;">Add Request </a>
+
+                            </div>
+
+                            <!--<div class="col-sm-3 ">
+                                
+                                    
+                                    <select class="wide form-control">
+                                        
+                                        <option value="1" >Today</option>
+                                        <option value="2" >Yesterday</option>
+                                        <option value="3">This week (Sun - Today)</option>
+                                        
+                                        <option value="4" >Last week (Sun - Today)</option>
+                                        <option value="5" >Last 7 days</option>
+                                        <option value="6">Last 28 days</option>
+                                        <option value="7">Last 30 days</option>
+                                        <option value="8">Last 90 days</option>
+                                        <option value="9">Last 12 months</option>
+                                        
+                                        
+                                    </select>
+                            </div>-->
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mrg-top-0 mrg-bot-25">
+
+                        <div class="card">
+
+                            <div class="card-body padd-bot-0 padd-top-0">
+
+                                <div class="row">
+
+                                    <div class="col-md-12 padd-top-0">
+
+                                        <div
+                                            class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+
+                                            <table class="table user-list">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>View</th>
+                                                        <th>Purpose</th>
+                                                        <th>Department</th>
+                                                        <th>Place of Travel</th>
+                                                        <th>Date of Travel</th>
+                                                        <th>Mode of Travel</th>
+
+                                                        <th> Travel Advance</th>
+
+                                                        <th>Status</th>
+                                                        <!-- <th>Action</th> -->
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr *ngFor="let data of filteredData;let i=index;">
+                                                        <td>{{i+1}}
+                                                        </td>
+
+                                                        <td style="max-width: 15px;">
+                                                            <h5 class="job-name"><a style="cursor:pointer"
+                                                                    (click)="editRequest(data)"
+                                                                    class="job_name_tag collapsed"><i class="fa fa-eye"
+                                                                        aria-hidden="true"></i></a></h5>
+                                                        </td>
+                                                        <td style="max-width: 158px;">{{data.purpose}} </td>
+                                                        <td>{{data.department}} </td>
+
+                                                        <td>{{data.place_of_travel_from}} - {{data.place_of_travel_to}}
+                                                        </td>
+                                                        <td>{{data.date_of_travel_from.split('-').reverse().join('/')}}
+                                                            - {{data.date_of_travel_to.split('-').reverse().join('/')}}
+                                                        </td>
+                                                        <td>{{data.mode_of_travel}}</td>
+                                                        <td>{{data.travel_adv_amount}}</td>
+                                                        <td>
+                                                            <span [ngClass]="{'appro-btn-ved':data.travel_request_status=='A',
+                                                            'appro-btn-ved1': data.travel_request_status=='R',
+                                                            'pend-btn-ved1': data.travel_request_status=='P'}">
+                                                                {{data.travel_request_status=='A' ? 'Approved' :
+                                                                (data.travel_request_status=='R' ? 'Rejected'
+                                                                :'Pending')}}
+                                                                <span></span></span>
+                                                        </td>
+                                                        <!-- <td>
+                                                        
+                                                                <div class="dropdown float-right ember-view dropleft">
+                                                                <a class="dropdown-toggle no-caret text-muted cursor-pointer ember-view" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <svg width="512" height="512" viewBox="0 0 512 512" class="icon">
+                                                                        <path d="M162 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32M256 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32M350 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32" id="Path"></path>
+                                                                        <path d="M256 480c123.712 0 224-100.288 224-224S379.712 32 256 32 32 132.288 32 256s100.288 224 224 224zm0 32C114.615 512 0 397.385 0 256S114.615 0 256 0s256 114.615 256 256-114.615 256-256 256z" id="Oval-1"></path>
+                                                                    </svg>
+                                                                </a>
+                                                                <ul id="ember924" class="dropdown-menu ember-view" aria-labelledby="dropdownMenuButton">
+                                                                    <li class="ember-view dropdown-item">Approve </li>
+                                                                    <li class="dropdown-item">Reject</li>
+                                                                    
+                                                                </ul>
+                                                                </div>
+                                                        
+                                                        </td> -->
+                                                    </tr>
+                                                    <tr *ngIf="filteredData.length==0">
+                                                        <td colspan="9" style="font-weight: 500;text-align: center;">
+                                                            No Data Found
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+
+                                            </table>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<app-footer></app-footer>
+
+<!-----------Travel request detail modal--------------->
+<div id="SendMessage1981" class="modal fade add-address-form-box in">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+
+            <form [formGroup]="travelRequestForm">
+                <div class="modal-header theme-bg">
+                    <h4 class="modal-title">Travel Request Detail</h4>
+                    <button type="button" class="close" (click)="hideAddEditRequestModal()">×</button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="form-group" *ngIf="requestData">
+                        <div class="col-sm-12">
+                            <h4>{{requestData.emp_name}}</h4>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">Purpose <span style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="Enter Purpose "
+                                formControlName="purpose">
+                        </div>
+                    </div>
+
+                    <!-- <div class="form-group">
+                         <label class="control-label col-sm-4">Department <span style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                                 <input type="text" class="form-control" placeholder=" IT " >
+                          </div>
+                    </div> -->
+
+
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">Place of Travel From<span
+                                style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="Enter place of travel from"
+                                formControlName="placeOfTravelFrom">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">Place of Travel To<span
+                                style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="Enter place of travel to"
+                                formControlName="placeOfTravelTo">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">Date of Travel<span style="color: red;">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="date" class="form-control" placeholder="From date"
+                                formControlName="dateOfTravelFrom">
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="date" class="form-control" placeholder="To date"
+                                formControlName="dateOfTravelTo">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">Mode of Travel<span style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                            <select class="form-control" formControlName="modeOfTravelId">
+                                <option value="">Select Mode of Travel</option>
+                                <option [value]="mode.id" *ngFor="let mode of modeOfTravels">{{mode.mode_of_travel}}
+                                </option>
+                            </select>
+
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">Travel Advance<span style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                            <select class="form-control" formControlName="travelAdvId">
+                                <option value="">-- Select Travel Advance --</option>
+                                <option [value]="travel.id" *ngFor="let travel of advanceRequired">
+                                    {{travel.advance_required}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" *ngIf="tf.travelAdvId.value=='1'">
+                        <label class="control-label col-sm-4">Advance Amount<span style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="Enter advance amount"
+                                formControlName="travelAdvAmount">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4">Upload Files</label>
+                    <div class="col-sm-8">
+                        <div *ngFor="let file of files.controls; let i = index" class="mb-2">
+                            <!-- Show link if doc_url exists -->
+                            <div *ngIf="file.value.doc_url">
+                                <a [href]="file.value.doc_url" target="_blank" title="View Uploaded File">
+                                    <i class="fa fa-file-pdf-o" aria-hidden="true"
+                                        style="font-size: 16px; color: #b90707;"></i>
+                                    View File
+                                </a>
+                            </div>
+
+                            <!-- File upload input -->
+                            <input type="file" (change)="onFileChange($event, i)" class="form-control mt-1">
+
+                            <!-- Remove button -->
+                            <button type="button" class="btn btn-danger btn-sm mt-1" (click)="removeFileControl(i)"
+                                *ngIf="files.length > 1">
+                                Remove
+                            </button>
+                        </div>
+
+                        <button type="button" class="btn btn-primary btn-sm mt-2" (click)="addFileControl()"
+                            *ngIf="files.length < 10">
+                            Add More
+                        </button>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <a class=" btn btn-default" data-placement="top" aria-hidden="true"
+                        *ngIf="requestData=='' || requestData.travel_request_status=='P'"
+                        (click)="submitRequest()">{{tf.travelId.value ? 'Update':'Submit'}} Request </a>
+
+                    <input type="button" class="btn btn-default" value="Cancel" (click)="hideAddEditRequestModal()">
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-----------Travel request detail modal--------------->

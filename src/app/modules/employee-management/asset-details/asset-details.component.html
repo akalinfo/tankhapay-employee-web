@@ -1,0 +1,348 @@
+<div id="collapseOne001" class="panel-collapse collapse card-body in" role="tabpanel" style="padding:0px;">
+  <div class="row">
+    <div class="col-md-12 col-sm-12">
+      <div class="card">
+        <div id="approval-workflow-info123" style="padding: 10px">
+          <div class="card-header12">
+            <h4 class="sub-title-inn-box View-Roles-list-outer-box">
+              <span style="font-size: 13px; font-weight: bold;margin-left: 16px;margin-top: 15px;"> Total : {{assigned_assets_list_data.length }} </span>
+
+              <input class="form-control search-filter-box" placeholder="Search Asset(s)" title="Search" [(ngModel)]="search_asset_key" (keyup)="search_asset($event.target.value)">
+
+              &nbsp; <a (click)="openAssignForm()" title="Add"
+                class="btn btn-user btn-round btn-primary btn-primary-Add-Roles-btn" data-placement="top">Add Assign
+                Asset
+              </a>
+            </h4>
+          </div>
+
+          <div class="card-body12 padd-bot-0 padd-top-0">
+            <div class="row">
+              <div class="col-md-12 padd-top-0">
+                <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+                  <table class="table table-striped table-bordered table table-hover js-basic-example">
+                    <thead>
+                      <tr role="row">
+                        <th class="nama sorting_asc" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1"
+                          colspan="1" aria-sort="ascending"
+                          aria-label="Name | Model: activate to sort column descending" style="width: 0px">
+                          Name <br> |Model
+                        </th>
+                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1"
+                          aria-label="Alloted Date: activate to sort column ascending" style="width: 0px">
+                         Asset Code <br>| Alloted Date
+                        </th>
+                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1"
+                          aria-label="Release Date: activate to sort column ascending" style="width: 0px">
+                          Release Date
+                        </th>
+                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1"
+                          aria-label="Category: activate to sort column ascending" style="width: 0px">
+                          Category
+                        </th>
+                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1"
+                          aria-label="Serial Number: activate to sort column ascending" style="width: 0px">
+                          Serial Number
+                        </th>
+
+                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1"
+                          aria-label=" Tag: activate to sort column ascending" style="width: 220px">
+                          Notes
+                        </th>
+                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1"
+                          aria-label="Location: activate to sort column ascending" style="width: 0px">
+                          Location
+                        </th>
+                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1"
+                          aria-label="Location: activate to sort column ascending" style="width: 0px">
+                          Status
+                        </th>
+                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1"
+                        aria-label="Location: activate to sort column ascending" style="width: 8%">
+                        Action
+                      </th>
+                      </tr>
+                    </thead>
+                    <tbody id="tReg">
+
+                      <ng-container *ngFor="let aald of assigned_assets_list_data;">
+                        <tr role="row" class="odd"
+                          [ngStyle]="{'color': aald?.process_status === 'released' ? '#ff000080' :  aald?.process_status === 'assigned' ? '#008000b8':'' }">
+                                                  <td title=" Name and Model Name" class="sorting_1">
+                            {{aald?.asset_name}} | {{aald?.model_name}}
+                          </td>
+                          <td title="Assign Date">{{aald?.asset_code}} | {{aald?.assigned_date}}</td>
+                          <td title="Release Date ">{{aald?.release_date}}</td>
+                          <td title=" Category">{{aald?.category_name}}</td>
+                          <td title="Serial Number">{{aald?.device_serial_no}}</td>
+
+                          <td title=" Tag">
+                            <span *ngIf="aald?.remarks!=''"> {{aald?.remarks}} </span>
+                            <span *ngIf="aald?.remarks!=''"> <br> {{aald?.assigned_remarks}}</span>
+                            <span *ngIf="aald?.remarks!=''"><br> {{aald?.release_remarks}}</span>
+
+                          </td>
+                          <td title="Location">{{aald?.assigned_location}}</td>
+                          <td title="Status" style="text-transform: capitalize;">{{aald?.process_status}}</td>
+                          <td>
+                            <a *ngIf="aald?.process_status=='assigned'" (click)="openReleaseModal(aald)"
+                              data-placement="top" title="Release Assigned Asset" style="cursor: pointer;"> <i
+                                class="fa fa-lg fa fa-chain-broken" aria-hidden="true"></i></a>
+
+                            <a *ngIf="aald?.process_status=='open'" (click)="openAssignConfirmModal(aald)"
+                              title="Confrim Assigne Asset" style="cursor: pointer;">
+                              <i class="fa fa-lg fa fa-check" aria-hidden="true" style="color:green"></i>
+                            </a>
+                            &nbsp;
+                            <a *ngIf="aald?.process_status=='open'" (click)="openRemoveAssetModal(aald)"
+                              style="color:red;" title="Remove Assigned Asset" style="cursor: pointer;">
+                              <i class="fa fa-lg fa-trash-o" aria-hidden="true" style="color:red"></i>
+                            </a>
+                          </td>
+                        </tr>
+                      </ng-container>
+
+                      <!-- <tr role="row" class="even">
+                        <td title=" Name and Model Name" class="sorting_1">
+                          Mouse | Lenova
+                        </td>
+                        <td title="Assign Date">27/01/2023</td>
+                        <td title="Release Date ">27/01/2023</td>
+                        <td title=" Category"></td>
+                        <td title="Serial Number">1764465</td>
+                        <td title=" Tag">
+                          Lorem Ipsum is simply dummy text of the printing and
+                          typesetting industry.
+                        </td>
+                        <td title="Location">MUMBAI</td>
+                        <td title="Location"></td>
+                      </tr> -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-----Assign New Asset-------->
+  <div [@grooveState]="showAssignForm ? 'active' : 'inactive'" id="assignAsset"
+    class="modal add-address-form-box Component-outer-box">
+    <div [@dongleState]="showAssignForm ? 'active' : 'inactive'" class="modal-dialog">
+      <div class="modal-content" style="width:75rem;">
+        <form [formGroup]="assignAssetForm">
+          <div class="modal-header theme-bg">
+            <h4 class="modal-title">Add Assign Asset</h4>
+            <button type="button" class="close" (click)="closeAssignForm()">
+              ×
+            </button>
+          </div>
+          <div class="modal-body card-body">
+            <div class="form-group">
+              <label class="control-label col-sm-4">Asset Name/Code: <span class="text-danger">*</span></label>
+              <div class="col-sm-8 dropdown-container">
+
+                <angular2-multiselect
+                [data]="asset_list_data"
+                [(ngModel)]="selectedItems"
+                [settings]="dropdownSettings"
+                (onSelect)="onItemSelect($event)"
+                (onDeSelect)="onItemDeSelect($event)"
+                [ngModelOptions]="{standalone: true}">
+
+                <c-search>
+                  <ng-template>
+                    <input type="text" (keyup)="onSearch($event)" (paste)="onSearch($event)" [(ngModel)]="asset_search_keyword"
+                    [ngModelOptions]="{standalone: true}" placeholder="Search (At least 3 letters)"
+                      style="border: none;width: 100%; height: 100%;outline: none;" />
+                  </ng-template>
+                </c-search>
+
+                <c-item>
+                  <ng-template let-item="item">
+                    <label
+                      >{{ item.asset_name }} ({{
+                        item.asset_code
+                      }})
+                      [{{item?.category_name}} - {{item.asset_status}}]</label
+                    >
+                  </ng-template>
+                </c-item>
+
+                <c-badge>
+                  <ng-template let-item="item">
+                    <label>{{ asset_name_selected }} ({{ item.asset_code}}) [{{item?.category_name}} - {{item.asset_status}}]</label>
+                  </ng-template>
+                </c-badge>
+
+              </angular2-multiselect>
+
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-4">Assign Date: <span class="text-danger">*</span></label>
+              <div class="col-sm-8">
+                <input id="assignDate1" #ad1 type="text" class="form-control" formControlName="assigned_date"
+                  autocomplete="off" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-4">Location:<span class="text-danger">*</span></label>
+              <div class="col-sm-8">
+                <input class="form-control" formControlName="assigned_location" autocomplete="off">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-4">Remarks:<span class="text-danger">*</span></label>
+              <div class="col-sm-8">
+                <textarea id="remarksId" formControlName="remarks" rows="5" cols="30" maxlength="200"
+                  style="height:100px; resize:vertical;" class="form-control valid has-value">
+                </textarea>
+                (Max. 200 characters)
+
+              </div>
+            </div>
+            <!--
+          <div class="form-group">
+                 <label class="control-label col-sm-4">Notes:<span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+                 <textarea id="NotesId" name="Notes" rows="5" cols="30" maxlength="300" style="resize:none;" class="form-control valid has-value"></textarea>
+              </div>
+
+          </div>-->
+
+            <div class="modal-footer">
+              <input type="button" class="btn btn-default" value="Save" (click)="saveAssignForm()" />
+              <input type="button" class="btn btn-default" value="Cancel" (click)="closeAssignForm()" />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-----Assign New Asset-------->
+
+
+  <!---------Remove, Confirm, Release Asset------------>
+  <div [@grooveState]="showRemoveConfirmReleaseModal ? 'active' : 'inactive'" id="removeConfirmReleaseId"
+    class="modal add-address-form-box Component-outer-box">
+    <div [@dongleState]="showRemoveConfirmReleaseModal ? 'active' : 'inactive'" class="modal-dialog">
+      <div class="modal-content">
+        <form [formGroup]="releaseAssetForm">
+          <div class="modal-header theme-bg">
+            <h4 class="modal-title">{{remove_confirm_release_asset_title}}</h4>
+            <button type="button" class="close" (click)="closeReleaseForm()">
+              ×
+            </button>
+          </div>
+          <div class="modal-body card-body">
+            <!-- <div class="form-group">
+              <label class="control-label col-sm-4">Asset Category: <span class="text-danger">*</span></label>
+              <div class="col-sm-8">
+                <select class="form-control" formControlName="assetCategory">
+                  <option value="">--Select--</option>
+                  <option *ngFor="let acd of asset_category_data" [value]="acd.category_id">
+                    {{ acd.category_name }}
+                  </option>
+                </select>
+              </div>
+            </div> -->
+
+            <!-- <div class="form-group">
+              <label class="control-label col-sm-4">Assign Date: <span class="text-danger">*</span></label>
+              <div class="col-sm-8">
+                <input id="assignDate2" #ad2 type="text" class="form-control" formControlName="assignDate"
+                  autocomplete="off" />
+              </div>
+            </div> -->
+
+            <!--<div class="form-group">
+               <label class="control-label col-sm-4"> Asset Status: <span class="text-danger">*</span></label>
+            <div class="col-sm-8">
+
+
+                 <select required="" id="ReleaseAssetStatusId" name="Status" class="form-control">
+                    <option value=""> --Select-- </option>
+                    <option selected="selected" value="ReadyToDeploy">Ready To Deploy</option>
+                    <option value="Archived">Archived</option>
+                    <option value="OutOfRepair">Out Of Repair</option>
+                    <option value="Broken">Broken</option>
+                    <option value="LostOrStolen">Lost/Stolen</option>
+            </select>
+              </div>
+
+          </div> -->
+            <div class="form-group">
+              <label class="control-label col-sm-4">Asset Name<span class="text-danger">*</span>:</label>
+              <div class="col-sm-8">
+                <!-- <input type="text" class="form-control" formControlName="asset_name" autocomplete="off" /> -->
+                {{releaseAssetForm.value.asset_name}} ({{releaseAssetForm.value.asset_code}})
+              </div>
+            </div>
+
+            <ng-container *ngIf="remove_confirm_release_asset_title=='Release'">
+              <div class="form-group">
+                <label class="control-label col-sm-4">Assigned Location<span class="text-danger">*</span>:</label>
+                <div class="col-sm-8">
+                  {{releaseAssetForm.value.assigned_location}}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-4">Category Name<span class="text-danger">*</span>:</label>
+                <div class="col-sm-8">
+                  {{releaseAssetForm.value.category_name}}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-4">Assigned Date<span class="text-danger">*</span>:</label>
+                <div class="col-sm-8">
+                  {{releaseAssetForm.value.assigned_date}}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-4">Release Date<span class="text-danger">*</span>:</label>
+                <div class="col-sm-8">
+                  <input type="hidden" id="recdate" (click)="filterFromToDateLeads()" />
+                  <input type="text" formControlName="release_date" #rd id="release_date"
+                    class="form-control xpr-datepicker" autocomplete="off" />
+                </div>
+              </div>
+            </ng-container>
+
+            <div class="form-group">
+              <label class="control-label col-sm-4">Notes<span class="text-danger">*</span>:</label>
+              <div class="col-sm-8">
+                <textarea id="NotesId" formControlName="remarks" rows="5" cols="30" maxlength="200"
+                  style="height:100px; resize:vertical;" class="form-control valid has-value">
+                </textarea>
+                (Max. 200 characters)
+              </div>
+            </div>
+
+            <!-- <div class="form-group">
+              <label class="control-label col-sm-4">Location:<span class="text-danger">*</span></label>
+              <div class="col-sm-8">
+                <input formControlName="location" type="text" id="LocationId2" class="form-control xpr-datepicker"
+                  autocomplete="off" />
+              </div>
+            </div> -->
+
+            <div class="modal-footer">
+              <input *ngIf="remove_confirm_release_asset_title=='Remove'" type="button" class="btn btn-default" value="Remove" (click)="removeAsset()" />
+              <input *ngIf="remove_confirm_release_asset_title=='Confirm'" type="button" class="btn btn-default" value="Confirm" (click)="confirmAsset()" />
+              <input *ngIf="remove_confirm_release_asset_title=='Release'" type="button" class="btn btn-default" value="Release" (click)="saveReleaseForm()" />
+              <input type="button" class="btn btn-default" value="Cancel" (click)="closeReleaseForm()" />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+  <!---------Remove, Confirm, Release Asset------------>

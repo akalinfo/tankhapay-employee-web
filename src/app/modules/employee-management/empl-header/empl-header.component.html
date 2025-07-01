@@ -1,0 +1,687 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+    <div id="wrapper" [ngClass]="{'active': showSidebar == false}">
+        <div class="fakeLoader"></div>
+
+
+        <div id="page-wrapper">
+
+            <div class="row page-titles"
+                *ngIf="!currentUrl.includes('/pms') && !currentUrl.includes('/feedback') && !currentUrl.includes('/mobile')">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">{{pageTitle}} <span class="text-danger"
+                            *ngIf="empData?.joiningStatus=='RELIEVED'" style="font-size:20px">(Relieved)</span></h3>
+                </div>
+                <div class="col-md-7 align-self-center" *ngIf="!currentUrl.startsWith('/profile')">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a [routerLink]="['/employee-mgmt/employees']">Employee
+                                Management</a></li>
+                        <li class="breadcrumb-item active">Employee Profile</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- <div class="container-fluid" [ngClass]="{'no-padding': currentUrl.includes('/pms')}"> -->
+            <div class="container-fluid"
+                [ngClass]="{'no-padding': (currentUrl.includes('/pms') || currentUrl.includes('/feedback'))}">
+                <!-- /row -->
+                <a *ngIf="!currentUrl.includes('profile') && !currentUrl.includes('pms')" class="btn" title="Back"
+                    (click)="goBack()" style="font-size: 15px;"><i class="fa fa-long-arrow-left fa-lg"></i> Back </a>
+                <div class="row">
+                    <div class="col-md-12 col-md-offset-0 mrg-top-2512 mrg-bot-25 employees-details-outer-box">
+
+                        <div class="row">
+                            <div class="col-md-12"
+                                *ngIf="!currentUrl.includes('/pms') && (currentUrl.includes('/employee-detail') || currentUrl.includes('employee-mgmt'))">
+
+                                <div class="card">
+                                    <div class="card-body padd-bot-0">
+                                        <div class="row" *ngIf="view_emp_data">
+                                            <!-- col-md-6 -->
+                                            <div class="col-md-12 col-12 basic_info-inn-box"
+                                                *ngIf="!currentUrl.includes('profile')">
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <div class="contact-img">
+                                                            <img src="{{this.view_emp_data.basicDetails?.profilePhoto}}"
+                                                                *ngIf="this.view_emp_data.basicDetails?.profilePhoto!='' && this.view_emp_data.basicDetails?.profilePhoto!=null"
+                                                                class="img-circle img-responsive" alt="user-images">
+                                                            <div class="attachment-thumbnail user-no-img"
+                                                                *ngIf="this.view_emp_data.basicDetails?.profilePhoto=='' || this.view_emp_data.basicDetails?.profilePhoto==null">
+                                                                {{view_emp_data.basicDetails?.emp_name?.charAt(0)?.toUpperCase()}}{{
+                                                                view_emp_data.basicDetails?.emp_name?.split(" ")[1] !=
+                                                                undefined &&
+                                                                view_emp_data.basicDetails?.emp_name?.split(
+                                                                " "
+                                                                )[1] != ""
+                                                                ? view_emp_data.basicDetails?.emp_name
+                                                                ?.split(" ")[1][0]
+                                                                ?.toUpperCase()
+                                                                : ""
+                                                                }}
+                                                            </div>
+                                                            <input type="file" id="imageUpload"
+                                                                accept=".png, .jpg, .jpeg"
+                                                                (change)="onFileSelected($event)" style="display:none"
+                                                                #fileInput>
+                                                            <a class="fro-profile_main-pic-change"
+                                                                (click)="triggerFileInput(fileInput)"
+                                                                title="Edit Image"> <i class="fa fa-camera"></i></a>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- New code -->
+                                                    <div class="form-group">
+                                                        <div class="feedback-container" *ngIf="allCount > 0">
+                                                            <div *ngFor="let item of emplfeedbackcount"
+                                                                class="feedback-card" [attr.title]="item?.category">
+                                                                <i [class]="item?.icon + ' feedback-icon'"
+                                                                    [style.color]="item?.color"></i>
+                                                                <span class="feedback-count">
+                                                                    {{ item?.count }}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- New code -->
+                                                </div>
+
+
+                                                <div class="col-md-4">
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-12">
+                                                            <div class="form-group">
+                                                                <h3 class="">{{view_emp_data.basicDetails.emp_name}}
+                                                                </h3>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 col-12">
+                                                            <div class="form-group">
+                                                                <label><strong>Emp Code:</strong>
+                                                                    {{view_emp_data.basicDetails.orgempcode}}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 col-12">
+                                                            <div class="form-group">
+                                                                <label><span class="com-tagline">
+                                                                        <strong>TP Code:</strong>
+                                                                        {{view_emp_data.basicDetails.cjcode}}
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label><strong><i class="ti ti-email" title="Email"></i>
+                                                                    </strong>{{view_emp_data.basicDetails.email}}</label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12"
+                                                            *ngIf="view_emp_data?.basicDetails?.pre_total_experience">
+                                                            <div class="form-group mrg-bot-5 mrg-top-5">
+                                                                <label><strong><i class="ti ti-folder"
+                                                                            title="Pre Org. Experience"></i>
+                                                                    </strong>{{view_emp_data.basicDetails.pre_total_experience}}
+                                                                    (Pre Org. Experience) </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12"
+                                                            *ngIf="view_emp_data?.basicDetails?.current_experience">
+                                                            <div class="form-group mrg-bot-5 mrg-top-5">
+                                                                <label><strong><i class="ti ti-folder"
+                                                                            title="Current Org. Experience"></i>
+                                                                    </strong>{{view_emp_data.basicDetails.current_experience}}
+                                                                    (Current Org. Experience) </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12" *ngIf="final_rating">
+                                                            <div class="form-group">
+                                                                <label><strong>
+                                                                        {{this.final_rating?.appraisalcycle_name}}</strong><br>
+                                                                    <strong>Raiting - {{this.final_rating?.final_score
+                                                                        }}
+                                                                        {{this.final_rating?.final_rating}}</strong>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-md-4">
+                                                    <div class="row">
+
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label>
+                                                                    <strong><i class="ti ti-user"
+                                                                            title="Gender"></i></strong>
+                                                                    {{view_emp_data.basicDetails.gender}}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label><strong><i class="ti ti-folder"
+                                                                            title="Date of Joining"></i>
+                                                                    </strong>{{view_emp_data.basicDetails.dateofjoining}}
+                                                                    (Date of Joining) </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label><strong><i class="ti ti-ruler-pencil"
+                                                                            title="Designation"></i>
+                                                                    </strong>{{view_emp_data.basicDetails.post_offered}}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label><strong><i class="fa fa-bullseye"
+                                                                            title="Permanent Address"></i>
+                                                                    </strong>{{view_emp_data.basicDetails.emp_address}}</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <!-- <label>
+
+                                                                    <strong>Feedback -
+                                                                        {{this.latest_feedback?.latest_feedback?.feedback_category?.feedback_category_text
+                                                                        }}</strong>
+                                                                    <br>
+                                                                    <strong>Feedback Given By -
+                                                                        {{this.latest_feedback?.latest_feedback?.feedback_given_by
+                                                                        }}</strong>
+                                                                </label> -->
+                                                                <!-- <div
+                                                                    [style.color]="this.latest_feedback?.latest_feedback?.feedback_category?.color_code">
+                                                                    <i
+                                                                        [class]="this.latest_feedback?.latest_feedback?.feedback_category?.icon"></i>
+                                                                    {{
+                                                                    this.latest_feedback?.latest_feedback?.feedback_category?.feedback_category_text
+                                                                    }}
+                                                                </div> -->
+
+                                                                <!-- Old code -->
+                                                                <!-- <div class="feedback-container" *ngIf="allCount > 0">
+                                                                    <div *ngFor="let item of emplfeedbackcount" 
+                                                                        class="feedback-card" [attr.title]="item?.category">
+                                                                        <i [class]="item?.icon" class="feedback-icon"></i>
+                                                                        <span class="feedback-count">
+                                                                            {{ item?.count }}
+                                                                        </span>
+                                                                    </div>
+                                                                </div> -->
+
+
+
+
+
+                                                                <!-- <div style="font-size: 24px; color: gold;">
+
+                                                                    <ng-container *ngFor="let star of fullStars">
+                                                                        <span class="star">★</span>
+                                                                    </ng-container>
+
+
+                                                                    <span *ngIf="hasHalfStar" class="star">⯪</span>
+
+
+                                                                    <ng-container *ngFor="let star of emptyStars">
+                                                                        <span class="star">☆</span>
+                                                                    </ng-container>
+                                                                </div> -->
+
+
+
+                                                            </div>
+                                                        </div>
+
+
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-md-12 col-12 basic_info-inn-box"
+                                                *ngIf="currentUrl.includes('/employee-detail')">
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <div class="contact-img">
+                                                            <img src="{{this.view_emp_data.basicDetails?.profilePhoto}}"
+                                                                *ngIf="this.view_emp_data.basicDetails?.profilePhoto!='' && this.view_emp_data.basicDetails?.profilePhoto!=null"
+                                                                class="img-circle img-responsive" alt="user-images">
+                                                            <div class="attachment-thumbnail user-no-img"
+                                                                *ngIf="this.view_emp_data.basicDetails?.profilePhoto=='' || this.view_emp_data.basicDetails?.profilePhoto==null">
+                                                                {{view_emp_data.basicDetails?.emp_name?.charAt(0)?.toUpperCase()}}{{
+                                                                view_emp_data.basicDetails?.emp_name?.split(
+                                                                " "
+                                                                )[1] != undefined &&
+                                                                view_emp_data.basicDetails?.emp_name?.split(
+                                                                " "
+                                                                )[1] != ""
+                                                                ? view_emp_data.basicDetails?.emp_name
+                                                                ?.split(" ")[1][0]
+                                                                ?.toUpperCase()
+                                                                : ""
+                                                                }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                  
+
+                                                    <!-- New code -->
+                                                    <div class="form-group">
+                                                        <div class="feedback-container" *ngIf="allCount > 0">
+                                                            <div *ngFor="let item of emplfeedbackcount"
+                                                                class="feedback-card" [attr.title]="item?.category">
+                                                                <i [class]="item?.icon + ' feedback-icon'"
+                                                                    [style.color]="item?.color"></i>
+                                                                <span class="feedback-count">
+                                                                    {{ item?.count }}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- New code -->
+
+                                                </div>
+
+
+                                                <!-- <div class="col-md-4">
+                                                    <div class="row">
+                                                        <div class="col-md-3 col-3">
+                                                            <div class="form-group mrg-bot-5 mrg-top-5">
+
+                                                                <label><strong>{{view_emp_data.basicDetails.emp_name}}</strong>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 col-3">
+                                                            <div class="form-group mrg-bot-5 mrg-top-5">
+                                                                <label><strong>Emp Code: </strong>
+                                                                    {{view_emp_data.basicDetails.orgempcode}}</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 col-3">
+                                                            <div class="form-group mrg-bot-5 mrg-top-5">
+                                                                <label><span class="com-tagline"><strong>TP
+                                                                            Code:</strong>
+                                                                        {{view_emp_data.basicDetails.cjcode}} &nbsp;
+                                                                    </span></label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-3 col-3">
+                                                            <div class="form-group mrg-bot-5 mrg-top-5">
+                                                                <label><strong><i class="ti ti-user"></i>
+                                                                    </strong>{{view_emp_data.basicDetails.gender}}</label>
+                                                            </div>
+                                                        </div>
+
+
+
+
+                                                        <div class="col-md-3 col-3">
+                                                            <div class="form-group mrg-bot-5 mrg-top-5">
+                                                                <label><strong><i class="ti ti-email"></i>
+                                                                    </strong>{{view_emp_data.basicDetails.email}}</label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-3 col-3">
+                                                            <div class="form-group mrg-bot-5 mrg-top-5">
+                                                                <label><strong><i class="ti ti-folder"></i>
+                                                                    </strong>{{view_emp_data.basicDetails.dateofjoining}}
+                                                                    (DOJ) </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 col-3">
+                                                            <div class="form-group mrg-bot-5 mrg-top-5">
+                                                                <label><strong><i class="ti ti-ruler-pencil"></i>
+                                                                    </strong>{{view_emp_data.basicDetails.post_offered}}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 col-3">
+                                                            <div class="form-group mrg-bot-5 mrg-top-5">
+                                                                <label><strong><i class="fa fa-bullseye"></i>
+                                                                    </strong>{{view_emp_data.basicDetails.emp_address}}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-3" *ngIf="final_rating">
+                                                            <div class="form-group">
+                                                                <label><strong>
+                                                                        {{this.final_rating?.appraisalcycle_name}}</strong><br>
+                                                                    <strong>Raiting - {{this.final_rating?.final_score
+                                                                        }}
+                                                                        {{this.final_rating?.final_rating}}</strong>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-12" *ngIf="view_emp_data?.basicDetails?.pre_total_experience">
+                                                            <div class="form-group mrg-bot-5 mrg-top-5">
+                                                                <label><strong><i class="ti ti-folder"
+                                                                            title="Pre Org. Experience"></i>
+                                                                    </strong>{{view_emp_data.basicDetails.pre_total_experience}}
+                                                                    (Pre Org. Experience) </label>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-12" *ngIf="view_emp_data?.basicDetails?.current_experience">
+                                                            <div class="form-group mrg-bot-5 mrg-top-5">
+                                                                <label><strong><i class="ti ti-folder"
+                                                                            title="Current Org. Experience"></i>
+                                                                    </strong>{{view_emp_data.basicDetails.current_experience}}
+                                                                    (Current Org. Experience) </label>                                                                     
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-6">
+                                                            <div class="feedback-container" *ngIf="allCount >0">
+                                                                <div *ngFor="let item of emplfeedbackcount"
+                                                                    class="feedback-card" [attr.title]="item?.category">
+
+                                                                    <i [class]="item?.icon" class="feedback-icon"></i>
+                                                                    <span class="feedback-count">{{ item?.count
+                                                                        }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div> -->
+
+                                                <div class="col-md-4">
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-12">
+                                                            <div class="form-group">
+                                                                <h3 class="">{{view_emp_data.basicDetails.emp_name}}
+                                                                </h3>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 col-12">
+                                                            <div class="form-group">
+                                                                <label><strong>Emp Code:</strong>
+                                                                    {{view_emp_data.basicDetails.orgempcode}}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 col-12">
+                                                            <div class="form-group">
+                                                                <label><span class="com-tagline">
+                                                                        <strong>TP Code:</strong>
+                                                                        {{view_emp_data.basicDetails.cjcode}}
+                                                                    </span></label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label><strong><i class="ti ti-email" title="Email"></i>
+                                                                    </strong>{{view_emp_data.basicDetails.email}}</label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12"
+                                                            *ngIf="view_emp_data?.basicDetails?.pre_total_experience">
+                                                            <div class="form-group mrg-bot-5 mrg-top-5">
+                                                                <label><strong><i class="ti ti-folder"
+                                                                            title="Pre Org. Experience"></i>
+                                                                    </strong>{{view_emp_data.basicDetails.pre_total_experience}}
+                                                                    (Pre Org. Experience) </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12"
+                                                            *ngIf="view_emp_data?.basicDetails?.current_experience">
+                                                            <div class="form-group mrg-bot-5 mrg-top-5">
+                                                                <label><strong><i class="ti ti-folder"
+                                                                            title="Current Org. Experience"></i>
+                                                                    </strong>{{view_emp_data.basicDetails.current_experience}}
+                                                                    (Current Org. Experience) </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12" *ngIf="final_rating">
+                                                            <div class="form-group">
+                                                                <label><strong>
+                                                                        {{this.final_rating?.appraisalcycle_name}}</strong><br>
+                                                                    <strong>Raiting - {{this.final_rating?.final_score
+                                                                        }}
+                                                                        {{this.final_rating?.final_rating}}</strong>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="row">
+
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label><strong><i class="ti ti-user" title="Gender"></i>
+                                                                    </strong>{{view_emp_data.basicDetails.gender}}</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label><strong><i class="ti ti-folder"
+                                                                            title="Date of Joining"></i>
+                                                                    </strong>{{view_emp_data.basicDetails.dateofjoining}}
+                                                                    (Date of Joining) </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label><strong><i class="ti ti-ruler-pencil"
+                                                                            title="Designation"></i>
+                                                                    </strong>{{view_emp_data.basicDetails.post_offered}}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label><strong><i class="fa fa-bullseye"
+                                                                            title="Permanent Address"></i>
+                                                                    </strong>{{view_emp_data.basicDetails.emp_address}}</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <!-- <label>
+
+                                                                    <strong>Feedback -
+                                                                        {{this.latest_feedback?.latest_feedback?.feedback_category?.feedback_category_text
+                                                                        }}</strong>
+                                                                    <br>
+                                                                    <strong>Feedback Given By -
+                                                                        {{this.latest_feedback?.latest_feedback?.feedback_given_by
+                                                                        }}</strong>
+                                                                </label> -->
+                                                                <!-- <div
+                                                                    [style.color]="this.latest_feedback?.latest_feedback?.feedback_category?.color_code">
+                                                                    <i
+                                                                        [class]="this.latest_feedback?.latest_feedback?.feedback_category?.icon"></i>
+                                                                    {{
+                                                                    this.latest_feedback?.latest_feedback?.feedback_category?.feedback_category_text
+                                                                    }}
+                                                                </div> -->
+
+                                                                <!-- Old code -->
+                                                                <!-- <div class="feedback-container" *ngIf="allCount > 0">
+                                                                    <div *ngFor="let item of emplfeedbackcount" 
+                                                                        class="feedback-card" [attr.title]="item?.category">
+                                                                        <i [class]="item?.icon" class="feedback-icon"></i>
+                                                                        <span class="feedback-count">
+                                                                            {{ item?.count }}
+                                                                        </span>
+                                                                    </div>
+                                                                </div> -->
+
+
+
+
+
+                                                                <!-- <div style="font-size: 24px; color: gold;">
+
+                                                                    <ng-container *ngFor="let star of fullStars">
+                                                                        <span class="star">★</span>
+                                                                    </ng-container>
+
+
+                                                                    <span *ngIf="hasHalfStar" class="star">⯪</span>
+
+
+                                                                    <ng-container *ngFor="let star of emptyStars">
+                                                                        <span class="star">☆</span>
+                                                                    </ng-container>
+                                                                </div> -->
+
+
+
+                                                            </div>
+                                                        </div>
+
+
+
+                                                    </div>
+                                                </div>
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mrg-bot-25">
+                                <div class="main-tab-outer-box" *ngIf="!currentUrl.startsWith('/profile')">
+
+                                    <ul class="nav nav-tabs">
+                                        <li *ngFor="let menu of subMenuList"
+                                            [class.active]="(activeMenu$ | async) === menu.module_name">
+                                            <a (click)="setActiveMenu(menu.module_name)"
+                                                class="sub-header">{{menu.module_name}}</a>
+                                        </li>
+                                    </ul>
+
+                                    <div class="tab-content">
+                                        <app-empl-profile *ngIf="(activeMenu$ | async) === 'Profile' && empData"
+                                            [empDataFromParent]="empData"
+                                            (notify)="onChildNotify($event)"></app-empl-profile>
+                                        <app-empl-payrolling *ngIf="(activeMenu$ | async) === 'Payrolling' && empData"
+                                            [empDataFromParent]="empData"></app-empl-payrolling>
+                                        <app-empl-investment *ngIf="(activeMenu$ | async) === 'Investment' && empData"
+                                            [empDataFromParent]="empData"></app-empl-investment>
+                                        <app-empl-leave-mgmt *ngIf="(activeMenu$ | async) === 'Leave' && empData"
+                                            [empDataFromParent]="empData"></app-empl-leave-mgmt>
+                                        <app-empl-attendance *ngIf="(activeMenu$ | async) === 'Attendance' && empData"
+                                            [empDataFromParent]="empData"></app-empl-attendance>
+                                        <app-empl-approval-workflow
+                                            *ngIf="(activeMenu$ | async) === 'Approval Workflow' && empData"
+                                            [empDataFromParent]="empData"></app-empl-approval-workflow>
+                                        <app-empl-documents *ngIf="(activeMenu$ | async) === 'Documents' && empData"
+                                            [empDataFromParent]="empData"></app-empl-documents>
+                                        <app-asset-details *ngIf="(activeMenu$ | async) === 'Asset Details' && empData"
+                                            [empDataFromParent]="empData"></app-asset-details>
+                                        <app-empl-service-book-new
+                                            *ngIf="(activeMenu$ | async) === 'Service Book' && empData"
+                                            [empDataFromParent]="empData"></app-empl-service-book-new>
+                                    </div>
+                                </div>
+
+                                <div class="main-tab-outer-bix" *ngIf="currentUrl.startsWith('/profile')">
+                                    <div class="tab-content">
+                                        <app-employee-detail *ngIf="currentUrl.includes('employee-detail')  && empData"
+                                            [empDataFromParent]="empData"></app-employee-detail>
+                                        <app-payrolling *ngIf="currentUrl.includes('payrolling') && empData"
+                                            [empDataFromParent]="empData"></app-payrolling>
+                                        <app-investments *ngIf="currentUrl.includes('investment') && empData"
+                                            [empDataFromParent]="empData"></app-investments>
+                                        <app-leave *ngIf="currentUrl.includes('leave') && empData"
+                                            [empDataFromParent]="empData"></app-leave>
+                                        <app-attendance *ngIf="currentUrl.includes('attendance') && empData"
+                                            [empDataFromParent]="empData"></app-attendance>
+                                        <app-approval-workflow
+                                            *ngIf="currentUrl.includes('approval-workflow') && empData"
+                                            [empDataFromParent]="empData"></app-approval-workflow>
+                                        <app-employee-documents *ngIf="currentUrl.includes('documents') && empData"
+                                            [empDataFromParent]="empData"></app-employee-documents>
+                                        <app-asset-details *ngIf="currentUrl.includes('asset-details') && empData"
+                                            [empDataFromParent]="empData"></app-asset-details>
+                                        <app-empl-service-book-new
+                                            *ngIf="currentUrl.includes('service-book') && empData"
+                                            [empDataFromParent]="empData"></app-empl-service-book-new>
+                                        <app-pms-team-specific
+                                            *ngIf="currentUrl.includes('pms-team-specific') && empData"
+                                            [empDataFromParent]="empData"></app-pms-team-specific>
+                                        <app-pms *ngIf="currentUrl.includes('pms') && empData"
+                                            [empDataFromParent]="empData"></app-pms>
+                                        <app-feedback *ngIf="currentUrl.includes('feedback') && empData"
+                                            [empDataFromParent]="empData"></app-feedback>
+
+                                        <app-employee-checkin-checkout
+                                            *ngIf="currentUrl.includes('check-in') && empData"
+                                            [empDataFromParent]="empData"></app-employee-checkin-checkout>
+                                        <app-employee-reimbursement
+                                            *ngIf="currentUrl.includes('reimbursement') && empData"
+                                            [empDataFromParent]="empData"></app-employee-reimbursement>
+                                        <app-mobile-view-login *ngIf="currentUrl.includes('mobile') && empData"
+                                            [empDataFromParent]="empData"></app-mobile-view-login>
+                                        <app-travel *ngIf="currentUrl.includes('travel') && empData"
+                                            [empDataFromParent]="empData"></app-travel>
+                                        <app-empl-help-support
+                                            *ngIf="currentUrl.includes('empl-help-and-support/empl-tickets') && empData"
+                                            [empDataFromParent]="empData"></app-empl-help-support>
+
+                                        <app-esi-dependent *ngIf="currentUrl.includes('esi-dependent') && empData"
+                                            [empDataFromParent]="empData"></app-esi-dependent>
+                                        <app-training *ngIf="currentUrl.includes('training') && empData"
+                                            [empDataFromParent]="empData"></app-training>
+                                        <app-faqs *ngIf="currentUrl.includes('faqs') && empData"
+                                            [empDataFromParent]="empData"></app-faqs>
+                                        <app-hr-policy *ngIf="currentUrl.includes('hr-policy') && empData"
+                                            [empDataFromParent]="empData"></app-hr-policy>
+                                        <app-compoff-eligibility *ngIf="currentUrl.includes('compoff') && empData"
+                                            [empDataFromParent]="empData"></app-compoff-eligibility>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<app-footer></app-footer>
+<!-- start Upload profile photo preview -->
+<div *ngIf="isPopupVisible" class="image-preview-popup">
+    <img [src]="selectedImage" alt="Preview" /> <br>
+    <button class="btn" style="background: #457b9d;
+    color: #ffffff;" (click)="uploadProfile_photo()">Confirm</button>
+</div>
+<!-- end Upload profile photo preview -->

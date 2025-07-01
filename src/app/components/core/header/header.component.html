@@ -1,0 +1,181 @@
+<nav class="navbar navbar-default navbar-static-top" style="margin-bottom: 0">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <span class="navbar-toggler-icon">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <ul class="nav navbar-top-links navbar-left header-search-form hidden-xs" *ngIf="show_toggle_buttions">
+
+      <li><a class="menu-brand" id="menu-toggle" (click)="toggleSidebar()"><span class="ti-view-grid"></span></a>
+      </li>
+
+    </ul>
+
+    <a class="navbar-brand customer-logo-box" title="Click for Home" [routerLink]="[default_dashboard_url]"><img
+        src="{{left_logo_path}}" class="img-responsive" alt="Logo"></a>
+
+  </div>
+  <!-- /.navbar-header -->
+
+  <ul class="nav navbar-top-links navbar-right sub-co-logo-box">
+    <li class="img-out-sublogo" *ngIf="show_right_logo">
+      <img src="{{!profilepath?'assets/img/no-picture-taking.png':profilepath}}" 
+        class="img-responsive img-sub-co-logo" alt="logo" title="Company Logo">
+    </li>
+    <!-- <li>
+      {{show_right_logo}}
+    </li> -->
+    <li class="dropdown" title="Manage Session">
+      <a class="dropdown-toggle username-btn-name" data-toggle="dropdown" href="#">
+        {{disp_image_txt}}
+
+      </a>
+      <ul class="dropdown-menu dropdown-user right-swip">
+        <li *ngIf="decoded_token.isEmployer=='1'"><a [routerLink]="['/accounts']"><i class="fa fa-user fa-fw"></i> My
+            Account</a>
+        </li>
+        <li *ngIf="(employerProfiles?.length>1 && decoded_token?.isEmployer == '1')">
+          <a [routerLink]="['/business-settings/group-employer']"><i class="fa fa-users fa-fw"></i>
+          Switch Account</a>
+       </li>
+        
+        <li>
+          <a (click)="getProfileData()"><i class="fa fa-user fa-fw"></i> My Profile</a>
+        </li>
+        <li *ngIf="isemployee"><a (click)="getMobileVersion()"><i class="fa fa-mobile fa-fw" aria-hidden="true"></i>  Mobile Version
+        </a>
+    </li>
+        <li *ngIf="decoded_token.isEmployer=='1'"><a [routerLink]="['/change-password']"><i class="fa fa-key fa-fw"></i>
+            Change Password</a>
+        </li>
+        <li><a [routerLink]="['/logout']" (click)="insertActivityLog();" title="Click to Logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+        </li>
+      </ul>
+
+    </li>
+
+  </ul>
+
+  <!-- *ngIf="!this.isemployee" -->
+  <ul class="nav navbar-top-links navbar-right" >
+    <!-- *ngIf="this.sub_employer_check != '0' " cm dated. 23.12.2024 for logo bell icon show -->
+    <li class="dropdown header-notification-box" >
+     <a *ngIf="!dashboard_settings || dashboard_settings?.notifications || decoded_token?.isEmployer === '1' ||
+      (decoded_token?.isEmployer == '0' && decoded_token?.sub_userid == '')" 
+     class="dropdown-toggle notification-show" data-toggle="dropdown" href="#" aria-expanded="false">
+        <i class="ti-bell"></i>
+        <span *ngIf="unread_notifications.length > 0" class="email-notify noti-count">
+          {{unread_notifications.length}}
+        </span>
+      </a>
+      <ul class="task dropdown-menu dropdown-tasks right-swip">
+        <li class="external">
+          <h3><span class="bold">Show Notifications</span></h3>
+          <!-- <span class="notification-label bg-success">New {{unread_notifications.length}}</span> -->
+        </li>
+        <div class="notification-list">
+          <li *ngFor="let notification of unread_notifications.slice(0, 5);let i = index">
+            
+            <a [routerLink]="userType !== 'Employee' ? ['/help-and-support/notifications'] : ['/profile/notifications']">
+              <div class="task-overview">
+                <div class="alpha-box alpha-a">
+                  <span> <i class="ti-bell large-icon"></i> </span>
+                </div>
+                <div class="task-detail">
+                  <p [innerHTML]="notification.alertmessage"></p>
+                  <!-- <p>{{notification.alertmessage}}</p> -->
+                  <!-- <span class="task-time">{{notification.alertdate | date:'short'}}</span> -->
+                </div>
+              </div>
+            </a>
+          </li>
+          <li *ngIf="unread_notifications.length != 0 && unread_notifications.length >= 5">
+            <a class="text-center" [routerLink]="['/help-and-support/notifications']" style="cursor: pointer;">
+              <strong>See All Notifications</strong>
+              <i class="fa fa-angle-right"></i>
+            </a>
+          </li>
+        </div>
+ 
+        <div *ngIf="unread_notifications.length === 0" class="alert alert-danger text-center">
+          No Notifications Available.
+        </div>
+      </ul>
+    </li>
+
+
+    <li class="text-display">
+      <i class="fa fa-user" aria-hidden="true" style="display: none;"> {{user_name}}</i>
+    </li>
+
+    <!-- <li class="dropdown">
+        <a class="dropdown-toggle notification-show" (click)="onNotificationClick()" data-toggle="dropdown" href="#" aria-expanded="false">
+          <i class="ti-bell"></i>
+        </a>
+      </li>
+      <div *ngIf="is_insufficient_fund" class="col-md-12 col-sm-12">
+          <div class="alert-group alert-box">
+            <div class="notice notice-danger alert-dismissable">
+              <strong>Insufficient Account Balance:</strong> Please add funds to your account to cover payroll expenses.
+              <a class="Add-balancebtn" [routerLink]="['/payouts']" title="Click for Add balance"><strong>Add balance</strong></a>
+            </div>
+          </div>
+      </div> -->
+
+    <li class="dropdown" style="display: none;">
+      <a class="dropdown-toggle notification-show" (click)="onNotificationClick()" data-toggle="dropdown" href="#"
+        aria-expanded="false">
+        <i class="ti-bell"></i>
+      </a>
+      <ul class="task dropdown-menu dropdown-tasks right-swip">
+        <li class="external">
+          <h3><span class="bold">Show Notifications</span></h3>
+        </li>
+        <li>
+          <a>
+            <div *ngIf="is_insufficient_fund" class="col-md-12 col-sm-12">
+              <div class="alert-group alert-box">
+                <div>
+                  <strong class="red-text cursor-pointer">Insufficient Account Balance:</strong> Please add funds to
+                  your account to cover payroll expenses.
+                  <a class="Add-balancebtn" [routerLink]="['/payouts']" title="Click for Add balance"><strong>Add
+                      balance</strong></a>
+                </div>
+              </div>
+            </div>
+          </a>
+        </li>
+      </ul>
+
+    </li>
+    <!-- <li class="dropdown" title="Manage Session">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        <img src="{{profilepath}}" class="img-responsive img-circle" alt="user" *ngIf="profilepath !=''">
+
+        <div class="img-responsive img-circle txt" *ngIf="profilepath ==''" alt="user">{{disp_image_txt}}</div>
+
+        
+      </a>
+      <ul class="dropdown-menu dropdown-user right-swip">
+        <li *ngIf="decoded_token.isEmployer=='1'"><a [routerLink]="['/accounts']"><i class="fa fa-user fa-fw"></i> My Account</a>
+        </li>
+        <li *ngIf="decoded_token.isEmployer=='1'"><a [routerLink]="['/change-password']"><i class="fa fa-key fa-fw"></i> Change Password</a>
+        </li>
+        <li><a [routerLink]="['/logout']" title="Click to Logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+        </li>
+      </ul>
+
+
+    
+      
+    </li>-->
+    <!-- /.dropdown -->
+  </ul>
+
+
+
+  <!-- Sidebar Navigation -->
+
+</nav>

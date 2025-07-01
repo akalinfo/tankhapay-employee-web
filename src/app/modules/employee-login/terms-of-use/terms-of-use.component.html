@@ -1,0 +1,34 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+    <div id="wrapper" [ngClass]="{'active': showSidebar == false}">
+        <div class="fakeLoader"></div>
+
+
+        <div id="page-wrapper">
+
+            <div class="row page-titles" >
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Terms of Use</h3>
+                </div>
+                <div class="col-md-7 align-self-center" >
+                </div>
+            </div>
+            <div class="container-fluid element" id="element">
+                <!-- /row -->
+                <div class="row">         
+                
+                    <div class="col-md-12">
+                            <div class="card caded-innder-head-box">
+                                <div class="card-header">
+                                    <h4>Terms of Use</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="col-md-12 dyanmic-data" [innerHtml]="getSanitizedHtml(termofuse)"></div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

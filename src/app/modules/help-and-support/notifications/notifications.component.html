@@ -1,0 +1,202 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+  <div id="wrapper" [ngClass]="{'active': showSidebar == true}">
+    <div class="fakeLoader"></div>
+
+    <div id="page-wrapper">
+      <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+          <h3 class="text-themecolor">Notifications</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="['/dashboard']">Dashboard</a></li>
+
+            <li class="breadcrumb-item active">Notifications</li>
+          </ol>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <!-- /row -->
+        <div class="row">
+          <div class="col-md-12 col-sm-12" style="padding-right: 15px;">
+            <div class="card">
+              <div class="card-header" style="margin-top: 10px;">
+                <div class="row row-head">
+
+                  <div class="col-md-1 col-sm-1">
+                    <select class="form-control" id="page-size" [(ngModel)]="selectedPageSize"
+                      (change)="onPageSizeChange($event)" style="padding:0">
+                      <option *ngFor="let option of pageSizeOptions" [value]="option">{{ option }}</option>
+                    </select>
+                  </div>
+                 
+                  <div class="col-md-3 col-sm-3">
+                    <input type="text" class="form-control" placeholder="Search by Notifications"
+                      [(ngModel)]="searchQuery" (input)="filterNotifications()" />
+                  </div>
+
+           <!-- start - new jQuery Dates sidharth kaul dated 07.05.2025 -->
+                  <div class="col-md-2">
+                    <input type="hidden" id="recdate" (click)="filterByDate()">
+                    <!-- <label style="color:#000; font-weight: 500;">From Date</label> -->
+                    <input id="FromDate" class="form-control" type="text" style="cursor: pointer;" placeholder="dd/mm/yyyy"
+                      autocomplete="off" readonly>
+                  </div>
+                  <div class="col-md-2">
+                    <!-- <label style="color:#000; font-weight: 500;">To Date</label> -->
+                    <input id="ToDate" class="form-control" type="text" style="cursor: pointer;" placeholder="dd/mm/yyyy"
+                      autocomplete="off" readonly>
+                  </div>
+           <!-- end - new jQuery Dates sidharth kaul dated 07.05.2025 -->
+                  
+                  <div class="col-md-1">
+                    <button class="reset-button form-control" (click)="resetDateFilter()" title="Reset Date Filter">
+                      <i class="fa fa-undo" style="font-size:24px"></i>
+                    </button>
+                  </div>
+
+                  <div class="col-md-1">
+                    <button class="archive form-control" (click)="archiveDateFilter()" title="Archive Date Filter Data">
+                      <i class="fa fa-archive" style="font-size:24px"></i>
+                    </button>
+                  </div>
+                  <div class="col-md-1">
+                    <a [routerLink]="['/help-and-support/notificationsArchive']" target="_blank">
+                      <button class="archive form-control" title="View Archive Data">
+                        <i class="fa fa-eye" style="font-size:24px"></i>
+                      </button>
+                    </a>
+                  </div>
+                  
+                  <div class="col-md-1 col-sm-1">
+                    <label>Total : <span>{{filteredData?.length}}</span></label>&nbsp;
+                   
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12 mrg-top-0 mrg-bot-25">
+            <div class="card">
+              <div class="card-body padd-bot-0 padd-top-0">
+                <div class="row">
+                  <div class="col-md-12 padd-top-0">
+                    <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+                      <table class="table user-list">
+                        <thead style="background: skyblue;">
+                          <tr>
+                            <th style="width: 5%; text-align: center;">#</th>
+                            <th style="width: 100%;"> Notifications </th>
+                            <th style="width: 20%;"> Alert Date </th>
+                            <th style="width: 20%; text-align: center;"> Is Viewed </th>
+                            <th style="width: 20%; text-align: center;"> Action </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <ng-container *ngFor="let notification of paginatedData; let i = index">
+                            <tr [ngClass]="{'light-skyblue': i % 2 == 0, 'white': i % 2 != 0}">
+                              <td style="text-align: center;">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                              <td>
+                                <div [innerHTML]="decodeHtmlContent(notification.alertmessage)"></div>
+                              </td>
+                              <td>{{ notification.alertdate }}</td>
+                              <td style="text-align: center;">{{notification.isviewed}}</td>
+                              <td style="text-align: center;">
+                               
+                                  <a (click)="redirecttoModule(notification)"                               
+                                   title="Click to View"> <i   class="fa fa-eye fa-lg" style="cursor: pointer;color: blue;"></i>  </a>
+                                 
+                               </td>
+                            </tr>
+                          </ng-container>
+                          <tr *ngIf="paginatedData.length === 0 && !isLoading">
+                            <td colspan="100%" style="text-align: center;">No Data Found</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div *ngIf="paginatedData.length > 0 && !isLoading" class="pagination-container">
+                        <!-- First Page Button -->
+                        <button (click)="goToPage(1)" [class.disabled]="currentPage === 1" class="pagination-button">
+                          First
+                        </button>
+
+                        <!-- Previous Button -->
+                        <button (click)="changePage(currentPage - 1)" [class.disabled]="currentPage === 1"
+                          class="pagination-button">
+                          Previous
+                        </button>
+
+                        <!-- Pages with Ellipsis -->
+                        <span *ngFor="let page of pages" (click)="page !== '...' && goToPage(page)"
+                          [class.active]="currentPage === page" class="pagination-text"
+                          [class.disabled]="page === '...'">
+                          {{ page }}
+                        </span>
+
+                        <!-- Next Button -->
+                        <button (click)="changePage(currentPage + 1)" [class.disabled]="currentPage === totalPages"
+                          class="pagination-button">
+                          Next
+                        </button>
+
+                        <!-- Last Page Button -->
+                        <button (click)="goToPage(totalPages)" [class.disabled]="currentPage === totalPages"
+                          class="pagination-button">
+                          Last
+                        </button>
+                      </div>
+                    </div>
+                    <!-- <div *ngIf="paginatedData.length === 0 && !isLoading" class="alert alert-danger text-center">
+                           No Notifications Available.
+                         </div> -->
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+
+
+
+          </div>
+
+        </div>
+        <!-- /row -->
+      </div>
+
+    </div>
+  </div>
+
+
+  <div id="archiveModal" class="modal" role="dialog" [ngStyle]="{'display':archiveConfirmModal?'block':'none'}">
+    <div class="modal-dialog modal-sm">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: skyblue;padding: 5px 13px;color: #000;">
+          <button type="button" class="close" data-dismiss="modal" (click)="closeArchiveModal()">&times;</button>
+          <h4 class="modal-title">Alert</h4>
+        </div>
+        <div class="modal-body">
+          <p>{{ alertMessage }}</p>
+        </div>
+        <div class="modal-footer">
+          <span *ngIf="archiveSubmitButtonStatus == false">
+            <button type="button" class="btn btn-default" (click)="closeArchiveModal()"
+              data-dismiss="modal">Close</button>
+          </span>
+          <span *ngIf="archiveSubmitButtonStatus == true">
+            <button type="button" class="btn btn-danger" (click)="closeArchiveModal()" data-dismiss="modal">No</button>
+            <button type="button" class="btn btn-info" (click)="archiveData()" data-dismiss="modal">Yes</button>
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+</section>

@@ -1,0 +1,36 @@
+.information{
+    padding: 6px;
+    background-color: #ffd7d7;
+    color: #b52121;
+}
+.rent-view-table{
+    margin: 20px;
+}
+.rent-view-table th{
+    background-color: #fff !important;
+    width: 25% !important;
+}
+.edit-rent{
+    cursor: pointer;
+}
+.above-lakh{
+    display: none !important;
+}
+
+.regime-wrapper {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* optional for mobile responsiveness */
+    gap: 10px;
+}
+
+.regime-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.information {
+    font-size: 14px;
+    color: #444;
+}

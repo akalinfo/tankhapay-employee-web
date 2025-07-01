@@ -1,0 +1,736 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<div id="wrapper" [ngClass]="{ active: showSidebar }">
+  <div id="page-wrapper" style="min-height: 596px">
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Salary Structure Components</h3>
+      </div>
+      <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+          <li class="breadcrumb-item active">Salary Structure Components</li>
+        </ol>
+      </div>
+    </div>
+
+    <form [formGroup]="salaryStructureForm">
+      <div class="container-fluid">
+        <!-- /row -->
+        <div class="row">
+          <div class="col-md-12 col-md-offset-0 mrg-top-25 mrg-bot-25 signup-accordion-outer-box">
+
+            <!-- <h3 class="com-you-onbor-outer-box" style="text-align:left">
+              Earnings
+            </h3> -->
+            <div class="main-tab-outer-box">
+            <ul class="nav nav-tabs clickable">
+              <li class="active"><a data-toggle="tab" aria-expanded="true" (click)="setActiveTab('Earnings')">Earnings</a></li>
+              <li class=""><a data-toggle="tab" aria-expanded="false" (click)="setActiveTab('Deductions')">Deductions</a></li>
+              <!-- <li class=""><a data-toggle="tab" aria-expanded="false">Benefits</a></li>
+              <li class=""><a data-toggle="tab" aria-expanded="false">Reimbursements</a></li> -->
+            </ul>
+
+            <alert></alert>
+            <div class="card mrg-bot-25" *ngIf="activeTab == 'Earnings'">
+              <div class="card-body padd-bot-0">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box"
+                      id="leaveBalanceReport">
+                      <table class="table table-hover zp-table zp-common-table">
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Earning Type</th>
+                            <th>Calculation Type</th>
+                            <th style="min-width: 135px">Consider for EPF</th>
+                            <th style="min-width: 130px">Consider for ESI</th>
+                            <th>Status</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <ng-container formArrayName="salary_head_text">
+                            <tr *ngFor="let component of salaryHeadText.controls;let i=index;" [formGroupName]="i">
+                              <td>
+                                <a id="ember921" class="ember-view">{{component.value.componentname}}</a>
+                                <!---->
+                              </td>
+                              <td>
+                                {{component.value.earningtype}}
+                                <!----><!---->
+                              </td>
+                              <td>{{component.value.calculationtype=='Flat'? 'Fixed': component.value.calculationtype}};
+                                {{component.value.calculationtype=='Flat' ? 'Flat Amount' :
+                                component.value.calculationpercent!='0' ?(component.value.calculationpercent + '% ' +
+                                (component.value.calculationbasis!='' ? 'of '+component.value.calculationbasis :'')):
+                                '0%' }}</td>
+                              <td>
+                                {{component.value.epfapplicable=='Y'?'Yes':'No'}}
+                                <!---->
+                              </td>
+                              <td>{{component.value.esiapplicable=='Y'? 'Yes':'No'}}</td>
+                              <td [ngClass]="{'text-active': component.value.isactive=='Y'}">
+                                {{component.value.isactive=='Y'?'Active':'Inactive'}}</td>
+                              <td>
+                                <div id="ember922" class="dropdown float-right ember-view dropleft">
+                                  <a id="ember923" class="dropdown-toggle no-caret text-muted cursor-pointer ember-view"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <svg width="512" height="512" viewBox="0 0 512 512" version="1.1" class="icon">
+                                      <path
+                                        d="M162 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32M256 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32M350 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32"
+                                        id="Path"></path>
+                                      <path
+                                        d="M256 480c123.712 0 224-100.288 224-224S379.712 32 256 32 32 132.288 32 256s100.288 224 224 224zm0 32C114.615 512 0 397.385 0 256S114.615 0 256 0s256 114.615 256 256-114.615 256-256 256z"
+                                        id="Oval-1"></path>
+                                    </svg>
+                                  </a>
+                                  <ul id="ember924" class="dropdown-menu ember-view"
+                                    aria-labelledby="dropdownMenuButton">
+                                    <li id="ember925" class="ember-view dropdown-item" href="#SendMessage1"
+                                      data-toggle="modal" data-placement="top"
+                                      (click)="editSalarycomponent(component,i)">
+                                      Edit
+                                    </li>
+                                    <li
+                                      *ngIf="component.value.componentname!='BASIC SALARY' && component.value.componentname!='HRA' && component.value.componentname!='Special Allowance'"
+                                      class="dropdown-item" data-ember-action="" data-ember-action-926="926"
+                                      (click)="markAsInactive(i)"
+                                      [ngStyle]="{'display':component.value.isactive=='Y' ? 'block':'none'}">
+                                      Mark as Inactive
+                                    </li>
+                                    <li class="dropdown-item" data-ember-action="" data-ember-action-926="926"
+                                      (click)="markAsActive(i)"
+                                      [ngStyle]="{'display':component.value.isactive=='N' ? 'block':'none'}">
+                                      Mark as Active
+                                    </li>
+                                    <!-- <li
+                                    class="dropdown-item"
+                                    href="#SendMessage5"
+                                    data-toggle="modal"
+                                    data-placement="top"
+                                  >
+                                    Delete
+                                  </li> -->
+                                  </ul>
+                                </div>
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card mrg-bot-25" *ngIf="activeTab == 'Deductions'">
+              <div class="card-header">
+                <div style="text-align: end;">
+                  <button type="button" class="btn btn-primary" (click)="showAddDeductionPopup()">
+                    Add Deduction Header
+                  </button>
+                </div>
+              </div>
+              <div class="card-body padd-bot-0">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box"
+                      id="leaveBalanceReport">
+                      <table class="table table-hover zp-table zp-common-table">
+                        <thead>
+                          <tr>
+                            <th style="width: 40%;">Deduction Name</th>
+                            <!-- <th>Deduction Type</th> -->
+                            <th>Is Taxable</th>
+                            <th>Calculation Type</th>
+                            <th>Status</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let deduction of deductionsData;let i=index;">
+                              <td style="width: 40%;">
+                                <a id="ember921" class="ember-view">{{deduction?.deduction_name}}</a>
+                              </td>
+                              <td>{{deduction?.is_taxable}}</td>
+                              <!-- <td> {{deduction?.deduction_name}}</td> -->
+                              <td>
+                                <!-- {{component.value.calculationtype=='Flat'? 'Fixed': component.value.calculationtype}};
+                                {{component.value.calculationtype=='Flat' ? 'Flat Amount' :
+                                component.value.calculationpercent!='0' ?(component.value.calculationpercent + '% ' +
+                                (component.value.calculationbasis!='' ? 'of '+component.value.calculationbasis :'')):
+                                '0%' }} -->
+                                {{'-'}}
+                                </td>
+                              <td [ngClass]="{'text-active': deduction?.is_taxable == 'True'}">
+                                {{deduction?.is_taxable == 'True'?'Active':'Inactive'}}</td>
+                              <td>
+                                <div id="ember922" class="dropdown float-right ember-view dropleft">
+                                  <a id="ember923" class="dropdown-toggle no-caret text-muted cursor-pointer ember-view"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <svg width="512" height="512" viewBox="0 0 512 512" version="1.1" class="icon">
+                                      <path
+                                        d="M162 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32M256 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32M350 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32"
+                                        id="Path"></path>
+                                      <path
+                                        d="M256 480c123.712 0 224-100.288 224-224S379.712 32 256 32 32 132.288 32 256s100.288 224 224 224zm0 32C114.615 512 0 397.385 0 256S114.615 0 256 0s256 114.615 256 256-114.615 256-256 256z"
+                                        id="Oval-1"></path>
+                                    </svg>
+                                  </a>
+                                  <ul id="ember924" class="dropdown-menu ember-view"
+                                    aria-labelledby="dropdownMenuButton">
+                                    <li id="ember925" class="ember-view dropdown-item" href="#SendMessage"
+                                      data-toggle="modal" data-placement="top"
+                                      (click)="editSalarycomponent(deduction,i)">
+                                      Edit
+                                    </li>
+                                    <li
+                                      *ngIf="1"
+                                      class="dropdown-item" data-ember-action="" data-ember-action-926="926"
+                                      (click)="markAsInactive(i)"
+                                      [ngStyle]="{'display':deduction?.is_taxable == 'True' ? 'block':'none'}">
+                                      Mark as Inactive
+                                    </li>
+                                    <li class="dropdown-item" data-ember-action="" data-ember-action-926="926"
+                                      (click)="markAsActive(i)"
+                                      [ngStyle]="{'display':deduction?.is_taxable == 'False' ? 'block':'none'}">
+                                      Mark as Active
+                                    </li>
+                                    <!-- <li class="dropdown-item" href="#SendMessage5"
+                                      data-toggle="modal" data-placement="top">
+                                      Delete
+                                    </li> -->
+                                  </ul>
+                                </div>
+                              </td>
+                            </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="padd-top-15 flex" [ngClass]="{
+                'space-between': showAssistantBtn,
+                'space-center': !showAssistantBtn
+              }" *ngIf="activeTab == 'Earnings'">
+
+              <a routerLink="/dashboard/welcome" class="btn btn-outline-primary" *ngIf="showAssistantBtn">Back</a>
+
+              <!-- <a class="btn btn-primary"(click)="saveSalaryStructure()">Save</a> -->
+
+              <a class="btn btn-primary" (click)="nextPage()">Next</a>
+              <!-- <a class="btn btn-success" (click)="verifySalaryStructure()"
+                  *ngIf="(ss.salary_setup_createdby.value!='' && ss.salary_setup_createdby.value!=null)">Verify</a> -->
+
+              <!-- <div *ngIf="ss.is_salary_structure_verify.value=='N' && showAssistantBtn"
+                class="flex justify-between align-center">
+                <a class="btn btn-success" (click)="nextPage()">Next</a>
+              </div> -->
+
+            </div>
+          </div>
+          </div>
+
+
+        </div>
+        <!-- /row -->
+      </div>
+    </form>
+  </div>
+  <footer class="footer">
+    © 2023 TankhaPay. Akal Information Systems Ltd. All Rights Reserved.
+  </footer>
+</div>
+
+<div id="SendMessage1" class="modal fade add-address-form-box">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form [formGroup]="subSalaryStructureform">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Edit Earning</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="row">
+                <div tabindex="-1" id="ember1014" class="col-md-12 no-outline ember-view">
+
+                </div>
+              </div>
+              <div class="row section">
+                <label class="col-md-12">
+                  Earning Name
+                  <span class="mandatory-field">*</span>
+                </label>
+                <div class="row inline-fields m-0 col-md-12 pl-0">
+                  <div class="col-md-6 float-left">
+                    <input [disabled]="isDisabled" class="ember-text-field form-control disabled-input" type="text"
+                      formControlName="earningName">
+                  </div>
+                  <div class="col-md-6 mt-4">
+                    <div class="font-small right-view-text">
+                      <svg version="1.1" id="Layer_1" x="0" y="0" viewBox="0 0 512 512" xml:space="preserve"
+                        class="icon icon-sm align-text-top">
+                        <path
+                          d="M255.4 31.9c30.2 0 59.4 5.9 87 17.5 26.6 11.2 50.4 27.4 71 47.9 20.5 20.5 36.6 44.3 47.9 71 11.6 27.6 17.5 56.7 17.5 87s-5.9 59.4-17.5 87c-11.2 26.6-27.4 50.4-47.9 71-20.5 20.5-44.3 36.6-71 47.9-27.6 11.6-56.7 17.5-87 17.5s-59.4-5.9-87-17.5c-26.6-11.2-50.4-27.4-71-47.9-20.5-20.5-36.6-44.3-47.9-71-11.6-27.6-17.5-56.7-17.5-87s5.9-59.4 17.5-87c11.2-26.6 27.4-50.4 47.9-71s44.3-36.6 71-47.9c27.5-11.6 56.7-17.5 87-17.5m0-31.9C114.3 0 0 114.3 0 255.4s114.3 255.4 255.4 255.4 255.4-114.3 255.4-255.4S396.4 0 255.4 0z">
+                        </path>
+                        <path
+                          d="M303.4 351.1h-8.2c-4.4 0-8-3.6-8-8v-94.4c0-15.3-11.4-28-26.6-29.7-2.5-.3-4.8-.5-6.7-.5-23.6 0-44.4 11.9-56.8 30l-.1.1v-.1c-1 2-1.7 5.2.7 6.5.6.3 1.2.5 1.8.5h15.9c4.4 0 8 3.6 8 8v79.8c0 4.4-3.6 8-8 8h-8.1c-8.7 0-15.8 7.1-15.8 15.8v.3c0 8.7 7.1 15.8 15.8 15.8h96.1c8.7 0 15.8-7.1 15.8-15.8v-.3c0-8.9-7.1-16-15.8-16zM255.4 127.7c-17.6 0-31.9 14.3-31.9 31.9s14.3 31.9 31.9 31.9 31.9-14.3 31.9-31.9-14.3-31.9-31.9-31.9z">
+                        </path>
+                      </svg>
+                      <span class="ml-1">
+                        Fixed amount paid at the end of every month.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr />
+              <div class="row section-xsmall">
+                <div class="col-md-12">
+                  <div class="row form-group">
+                    <div class="col-md-6">
+                      <label>
+                        <span>
+                          <span id="ember1016" class="tooltip-container text-dashed-underline ember-view">
+                            Earning Type<span class="mandatory-field">*</span>
+                          </span>
+                        </span>
+                      </label>
+
+                      <input autofocus="" id="ember1017" class="ember-text-field form-control" type="text"
+                        formControlName="earningType" autoComplete="off" [ngClass]="{
+                          'is-invalid': subSalaryStructureform.controls.earningType.touched && subSalaryStructureform.controls.earningType.errors
+
+                        }" />
+
+                      <small *ngIf="subSalaryStructureform.controls.earningType.errors?.maxlength" class="text-danger">
+                        Maximum 30 characters are allowed only.
+                      </small>
+                    </div>
+                    <div class="col-md-6 no-padd">
+                      <div class="form-group">
+                        <label class="col-md-12 ember-view">
+                          Calculation Type <span class="mandatory-field">*</span>
+                        </label>
+                        <div class="col-md-12">
+
+                          <div class="col-md-6 form-check no-padd">
+                            <input disabled="" id="ember1020" class="form-check-input disabled-input" type="radio"
+                              value="flat_amount" name="calculation_type"
+                              [checked]="subSalaryStructureform.controls.calculationtype.value=='Flat'" />
+                            <label class="form-check-label mb-1">
+                              Flat Amount
+                            </label>
+                          </div>
+                          <div class="col-md-6 form-check no-padd">
+                            <input disabled="" id="ember1021" class="form-check-input disabled-input" type="radio"
+                              value="percentage" name="calculation_type" [checked]="subSalaryStructureform.controls.calculationtype.value=='Percentage' || 
+                                subSalaryStructureform.controls.calculationtype.value=='Percent'" />
+                            <label class="form-check-label">
+                              Percentage of CTC
+                            </label>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="">
+                          <span
+                            id="ember1018"
+                            class="tooltip-container text-dashed-underline ember-view"
+                          >
+                            Name in Payslip<span class="mandatory-field">*</span>
+                          </span>
+                        
+                      </label>
+                      <div>
+                        <input
+                          autofocus=""
+                          id="ember1019"
+                          class="ember-text-field form-control"
+                          type="text"
+                          formControlName="payslipName"
+                        />
+                      </div>
+                    </div>
+                  </div> -->
+
+                    <!-- <div class="col-md-12 no-padd">
+                    <label class="col-md-12">
+                      Calculation Type <span class="mandatory-field">*</span>
+                    </label>
+                    <div class="col-md-12">
+                      
+                        <div class="col-md-12 form-check">
+                          <input
+                          disabled=""
+                          id="ember1020"
+                          class="form-check-input disabled-input"
+                          type="radio"
+                          value="flat_amount"
+                          name="calculation_type"
+                          [checked]="subSalaryStructureform.controls.calculationType.value=='Flat'"
+                          />
+                          <label class="form-check-label mb-1">
+                            Flat Amount
+                          </label>
+                        </div>
+                        <div class="col-md-12 form-check">
+                          <input
+                          disabled=""
+                          id="ember1021"
+                          class="form-check-input disabled-input"
+                              type="radio"
+                              value="percentage"
+                              name="calculation_type"
+                              [checked]="subSalaryStructureform.controls.calculationType.value=='Percent'"
+                            />
+                            <label class="form-check-label">
+                            Percentage of CTC
+                          </label>
+                        </div>
+                      
+                    </div>
+                  </div> -->
+                    <div class="col-md-6 no-padd">
+                      <label class="col-md-12 ember-view"> Enter Percentage </label>
+                      <div class="col-md-12">
+                        <div class="input-group">
+
+                          <!-- <input max="100" placeholder="Enter Percentage"
+                          class="form-control ember-text-field ember-view" type="number" step="0.01"
+                          [ngClass]="{'no-click':subSalaryStructureform.controls.earningName.value=='Gratuity In Hand'}"
+                          formControlName="calculationpercent" /> -->
+                          <input *ngIf="(accountid?.toString() == '653' || accountid?.toString() == '5567'|| accountid?.toString() == '3088'); else defaultInput" max="120"
+                            placeholder="Enter Percentage" class="form-control ember-text-field ember-view"
+                            type="number" step="0.01"
+                            [ngClass]="{'no-click': subSalaryStructureform.controls.earningName.value == 'Gratuity In Hand'}"
+                            formControlName="calculationpercent" />
+                          <ng-template #defaultInput>
+                            <input max="100" placeholder="Enter Percentage"
+                              class="form-control ember-text-field ember-view" type="number" step="0.01"
+                              [ngClass]="{'no-click': subSalaryStructureform.controls.earningName.value == 'Gratuity In Hand'}"
+                              formControlName="calculationpercent" />
+                          </ng-template>
+                          <span class="input-group-append">%</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div class="col-md-12 form-check" style="top:33px;">
+                        <label class="form-check-label">
+                          <input id="ember1027" class="ember-view form-check-input" type="checkbox"
+                            (change)="getEpfValue($event.target.checked)"
+                            [checked]="subSalaryStructureform.controls.epfapplicable.value=='Y'" />
+                          Consider for EPF Contribution
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-5">
+                      <div class="col-md-12 form-check" style="padding:0;">
+                        <label class="form-check-label">
+                          <input id="ember1031" class="ember-checkbox ember-view form-check-input" type="checkbox"
+                            (change)="getEsiValue($event.target.checked)"
+                            [checked]="subSalaryStructureform.controls.esiapplicable.value=='Y'" />
+                          Consider for ESI Contribution
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div class="col-md-12 form-check" [ngClass]="{'disabled-input':subSalaryStructureform.controls.earningName.value=='BASIC SALARY'||
+                            subSalaryStructureform.controls.earningName.value=='HRA' || 
+                            subSalaryStructureform.controls.earningName.value=='Special Allowance'
+                          }">
+                        <label class="form-check-label">
+                          <input id="ember1023" class="ember-checkbox form-check-input" type="checkbox"
+                            formControlName="isactive" (change)="isComponentActive($event.target.checked)"
+                            [checked]="subSalaryStructureform.controls.isactive.value=='Y'" />
+                          Mark this as Active
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- <div class="ml-2 section-small settings-grp-border-left">
+                  <div class="col-md-12 pl-4">
+                    <label class="mb-1 font-mm">
+                      <input
+                        disabled=""
+                        id="ember1028"
+                        class="ember-view mr-2"
+                        type="radio"
+                        value="false"
+                        checked
+                      />
+                      Always
+                    </label>
+                  </div>
+                  <div class="col-md-12 mtop-xsmall pl-4">
+                    <label class="font-mm mb-0">
+                      <input
+                        disabled=""
+                        id="ember1029"
+                        class="ember-view mr-2"
+                        type="radio"
+                        value="true"
+                      />
+                      Only when PF Wage is less than ₹ 15,000
+                      <span>
+                        <span
+                          id="ember1030"
+                          class="tooltip-container ember-view"
+                        >
+                          <svg
+                            version="1.1"
+                            id="Layer_1"
+                            x="0"
+                            y="0"
+                            viewBox="0 0 512 512"
+                            xml:space="preserve"
+                            class="icon icon-sm align-middle svg-mtop-xsmall"
+                          >
+                            <g id="Layer_2_43_">
+                              <path
+                                id="info-5-icon"
+                                d="M256 3.7C116.7 3.7 3.8 116.7 3.8 256S116.7 508.3 256 508.3c139.3 0 252.2-112.9 252.2-252.3C508.2 116.7 395.3 3.7 256 3.7zm-4.9 400.4c-36.4 12.8-66.3-1.9-60.3-36.8s40.5-109.7 45.4-123.9c4.9-14.1-4.5-18-14.6-12.3-5.8 3.4-14.5 10.1-21.9 16.7-2.1-4.2-5-8.9-7.1-13.5 12.1-12.2 32.4-28.5 56.5-34.4 28.7-7.1 76.7 4.2 56.1 59.1-14.7 39.1-25.1 66.1-31.7 86.2-6.6 20.1 1.2 24.3 12.7 16.5 9-6.1 18.5-14.5 25.5-20.9 3.2 5.3 4.3 6.9 7.5 13-12.3 12.5-44.1 41.7-68.1 50.3zm75.3-241.9c-16.5 14-40.9 13.7-54.6-.7-13.7-14.4-11.4-37.5 5.1-51.5s40.9-13.7 54.6.7c13.7 14.3 11.4 37.4-5.1 51.5z"
+                              ></path>
+                            </g>
+                          </svg>
+                        </span>
+                      </span>
+                    </label>
+                  </div>
+                </div> -->
+                  <!-- <div
+                  class="col-md-6 Other-Configurations-box"
+                  style="padding-left: 40px; border-left: 1px solid #ececec"
+                >
+                  <h4 class="font-medium font-semibold mb-5">
+                    Other Configurations
+                  </h4>
+                  <div class="mb-5">
+                    <div class="col-md-12 form-check">
+                      <label class="form-check-label">
+                        <input
+                          disabled=""
+                          id="ember1024"
+                          class="ember-view form-check-input"
+                          type="checkbox"
+                          checked
+                        />
+                        Make this earning a part of the employee’s salary
+                        structure
+                      </label>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-5">
+                    <div class="col-md-12 form-check">
+                      <label class="form-check-label">
+                        <input
+                          disabled=""
+                          id="ember1025"
+                          class="ember-view form-check-input"
+                          type="checkbox"
+                          checked
+                        />
+                        This is a taxable earning
+                      </label>
+                      <div class="help-text pb-2 text-semi-muted">
+                        The income tax amount will be divided equally and
+                        deducted every month across the financial year.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-4">
+                    <div class="col-md-12 form-check">
+                      <label class="form-check-label">
+                        <input
+                          name="is_pro_rata"
+                          disabled=""
+                          id="ember1026"
+                          class="ember-checkbox ember-view form-check-input"
+                          type="checkbox"
+                          checked
+                        />
+                        Calculate on pro-rata basis
+                      </label>
+                      <div class="help-text text-semi-muted">
+                        Pay will be adjusted based on employee working days.
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-4">
+                    <div class="col-md-12 form-check">
+                      <label class="form-check-label">
+                        <input
+                          disabled=""
+                          id="ember1027"
+                          class="ember-view form-check-input"
+                          type="checkbox"
+                          checked
+                        />
+                        Consider for EPF Contribution
+                      </label>
+                    </div>
+                  </div>
+                  <div class="ml-2 section-small settings-grp-border-left">
+                    <div class="col-md-12 pl-4">
+                      <label class="mb-1 font-mm">
+                        <input
+                          disabled=""
+                          id="ember1028"
+                          class="ember-view mr-2"
+                          type="radio"
+                          value="false"
+                          checked
+                        />
+                        Always
+                      </label>
+                    </div>
+                    <div class="col-md-12 mtop-xsmall pl-4">
+                      <label class="font-mm mb-0">
+                        <input
+                          disabled=""
+                          id="ember1029"
+                          class="ember-view mr-2"
+                          type="radio"
+                          value="true"
+                        />
+                        Only when PF Wage is less than ₹ 15,000
+                        <span>
+                          <span
+                            id="ember1030"
+                            class="tooltip-container ember-view"
+                          >
+                            <svg
+                              version="1.1"
+                              id="Layer_1"
+                              x="0"
+                              y="0"
+                              viewBox="0 0 512 512"
+                              xml:space="preserve"
+                              class="icon icon-sm align-middle svg-mtop-xsmall"
+                            >
+                              <g id="Layer_2_43_">
+                                <path
+                                  id="info-5-icon"
+                                  d="M256 3.7C116.7 3.7 3.8 116.7 3.8 256S116.7 508.3 256 508.3c139.3 0 252.2-112.9 252.2-252.3C508.2 116.7 395.3 3.7 256 3.7zm-4.9 400.4c-36.4 12.8-66.3-1.9-60.3-36.8s40.5-109.7 45.4-123.9c4.9-14.1-4.5-18-14.6-12.3-5.8 3.4-14.5 10.1-21.9 16.7-2.1-4.2-5-8.9-7.1-13.5 12.1-12.2 32.4-28.5 56.5-34.4 28.7-7.1 76.7 4.2 56.1 59.1-14.7 39.1-25.1 66.1-31.7 86.2-6.6 20.1 1.2 24.3 12.7 16.5 9-6.1 18.5-14.5 25.5-20.9 3.2 5.3 4.3 6.9 7.5 13-12.3 12.5-44.1 41.7-68.1 50.3zm75.3-241.9c-16.5 14-40.9 13.7-54.6-.7-13.7-14.4-11.4-37.5 5.1-51.5s40.9-13.7 54.6.7c13.7 14.3 11.4 37.4-5.1 51.5z"
+                                ></path>
+                              </g>
+                            </svg>
+                          </span>
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="mb-5">
+                    <div class="col-md-12 form-check">
+                      <label class="form-check-label">
+                        <input
+                          disabled=""
+                          id="ember1032"
+                          class="ember-checkbox ember-view form-check-input"
+                          type="checkbox"
+                          checked
+                        />
+                        Show this component in payslip
+                      </label>
+                    </div>
+                  </div>
+                </div> 
+              </div> -->
+
+                  <!-- <div class="col-md-12 no-padd">
+                  <div class="salary-component-disable-note">
+                    <div class="help-text">
+                      <b>Note:</b>
+                      <span
+                        >As you've already associated this component with one or
+                        more employees, you can only edit the Name and
+                        Amount/Percentage. The changes made to Amount/Percentage
+                        will apply only to new employees.</span
+                      >
+                    </div>
+                  </div>
+                </div> -->
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" data-dismiss="modal" [disabled]="subSalaryStructureform.invalid"
+            value="Save" (click)="saveSalaryStructure()">
+          <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel" />
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+        <!-- Add Deduction Header   -->
+        <div class="modal contract-search-popup-box Contract-Panel-box" id="employee"
+            [@grooveState]="addDeductionPopup?'active':'inactive'" aria-labelledby="myModalLabel1">
+            <div [@dongleState]="addDeductionPopup?'active':'inactive'" class="modal-dialog modal-xl"
+                style="width: 100rem; margin-right: 0; margin-top: 0; height: 50vh;">
+                <form [formGroup]="saveDeductionForm">
+                    <div class="modal-content" id="Milestone-Mapping">
+                        <div class="modal-header theme-bg">
+                          <h4 class="modal-title">Add Deduction Header</h4>
+                          <button type="button" class="close" (click)="closeAddDeductionPopup()" data-dismiss="modal"
+                            aria-hidden="true">&times;</button>
+                        </div>
+
+                        <div class="modal-body" style="overflow: auto;">
+                            <div class="row">
+                                <div style="margin: 0 16px; overflow: auto;">
+                                    <table class="table table-hover table-bordered" border="1">
+                                        <thead style="background: skyblue;">
+                                            <tr>
+                                              <th style="font-size: 14px;">Master Ledger Name</th>
+                                              <th style="font-size: 14px;">Ledger Type Name</th>
+                                              <th style="font-size: 14px;">Parent ledger Name</th>
+                                              <th style="font-size: 14px;">Ledger Name</th>
+                                              <th style="font-size: 14px;">Is Taxable</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                              <td> Debit </td>
+                                              <td> Deduction </td>
+                                              <td> Other (Deduction) </td>
+                                              <td>
+                                                <input class="form-control" type="text" formControlName="saveLedger"/>
+                                              </td>
+                                              <td> No </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <alert></alert>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer" style="background: white;">
+                                <button class="btn btn-primary" (click)="SaveNewDeduction()">Submit</button>
+                                <button class="btn btn-close btn-danger" (click)="closeAddDeductionPopup()">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>

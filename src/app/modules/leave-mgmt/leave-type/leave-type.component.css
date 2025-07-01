@@ -1,0 +1,164 @@
+h4.sub-title-inn-box.View-Roles-list-outer-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+h4.sub-title-inn-box {
+  font-weight: 500;
+}
+
+a.btn-primary-Add-Roles-btn {
+  color: #fff;
+  background-color: #1194f7 !important;
+  border-color: #1194f7;
+  border-radius: 10px !important;
+}
+
+.table-responsive.bulk-attendance-outer-box.Reimbursements-outer-box table.table tr td, .table-responsive.bulk-attendance-outer-box.Reimbursements-outer-box table.table tr th {
+  padding: 0.8rem 1rem;
+}
+.ZPusrName {
+  padding-top: 5px;
+  position: relative;
+  padding-left: 25px;
+}
+.ZPusrName small {
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+  left: 0px;
+}
+.CL5 {
+  background: #e05654 !important;
+}
+.ZPusrName b {
+  font-weight: 500;
+  color: #000;
+}
+
+.FL {
+  float: left;
+  margin-right: 10px;
+}
+.badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 6px;
+  margin-right: 10px;
+}
+.badge {
+  display: inline-block;
+  min-width: 10px;
+  padding: 4px 7px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  background-color: #777;
+  border-radius: 10px;
+  margin-top: 5px;
+}
+
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider.round {
+  border-radius: 34px;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+.slider.round:before {
+  border-radius: 50%;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 15px;
+  width: 15px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+
+.CL2 {
+  background: #5895ff !important;
+}
+
+
+.CL10 {
+  background: #96bc42 !important;
+}
+
+
+.CL9 {
+  background: #f2d613 !important;
+}
+
+
+.CL3 {
+  background: #ab4afc !important;
+}
+
+
+.table-responsive.bulk-attendance-outer-box.Reimbursements-outer-box a.btn.btn-shortlist.manage-btn {
+  background: #ffffff;
+  color: #545454;
+}
+.fa-trash {
+  color: red;
+}
+
+
+/* // new styles */
+
+.check-pad-box input[type=checkbox] {
+  margin: 0px 5px 0 0px;
+  height: 18px;
+  width: 18px;
+  vertical-align: middle;
+}
+
+.check-pad-box .col-md-2.col-sm-2 label {
+  font-weight: 400 !important;
+}
+.check-pad-box .inn-label-weight label {
+  font-weight: 400 !important;
+}

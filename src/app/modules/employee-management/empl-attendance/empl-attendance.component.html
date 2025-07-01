@@ -1,0 +1,757 @@
+<div [class]="accountClass">
+  <div id="home" class="tab-pane fade1 in active">
+    <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="card">
+        <div class="panel-heading panel_heading_gray  card-header" role="tab" id="headingOne2" data-toggle="collapse"
+          data-parent="#accordion2" href="#collapseOne2" aria-expanded="false" aria-controls="collapseOne">
+          <h4>Attendance <i class="fa fa-calender"></i></h4>
+        </div>
+        <!-- /row -->
+        <!-- panel-collapse collapse card-body in -->
+        <div id="collapseOne2" class="" role="tabpane2">
+          <div class="row" style="    padding-top: 2rem;">
+            <div class="col-md-3 text-right"> <span style="margin: 10px;font-weight: bold;">Month-Year</span>
+            </div>
+            <div class="col-md-3">
+
+              <p style="display: inline-flex;">
+                <select class="form-control" (change)="changeMonth($event)">
+                  <!-- <option value="">Select</option> -->
+                  <option *ngFor="let ma of monthsArray" [selected]="month==ma.id" [value]="ma.id">
+                    {{ma.month}}
+                  </option>
+                </select>
+                <select class="form-control" (change)="changeYear($event)">
+                  <!-- <option value="">Select</option> -->
+                  <option *ngFor="let ya of yearsArray" [selected]="year==ya" [value]="ya">{{ya}}</option>
+
+                </select>
+              </p>
+
+            </div>
+            <div class="col-md-4 text-right">
+              <label style="font-size: 1.5rem;font-weight: bold;"> Attendance Status : <span
+                  [ngStyle]="{'color': filteredEmployees[0]?.lockstatus=='Locked' ? 'green': 'blue'}">{{filteredEmployees[0]?.lockstatus}}</span>
+              </label>
+            </div>
+          </div>
+
+          <div *ngIf="filteredEmployees.length>0" class="row">
+            <div class="col-md-12">
+              <ul class="list">
+                <li class="manage-list-row clearfix">
+                  <div class="job-info">
+                    <div class="job-img">
+
+                      <img src="{{filteredEmployees[0].photopath}}" class="attachment-thumbnail" alt="user-images"
+                        *ngIf="(filteredEmployees[0].photopath != '' && filteredEmployees[0].photopath != null)">
+                      <div class="img-responsive img-circle txt"
+                        *ngIf="(filteredEmployees[0].photopath == '' || filteredEmployees[0].photopath == null)"
+                        alt="user">
+                        {{filteredEmployees[0].emp_name.charAt(0)}}{{filteredEmployees[0].emp_name.charAt(filteredEmployees[0].emp_name.indexOf('
+                        ') + 1)}}</div>
+
+                    </div>
+                    <div class="job-details">
+                      <h3 class="job-name"><a class="job_name_tag">{{filteredEmployees[0].emp_name}}
+                          [{{filteredEmployees[0].mobile}}]</a>
+                        <!-- <span class="full-time-btn">{{emp_data.time_criteria}}</span> -->
+                      </h3>
+                      <small class="job-company"><i
+                          class="ti-briefcase"></i>{{filteredEmployees[0].post_offered}}&nbsp;&nbsp;</small>
+                      <small class="job-company"><strong>Marked Attn.:</strong>
+                        {{filteredEmployees[0].marked_attendance}}</small>
+                      <small class="job-sallery"><strong>Approved Attn.: </strong>
+                        {{filteredEmployees[0].approved_attendance}}</small>
+                      <small><strong>DOJ:</strong>
+                        {{filteredEmployees[0].dateofjoining}}</small>
+                      <small *ngIf="filteredEmployees[0].dateofrelieveing"><strong>DOL:</strong>
+                        {{filteredEmployees[0].dateofrelieveing}}</small>
+                      <small *ngIf="filteredEmployees[0].orgempcode; else elseblock;" class="job-sallery"><strong>Emp
+                          Code
+                        </strong>
+                        {{filteredEmployees[0].orgempcode}}</small>
+                      <ng-template #elseblock>
+                        <small class="job-sallery"><strong>TP Code </strong>
+                          {{filteredEmployees[0].tp_code}}</small>
+                      </ng-template>
+                      <div class="candi-skill">
+                        <span class="social-box"
+                          title="Salary Setup Manday(s) | Mandays (Days Opted) ">{{filteredEmployees[0].salary_days_opted=='N'?'Full-Day':filteredEmployees[0].salarydays}}
+                          ({{filteredEmployees[0].salary_days_opted}})</span> &nbsp;
+                        <!-- {{emp_data.monthly_att_approval_status|json}} -->
+                        <span class="social-box-new" title="Attendance Marking Status"
+                          [ngStyle]="{'color': (filteredEmployees[0].monthly_att_approval_status == 'Y') ? 'green':  (filteredEmployees[0]?.monthly_att_approval_status == 'N' && (filteredEmployees[0].marked_attendance?.split(' ')[0])>0) ? 'blue' : '#e63946'}">
+                          {{filteredEmployees[0].monthly_att_approval_status == 'Y'?'Verified':
+                          (filteredEmployees[0].monthly_att_approval_status == 'N' &&
+                          (filteredEmployees[0].marked_attendance?.split('
+                          ')[0])>0)?'Marked':'Yet to Mark'}}</span>
+                      </div>
+
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-12">
+
+
+              <div class="hide-show-outer-box start">
+
+                <ul class="calendar-inner-box " style="overflow: hidden;">
+
+
+                  <li class="nav-item head-title-box  "><span class="day-box1 ">Mon</span> </li>
+                  <li class="nav-item head-title-box  "><span class="day-box1 ">Tue</span> </li>
+                  <li class="nav-item head-title-box  "><span class="day-box1 ">Wed</span> </li>
+                  <li class="nav-item head-title-box  "><span class="day-box1 ">Thu</span> </li>
+                  <li class="nav-item head-title-box  "><span class="day-box1 ">Fri</span> </li>
+                  <li class="nav-item head-title-box  "><span class="day-box1 ">Sat</span> </li>
+                  <li class="nav-item head-title-box  "><span class="day-box1 ">Sun</span> </li>
+
+
+                  <ng-container *ngFor="let dd of blankCalendar; let im=index;">
+                    <!-- {{calendar_data[0]?.attday==dd.w_date.split('-')[0]}} -->
+
+                    <li
+                      [ngClass]="{'present-days': dd?.attendance_type=='PP' ,'od-days': dd?.attendance_type=='OD',
+                                    'absent-days': dd?.attendance_type=='AA' , 'weekoff-days': dd?.attendance_type=='WO',
+                                    'half-days': dd?.attendance_type=='HD', 'holiday': dd?.attendance_type=='HO', 'restricted-holiday': dd?.attendance_type=='RH',
+                                    'leave-days': dd?.attendance_type=='LL' || dd?.leavetype=='CO'|| dd?.attendance_type=='HL', 'missed-punch': dd?.attendance_type=='MP',
+                                    'disabled-date': check_date(dd.w_date, im), 'wfh-days': dd?.attendance_type=='WFH',
+                                    'tr-days': dd?.attendance_type=='TR','tr-lwp': dd?.attendance_type=='LWP','tr-asl': dd?.attendance_type=='ASL','tr-swl': dd?.attendance_type=='SWL'}"
+                      class="nav-item" (click)="calendarClick(dd, im)" (mousedown)="onMouseDown($event, dd)"
+                      (mousemove)="onMouseMove($event, dd)" (mouseup)="onMouseUp($event)">
+                      <a class="calender-box"><span
+                          [ngStyle]="{'color': dd?.attendance_type=='' || dd.attendance_type==undefined || dd.attendance_type=='CLS' ? 'black': 'white'}"
+                          [ngClass]="{'selected-items':dd.localSelection == true}" class="date-box">{{dd.w_date
+                          != '' ? dd.w_date.split('-')[0] : ''}} </span>
+
+                        <span
+                          *ngIf="dd.attendance_type != undefined && dd.attendance_type!='CLS' && dd.attendance_type != 'LL' && dd.attendance_type != 'HD' && dd.attendance_type != 'HL'"
+                          class="label-design"
+                          [ngClass]="{'important-text': check_date(dd.w_date, im) && dd.attendance_type}"
+                          [ngStyle]="dd.localSelection ? {'margin-left':'70px', 'margin-right': '-4px'} : {}"><i
+                            *ngIf="dd.approval_status=='A'" style="left:-85px;"
+                            class="fa fa-check"></i>(
+                              {{dd.attendance_type}}
+                              <!-- {{check_holiday_type(dd.attendance_type, dd.w_date.split('-')[0])}} -->
+                              )
+                        </span>
+
+                        <span
+                          *ngIf="dd.attendance_type != undefined && dd.attendance_type!='CLS' && (dd.attendance_type == 'LL' || dd.attendance_type == 'HD' || dd.attendance_type == 'HL')"
+                          class="label-design"
+                          [ngClass]="{'important-text': check_date(dd.w_date, im) && dd.attendance_type}"
+                          [ngStyle]="dd.localSelection ? {'margin-left':'70px', 'margin-right': '-4px'} : {}"><i
+                            *ngIf="dd.approval_status=='A'" style="left:-75px;"
+                            class="fa fa-check"></i>({{dd.attendance_type}}
+                          <ng-container *ngIf="dd.leavetype">-{{dd.leavetype}}</ng-container>)
+
+                        </span>
+                      </a>
+                    </li>
+
+
+                  </ng-container>
+
+                </ul>
+
+                <div class="payout-breakup" (click)="remove_selection()"
+                  *ngIf="(filteredEmployees[0].time_criteria =='Full Time' && !((filteredEmployees[0].lockstatus == 'Locked' && filteredEmployees[0]?.payout_with_attendance=='P')))">
+
+
+                  <div class="row" style="border: 1px; border-collapse: collapse;">
+
+                    <div class="col-md-2"><strong>Pay Days</strong></div>
+                    <div class="col-md-2">{{payroll_data?.salarydays}}</div>
+                    <div class="col-md-2"><strong>EPF Contribution</strong></div>
+                    <div class="col-md-2">&#8377; {{payroll_data?.epfcontribution}}</div>
+                    <div class="col-md-2"><strong>Pay Amount</strong></div>
+                    <div class="col-md-2">&#8377; {{payroll_data?.costtoemployer}}</div>
+
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-2"><strong>ESIC Contribution</strong></div>
+                    <div class="col-md-2">&#8377; {{payroll_data?.esicontribution}}</div>
+
+                    <ng-container *ngFor="let vd of voucher_data;">
+                      <div class="col-md-2"><strong>{{vd?.voucher_name}} </strong></div>
+                      <div class="col-md-2">
+                        <span *ngIf="vd?.amount"> &#8377; {{vd?.amount}}</span>
+                      </div>
+                    </ng-container>
+                  </div>
+
+
+
+
+
+                </div>
+
+                <div class="row" style="font-size: 14px;border-style:groove;" (click)="remove_selection()"
+                  *ngIf="(filteredEmployees[0].time_criteria =='Full Time' && !((filteredEmployees[0].lockstatus == 'Locked' && filteredEmployees[0]?.payout_with_attendance=='P')))">
+                  <div class="col-md-3"><strong>Cost To Employer</strong></div>
+                  <div class="col-md-3">&#8377; {{payroll_data?.costtoemployer}}
+                  </div>
+
+                  <div class="col-md-3"><strong>Payout of Associate</strong>
+
+                  </div>
+                  <div class="col-md-3"> &#8377; {{payroll_data?.inhandsalary}}</div>
+                </div>
+                <div class="row" style="font-size: 12px;border-style: groove;border-top: 2px solid #eef5f7;">
+                  <div class="col-md-2">
+                    <label>Leave Template</label>
+                    <label *ngIf="filteredEmployees[0]?.holiday_state_name !=''">Holiday State</label>
+                  </div>
+                  <div class="col-md-2">
+                    <span *ngIf='filteredEmployees[0]?.template_txt'>
+                      {{filteredEmployees[0]?.template_txt[0]?.templatedesc}}
+                    </span>
+                    <span *ngIf="filteredEmployees[0]?.holiday_state_name !=''">
+                      {{filteredEmployees[0]?.holiday_state_name}}
+                    </span>
+                  </div>
+                  <div class="col-md-8">
+
+                    <div class="row" style="padding: 0px;" *ngIf="filteredEmployees[0]?.balance_txt">
+                      <ng-container *ngFor="let x of filteredEmployees[0].balance_txt">
+                        <div class="col-md-4" style="padding: 0px;">
+                          <label>{{x.typename}}</label>&nbsp;
+                          <span>[{{x.typecode}}] : {{x.prev_bal}} </span>
+                        </div>
+                      </ng-container>
+                      <ng-container *ngIf='filteredEmployees[0].template_txt'>
+                        <label>Weekly Off : </label>&nbsp;
+                        <span>[WO]
+                          <!-- :{{emp_data?.template_txt[0]?.leave_details?.weekly_off_days_name?.split(',')}} -->
+                          :
+                          {{display_week_off(filteredEmployees[0]?.template_txt[0]?.leave_details?.weekly_off_days_name_txt)}}
+                        </span>
+                        <!-- {{emp_data?.template_txt[0]?.leave_details?.weekly_off_days_name_txt |json}} -->
+                      </ng-container>
+
+
+                    </div>
+                  </div>
+                </div>
+
+                <ng-container *ngIf="check_access_right_cdn(); else noAccess">
+                  <div class="attendance-btn-inner-box padd-top-5" (click)="remove_selection()"
+                    *ngIf="filteredEmployees[0].lockstatus!='Locked'  || (filteredEmployees[0].lockstatus == 'Locked' && filteredEmployees[0]?.payout_with_attendance=='P' && filteredEmployees[0].deviationpaystatus=='N')">
+
+                    <span style="display: inline-block;" (click)="handleInnerClick($event)">
+
+                      <button type="button" class="btn btn-primary btn-design"
+                        (click)="present_click()">Present</button>
+                      <button type="button" class="btn btn-primary btn-design wfh-days"
+                        (click)="wfh_click()">WFH</button>
+                      <button type="button" class="btn btn-primary btn-design" (click)="onduty_click()"
+                        style="color: #fff;background: #002dd38e;">On
+                        Duty</button>
+                      <button type="button" class="btn btn-danger btn-design" (click)="absent_click()">Absent</button>
+                      <button type="button" class="btn btn-success btn-design" (click)="half_click(0)">Half
+                        Day</button>
+                      <button type="button" class="btn btn-warning btn-design" (click)="leave_click(0)">Leave</button>
+                      <button type="button" class="btn btn-info btn-design" style="color: #fff;background: #c1e309;"
+                        (click)="holiday_click()">Holiday</button>
+                      <!-- <button type="button" class="btn btn-secondary btn-design"
+                                  (click)="clear_click()">Clear</button> -->
+                      <button type="button" class="btn btn-info btn-design" (click)="weekoff_click()">Weekly
+                        off</button>
+
+                      <button type="button" class="btn btn-primary btn-design" (click)="ontour_click()"
+                        style="color: #fff;background: #232d4e8e;">On
+                        Tour</button>
+                      <button type="button" class="btn btn-primary btn-design" (click)="onlwp_click()"
+                        style="color: #fff;background: #f16f85;">LWP</button>
+                      <button type="button" class="btn btn-primary btn-design" (click)="onasl_click()"
+                        style="color: #fff;background: #6b84d88e;">ASL</button>
+
+                    </span>
+
+                  </div>
+
+                  <div class="attendance-btn-inner-box padd-top-1" (click)="remove_selection()"
+                    *ngIf="filteredEmployees[0].lockstatus!='Locked' || (filteredEmployees[0].lockstatus == 'Locked' && filteredEmployees[0]?.payout_with_attendance=='P' && filteredEmployees[0].deviationpaystatus=='N')">
+                    <!-- <a class="btn btn-primary manage-btn myButton-box"
+                                  (click)="save_approve_attendance('SaveBulkAttendance')">Save Attendance</a> -->
+                    <a class="btn btn-success manage-btn myButton-box" *ngIf="filteredEmployees[0].lockstatus!='Locked'"
+                      (click)="save_approve_attendance('ApproveBulkAttendance')" style="border-color: black;">Approve
+                      Attendance</a>
+
+                    <a class="btn btn-cancel btn-sm  manage-btn" title="Click for Allowance & deduction"
+                      *ngIf="filteredEmployees[0].lockstatus!='Locked'" style="border-color: black;"
+                      (click)="openAllowDeductPopup()">
+                      Allowance & Deduction
+                    </a>
+
+                    <a class="btn btn-primary manage-btn myButton-box"
+                      (click)="getOpeningBalance(filteredEmployees[0]?.emp_id, filteredEmployees[0]?.leave_bank_id)">
+                      Opening
+                      Balance
+                    </a>
+
+                    <a style="width: 18rem;font-weight: 500;color: black;border-color: #0e49ed !important;"
+                      class="btn btn-secondary manage-btn" (click)="clear_click()">
+                      Clear
+                    </a>
+                    <!-- <a style="width: 18rem;font-weight: 500;color: black;border-color: #0e49ed !important;"
+                                class="btn btn-secondary manage-btn" (click)="routeToMissedPunch()">
+                                Missed Punch
+                              </a> -->
+
+                    <!-- <a class="btn btn-danger manage-btn myButton-box">Cancel</a> -->
+                  </div>
+                </ng-container>
+                <ng-template #noAccess>
+                  <div class="attendance-btn-inner-box padd-top-5">
+                    <span class="text-info" style="color: lightcoral;font-size: 1.3rem;">You only have
+                      permission to view attendance records. Any changes or modifications are not
+                      allowed</span>
+                  </div>
+                </ng-template>
+                <div style="height: 5%;" (click)="remove_selection()">
+
+                </div>
+
+              <!-- add by ak 11-06-2025 start -->
+              <button *ngIf="!showEmployeeData" class="btn btn-primary mb-3" (click)="loadEmployeeData()">
+                Attendance Check-in/Out
+              </button>
+              <div class="row" *ngIf="showEmployeeData">
+                  <div class="col-md-12">
+                    <form [formGroup]="checkin_Form">
+                      <div class="col-md-2">
+                        <input type="hidden" formControlName="empCode">
+                        <select id="markedDropdown" class="form-control" formControlName="markedStatus">
+                          <option value="Marked">Marked</option>
+                          <option value="Not Marked">Not Marked</option>
+                        </select>
+                      </div>
+
+                      <div class="col-md-3" *ngIf="checkin_Form.get('markedStatus').value =='Not Marked'">
+                        <input type="date" style="cursor: pointer;" formControlName="FromDate" class="form-control" autocomplete="off">
+                      </div>
+
+                      <div class="col-md-1 col-sm-1"> &nbsp;
+                        </div>
+                    </form>
+                  </div>
+                </div>
+              <div *ngIf="showEmployeeData && (employee_data?.length === 0 || !employee_data)">
+                <div class="no-attendance-message text-center">
+                  <i class="fa fa-info-circle fa-2x mb-2 text-info"></i>
+                  <p class="message-text">No attendance records found.</p>
+                </div>
+              </div>
+              <div *ngIf="showEmployeeData && employee_data?.length > 0">
+                
+                <div class="card-body">
+                  <alert></alert>
+                  
+                  <ul class="list self-checkin-checkout-outerbox" >
+                    <li class="manage-list-row manage-pay-select clearfix"
+                      *ngFor="let emp_data of employee_data">
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <div title="Click to View Details" class="job-info" style="cursor: pointer;">
+                            <div class="profile-container">
+                              <div class="job-img">
+                                <img src="{{emp_data.photopath}}" class="attachment-thumbnail" alt="user-images" *ngIf="(emp_data.photopath != '' && emp_data.photopath != null
+                                                                  && emp_data.photopath !='https://api.contract-jobs.com/crm_api/'
+                                                                  && emp_data.photopath !='http://1akal.in/crm_api/') ">
+                                <div class="profile-img-box"
+                                  *ngIf="(emp_data.photopath == '' || emp_data.photopath == null
+                                                                  || emp_data.photopath == 'http://1akal.in/crm_api/'
+                                                                  || emp_data.photopath == 'https://api.contract-jobs.com/crm_api/') " alt="user">
+                                  <span>
+                                    {{emp_data.emp_name.charAt(0)}}{{emp_data.emp_name.charAt(emp_data.emp_name.indexOf('')
+                                    + 1)}} </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="job-details">
+                              <h5 class="job-name"><a class="job_name_tag" style="cursor: pointer;">{{emp_data.emp_name}}
+                                  ({{
+                                  emp_data.orgempcode ? emp_data.orgempcode :
+                                  emp_data.tpcode }}) </a></h5>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <div class="Out-in-btn-text-box">
+                            <ng-container *ngIf="emp_data?.is_night_shift && emp_data?.is_night_shift == 'Y'">
+                              <p> {{emp_data?.check_in_date}}</p>
+                            
+                            </ng-container>
+                            <strong>In Time:</strong> {{emp_data.check_in_time}}
+                          </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                          <div class="Out-in-btn-text-box">
+                            <ng-container *ngIf="emp_data?.is_night_shift && emp_data?.is_night_shift == 'Y'">                          
+                            <p> {{emp_data?.check_out_date}}</p>
+                            </ng-container>
+                            <strong>Out Time:</strong> {{emp_data.check_out_time}}
+                          </div>
+                        </div>
+                        <div class="col-sm-5">
+                          <div class="col-sm-6">
+                            <div class="job-details Out-in-btn-text-box" title="Assign Shift & is Night Shift"
+                              style="font-size: 12px !important;">
+                              <p>Shift : {{emp_data?.shift_name}}</p>
+                              <span style="color: rgb(7, 7, 126);">[ Night Shift : {{emp_data?.is_night_shift}}]</span>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="job-company">
+                              <strong>Date:</strong> {{emp_data.attendancedate}} <br>
+                              <strong>Total Hrs:</strong> {{emp_data.no_of_hours_worked}}
+                              <a *ngIf="isCurrentMonthYear" data-toggle="modal" data-placement="top"
+                                (click)="openPopup(emp_data.emp_name,emp_data.attendancedate, emp_data.check_in_date, emp_data.check_out_date,emp_data.check_in_time,emp_data.check_out_time,emp_data.emp_code, emp_data.is_night_shift)">
+                                <i class="fa fa-pencil-square-o punchinout-btn" aria-hidden="true"></i>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <div class="flexbox padd-10" *ngIf="filteredEmployees?.length > limit">
+                    <pagination-controls (pageChange)="get_page($event)"
+                      style="font-size: 2rem; padding: 6px; font-weight: bold" class="float-right"></pagination-controls>
+                  </div>
+                </div>
+              </div>
+              <!-- add by ak 11-06-2025 end -->
+
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--------Allowance & Deduction Popup-------->
+<div [@grooveState]="showAllowDeductPopup?'active':'inactive'" id="allowanceDeduct" class="modal">
+  <div [@dongleState]="showAllowDeductPopup?'active':'inactive'" class="modal-dialog"
+    style="margin:auto auto auto auto;">
+    <div class="modal-content" style="height:100%;margin-top:100px;">
+      <form *ngIf="showAllowDeductPopup">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Allowance and Deduction</h4>
+          <button type="button" class="close" (click)="closeAllowanceDeductPopup()"
+            data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+
+            <form [formGroup]="allowanceDeductForm">
+              <div class="col-md-12">
+                <div class="col-md-12" *ngFor="let head of dynamicHeads">
+                  <input
+                    type="radio"
+                    name="allowdeduct"
+                    [id]="head.voucher_name.toLowerCase().replace(' ', '_')+head.headid"
+                    [checked]="ad.id.value == head.headid.toLowerCase()"
+                    (change)="allowDeductChange(head)"
+                  >
+                  <label [for]="head.voucher_name.toLowerCase().replace(' ', '_')+head.headid">{{ head.voucher_name }}</label>
+                  <span>{{ showTaxble(head.headid) }}</span>
+                </div>
+              </div>
+
+              <div class="col-md-11">
+                <input class="form-control" formControlName="value" placeholder="Enter Amount (in Rs.)">
+              </div>
+
+              <div class="col-md-12">
+                <textarea rows="5" cols="70" formControlName="remarks" placeholder="Enter Remarks..."></textarea>
+              </div>
+            </form>
+
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-info" (click)="saveTpVoucher()">save</button>
+
+          <button class="btn btn-cancel" (click)="closeAllowanceDeductPopup()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--------Allowance & Deduction Popup-------->
+
+
+
+<!-----------Leave Types Popup-------->
+<div [@grooveState]="showLeaveTypes?'active':'inactive'" id="LeaveType" class="modal" style="z-index:1000;">
+  <div [@dongleState]="showLeaveTypes?'active':'inactive'" class="modal-dialog" style="margin:auto auto auto auto;">
+    <div class="modal-content" style="height:100%;margin-top:100px;">
+      <form *ngIf="showLeaveTypes" [formGroup]="markLeaveForm">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Mark Leave Type <!-- {{attCalendarForm.value.emp_code}} -->
+          </h4>
+          <button type="button" class="close" (click)="closeLeaveTypes()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <!-- <div class="col-md-6">
+              <label>Select Date</label>
+              <input class="form-control" type="text" autocomplete="off" formControlName="attendancedate" readonly>
+            </div> -->
+          <div class="form-group">
+            <!-- <label>Mark Leave Type</label> -->
+            <div class="custom-radio">
+
+              <div
+                *ngIf="filteredEmployees && filteredEmployees.length>0 && filteredEmployees[markLeaveForm.value.emp_index].balance_txt && markLeaveForm.value.att_type !='HD'"
+                style="margin-bottom:2rem">
+                <div class="row">
+                  <div class="col-md-4" style="font-weight: bold;"> Select Leave Day Type</div>
+                  <div class="col-md-6"><input type="radio" id="full_day" name="full_half_day" value="LL"
+                      (change)="changeLeaveHalfFullDay($event)" [checked]="markLeaveForm.value.att_type=='LL'">
+                    <label for="full_day">Full-Day</label>
+
+                    <input type="radio" id="half_day" name="full_half_day" value="HL"
+                      (change)="changeLeaveHalfFullDay($event)" [checked]="markLeaveForm.value.att_type=='HL'">
+                    <label for="half_day">Half-Day</label>
+                  </div>
+                </div>
+
+              </div>
+
+              <ng-container *ngFor="let fe of filteredEmployees[0]?.balance_txt">
+                <input type="radio" id="{{fe.typecode}}" name="leave_options" value="{{fe.typecode}}"
+                  (change)="changeLeaveType($event, fe.prev_bal)"
+                  [checked]="markLeaveForm.value.leavetype=='{{fe.typecode}}'">
+                <label for="{{fe.typecode}}">{{fe.typename}} [{{fe.typecode}}] - <strong>{{fe.prev_bal}}</strong>
+                  Days</label><br>
+              </ng-container>
+
+              <ng-container *ngIf="markLeaveForm.value.att_type=='HD'">
+                <input type="radio" id="AA" name="leave_options" value="AA" (change)="changeLeaveType($event,'')"
+                  [checked]="markLeaveForm.value.leavetype==''">
+                <label for="AA">Absent [AA] </label><br>
+              </ng-container>
+
+              <ng-container
+                *ngIf="(markLeaveForm.value.att_type=='LL' || markLeaveForm.value.att_type=='HL') && filteredEmployees[0].comp_off_txt?.is_comp_off_applicable=='Y'">
+                <input type="radio" id="CO" name="leave_options" value="CO"
+                  (change)="changeLeaveType($event, filteredEmployees[0].comp_off_txt?.tot_co_bal)"
+                  [checked]="markLeaveForm.value.leavetype=='CO'">
+                <label for="CO">Compensatory Off [CO] -
+                  <strong>{{filteredEmployees[markLeaveForm.value.emp_index].comp_off_txt?.tot_co_bal}} </strong> Days
+                </label><br>
+              </ng-container>
+
+
+              <!-- <input type="radio" id="casual" name="leave_options" value="CL" (change)="changeLeaveType('CL')"
+                [checked]="markLeaveForm.value.leavetype=='CL'">
+                <label for="casual">Casual Leave [CL]</label><br>
+
+                <input type="radio" id="privilege" name="leave_options" value="PL" (change)="changeLeaveType('PL')"
+                [checked]="markLeaveForm.value.leavetype=='PL'">
+                <label for="privilege">Privilege Leave [PL]</label><br>
+
+                <input type="radio" id="medical" name="leave_options" value="ML" (change)="changeLeaveType('ML')"
+                [checked]="markLeaveForm.value.leavetype=='ML'">
+                <label for="medical">Medical Leave [ML]</label><br>
+
+                <input type="radio" id="maternity" name="leave_options" value="MatL" (change)="changeLeaveType('MatL')"
+                [checked]="markLeaveForm.value.leavetype=='MatL'">
+                <label for="maternity">Maternity Leave [MatL]</label><br> -->
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" (click)="closeLeaveTypes()" value="Cancel">
+          <input type="submit" class="btn btn-success" (click)="updateLeaveType()" value="Update">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-----------Leave Types Popup-------->
+
+
+
+<!-----------Opening Balance Popup-------->
+<div [@grooveState]="showOpenBalance?'active':'inactive'" id="openBalance" class="modal" style="z-index:1000;">
+  <div [@dongleState]="showOpenBalance?'active':'inactive'" class="modal-dialog" style="margin:auto auto auto auto;">
+    <div class="modal-content" style="height:100%;margin-top:50px;width:75rem;margin-left:-5rem;">
+      <form *ngIf="showOpenBalance" [formGroup]="markLeaveForm">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Opening Balance</h4>
+          <button type="button" class="close" (click)="closeOpenBalance()">&times;</button>
+        </div>
+        <div class="modal-body" style="overflow: auto;height: 44rem;">
+
+          <ng-container *ngIf="showGenerateBtn== false">
+            <div class="row">
+              <div class="col-md-4">
+                <label>Leaves Calender</label>
+                <input type="text" class="form-control disable-background"
+                  value="{{openLeaveBalanceForm.value.intial_leave_bal_txt[0].leaves_calender}}">
+              </div>
+
+              <div class="col-md-4">
+                <label>Period From</label>
+                <input type="text" class="form-control disable-background"
+                  value="{{openLeaveBalanceForm.value.intial_leave_bal_txt[0].periodfrom}}">
+              </div>
+
+              <div class="col-md-4">
+                <label>Period To</label>
+                <input type="text" class="form-control disable-background"
+                  value="{{openLeaveBalanceForm.value.intial_leave_bal_txt[0].periodto}}">
+              </div>
+            </div>
+
+            <br>
+
+            <ng-container *ngFor="let olb of openLeaveBalanceForm.value.intial_leave_bal_txt;let i=index;">
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <label>Leave Type</label>
+                      <input type="text" class="form-control disable-background"
+                        value="{{olb.typename}}- ({{olb.typecode}})">
+                    </div>
+
+                    <div class="col-md-6">
+                      <label>Opening Balance</label>
+                      <input type="text" class="form-control" value="{{olb.opening_bal}}" maxlength="5"
+                        (keyup)="changeOpenBal($event, i)">
+                    </div>
+
+
+
+                  </div>
+
+
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+
+          <ng-container *ngIf="showGenerateBtn">
+            <div>
+              <button class="btn btn-primary" (click)="getGenerateOpeningBalance()">Generate Opening Balance</button>
+            </div>
+          </ng-container>
+
+
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" (click)="closeOpenBalance()" value="Cancel">
+          <input type="submit" class="btn btn-success" (click)="getUpdateLeaveBalance()" value="Update">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-----------Opening Balance Popup-------->
+
+<!--------Edit check-in/check-out time Popup-------->
+<div [@grooveState]="showPopup?'active':'inactive'" id="allowanceDeduct" class="modal">
+  <div [@dongleState]="showPopup?'active':'inactive'" class="modal-dialog" style="margin:auto auto auto auto;">
+    <div class="modal-content" style="height:100%;margin-top:100px;">
+      <form>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Edit Check-In/Out </h4>
+          <button type="button" class="close" (click)="closePopup()" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+        </div>
+
+        <div class="modal-body">
+
+          <div class="row">
+            <alert></alert>
+            <form [formGroup]="Edit_Form">
+              <div class="form-group">
+                <h4 class="col-md-6">{{this.emp_name}}</h4>
+                <h4 class="col-md-6 text-right">{{get_date()}} </h4>
+              </div>
+              <div class="form-group" *ngIf="Edit_Form.value.isNightShiftFlag=='Y'">
+                <label class="col-md-3">Check In / Out Date </label>
+                <div class="col-md-3">
+                  <p>In Date</p>
+                  <input type="text" id="FromDate" class="form-control" style="cursor: pointer;"
+                  placeholder="dd/mm/yyyy" autocomplete="off" readonly>
+                </div>
+
+                <input type="hidden" id="recdate" (click)="filterFromToDateLeads()">
+
+
+                <div class="col-md-3">
+                  <p>Out Date</p>
+                  <input type="text" id="ToDate" class="form-control" style="cursor: pointer;"
+                  placeholder="dd/mm/yyyy" autocomplete="off" readonly>
+
+                </div>
+              </div>
+
+
+
+
+              <div class="form-group">
+                <label class="col-md-3">Check In / Out </label>
+                <div class="col-md-3">
+                  <p>In Time</p>
+                  <input type="text" class="form-control" formControlName="inTime" placeholder="Enter Check In Time">
+                </div>
+
+
+
+                <div class="col-md-3">
+                  <p>Out Time</p>
+                  <input type="text" class="form-control" formControlName="outTime" placeholder="Enter Check Out Time">
+
+                </div>
+                <!-- <div class="col-md-3" >
+                                  <p>&nbsp;</p>
+                                  <select class="form-control">
+                                      <option class="" value="1" ng-reflect-value="1">AM</option>
+                                      <option class="" value="2" ng-reflect-value="2">PM</option>
+                                  </select>
+
+                                    </div> -->
+              </div>
+
+
+
+
+            </form>
+
+
+          </div>
+          <div class="row">
+            <div class="col-md-12" style="text-align: center;">
+              <span style="color:red"> [All times should be entered in 24-hour format]</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-info" (click)="SaveEmployee_CheckinCheckOut()">save</button>
+
+          <button class="btn btn-cancel" (click)="closePopup()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,604 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+    <div id="wrapper" [ngClass]="{'active': showSidebar == false}">
+        <div class="fakeLoader"></div>
+        <div id="page-wrapper">
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Configurations Settings </h3>
+                </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a [routerLink]="['/employee-mgmt/policies']">Policies</a></li>
+                        <li class="breadcrumb-item active">Configurations Settings</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="container-fluid element" id="element">
+                <!-- /row -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- <a [routerLink]="['/employee-mgmt/policies']" class="btn btn-secondary btn-sm">
+                                        <i class="fa fa-arrow-left" aria-hidden="true"></i> Back
+                                    </a> -->
+                        <!-- <a  class="btn" title="Back" (click)="goBack()" style="font-size: 15px;"><i class="fa fa-long-arrow-left fa-lg"></i> Back</a> -->
+                    </div>
+
+                    <div class="col-md-12 padd-bot-15 padd-top-0">
+                        <div class="card">
+                            <div class="card-body padd-bot-0 padd-top-0">
+                                <div class="col-md-12 col-md-offset-0 mrg-top-2512 mrg-bot-25 employees-details-outer-box">
+                                    <div class="row">
+                                        <div class="main-tab-outer-box">
+                                            <ul class="nav nav-tabs">
+                                                <li class="active"><a data-toggle="tab" href="#home">Enable Profile Edit</a></li>
+                                                <!-- *ngIf="(token.tp_account_id == '653' || token.tp_account_id == '5852')" -->
+                                                <li><a data-toggle="tab" href="#menu1">App setting</a></li>
+                                                <!-- <li><a data-toggle="tab" href="#menu2">Investment Proof</a></li>   Enable / Disable Salary Slip   Turn On/Off Salary Slip-->
+                                                
+                                            </ul>
+
+                                            <div class="tab-content">
+                                                <div id="home" class="tab-pane fade1 in active">
+                                                    <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                                                        <div class="card12  ">
+                                                            <div class="card-body12 padd-bot-0 padd-top-0">
+                                                                <div class="row">
+                                                                    <div class="add-address-form-box">
+                                                                        <div class="modal-body-box">
+                                                                            <div class="form-group">
+                                                                                <div class="col-sm-1212">
+                                                                                    <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box ">
+                                                                                        <div class="col-md-12 caded-innder-head-box">
+                                                                                            <div class="col-sm-6 text-left">
+                                                                                                <h3 class="list-name-text"></h3>
+                                                                                            </div>
+                                                                                            <div class="col-sm-6 text-right" *ngIf="policyList.length == '0'">
+                                                                                                <!--<a href="#SendMessage199" data-toggle="modal" class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn" data-placement="top" style=" margin-top: 10px;">Add Category </a>-->
+                                                                                                <a (click)="openAddPolicy()" class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn" data-placement="top" style="margin: 6px 0;background: #1194f7;">Add Configurations Setting </a>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+                                                                                                <table class="table user-list">
+                                                                                                    <thead>
+                                                                                                        <tr>
+                                                                                                            <th id="ember396" class="sortable header-user-role ember-view">#</th>
+                                                                                                            <th id="ember394" class="sortable header-user-role ember-view">Policies Name <!----></th>
+                                                                                                            <th id="ember395" class="sortable header-user-role ember-view">Employee (Count)</th>
+                                                                                                            <th id="ember395" class="sortable header-user-role ember-view">Enable edit rights for the profile <!----></th>
+                                                                                                            <th class="header-actions text-center">Action</th>
+                                                                                                        </tr>
+                                                                                                    </thead>
+                                                                                                    <tbody>
+                                                                                                        <tr *ngFor="let policy of policyList;let i=index;">
+                                                                                                            <td>{{i+1}}</td>
+                                                                                                            <td>{{policy.policies_name}}</td>
+                                                                                                            <td>
+                                                                                                                <span *ngIf="policy.employee_value">Employee : <a (click)="showList(policy,'user')" style="cursor: pointer;">{{policy.employee_value?.split(',').length}}</a><br></span>
+                                                                                                                <!-- <span *ngIf="policy.department_value">Department : <a (click)="showList(policy,'department')" style="cursor: pointer;">
+                                                                                                                    {{policy.department_value?.split(',').length}}</a></span> -->
+                                                                                                            </td>
+                                                                                                            <td>{{policy.policies_create_date | date: 'dd-MM-yyyy'}}</td>
+                                                                                                            <!-- <td><a (click)="showEmployees(policy)">{{policy.applicable_type_value.split(',').length}}</a></td> -->
+                                                                                                            <td class="roles">
+                                                                                                                <div id="ember398" class="dropdown float-right ember-view">
+                                                                                                                    <div class="job-buttons action-btn-outer-box">
+                                                                                                                        <a data-toggle="modal" data-placement="top" class="btn btn-shortlist manage-btn" title="Edit" (click)="openAddPolicyModal('editPolicy', policy)"><i class="ti-pencil-alt"></i></a>
+                                                                                                                        <a class="btn btn-shortlist manage-btn" data-placement="top" title="Delete">
+                                                                                                                            <i title="delete" class="fa fa-lg fa-trash cur-ptr " (click)="deletePolicy(policy.id)"></i>
+                                                                                                                        </a>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </td>
+                                                                                                        </tr>
+                                                                                                        <tr *ngIf="policyList.length==0">
+                                                                                                            <td colspan="6" style="text-align: center;font-weight:600;">No record(s) found</td>
+                                                                                                        </tr>
+                                                                                                    </tbody>
+                                                                                                </table>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div id="menu1" class="tab-pane fade1">
+                                                    <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                                                        <div class="card12  ">
+                                                            <div class="card-body12 padd-bot-0 padd-top-0">
+                                                                <div class="row">
+                                                                    <div class="add-address-form-box">
+                                                                        <div class="modal-body-box">
+                                                                            <div class="form-group">
+                                                                                <div class="col-sm-1212">
+                                                                                    <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box ">
+                                                                                        <div class="col-md-12 caded-innder-head-box">
+                                                                                            <!-- Start Chandramohan 01-April-2025 -->
+                                                                                            <form [formGroup]="policyForm">
+                                                                                                <div class="form-group" style="display: none;">
+                                                                                                    <label class="control-label col-sm-4">Configurations Name</label>
+                                                                                                    <div class="col-sm-8">
+                                                                                                        <input type="text" class="form-control" placeholder="Enter Policy Name" formControlName="policiesName">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="">
+                                                                                                    <div>
+                                                                                                        <div class="form-group">
+                                                                                                            <label class="control-label col-sm-4"><strong>Show salary slip status</strong></label>
+                                                                                                            <div class="col-sm-8 ">
+                                                                                                                <div class="input-group mrg-bot-0">
+                                                                                                                    <input type="radio" id="Show8" name="salaryFlag" class="SearchBy" value="Y" formControlName="salaryFlag">
+                                                                                                                    <label for="Show8"><b>No</b></label>  
+                                                                                                                    <input type="radio" id="Hide8" name="salaryFlag" class="SearchBy" value="N" formControlName="salaryFlag">
+                                                                                                                    <label for="Hide8"><b>Yes</b></label>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <!-- add by ak -->
+                                                                                                          <div class="form-group">
+                                                                                                            <label class="control-label col-sm-4"><strong>Show ID Card</strong></label>
+                                                                                                            <div class="col-sm-8 ">
+                                                                                                                <div class="input-group mrg-bot-0">
+                                                                                                                    <input type="radio" id="Show10" name="idCardFlag" class="SearchBy" value="Y" formControlName="idCardFlag">
+                                                                                                                    <label for="Show10"><b>No</b></label>  
+                                                                                                                    <input type="radio" id="Hide10" name="idCardFlag" class="SearchBy" value="N" formControlName="idCardFlag">
+                                                                                                                    <label for="Hide10"><b>Yes</b></label>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                         <div class="form-group">
+                                                                                                            <label class="control-label col-sm-4"><strong>Show Income Tax</strong></label>
+                                                                                                            <div class="col-sm-8 ">
+                                                                                                                <div class="input-group mrg-bot-0">
+                                                                                                                    <input type="radio" id="Show11" name="incomeTaxFlag" class="SearchBy" value="Y" formControlName="incomeTaxFlag">
+                                                                                                                    <label for="Show11"><b>No</b></label>  
+                                                                                                                    <input type="radio" id="Hide11" name="incomeTaxFlag" class="SearchBy" value="N" formControlName="incomeTaxFlag">
+                                                                                                                    <label for="Hide11"><b>Yes</b></label>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <!-- end by ak -->
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="modal-footer">
+                                                                                                    <input type="button" class="btn btn-default" value="Submit" (click)="submitPolicy()">
+                                                                                                </div>
+                                                                                            </form>
+                                                                                            <!-- End Chandramohan 01-April-2025 -->
+
+                                                                                            <div class="col-sm-6 text-right">
+                                                                                                <table>
+                                                                                                    <tr *ngFor="let policy of policyList; let i = index;">
+                                                                                                        <td>
+                                                                                                            <a *ngIf="!policy?.salary_flag || policy?.salary_flag?.length === 0 || policy?.salary_flag === ''" (click)="openAddPolicy1()" class="btn btn-user btn-round btn-primary btn-primary-Add-Roles-btn" data-placement="top" style="margin: 6px 0; background: #1194f7;">
+                                                                                                                Add Config Salary Slip
+                                                                                                            </a>
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                </table>
+                                                                                            </div>
+                                                                                            <!-- lll -->
+                                                                                        </div>
+
+                                                                                        <!--
+                                                                                        ############################################################
+                                                                                        ## TABLE REMOVED FROM HERE AS PER REQUEST ##
+                                                                                        ############################################################
+                                                                                        -->
+
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- <div id="menu2" class="tab-pane fade1">
+                                                    <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                                                        <div class="card  ">
+                                                            bbb
+                                                        </div>
+                                                    </div>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /row -->
+    <!-- /#page-wrapper -->
+
+    <div [@grooveState]="isAddUpdatePolicy ? 'active':'inactive'" class="modal fade punchin-punchout-outer1-box in">
+        <div class="modal-dialog" [@dongleState]="isAddUpdatePolicy ? 'active' : 'inactive'">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header theme-bg">
+                        <h4 class="modal-title">Add1 Policies</h4>
+                        <button type="button" class="close" (click)="hideModal()">×</button>
+                    </div>
+                    <div class="modal-body" [formGroup]="policyForm">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Policies Name</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Enter Policy Name" formControlName="policiesName">
+                            </div>
+                        </div>
+                        <div class="form-group multiple-select-dropdown-btn">
+                            <label class="control-label col-sm-4">Employee</label>
+                            <div class="col-sm-8 orgMultiselectDropdown">
+                                <ng-multiselect-dropdown [placeholder]="'Select employees'" [settings]="employeeDropdownSettings" [data]="empDropdownList" formControlName="applicableForDept" [(ngModel)]="selectedEmp" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onUnselectAll($event)" (onDeSelect)="onItemUnselect($event)">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                        <!-- <div class="form-group multiple-select-dropdown-btn">
+                            <label class="control-label col-sm-4">Department</label>
+                            <div class="col-sm-8 orgMultiselectDropdown">
+                                <ng-multiselect-dropdown
+                                    [placeholder]="'Select departments'"
+                                    [settings]="deptDropdownSettings"
+                                    [data]="deptDropdownList"
+                                    formControlName="applicableForEmp"
+                                    [(ngModel)]="selectedDept"
+                                    (onSelect)="onItemSelect($event)"
+                                    (onSelectAll)="onSelectAll($event)"
+                                    (onDeSelectAll)="onUnselectAll($event)"
+                                    (onDeSelect)="onItemUnselect($event)">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div> -->
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Enable edit rights for the profile:</label>
+                            <div class="col-sm-8">
+                                <input type="date" class="form-control" placeholder="Leave Policy" formControlName="policyCreateDt" [min]="minDate" (keydown)="blockTyping($event)">
+                            </div>
+                        </div>
+                        <div style="display: none;">
+                            <div class="col-sm-12 mrg-bot-10"><strong>Attendance</strong></div>
+                            <div class="col-sm-12 mrg-bot-25">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Present</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group mrg-bot-0">
+                                            <input type="radio" id="Show1" name="presentFlag" class="SearchBy" value="Y" formControlName="presentFlag">
+                                            <label for="Show1">Show</label>  
+                                            <input type="radio" id="Hide1" name="presentFlag" class="SearchBy" value="N" formControlName="presentFlag">
+                                            <label for="Hide1">Hide</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Leave</label>
+                                    <div class="col-sm-8 ">
+                                        <div class="input-group mrg-bot-0">
+                                            <input type="radio" id="Show2" name="leaveFlag" class="SearchBy" value="Y" formControlName="leaveFlag">
+                                            <label for="Show2">Show</label>  
+                                            <input type="radio" id="Hide2" name="leaveFlag" class="SearchBy" value="N" formControlName="leaveFlag">
+                                            <label for="Hide2">Hide</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Half day</label>
+                                    <div class="col-sm-8 ">
+                                        <div class="input-group mrg-bot-0">
+                                            <input type="radio" id="Show3" name="halfDayFlag" class="SearchBy" value="Y" formControlName="halfDayFlag">
+                                            <label for="Show3">Show</label>  
+                                            <input type="radio" id="Hide3" name="halfDayFlag" class="SearchBy" value="N" formControlName="halfDayFlag">
+                                            <label for="Hide3">Hide</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Weekly Off</label>
+                                    <div class="col-sm-8 ">
+                                        <div class="input-group mrg-bot-0">
+                                            <input type="radio" id="Show4" name="weeklyOff" class="SearchBy" value="Y" formControlName="weeklyOff">
+                                            <label for="Show4">Show</label>  
+                                            <input type="radio" id="Hide4" name="weeklyOff" class="SearchBy" value="N" formControlName="weeklyOff">
+                                            <label for="Hide4">Hide</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">WFH</label>
+                                    <div class="col-sm-8 ">
+                                        <div class="input-group mrg-bot-0">
+                                            <input type="radio" id="Show5" name="wfhFlag" class="SearchBy" value="Y" formControlName="wfhFlag">
+                                            <label for="Show5">Show</label>  
+                                            <input type="radio" id="Hide5" name="wfhFlag" class="SearchBy" value="N" formControlName="wfhFlag">
+                                            <label for="Hide5">Hide</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-6">Employee can mark only current date attendance</label>
+                                    <div class="col-sm-6 ">
+                                        <div class="input-group mrg-bot-0">
+                                            <input type="radio" id="Show6" name="empTodayAttendanceFlag" class="SearchBy" value="Y" formControlName="empTodayAttendanceFlag">
+                                            <label for="Show6">Enable</label>  
+                                            <input type="radio" id="Hide6" name="empTodayAttendanceFlag" class="SearchBy" value="N" formControlName="empTodayAttendanceFlag">
+                                            <label for="Hide6">Disable</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4"><strong>Check-in check-out</strong></label>
+                                <div class="col-sm-8 ">
+                                    <div class="input-group mrg-bot-0">
+                                        <input type="radio" id="Show7" name="checkInCheckOutFlag" class="SearchBy" value="Y" formControlName="checkInCheckOutFlag">
+                                        <label for="Show7">Show</label>  
+                                        <input type="radio" id="Hide7" name="checkInCheckOutFlag" class="SearchBy" value="N" formControlName="checkInCheckOutFlag">
+                                        <label for="Hide7">Hide</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4"><strong>Salary</strong></label>
+                                <div class="col-sm-8 ">
+                                    <div class="input-group mrg-bot-0">
+                                        <input type="radio" id="Show88" name="salaryFlag" class="SearchBy" value="Y" formControlName="salaryFlag">
+                                        <label for="Show88">Show</label>  
+                                        <input type="radio" id="Hide88" name="salaryFlag" class="SearchBy" value="N" formControlName="salaryFlag">
+                                        <label for="Hide88">Hide</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4"><strong>Leaves</strong></label>
+                                <div class="col-sm-8 ">
+                                    <div class="input-group mrg-bot-0">
+                                        <input type="radio" id="Show9" name="leaves" class="SearchBy" value="Y" formControlName="leaves">
+                                        <label for="Show9">Show</label>  
+                                        <input type="radio" id="Hide9" name="leaves" class="SearchBy" value="N" formControlName="leaves">
+                                        <label for="Hide9">Hide</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="form-group">
+                            <label class="control-label col-sm-5  mrg-top-25"><input type="checkbox" id="ack" class="Acknowledge" name="Acknowledge" value="Yes"> Overwrite Default Policies?</label>
+                        </div> -->
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" value="Submit" (click)="submitPolicy()">
+                        <input type="button" class="btn btn-default" (click)="hideModal()" value="Cancel">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--2nd Popup-->
+    <div [@grooveState]="isAddUpdatePolicy1 ? 'active':'inactive'" class="modal fade punchin-punchout-outer1-box in">
+        <div class="modal-dialog" [@dongleState]="isAddUpdatePolicy1 ? 'active' : 'inactive'">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header theme-bg">
+                        <h4 class="modal-title">Add Configurations Settings</h4>
+                        <button type="button" class="close" (click)="hideModal1()">×</button>
+                    </div>
+                    <div class="modal-body" [formGroup]="policyForm">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Configurations Name</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Enter Policy Name" formControlName="policiesName">
+                            </div>
+                        </div>
+                        <!-- <div class="form-group multiple-select-dropdown-btn">
+                            <label class="control-label col-sm-4">Employee</label>
+                            <div class="col-sm-8 orgMultiselectDropdown">
+                                <ng-multiselect-dropdown
+                                    [placeholder]="'Select employees'"
+                                    [settings]="employeeDropdownSettings"
+                                    [data]="empDropdownList"
+                                    formControlName="applicableForDept"
+                                    [(ngModel)]="selectedEmp"
+                                    (onSelect)="onItemSelect($event)"
+                                    (onSelectAll)="onSelectAll($event)"
+                                    (onDeSelectAll)="onUnselectAll($event)"
+                                    (onDeSelect)="onItemUnselect($event)">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>-->
+                        <!-- <div class="form-group multiple-select-dropdown-btn">
+                            <label class="control-label col-sm-4">Department</label>
+                            <div class="col-sm-8 orgMultiselectDropdown">
+                                <ng-multiselect-dropdown
+                                    [placeholder]="'Select departments'"
+                                    [settings]="deptDropdownSettings"
+                                    [data]="deptDropdownList"
+                                    formControlName="applicableForEmp"
+                                    [(ngModel)]="selectedDept"
+                                    (onSelect)="onItemSelect($event)"
+                                    (onSelectAll)="onSelectAll($event)"
+                                    (onDeSelectAll)="onUnselectAll($event)"
+                                    (onDeSelect)="onItemUnselect($event)">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div> -->
+                        <!--  <div class="form-group">
+                            <label class="control-label col-sm-4">Enable edit rights for the profile:</label>
+                            <div class="col-sm-8">
+                                <input type="date" class="form-control" placeholder="Leave Policy"
+                                formControlName="policyCreateDt" [min]="minDate" (keydown)="blockTyping($event)">
+                            </div>
+                        </div>style="display: none;"-->
+                        <div>
+                            <!-- <div class="col-sm-12 mrg-bot-10"><strong>Attendance</strong></div> -->
+                            <!-- <div class="col-sm-12 mrg-bot-25">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Present</label>
+                                    <div class="col-sm-8">
+                                            <div class="input-group mrg-bot-0">
+                                                <input type="radio" id="Show1" name="presentFlag" class="SearchBy" value="Y" formControlName="presentFlag">
+                                                <label for="Show1">Show</label>  
+                                                <input type="radio" id="Hide1" name="presentFlag" class="SearchBy" value="N" formControlName="presentFlag">
+                                                <label for="Hide1">Hide</label>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Leave</label>
+                                    <div class="col-sm-8 ">
+                                            <div class="input-group mrg-bot-0">
+                                                <input type="radio" id="Show2" name="leaveFlag" class="SearchBy" value="Y" formControlName="leaveFlag">
+                                                <label for="Show2">Show</label>  
+                                                <input type="radio" id="Hide2" name="leaveFlag" class="SearchBy" value="N" formControlName="leaveFlag">
+                                                <label for="Hide2">Hide</label>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Half day</label>
+                                    <div class="col-sm-8 ">
+                                            <div class="input-group mrg-bot-0">
+                                                <input type="radio" id="Show3" name="halfDayFlag" class="SearchBy" value="Y" formControlName="halfDayFlag">
+                                                <label for="Show3">Show</label>  
+                                                <input type="radio" id="Hide3" name="halfDayFlag" class="SearchBy" value="N" formControlName="halfDayFlag">
+                                                <label for="Hide3">Hide</label>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Weekly Off</label>
+                                    <div class="col-sm-8 ">
+                                            <div class="input-group mrg-bot-0">
+                                                <input type="radio" id="Show4" name="weeklyOff" class="SearchBy" value="Y" formControlName="weeklyOff">
+                                                <label for="Show4">Show</label>  
+                                                <input type="radio" id="Hide4" name="weeklyOff" class="SearchBy" value="N" formControlName="weeklyOff">
+                                                <label for="Hide4">Hide</label>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">WFH</label>
+                                    <div class="col-sm-8 ">
+                                            <div class="input-group mrg-bot-0">
+                                                <input type="radio" id="Show5" name="wfhFlag" class="SearchBy" value="Y" formControlName="wfhFlag">
+                                                <label for="Show5">Show</label>  
+                                                <input type="radio" id="Hide5" name="wfhFlag" class="SearchBy" value="N" formControlName="wfhFlag">
+                                                <label for="Hide5">Hide</label>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-6">Employee can mark only current date attendance</label>
+                                    <div class="col-sm-6 ">
+                                            <div class="input-group mrg-bot-0">
+                                                <input type="radio" id="Show6" name="empTodayAttendanceFlag" class="SearchBy" value="Y" formControlName="empTodayAttendanceFlag">
+                                                <label for="Show6">Enable</label>  
+                                                <input type="radio" id="Hide6" name="empTodayAttendanceFlag" class="SearchBy" value="N" formControlName="empTodayAttendanceFlag">
+                                                <label for="Hide6">Disable</label>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                    <label class="control-label col-sm-4"><strong>Check-in check-out</strong></label>
+                                    <div class="col-sm-8 ">
+                                            <div class="input-group mrg-bot-0">
+                                                <input type="radio" id="Show7" name="checkInCheckOutFlag" class="SearchBy" value="Y" formControlName="checkInCheckOutFlag">
+                                                <label for="Show7">Show</label>  
+                                                <input type="radio" id="Hide7" name="checkInCheckOutFlag" class="SearchBy" value="N" formControlName="checkInCheckOutFlag">
+                                                <label for="Hide7">Hide</label>
+                                            </div>
+                                    </div>
+                                </div>-->
+                            <div class="form-group">
+                                <label class="control-label col-sm-4"><strong>Salary slip</strong></label>
+                                <div class="col-sm-8 ">
+                                    <div class="input-group mrg-bot-0">
+                                        <input type="radio" id="Show8" name="salaryFlag" class="SearchBy" value="Y" formControlName="salaryFlag">
+                                        <label for="Show8">Hide</label>  
+                                        <input type="radio" id="Hide8" name="salaryFlag" class="SearchBy" value="N" formControlName="salaryFlag">
+                                        <label for="Hide8">Show</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="form-group" >
+                                <label class="control-label col-sm-4"><strong>Leaves</strong></label>
+                                <div class="col-sm-8 ">
+                                    <div class="input-group mrg-bot-0">
+                                        <input type="radio" id="Show9" name="leaves" class="SearchBy" value="Y" formControlName="leaves">
+                                        <label for="Show9">Show</label>  
+                                        <input type="radio" id="Hide9" name="leaves" class="SearchBy" value="N" formControlName="leaves">
+                                        <label for="Hide9">Hide</label>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                        <!-- <div class="form-group">
+                            <label class="control-label col-sm-5  mrg-top-25"><input type="checkbox" id="ack" class="Acknowledge" name="Acknowledge" value="Yes"> Overwrite Default Policies?</label>
+                        </div> -->
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" value="Submit" (click)="submitPolicy()">
+                        <input type="button" class="btn btn-default" (click)="hideModal1()" value="Cancel">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--2nd End Popup-->
+
+    <div [@grooveState]="isShowList ? 'active' : 'inactive'" class="modal fade punchin-punchout-outer1-box in" id="employee-list">
+        <div [@dongleState]="isShowList ? 'active' : 'inactive'" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header theme-bg">
+                    <h4 class="modal-title">{{listType=='user' ? 'Employee' : 'Department'}} List</h4>
+                    <button type="button" class="close" (click)="hideEmpListModal();">×</button>
+                </div>
+                <div class="modal-body" style="max-height: 320px;">
+                    <div class="table" style="max-height: 237px; overflow: auto; margin-bottom: 0;">
+                        <table class="table table-responsive" id="otherDeductionTable">
+                            <thead style="position:sticky;top:0px;background: #fff;">
+                                <tr>
+                                    <th id="ember1089" class="sortable ember-view" style="width: 10%;">#</th>
+                                    <th id="ember1089" class="sortable ember-view" style="text-align: center;">{{listType=='user' ? 'Employee' : 'Department'}} Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let data of listData | paginate: { itemsPerPage: 10, currentPage: page,totalItems: listData.length };let i=index;" class="emp-item">
+                                    <tr *ngIf="listType=='user'">
+                                        <td>{{(page-1)*10+i+1}}</td>
+                                        <td style="text-align: center;">{{data.emp_name}}</td>
+                                    </tr>
+                                    <tr *ngIf="listType=='department'">
+                                        <td>{{(page-1)*10+i+1}}</td>
+                                        <td style="text-align: center;">{{data}}</td>
+                                    </tr>
+                                </ng-container>
+                                <!-- <tr *ngIf="empList.length==0">
+                                    <td colspan="3" style="text-align: center;">No Data Found</td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flexbox padd-10">
+                        <pagination-controls (pageChange)="page = $event;" style="font-size: 2rem; padding: 6px; font-weight: bold" class="float-right"></pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <app-footer></app-footer>
+</section>

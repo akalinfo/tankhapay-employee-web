@@ -1,0 +1,98 @@
+#sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 3rem !important;
+    right: 0rem;
+    background-color: #f1f5fa;
+    overflow-x: hidden;
+    transition: 0.5s;
+    z-index: 1000;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 9px -1px, rgba(0, 0, 0, 0.3) -10px 6px 10px 0px, rgba(0, 0, 0, 0.12) -7px 1px 18px 0px;
+}
+
+h3.filter-menu-header-text-box {
+    padding: 21px 15px;
+    margin-bottom: 0;
+}
+
+.sidebar-content-box .form-control{
+    margin-bottom: 10px;
+}
+
+#sidebar a.clear-box-btn {
+    position: absolute;
+    top: 53px;
+    right: 25px;
+    color: #1372dd;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#sidebar .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+}
+
+.sidebar-menu_filter-box .panel-default > .panel-heading {
+    color: #333;
+    background-color: #deedff;
+    border-color: #fff;
+    border: 1px solid #fff;
+}
+
+.sidebar-menu_filter-box .panel-heading {
+    cursor: pointer;
+}
+
+.sidebar-menu_filter-box .panel-default > .panel-heading h4 {
+    font-size: 14px;
+    color: #000;
+}
+
+.sidebar-menu_filter-box .panel-heading h4 {
+    display: flex
+;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sidebar-menu_filter-box .form-group {
+    margin-bottom: 0px;
+}
+
+.sidebar-content-box .form-group {
+    font-size: 13px;
+}
+
+.sidebar-menu_filter-box label.control-label {
+    font-weight: 500;
+    padding: 0;
+}
+
+.sidebar-menu_filter-box .card-body {
+    padding: 1.25rem 1.25rem 3rem 1.25rem;
+}
+.sidebar-menu_filter-box h3 {
+    font-size: 24px;
+}
+
+#sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Track */
+#sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+/* Handle */
+#sidebar::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+/* Handle on hover */
+#sidebar::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}

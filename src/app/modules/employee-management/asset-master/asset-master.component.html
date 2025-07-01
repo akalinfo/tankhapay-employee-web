@@ -1,0 +1,534 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+
+  <div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+    <div class="fakeLoader"></div>
+
+    <div id="page-wrapper" style="min-height: 596px;">
+      <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+          <h3 class="text-themecolor">Asset Master</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="['/employee-mgmt/employees']" >Employees</a></li>
+            <li class="breadcrumb-item active">Asset Master </li>
+          </ol>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <!-- /row -->
+        <div class="row">
+
+          <div class="col-md-12 col-sm-12"></div>
+          <div class="card">
+
+            <div class="card-header">
+
+              <div class="row">
+                <div class="col-md-2 col-sm-2">
+                  <b>Row(s)</b>
+                  <br>
+                  <select class="form-control" (change)="changePage($event)" style="font-size: 12px;">
+                    <!-- <option value={{filteredEmployees.length}} [selected]="limit==filteredEmployees.length">All
+                    </option> -->
+                    <option value="10" [selected]="limit==10">10</option>
+                    <option value="20" [selected]="limit==20">20</option>
+                    <option value="50" [selected]="limit==50">50</option>
+                    <option value="100" [selected]="limit==100">100</option>
+                  </select>
+                </div>
+
+                <div class="col-md-5 col-sm-5">
+                  <b>Search</b> <br>
+                  <input type="text" class="form-control" placeholder="Search Asset(s)" (keyup)="search()"
+                    maxlength="200" [(ngModel)]="search_keyword" />
+                </div>
+
+                <div class="col-md-3 col-sm-3">
+                </div>
+
+                <div class="col-md-2 col-sm-2">
+                  <br>
+                  <b>Total :</b>
+                  <span>&nbsp; {{get_total()}}</span>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+
+
+
+
+          <div class="col-md-12 mrg-top-0 mrg-bot-25">
+
+
+            <div class="card">
+
+
+              <div class="card-header caded-innder-head-box">
+
+
+
+                <div class="col-sm-6 text-left">
+                  <h4 class="sub-title-inn-box View-Roles-list-outer-box">Asset List</h4>
+                </div>
+
+
+                <div class="col-sm-6 text-right">
+
+                  <a (click)="openAddLocationModal()" data-toggle="modal" style="display:none;"
+                    class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn" data-placement="top">Add
+                    Location </a>
+                  &nbsp;
+                  <a (click)="openAddCategoryModal()" data-toggle="modal" style="display:none;"
+                    class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn" data-placement="top">Add
+                    Category/Type </a>
+                  &nbsp;
+                  <a (click)="openAddAsset()" data-toggle="modal"
+                    class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn" data-placement="top">Add
+                    Asset </a>
+                </div>
+
+              </div>
+
+
+
+
+
+              <div class="card-body padd-bot-0 padd-top-0">
+
+
+
+                <div class="row">
+
+
+                  <div class="col-md-12 padd-top-15">
+
+                    <ul class="asset-master-outer-box">
+                      <li style="border-style: solid; border-color: cornflowerblue;">
+
+                        <h5 class="asset-master-title">
+
+                          <p class="text-muted mb-0" title="Category Name">
+
+                            Asset Name
+
+                          </p>
+
+                          <p class="text-muted mb-0" title=" Model Name">
+                            [Asset Code]
+                          </p>
+
+                        </h5>
+                        <h5 class="asset-master-title">
+                          <p class="text-muted mb-0" title="Category Name">
+
+                            Asset Catrgory
+
+                          </p>
+
+                          <p class="text-muted mb-0" title=" Model Name">
+                            Model Name
+                          </p>
+                        </h5>
+
+
+                        <h5 class="asset-master-title">
+
+                          <p class="text-muted mb-0" title="Serial No">
+                            Serial Number
+                          </p>
+                          <p class="text-muted mb-0" title="Asset Condition">
+                            Asset Condition
+                          </p>
+                        </h5>
+
+
+                        <h5 class="asset-master-title">
+                          <p class="text-muted mb-0" title=" Model Name">
+                            Assets Status
+                          </p>
+                          <p class="text-muted mb-0" title="Category Name">
+
+                            Location Name
+
+                          </p>
+
+
+
+
+                        </h5>
+
+
+
+
+                        <h5 class="asset-master-title" style="width:12rem;">
+
+                          Action
+                        </h5>
+
+
+                      </li>
+                      <ng-container
+                        *ngFor="let ald of asset_list_data | paginate: { itemsPerPage: limit, currentPage: p, totalItems:get_total() }; let i=index;">
+                        <li [ngStyle]="{'background': ald.verify_status == 'Y' ? '#c7f4c7': ''}">
+
+                          <h5 class="asset-master-title" title="Asset Name & Asset Code">{{ald.asset_name}} <br>
+                            [{{ald.asset_code}}]</h5>
+                          <div class="asset-master-sub-title">
+                            <p class="text-muted mb-0" title="Category Name">
+                              <a *ngIf="ald?.asset_invoice_url" target="_blank" [href]="ald?.asset_invoice_url">
+                                <i class="fa fa-file  mr-2 text-info font-14"></i>
+                              </a>
+                              &nbsp;
+                              <span id="Description_68">{{ald?.category_name}}</span>
+                            </p>
+                            <p class="text-muted mb-0" title="Model Name">
+                              <a *ngIf="ald?.asset_image_url" target="_blank" [href]="ald?.asset_image_url">
+                                <i class="fa fa-file  mr-2 text-info font-14"></i>
+                              </a>
+                              &nbsp;
+                              <span id="Description_68">{{ald.model_name}}</span>
+                            </p>
+                          </div>
+
+
+                          <div class="asset-master-sub-title">
+                            <p class="text-muted mb-0" title="Serial No">
+                              <i class="fa fa-users mr-2 text-info font-14"></i>
+                              &nbsp;
+                              <span>{{ald.device_serial_no}}</span>
+                            </p>
+                            <p class="text-muted mb-0" title="Asset Condition">
+                              <i class="fa fa-gamepad mr-2 text-info font-14"></i>
+                              &nbsp;
+                              <span id="EmpCount_68">{{ald.asset_condition}}</span>
+                            </p>
+                          </div>
+
+
+                          <div class="asset-master-sub-title">
+                            <p class="text-muted mb-0" title="Assets Status">
+                              <span id="DisplayOrder_68" class="tdOrder" style="color: blue;">{{ald?.asset_status}}</span>
+                            </p>
+                            <p class="text-muted mb-0" title="Location Name">
+                              <i class="fa fa-map-marker mr-2 text-info font-14"></i>
+                              &nbsp;
+                              <span id="DisplayOrder_68" class="tdOrder">{{ald?.location_name}}</span>
+                            </p>
+
+
+                          </div>
+
+
+                          <div class="job-buttons action-btn-outer-box" style="width:12rem;">
+
+                            <a *ngIf="ald.verify_status=='N'" (click)="openUpdateAsset(ald)"
+                              class="btn btn-shortlist1 manage-btn" data-placement="top" title="Edit"><i
+                                class="ti-pencil-alt"></i></a>
+
+                                <a *ngIf="ald.verify_status=='Y'" (click)="openUpdateAsset(ald)"
+                                class="btn btn-shortlist1 manage-btn" data-placement="top" title="View"><i
+                                  class="fa fa-eye "></i></a>
+
+                            <a *ngIf="ald.verify_status=='N'"
+                              (click)="remove_verify_assets(ald.asset_row_id, 'removed_assets')"
+                              class="btn btn-shortlist1 manage-btn" data-placement="top" title="Delete"><i
+                                class="fa fa-trash"></i></a>
+
+                            <a *ngIf="ald.verify_status=='N'"
+                              (click)="remove_verify_assets(ald.asset_row_id, 'verify_assets')"
+                              class="btn btn-shortlist1 manage-btn" data-placement="top" title="Verify"><i
+                                class="fa fa-lg fa-check"></i></a>
+                          </div>
+
+
+                        </li>
+                      </ng-container>
+
+
+                    </ul>
+
+                  </div>
+
+                  <div class="flexbox padd-10 pagination-outer-box" *ngIf="get_total() >limit">
+                    <div class="flexbox padd-10">
+                      <pagination-controls (pageChange)="get_page($event)"
+                        style="font-size: 2rem;padding: 6px;font-weight: bold"
+                        class="float-right"></pagination-controls>
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+
+
+
+
+            </div>
+
+
+          </div>
+          <!-- /row -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer></footer>
+
+<!-- Add Category Type -->
+<div [@grooveState]="showAddCategoryType?'active':'inactive'" id="addLocationCategoryType" class="modal" style="z-index: 10000;">
+  <div [@dongleState]="showAddCategoryType?'active':'inactive'" class="modal-dialog"
+    style="margin:auto auto auto auto; margin-top: 50px;">
+    <div class="modal-content">
+
+      <form>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Add {{title_category_location}}</h4>
+          <button type="button" class="close" data-dismiss="modal" (click)="closeAddLocationCategoryModal()">×</button>
+        </div>
+        <div class="modal-body">
+
+
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Title </label>
+            <div class="col-sm-8">
+
+              <input class="form-control" maxlength="100" name="Title" placeholder="" type="text"
+                [(ngModel)]="description">
+                (Max. 100 characters)
+            </div>
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <input *ngIf="title_category_location=='Location'" type="button" class="btn btn-default" data-dismiss="modal"
+            value="Save" (click)="insert_asset_location()">
+          <input *ngIf="title_category_location=='Category'" type="button" class="btn btn-default" data-dismiss="modal"
+            value="Save" (click)="insert_asset_category()">
+          <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel"
+            (click)="closeAddLocationCategoryModal()">
+
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+<!-- /#wrapper -->
+
+
+<!-- Send Message -->
+<div [@grooveState]="showAddEditAsset?'active':'inactive'" id="addCategoryType" class="modal">
+  <div [@dongleState]="showAddEditAsset?'active':'inactive'" class="modal-dialog modal-lg"
+    style="margin:auto auto auto auto; margin-top: 50px; width:100rem;">
+    <div class="modal-content">
+
+      <form [formGroup]="assetForm">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">{{asset_title}} Asset</h4>
+          <button type="button" class="close" data-dismiss="modal" (click)="closeAddEditAsset()">×</button>
+        </div>
+        <div class="modal-body" style="height: 43rem; overflow-y: auto; overflow-x: clip;">
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="row form-group">
+                <div class="col-sm-5 col-form-label"> Asset Category/Type <span style="color:red;">*</span>
+                </div>
+                <div class="col-sm-6" style="display:flex;">
+                  <select formControlName="category_id" id="HRComponantId" name="ComponentId" class="form-control">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let acd of asset_category_data;" [value]="acd.category_id"> {{acd.category_name}}
+                    </option>
+                  </select>
+                  &nbsp;
+                  <a title="Add New Category" (click)="openAddCategoryModal()"><i class="fa fa-plus"></i></a>
+                </div>
+              </div>
+              <div class="row form-group">
+                <div class="col-sm-5 col-form-label"> Asset Name <span style="color:red;">*</span></div>
+                <div class="col-sm-6">
+                  <input formControlName="asset_name" type="text" id="AssetNameId" name="AssetName"
+                    class="form-control">
+                </div>
+              </div>
+
+              <div class="row form-group">
+                <div class="col-sm-5 col-form-label"> Model Name </div>
+                <div class="col-sm-6">
+                  <input formControlName="model_name" type="text" id="ModelNameId" name="ModelName"
+                    class="form-control">
+                </div>
+              </div>
+              <div class="row form-group">
+                <div class="col-sm-5 col-form-label"> Asset Status </div>
+                <div class="col-sm-6">
+                  <select formControlName="asset_status" id="updateAssetStatusId" name="AssetStatus"
+                    class="form-control">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let asd of asset_status_data;" [value]="asd.key_val"> {{asd.key_name}} </option>
+
+                  </select>
+                </div>
+              </div>
+
+
+              <div class="row form-group">
+                <div class="col-sm-5 col-form-label"> Asset Condition </div>
+                <div class="col-sm-6">
+                  <select formControlName="asset_condition" id="updateAssetConditionId" name="AssetCondition"
+                    class="form-control">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let acd of asset_condition_data;" [value]="acd.key_val"> {{acd.key_name}} </option>
+
+                  </select>
+                </div>
+              </div>
+
+              <div class="row form-group">
+                <div class="col-sm-5 col-form-label"> Serial Number </div>
+                <div class="col-sm-6">
+                  <input formControlName="device_serial_no" type="text" id="SerialNoId" name="SerialNo"
+                    class="form-control">
+                </div>
+              </div>
+              <div class="row form-group">
+                <div class="col-sm-5 col-form-label"> Supplier/Vendor Name </div>
+                <div class="col-sm-6">
+                  <input formControlName="vender_name" type="text" id="VenderId" name="VendorName" class="form-control">
+                </div>
+              </div>
+              <ng-container *ngIf="assetForm.value.verify_status!='Y'">
+                <div class="row form-group">
+                  <div class="col-sm-5 col-form-label"> Attach Invoice
+                    <a *ngIf="assetForm.value.asset_invoice_url" [href]="assetForm.value.asset_invoice_url" target="_blank">
+                      <i class="fa fa-lg fa-file-pdf-o"></i>
+                    </a>
+                  </div>
+                  <div class="col-sm-6">
+                    <input type="file" id="FileNameId" (change)="onInvoiceSelect($event)" name="imagefile1"
+                      class="fileInputClass invoiceFile">
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="assetForm.value.verify_status=='Y'">
+                <div class="row form-group">
+                  <div class="col-sm-5 col-form-label"> Invoice Attached </div>
+                  <div class="col-sm-6">
+                    <a *ngIf="assetForm.value.asset_invoice_url" [href]="assetForm.value.asset_invoice_url" target="_blank">
+                      <i class="fa fa-2x fa-file-pdf-o"></i>
+                    </a>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+            <div class="col-sm-6">
+              <div class="row form-group">
+                <div class="col-sm-5 col-form-label"> &nbsp; Asset Code <span style="color:red;">*</span></div>
+                <div class="col-sm-6">
+                  <input formControlName="asset_code" type="text" class="form-control"
+                    (keyup)="check_alpha_num($event)">
+                </div>
+              </div>
+              <div class="row form-group">
+                <div class="col-sm-5 col-form-label"> &nbsp; Purchase Date </div>
+                <div class="col-sm-6">
+                  <input formControlName="purchase_date" type="text" id="PurchaseDateId"
+                    class="form-control pr-datepicker flatpickr-input" name="PurchaseDate" #pd>
+                </div>
+              </div>
+              <div class="row form-group">
+                <div class="col-sm-5 col-form-label"> &nbsp; Purchase Price </div>
+                <div class="col-sm-6">
+                  <input formControlName="purchase_price" type="text" (keyup)="check_digits($event)"
+                    class="form-control pr-datepicker flatpickr-input">
+                </div>
+              </div>
+
+              <div class="row form-group">
+                <div class="col-sm-5 col-form-label"> Last Service Date </div>
+                <div class="col-sm-6">
+                  <input formControlName="last_service_date" type="text" id="LastServiceDateId" #ld
+                    class="form-control pr-datepicker flatpickr-input" value="2024-09-10" name="LastServiceDate">
+                </div>
+              </div>
+
+              <div class="row form-group">
+                <div class="col-sm-5 col-form-label"> Default Location<span style="color:red;">*</span>
+                </div>
+                <div class="col-sm-6" style="display:flex;">
+                  <select formControlName="location_id" id="LocationId" name="LocationId" class="form-control">
+                    <option value="">-Select-</option>
+                    <option *ngFor="let ald of asset_location_data;" [value]="ald.location_id">{{ald.location_name}}
+                    </option>
+                  </select>
+                  &nbsp;
+                  <a title="Add New Location" (click)="openAddLocationModal()"><i class="fa fa-plus"></i></a>
+                </div>
+              </div>
+              <div class="row form-group">
+                <div class="col-sm-5 col-form-label">Description </div>
+                <div class="col-sm-6">
+
+                  <textarea formControlName="description" id="DescriptionId" name="Description" rows="4" cols="30"
+                    maxlength="300" style="resize:none;" class="form-control valid has-value"></textarea>
+                    (Max. 300 characters)
+                </div>
+              </div>
+
+              <ng-container *ngIf="assetForm.value.verify_status!='Y'">
+                <div class="row form-group">
+                  <div class="col-sm-5 col-form-label"> Upload Image
+                    <a *ngIf="assetForm.value.asset_image_url" [href]="assetForm.value.asset_image_url" target="_blank">
+                      <i class="fa fa-lg fa-file"></i>
+                    </a>
+                  </div>
+                  <div class="col-sm-6">
+                    <input type="file" class="form-control" accept=".jpg,.jpeg,.png" id="imageId"
+                      (change)="assetImgSelect($event)">
+                  </div>
+                </div>
+              </ng-container>
+
+              <ng-container *ngIf="assetForm.value.verify_status=='Y'">
+                <div class="row form-group">
+                  <div class="col-sm-5 col-form-label"> Uploaded Image </div>
+                  <div class="col-sm-6">
+                    <a *ngIf="assetForm.value.asset_image_url" [href]="assetForm.value.asset_image_url" target="_blank">
+                      <i class="fa fa-2x fa-file"></i>
+                    </a>
+                  </div>
+                </div>
+              </ng-container>
+
+            </div>
+          </div>
+
+
+
+
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-primary" value="Save" (click)="insert_update_assets()" *ngIf="verify_status!='Y'">
+
+          <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel"
+            (click)="closeAddEditAsset()">
+
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+<!-- /#wrapper -->

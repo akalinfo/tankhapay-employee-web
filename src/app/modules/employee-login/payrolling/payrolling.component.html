@@ -1,0 +1,423 @@
+<div id="menu1" class="tab-pane fade1">
+
+    <div class="accordion" id="accordion" role="tablist"
+    aria-multiselectable="true">
+  
+    <div class="card" *ngIf="
+            (candidateDetails.joiningStatus == 'JOINED' ||
+            candidateDetails.joiningStatus == 'RESTRUCTURE' ) &&
+            payout_method!='attendance'">
+          <div class="panel-heading panel_heading_gray collapsed card-header" role="tab" id="headingOne11"
+            data-toggle="collapse" data-parent="#accordion11" href="#collapseOne11" aria-expanded="true"
+            aria-controls="collapseOne">
+            <h4>
+              View Salary Structure <i class="fa fa-angle-down"></i>
+            </h4>
+          </div>
+        <div id="collapseOne11" class="panel-collapse collapse card-body in" role="tabpane11">
+          <div class="row">
+            
+            <div class="panel-body">
+                <div class="row" style="text-align:right;">
+                   
+                    <a style="padding-right:16px" (click)="printSalaryStructure()"><i class="fa fa-print fa-lg" aria-hidden="true"></i></a>
+                  </div>
+              <div class="Appointment-outer-box" id="salarystructure">
+                
+                <div class="table-responsive" *ngIf="salaryStructure != ''" >
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Salary Bucket</th>
+                        <th>Monthly</th>
+                        <th>Annually</th>
+                      </tr>
+                    </thead>
+                    <tbody id="roundedValues">
+                      <tr class="danger1" *ngIf="candidateDetails.jobType!='Consultant'">
+                        <th colspan="3">1. GROSS SALARY</th>
+                      </tr>
+                      <tr class="danger1" *ngIf="candidateDetails.jobType!='Consultant'">
+                        <td scope="col">Basic</td>
+                        <td>{{ salaryStructure.basic }}</td>
+                        <td>{{salaryStructure.basic*12}}</td>
+                      </tr>
+                      <tr class="danger1" *ngIf="candidateDetails.jobType!='Consultant'">
+                        <td scope="col">HRA</td>
+                        <td>{{ salaryStructure.hra }}</td>
+                        <td>{{salaryStructure.hra*12}}</td>
+                      </tr>
+                      <tr class="danger1" *ngIf="salaryStructure.allowances!='' && salaryStructure.allowances!='0' && salaryStructure.allowances!='0.0000' ">
+                        <td scope="col">Special Allowance</td>
+                        <td>{{ salaryStructure.allowances }}</td>
+                        <td>{{salaryStructure.allowances*12}}</td>
+                      </tr>
+                      <tr class="danger1" *ngIf="salaryStructure?.conveyance_allowance!='' && salaryStructure?.conveyance_allowance!='0.0000' && salaryStructure?.conveyance_allowance!='0'">
+                        <td scope="col">Conveyance Allowance</td>
+                        <td>{{ salaryStructure.conveyance_allowance }}</td>
+                        <td>{{salaryStructure.conveyance_allowance*12}}</td>
+                      </tr>
+                      <tr class="danger1" *ngIf="salaryStructure?.medical_allowance!='' && salaryStructure?.medical_allowance!='0.0000' && salaryStructure?.medical_allowance!='0'">
+                        <td scope="col">Medical Allowance</td>
+                        <td>{{ salaryStructure.medical_allowance }} </td>
+                        <td>{{salaryStructure.medical_allowance*12}}</td>
+                      </tr>
+                      
+                      <tr class="danger1" *ngFor="
+                          let deduction of salaryStructure.OtherDeductions
+                        " [ngStyle]="{'display':deduction.deduction_amount==0 ? 'none':''}">
+                        <td scope="col">
+                          {{ deduction.deduction_name }} 
+                        </td>
+                        <td>{{ deduction.deduction_amount }}</td>
+                        <td>{{ deduction.deduction_amount*12 }}</td>
+                      </tr>
+                      <tr *ngIf="salaryStructure.gross!='' && salaryStructure.gross!='0' && salaryStructure.gross!='0.0000' && candidateDetails.jobType!='Consultant'">
+                        <th scope="col">Gross Salary</th>
+                        <th>{{ salaryStructure.gross }}</th>
+                        <th>{{ salaryStructure.grossAnnual }}</th>
+                      </tr>
+                      <tr class="danger1" *ngIf="salaryStructure.gross!='' && salaryStructure.gross!='0' && salaryStructure.gross!='0.0000' && candidateDetails.jobType=='Consultant'">
+                        <td scope="col">Gross Earning</td>
+                        <td>{{ salaryStructure.gross }}</td>
+                        <td>{{ salaryStructure.grossAnnual }}</td>
+                      </tr>
+                      <tr class="danger1" *ngIf="salaryStructure.bonus!='' && salaryStructure.bonus!='0' && salaryStructure.bonus!='0.0000'">
+                        <td scope="col">Regular Bonus</td>
+                        <td>{{ salaryStructure.bonus }}</td>
+                        <td>{{ salaryStructure.bonus*12 }}</td>
+                      </tr>
+                      <tr class="danger1" *ngIf="salaryStructure.mealvouchers!='' && salaryStructure.mealvouchers!='0' && salaryStructure.mealvouchers!='0.0000'">
+                        <td scope="col">Meal Voucher</td>
+                        <td>{{ salaryStructure.mealvouchers }}</td>
+                        <td>{{ salaryStructure.mealvouchers*12 }}</td>
+                      </tr>
+                      <tr class="danger1" *ngIf="salaryStructure.medicalinsurancepremium!='' && salaryStructure.medicalinsurancepremium!='0' && salaryStructure.medicalinsurancepremium!='0.0000'">
+                        <td scope="col">Medical Insurance Premium</td>
+                        <td>{{ salaryStructure.medicalinsurancepremium }}</td>
+                        <td>{{ salaryStructure.medicalinsurancepremium*12 }}</td>
+                      </tr>
+                      <tr class="danger1" *ngIf="salaryStructure.teaallowances!='' && salaryStructure.teaallowances!='0' && salaryStructure.teaallowances!='0.0000'">
+                        <td scope="col">Tea Allowances</td>
+                        <td>{{ salaryStructure.teaallowances }}</td>
+                        <td>{{ salaryStructure.teaallowances*12 }}</td>
+                      </tr>
+                      <tr class="danger1" *ngIf="salaryStructure.employerepfrate!='' && salaryStructure.employerepfrate!='0' && salaryStructure.employerepfrate!='0.0000'">
+                        <td scope="col">Employer EPF Part</td>
+                        <td>{{ salaryStructure.employerepfrate }}</td>
+                        <td>{{ salaryStructure.employerepfrate*12 }}</td>
+                      </tr>
+                      <tr class="danger1" *ngIf="salaryStructure.employeresirate!='' && salaryStructure.employeresirate!='0' && salaryStructure.employeresirate!='0.0000'">
+                        <td scope="col">Employer ESIC Part</td>
+                        <td>{{ salaryStructure.employeresirate }}</td>
+                        <td>{{ salaryStructure.employeresirate*12 }}</td>
+                      </tr>
+                      <tr class="danger1" *ngIf="salaryStructure.employerlwf!='' && salaryStructure.employerlwf!='0' && salaryStructure.employerlwf!='0.0000'">
+                        <td scope="col">Employer LWF</td>
+                        <td>
+                          {{salaryStructure.employerlwf}}</td>
+                          <td>{{salaryStructure.employerlwf*12}}
+                        </td>
+                      </tr>
+                      <tr class="danger1" *ngIf="salaryStructure.employergratuity!='' && salaryStructure.employergratuity!='0' && salaryStructure.employergratuity!='0.0000'">
+                        <td scope="col">Employer Gratuity</td>
+                        <td>
+                          {{salaryStructure.employergratuity}}
+                        </td>
+                          <td>{{salaryStructure.employergratuity*12}}</td>
+                      </tr>
+                      <tr class="danger1" *ngIf="salaryStructure.employerinsuranceamount!='' && salaryStructure.employerinsuranceamount!='0' && salaryStructure.employerinsuranceamount!='0.0000'">
+                        <td scope="col">Employer Group Insurance</td>
+                        <td>
+                          {{salaryStructure.employerinsuranceamount}}
+                        </td>
+                          <td>{{salaryStructure.employerinsuranceamount*12}}</td>
+                      </tr>
+                      <tr class="danger1" *ngIf="salaryStructure.total!='' && salaryStructure.total!='0' && salaryStructure.total!='0.0000'">
+                        <th scope="col">GRAND TOTAL</th>
+                        <th>
+                          {{ salaryStructure.total }}
+                        </th>
+                          <th>{{ salaryStructure.totalAnnual}}</th>
+                      </tr>
+                      
+                      <tr class="danger1">
+                        <th colspan="3">3. DEDUCTION</th>
+                      </tr>
+                      
+                      <tr class="danger1" *ngIf="salaryStructure.taxes!='' && salaryStructure.taxes!='0' && salaryStructure.taxes!='0.0000'">
+                        <td scope="col">Tax</td>
+                        <td>
+                          {{salaryStructure.taxes}}
+                        </td>
+                        <td>
+                          {{salaryStructure.taxes*12}}
+                        </td>
+                      </tr>
+                      <tr class="danger1" *ngIf="salaryStructure.employeeepfrate!='' && salaryStructure.employeeepfrate!='0' && salaryStructure.employeeepfrate!='0.0000'">
+                        <td scope="col">Employee EPF</td>
+                        <td>
+                          {{salaryStructure.employeeepfrate}}
+                        </td>
+                        <td>
+                          {{salaryStructure.employeeepfrate*12}}
+                        </td>
+                      </tr>
+                      <tr class="danger1" *ngIf="salaryStructure.vpfemployee!='' && salaryStructure.vpfemployee!='0' && salaryStructure.vpfemployee!='0.0000'">
+                        <td scope="col">Employee VPF</td>
+                        <td>
+                          {{salaryStructure.vpfemployee}}</td>
+                          <td>{{salaryStructure.vpfemployee*12}}
+                        </td>
+                      </tr>
+                  
+                      <tr class="danger1" *ngIf="salaryStructure.employeeesirate!='' && salaryStructure.employeeesirate!='0' && salaryStructure.employeeesirate!='0.0000'">
+                        <td scope="col">Employee ESIC</td>
+                        <td>{{ salaryStructure.employeeesirate }}</td>
+                        <td>{{ salaryStructure.employeeesirate*12 }}</td>
+                      </tr>
+                      
+                      <tr class="danger1" *ngIf="salaryStructure.employeelwf!='' && salaryStructure.employeelwf!='0' && salaryStructure.employeelwf!='0.0000'">
+                        <td scope="col">Employee LWF</td>
+                        <td>
+                          {{salaryStructure.employeelwf }}</td>
+                          <td> {{salaryStructure.employeelwf*12 }}
+                        </td>
+                      </tr>
+                      <tr class="danger1" *ngIf="salaryStructure.insuranceamount!='' && salaryStructure.insuranceamount!='0' && salaryStructure.insuranceamount!='0.0000'">
+                        <td scope="col">Employee Group Insurance</td>
+                        <td>
+                          {{salaryStructure.insuranceamount }}</td>
+                          <td> {{salaryStructure.insuranceamount*12 }}
+                        </td>
+                      </tr>
+                      <tr class="danger1" *ngIf="salaryStructure.gratuity!='' && salaryStructure.gratuity!='0' && salaryStructure.gratuity!='0.0000'">
+                        <td scope="col">Gratuity</td>
+                        <td>
+                          {{salaryStructure.gratuity}}</td>
+                          <td>{{salaryStructure.gratuity*12}}
+                        </td>
+                      </tr>
+                      <!-- <tr class="danger1">
+                        <th colspan="3">4. OTHER DEDUCTION</th>
+                      </tr> -->
+                      
+                      <!-- <tr class="danger1">
+                                      <td scope="col">TDS</td>
+                                      <td></td>
+                                  </tr> -->
+                      <!-- <tr class="danger1">
+                                      <td scope="col">Insurance</td>
+                                      <td>{{salaryStructure.insuranceamount}}</td>
+                                  </tr> -->
+                      <!-- <tr class="danger1">
+                                      <td scope="col">EWF</td>
+                                      <td></td>
+                                  </tr>-->
+                      <!-- <tr class="danger1">
+                                      <td scope="col">Social Security Services</td>
+                                      <td></td>
+                                  </tr>-->
+                      <tr class="danger3">
+                        <td>Salary Bucket Total</td>
+                        <td>{{ salaryStructure.ctc }}</td>
+                        <td>{{ salaryStructure.ctcAnnual }}</td>
+                      </tr>
+                      <tr class="danger3">
+                        <td>Salary In Hand</td>
+                        <td>{{ salaryStructure.salaryinhand }}</td>
+                        <td>{{ salaryStructure.inHandAnnual }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div class="col-md-4">
+                            <label><strong>Effective Date : &nbsp;</strong></label>
+                            <span class="ml-2">{{salaryStructure.effectivefrom ? salaryStructure.effectivefrom.substring(0,10):''}}</span>
+                          </div>
+                            <div class="col-md-4">
+                                <label><strong>Professional Tax Applied : &nbsp;</strong></label>
+                                <span class="ml-2">{{ salaryStructure.is_professional_tax_applied }}</span>
+                            </div>
+                            <div class="col-md-4" *ngIf="salaryStructure.is_professional_tax_applied=='Y'">
+                                <label><strong>Professional Tax State : &nbsp;</strong></label>
+                                <span class="ml-2">{{ salaryStructure.professional_tax_state }}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <label><strong>LWF Applied :&nbsp;</strong></label>
+                                <span class="ml-2">{{ salaryStructure.is_lwf_applied }}</span>
+                            </div>
+                            <div class="col-md-4" *ngIf="salaryStructure.is_lwf_applied=='Y'">
+                                <label><strong>LWF State : &nbsp;</strong></label>
+                                <span class="ml-2">{{ salaryStructure.lwf_state }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+  
+
+  <!-- Payslip Block By ARPIT -->
+     <div class="card" *ngIf="this.candidateDetails.joiningStatus == 'JOINED' || this.candidateDetails.joiningStatus == 'RELIEVED'">
+  
+  
+        <div class="panel-heading panel_heading_gray collapsed card-header"
+            role="tab" id="headingOne821" data-toggle="collapse"
+            data-parent="#accordion821" href="#collapseOne821"
+            aria-expanded="false" aria-controls="collapseOne">
+            <h4>Payslips <i class="fa fa-angle-down"></i></h4>
+        </div>
+        <div id="collapseOne821" class="panel-collapse collapse card-body"
+            role="tabpane21">
+            <div class="row">
+  
+                <div class="col-md-12 padd-bot-15 padd-top-15">
+                    <div class="col-sm-6 mrg-bot-15 " >
+                        <label><strong>Payslips</strong></label>
+  
+                    </div>
+                    <div class="col-sm-6 mrg-bot-15">
+                      <div class="Financial-Year-inn-box" style="display: flex; align-items: center;">
+                        <span style="margin-right: 1.5rem; font-weight: bold;">Month - Year</span>
+                    
+                        <!-- Month dropdown -->
+                        <select class="form-control" style="margin: 0 0.6rem; width: 150px;" (change)="changeMonth($event)">
+                          <option *ngFor="let ma of monthsArray" [selected]="month == ma.id" [value]="ma.id">
+                            {{ma.month}}
+                          </option>
+                        </select>
+                    
+                        <!-- Year dropdown -->
+                        <select class="form-control" style="margin: 0 0.6rem; width: 100px;" (change)="changeYear($event)">
+                          <option *ngFor="let ya of yearsArray" [selected]="year == ya" [value]="ya">{{ya}}</option>
+                        </select>
+                    
+                        <!-- Search button -->
+                        <button class="btn btn-primary" style="margin-left: 10px;" (click)="pay_salary_slip()">Search</button>
+                      </div>
+                    </div>
+                    
+                    <div class="col-sm-12 mrg-bot-15">
+                      <!-- Show this block when there is no payslip data -->
+                      <div *ngIf="!flag" class="no-pay-slips-inn-box">
+                        <img src="assets/img/no-pay-slip.png" class="img-circle img-responsive" alt="">
+                        <p>There are no payslips available for this financial year.</p>
+                      </div>
+                    
+                      <!-- Show this block when there is payslip data (i.e., a PDF link) -->
+                      <div *ngIf="flag">
+                        <iframe [src]="payslip_data" height="600" width="100%" title="Payslip PDF"></iframe>
+                      </div>
+                    </div>
+                    
+  
+                </div>
+  
+            </div>
+        </div>
+    </div> 
+  <!-- Form 16 Block By ARPIT -->
+  <div class="card" *ngIf="this.candidateDetails.joiningStatus == 'JOINED' || this.candidateDetails.joiningStatus == 'RELIEVED'">
+  
+    <div class="panel-heading panel_heading_gray collapsed card-header"
+        role="tab" id="headingOne31" data-toggle="collapse"
+        data-parent="#accordion31" href="#collapseOne31"
+        aria-expanded="false" aria-controls="collapseOne">
+        <h4>Forms 16 <i class="fa fa-angle-down"></i></h4>
+    </div>
+    <div id="collapseOne31" class="panel-collapse collapse card-body"
+        role="tabpane3">
+        <div class="row">
+          <div class="col-md-12 padd-bot-15 padd-top-15">
+            <div class="col-sm-4 mrg-bot-15 " >
+              <label><strong>Form 16</strong></label>
+  
+          </div>
+            <div class="col-sm-6 mrg-bot-15">
+              <div class="Financial-Year-inn-box" style="display: flex; align-items: center;">
+                <span style="margin-right: 1.5rem; font-weight: bold;">Financial Year</span>
+            
+                <!-- Financial Year dropdown -->
+                <select class="form-control" style="margin: 0 0.6rem; width: 150px;" (change)="changeFinancialYear($event)">
+                  <option *ngFor="let fy of financialYearsArray" [selected]="selectedFinancialYear == fy" [value]="fy">
+                    {{fy}}
+                  </option>
+                </select>
+            
+                <!-- Search button -->
+                <button class="btn btn-primary" style="margin-left: 10px; float: right;" (click)="GetForm16_Details()">Search</button>
+                <div class="col-md-2 text-right" style="float: right;" *ngIf="selectedFinancialYear !== 'All'">
+  
+                 
+              </div>
+              </div>
+            </div>
+  
+      
+            <div class="col-sm-12 mrg-bot-15">
+              <!-- || this.GetForm16_data[0]?.form_16_row_id!='' -->
+  
+  
+                <div class="no-pay-slips-inn-box" *ngIf="!form16_flag">
+  
+                    <img src="assets/img/no-pay-slip.png"
+                        class="img-circle img-responsive" alt="">
+  
+                    <p>Forms 16 hasn't been generated for this employee
+                        yet!</p>
+                </div>
+                <div *ngIf="form16_flag">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>S.No</th>
+                        <th>TP / Org Emp Code</th>
+                        <th>Financial Year</th>
+                        <th>Form 16 Part A</th>
+                        <th>Form 16 Part B</th>
+                        <!-- <th *ngIf="selectedFinancialYear !== 'All'">Action</th> -->
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let record of GetForm16_data; let i = index">
+                        <td>{{ i + 1 }}</td> <!-- Serial Number -->
+                        <td>{{this.candidateDetails.cjcode}}</td> <!-- TP / Org Emp Code -->
+                        <td>{{ record.financial_year }}</td> <!-- Financial Year -->
+                        <td>
+                          <a *ngIf="record.form16path" [href]="record.form16path" target="_blank">
+                            <i class="fa fa-eye"></i> View
+                          </a>
+                        </td>
+                        <td>
+                          <a *ngIf="record.form16b_path" [href]="record.form16b_path" target="_blank">
+                              <i class="fa fa-eye"></i> View
+                          </a>
+                        </td>
+                        <!-- <td *ngIf="selectedFinancialYear !== 'All'">
+                          <a (click)="openEditPopup(record)" style="cursor: pointer;">
+                            <i class="ti-pencil-alt"></i>
+                          </a>
+                        </td>                                 -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+  
+  
+        </div>
+    </div>
+  </div> 
+  </div>
+
+  </div>
+  

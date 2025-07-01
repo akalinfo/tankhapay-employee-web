@@ -1,0 +1,267 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+  <div id="wrapper" [ngClass]="{'active': showSidebar == false}">
+    <div class="fakeLoader"></div>
+    <div id="page-wrapper">
+      <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+          <h3 class="text-themecolor">{{policyType}} </h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="['/employee-mgmt/policies']">Policies</a></li>
+
+            <li class="breadcrumb-item active">{{policyType}}</li>
+          </ol>
+        </div>
+      </div>
+      <div class="container-fluid element" id="element">
+        <!-- /row -->
+        <div class="row">
+
+          <div class="col-md-12">
+            <a [routerLink]="['/employee-mgmt/policies']" class="btn btn-secondary btn-sm">
+              <i class="fa fa-arrow-left" aria-hidden="true"></i> Back
+            </a>
+          </div>
+
+          <div class="col-md-12 padd-bot-15 padd-top-0">
+            <div class="card">
+
+              <div class="card-header caded-innder-head-box">
+
+                <div class="col-sm-6 text-left">
+                  <h3 class="list-name-text"> </h3>
+                </div>
+
+                <div class="col-sm-6 text-right">
+                  <!--<a href="#SendMessage199" data-toggle="modal" class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn" data-placement="top" style=" margin-top: 10px;">Add Category </a>-->
+                  <a (click)="openAddPolicy()" class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn"
+                    data-placement="top" style="margin: 6px 0;background: #1194f7;">Create Policy </a>
+                </div>
+
+              </div>
+
+              <div class="card-body padd-bot-0 padd-top-0">
+
+                <div class="table-responsive challan-table-outer-box Documents-listing-table-box">
+
+                  <table class="table table-lg table-hover">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th style="width: 150px;">Policy Created Date </th>
+                        <th>File</th>
+                        <th>Applicable For</th>
+                        <th>Applicable On (Count)</th>
+
+                        <!-- <th style="width: 120px;">Create Date</th> -->
+
+                        <th>Action</th>
+
+                      </tr>
+                    </thead>
+
+                    <tbody>
+
+                      <tr *ngFor="let policy of policyList;let i=index;">
+                        <td>
+                          {{i+1}}
+                        </td>
+                        <td>{{policy.policies_create_date | date: 'dd-MM-yyyy'}}</td>
+
+                        <td><a href="{{policy.policies_file}}" target="_blank" *ngIf="policy.policies_file"><i
+                              class="fa fa-file-pdf-o" aria-hidden="true"></i></a>&nbsp;
+                          <a (click)="generatePDF(policy)" style="cursor:pointer;"><i class="fa fa-eye"
+                              aria-hidden="true"></i></a>
+                        </td>
+                        <td>{{policy.applicable_for_type =='emp_code' ? 'Employee' : 'Department'}}</td>
+                        <td><a (click)="showEmployees(policy)"
+                            style="cursor:pointer;">{{policy.applicable_type_value.split(',').length}}</a></td>
+                        <td>
+                          <a data-toggle="modal" data-placement="top" class="btn btn-shortlist manage-btn" title="Edit"
+                            (click)="openAddPolicyModal('editPolicy', policy)"><i class="ti-pencil-alt"></i></a>
+
+
+                        </td>
+
+                      </tr>
+                      <tr *ngIf="policyList.length==0">
+                        <td colspan="6" style="text-align: center;font-weight:600;">No record(s) found</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /row -->
+  <!-- /#page-wrapper -->
+
+  <div [@grooveState]="isAddPolicy ? 'active' : 'inactive'" class="modal fade punchin-punchout-outer1-box in">
+    <div class="modal-dialog" [@dongleState]="isAddPolicy ? 'active' : 'inactive'">
+      <div class="modal-content">
+        <form [formGroup]="policyForm">
+          <div class="modal-header theme-bg">
+            <h4 class="modal-title">Policies</h4>
+            <span class="close-print-box">
+              <!--<a onclick="printFinalBill()"><i class="fa fa-print"></i></a>-->
+              <button type="button" class="close" (click)="hideModal()">×</button>
+            </span>
+          </div>
+          <div class="modal-body final-bill-inner-box">
+
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-12">
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">Applicable By :</label>
+                    <div class="col-sm-8">
+                      <div class="custom-file">
+                        <input type="radio" class="custom-file-input" id="employee"
+                          formControlName="applicable_for_type" value="emp_code" name="applicable_for_type"
+                          (click)="getPolicyOnData($event.target.value)">
+                        <label for="employee">Employee</label>
+                        <!-- <input type="radio" class="custom-file-input" id="department"
+                                                        formControlName="applicable_for_type" value="department" name="applicable_for_type" (click)="getPolicyOnData($event.target.value)">
+                                                        <label for="department">Department</label> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group" *ngIf="policyForm.value.applicable_for_type!=''">
+                    <label class="control-label col-sm-4"></label>
+                    <div class="col-md-8 orgMultiselectDropdown">
+                      <ng-multiselect-dropdown
+                        [placeholder]="'Select ' + (policyForm.value.applicable_for_type === 'emp_code' ? 'Users' : 'Department')"
+                        [settings]="dropdownSettings" [data]="dropdownList" formControlName="policyNo"
+                        [(ngModel)]="selectedval" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)"
+                        (onDeSelectAll)="onUnselectAll($event)" (onDeSelect)="onItemUnselect($event)">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">Create Date <span class="text-damger">*</span>:</label>
+                    <div class="col-sm-8">
+
+                      <input type="date" class="form-control" placeholder="Leave Policy"
+                        formControlName="policyCreateDt">
+
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">Policies Type <span class="text-damger">*</span> :</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" placeholder="Leave Policy" readonly
+                        formControlName="policyType">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-6">Acknowledgement is required?</label>
+
+                    <input type="checkbox" id="ack" class="Acknowledge" name="Acknowledge" value="Yes"
+                      formControlName="acknowledgement">
+                    &nbsp;&nbsp;<label class="normalLabel" for="0" style="vertical-align: middle;">Yes</label>
+
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-12">Policies Text :</label>
+                    <div class="col-sm-12">
+                      <angular-editor id="body-editor" class="jdbanktoolbarsize" formControlName="policy_text"
+                        [config]="editorConfig" (focus)="setActiveEditor('body')">
+                      </angular-editor>
+
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">File (Max 2MB) <span class="text-damger">*</span> :</label>
+                    <div class="col-sm-8">
+                      <div class="input-group mb-3">
+
+                        <div class="custom-file">
+                          <a href="{{policyForm.value.file}}" *ngIf="policyForm.value.file" target="_blank"><i
+                              class="fa fa-file-pdf-o"></i></a>
+                          <input type="file" class="custom-file-input" style="bottom:4px" id="policy-file"
+                            (change)="onFileSelect($event)" accept="application/pdf">
+                          <label class="custom-file-label" for="inputGroupFile01">{{policyForm.value.file_name?
+                            policyForm.value.file_name : 'Choose file'}}</label>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <input type="button" class="btn btn-default" (click)="hideModal()" value="Cancel">
+            <input type="button" class="btn btn-success" value="Save" (click)="savePolicy()">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div [@grooveState]="isEmpList ? 'active' : 'inactive'" class="modal fade punchin-punchout-outer1-box in"
+    id="employee-list">
+    <div class="modal-dialog" [@dongleState]="isEmpList ? 'active' : 'inactive'">
+      <div class="modal-content">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Employee List</h4>
+          <button type="button" class="close" (click)="hideEmpListModal();">&times;</button>
+        </div>
+        <div class="modal-body" style="max-height: 320px;">
+          <div class="table" style="max-height: 237px;
+                overflow: auto;
+                margin-bottom: 0;">
+            <table class="table table-responsive" id="otherDeductionTable">
+              <thead style="position:sticky;top:0px;background: #fff;">
+                <tr>
+                  <th id="ember1089" class="sortable ember-view" style="width: 10%;">
+                    #
+                  </th>
+                  <th id="ember1089" class="sortable ember-view" style="text-align: center;">
+                    Employee Name
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let emp of empList | paginate: { itemsPerPage: 10, currentPage: page,totalItems: empList.length };let i=index;"
+                  class="emp-item">
+                  <td>{{(page-1)*10+i+1}}</td>
+                  <td style="text-align: center;">{{emp.emp_name}}</td>
+                </tr>
+                <tr *ngIf="empList.length==0">
+                  <td colspan="3" style="text-align: center;">No Data Found</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="flexbox padd-10" *ngIf="empList.length > 0">
+            <pagination-controls (pageChange)="page = $event;" style="font-size: 2rem; padding: 6px; font-weight: bold"
+              class="float-right"></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</section>

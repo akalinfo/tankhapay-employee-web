@@ -1,0 +1,29 @@
+.row-head {
+  align-items: baseline;
+  display: flex;
+}
+
+.cur-ptr {
+  cursor: pointer;
+}
+.fa-edit {
+  color: blue;
+}
+.fa-check-square-o{
+  color: #07bf07;
+}
+.fa-trash {
+  color: red;
+}
+.verified-device {
+
+  color: green;
+}
+.inactive-device {
+
+  color: red;
+}
+.read-only {
+  user-select: none !important;
+  pointer-events: none !important;
+}

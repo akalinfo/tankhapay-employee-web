@@ -1,0 +1,668 @@
+.light-skyblue {
+    background: lightblue;
+}
+
+.white {
+    background: white;
+}
+
+.export-button {
+    background-color: rgb(114, 238, 116);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.dropdown.float-right-box ul#menu3 {
+    left: -52px;
+}
+
+.top-right-outer-box {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.form-check {
+    padding-top: 10px;
+}
+
+.form-check .form-check-input {
+    height: 20px;
+    width: 20px;
+    vertical-align: text-bottom;
+    margin: 3px 5px 0 0;
+}
+
+.save-button .btn.btn-primary:hover {
+    background: #87ceeb !important;
+}
+
+.save-button .btn.btn-primary {
+    background: #d1ebfc;
+    color: #000;
+    border: 1px solid #87ceeb;
+    padding: 10px 14px;
+}
+
+html body .btn-primary:hover,
+html body .btn-primary:focus {
+    color: #ffffff;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    color: #fff;
+    background-color: #1194f7 !important;
+    border-color: #1194f7 !important;
+}
+
+.btn.focus,
+.btn:focus,
+.btn:hover {
+    color: #67757c !important;
+    text-decoration: none;
+}
+
+.Show-Fields-top-outer-box {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.dropdown.btn-group.Show-Fields-outer-box .btn-primary {
+    padding: 10px 15px;
+}
+
+.showhide {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.dropdown-menu {
+    border-color: #e8eef1;
+    padding: 0;
+    box-shadow: none;
+    margin: 0px 0 0;
+}
+
+.Show-Fields-top-outer-box .dropdown.float-right-box .btn-primary:hover {
+    color: #fff;
+    background-color: #1194f7;
+    border-color: #1194f7;
+}
+
+.Show-Fields-top-outer-box .dropdown.float-right-box .btn-primary {
+    border-radius: 0;
+}
+
+.save-button .btn.btn-primary.Reset-btn-box:hover {
+    background: #dbdbdb;
+    border: 1px solid #c4c6c7;
+}
+
+.save-button .btn.btn-primary.Reset-btn-box {
+    background: #e3e3e3;
+    border: 1px solid #c4c6c7;
+}
+
+.save-button .btn.btn-primary:hover {
+    background: #87ceeb;
+}
+
+.save-button .btn.btn-primary {
+    background: #d1ebfc;
+    color: #000;
+    border: 1px solid #87ceeb;
+    padding: 10px 14px;
+}
+
+html body .btn-primary:hover,
+html body .btn-primary:focus {
+    color: #ffffff;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    color: #fff;
+    background-color: #1194f7;
+    border-color: #1194f7;
+}
+
+.btn.focus,
+.btn:focus,
+.btn:hover {
+    color: #67757c;
+    text-decoration: none;
+}
+
+html body .btn-primary {
+    background: #1194f7;
+}
+
+.dropdown-menu>li:last-child a {
+    border-bottom: none;
+}
+
+.dropdown-menu>li>a {
+    display: block;
+    padding: 14px 12px 14px 12px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #67757c;
+    white-space: nowrap;
+    border-bottom: 1px solid #f1f6f9;
+}
+
+/* .table-responsive.reports-new-table-outer-box thead {
+    color: #ffffff !important;
+    background: #6fbbdb !important;
+    vertical-align: top;
+}
+
+.table-bordered {
+    border: 1px solid #e8edef !important;
+} */
+
+.showhide {
+    max-height: 200px;
+    /* Set a maximum height for the dropdown */
+    overflow-y: auto;
+    /* Add a vertical scrollbar if necessary */
+}
+
+.dropdown-item label {
+    display: block;
+    white-space: nowrap;
+    /* Prevent text from wrapping to the next line */
+}
+
+.dropdown-item input {
+    margin-right: 5px;
+    /* Add some spacing between the checkbox and the text */
+}
+
+
+
+/* =================================================================== */
+/* ==       NEW STYLES FOR THE APPROVAL MODAL                       == */
+/* ==   Designed to match your existing page theme                  == */
+/* =================================================================== */
+
+/* --- Modal Backdrop --- */
+/* This styles the semi-transparent background behind the modal */
+
+.modal.fade {
+    transition: opacity .15s linear;
+    opacity: 0;
+    /* <--- This makes it transparent */
+}
+
+/* When active, Bootstrap adds the 'show' class */
+.modal.show {
+    opacity: 1;
+    /* <--- This makes it visible */
+}
+
+/* The outer div has display: block */
+.modal.fade.show {
+    display: block;
+    /* <--- This makes it take up space */
+}
+
+.modal-backdrop.show {
+    opacity: 0.5;
+
+}
+
+.model {
+    background-color: rgba(0, 0, 0, 0.5);
+
+}
+
+/* --- Main Modal Container --- */
+/* This is the white box that holds the modal content */
+.modal-content {
+ margin-top:185px;
+    border: 1px solid #c4c6c7;
+    border-radius: 4px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    /* A subtle shadow to lift it off the page */
+}
+
+/* --- Modal Header --- */
+/* Styling the header to match your blue table headers */
+
+.modal-header {
+    background-color:#0084ff;
+    /* Matching your .reports-new-table-outer-box thead */
+    color: #ffffff;
+    border-bottom: 1px solid #0084ff;
+    /* A slightly darker blue for the separator */
+    padding: 1rem 1.5rem;
+}
+
+.modal-header .modal-title {
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+/* --- Modal Header Close Button (the 'x') --- */
+/* This makes the 'x' button white and more visible on the blue background */
+
+
+ .close {
+    color: #ffffff;
+    opacity:0.90;
+    font-size: 12;
+}
+ .close:hover {
+   
+    opacity:1;
+    font-size: 14;
+}
+/* --- Modal Body --- */
+/* Styling the content area of the modal */
+.modal-dialog {
+  max-height: 90vh; /* ensures modal fits within screen */
+}
+
+
+.modal-body {
+    padding: 1.5rem;
+    color: #333;
+     max-height: 65vh;
+  overflow-y: auto;
+    /* A standard dark text color for readability */
+}
+
+/* Styles for the pre-filled data text */
+.modal-body p {
+    margin-bottom: 0.75rem;
+}
+
+.modal-body p>strong {
+    font-weight: 600;
+    color: #000;
+}
+
+/* Styles for the Remark textarea */
+.modal-body .form-group label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #000;
+}
+
+.modal-body textarea.form-control {
+    border-color: #c4c6c7;
+    /* Using your grey border color */
+}
+
+.modal-body textarea.form-control:focus {
+    border-color: #87ceeb;
+    /* Using your light blue for the focus state */
+    box-shadow: 0 0 0 0.2rem rgba(135, 206, 235, 0.35);
+    /* Glow effect matching the border */
+}
+
+
+/* --- Modal Footer --- */
+/* The area at the bottom holding the action buttons */
+.modal-footer {
+    background-color: #f1f6f9;
+    /* A very light grey/blue from your theme */
+    border-top: 1px solid #e8edef;
+    /* Matches your table border color */
+    padding: 0.75rem 1.5rem;
+}
+
+/* --- Footer Buttons --- */
+/* Generic styling for all buttons in the footer */
+.modal-footer .btn {
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 4px;
+}
+
+/* "Approve" button - making it match your primary save buttons */
+.modal-footer .btn-success {
+    background: #d1ebfc;
+    /* Your primary button background */
+    color: #000;
+    border: 1px solid #87ceeb;
+    /* Your primary button border */
+}
+
+.modal-footer .btn-success:hover {
+    background: #87ceeb;
+    /* Your primary button hover background */
+    color: #000;
+    border: 1px solid #87ceeb;
+}
+
+/* "Cancel" button - making it match your grey 'Reset' buttons */
+.modal-footer .btn-secondary {
+    background: #e3e3e3;
+    /* Your Reset button background */
+    color: #333;
+    border: 1px solid #c4c6c7;
+    /* Your Reset button border */
+}
+
+.modal-footer .btn-secondary:hover {
+    background: #dbdbdb;
+    /* Your Reset button hover background */
+    color: #333;
+    border: 1px solid #c4c6c7;
+}
+
+/* The 'fade' class makes it invisible by default */
+.modal.fade {
+    transition: opacity .15s linear;
+    opacity: 0;
+    /* <--- This makes it transparent */
+}
+
+/* When active, Bootstrap adds the 'show' class */
+.modal.show {
+    opacity: 1;
+    /* <--- This makes it visible */
+}
+
+/* The outer div has display: block */
+.modal.fade.show {
+    display: block;
+    /* <--- This makes it take up space */
+}
+
+section-header {
+  display: flex;                 /* Arrange items in a row */
+  justify-content: space-between;  /* Push items to opposite ends */
+  align-items: center;           /* Vertically center the items */
+  cursor: pointer;               /* Show a hand cursor to indicate it's clickable */
+  background-color: #e9f6ff; 
+  color:#004899;    /* Optional: Give it a slight background color */
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  padding:5px;
+  margin-top: 20px;
+}
+
+.section-title {
+  font-weight: 600; /* Optional: Make the title bold */
+  font-size: 14px;
+}
+
+.toggle-icon {
+  font-size: 14px;
+  color: #004899; /* Optional: Give the icon a color */
+}
+.text-center {
+  padding: 20px;
+}
+
+/* Main form container - card like appearance */
+.clearance-form-container {
+   background-color: #fff;
+  padding: 35px 40px; /* Increased padding */
+  border-radius: 8px; /* Consistent with .tab-pane .card .card-body */
+  border: 1px solid #d3e7f5; /* Consistent border */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Consistent shadow */
+  font-family: 'Montserrat', sans-serif; 
+  color:black; /* Default text color */
+}
+
+/* Form titles */
+.clearance-form-container  h2 {
+  color: black; /* Standard heading color */
+  font-weight: 600; /* Common heading weight */
+  margin-bottom: 20px; /* Space below title */
+  text-align: center;
+}
+/* .clearance-form-container .text-center h3 {
+  color:black;
+  font-weight: 500;
+}
+.clearance-form-container .text-center h2 {
+  margin-bottom: 5px; /* Reduced margin between h2 and h3 */
+/* }
+.clearance-form-container .text-center h3 {
+  margin-bottom: 20px;
+  font-size: 1.5rem; Slightly smaller than h2
+} */ 
+
+/* Styling for fieldsets (Employee Details, Signatures) */
+.clearance-form-container fieldset {
+  background-color: #fafdff;
+  border: 1px solid #e0eaf0;
+  padding: 20px;
+  margin-bottom: 25px;
+  border-radius: 6px;
+}
+
+/* .clearance-form-container fieldset legend {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #004899;
+  background-color: #e9f6ff;
+  padding: 8px 15px;
+  border-radius: 4px;
+  border: 1px solid #d3e7f5;
+  width: auto;
+  margin-bottom: 20px;
+} */
+
+/* Form labels */
+.clearance-form-container .form-label {
+  font-weight: 500;
+  color:black;
+  margin-bottom: 0.3rem;
+  font-size: 14px;
+}
+
+/* Input fields, textareas, selects */
+.clearance-form-container .form-control,
+.clearance-form-container .form-select {
+  border-radius: 4px;
+  border-color: #ced4da;
+  font-size: 14px;
+  height: calc(1.5em + 0.75rem + 2px); /* Standard height */
+}
+.clearance-form-container .form-control[readonly] {
+  background-color: #e9ecef; /* Standard readonly background */
+}
+
+
+.clearance-form-container .form-control:focus,
+.clearance-form-container .form-select:focus {
+  border-color: #1194f7;
+  box-shadow: 0 0 0 0.2rem rgba(17, 148, 247, 0.25);
+}
+
+/* Table styling for clearance items */
+.clearance-form-container .table {
+    margin-bottom: 0; /* Remove default bottom margin if fieldset provides it */
+}
+.clearance-form-container .table thead th {
+  background-color: #e9f6ff;
+  color:black;
+  font-weight: 600;
+  border-bottom: 2px solid #d3e7f5;
+  font-size: 14px;
+  padding: 0.75rem;
+  text-align: center; /* Center align header text */
+}
+
+.clearance-form-container .table tbody td {
+  vertical-align: middle;
+  font-size: 14px;
+  padding: 0.5rem; /* Slightly reduced padding for denser table */
+}
+
+.clearance-form-container .table tbody td input[type="text"].form-control,
+.clearance-form-container .table tbody td select.form-select {
+  font-size: 14px; /* Smaller font in table inputs */
+  padding: 0.3rem 0.5rem; /* Smaller padding */
+  height: auto; /* Adjust height for smaller padding */
+}
+
+/* .clearance-form-container .table tbody td:first-child { 
+  font-weight: 600;
+  background-color: #f8f9fa; 
+  text-align: left;
+} */
+
+
+/* Submit button */
+.clearance-form-container .btn-primary {
+  background-color: #1194f7;
+  border-color: #1194f7;
+  padding: 10px 25px;
+  font-weight: 500;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+.clearance-form-container .btn-primary:hover {
+  background-color: #007edb;
+  border-color: #007edb;
+}
+
+.clearance-form-container .btn-primary:disabled {
+  background-color: #a0d3f9;
+  border-color: #a0d3f9;
+}
+
+
+.section-header {
+  display: flex;                 /* Arrange items in a row */
+  justify-content: space-between;  /* Push items to opposite ends */
+  align-items: center;           /* Vertically center the items */
+  cursor: pointer;               /* Show a hand cursor to indicate it's clickable */
+  background-color: #e9f6ff; 
+  color:#004899;    /* Optional: Give it a slight background color */
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  padding:5px;
+  margin-top: 20px;
+}
+
+.section-title {
+  font-weight: 600; /* Optional: Make the title bold */
+  font-size: 14px;
+}
+
+.toggle-icon {
+  font-size: 14px;
+  color: #004899; /* Optional: Give the icon a color */
+}
+.text-center {
+  padding: 20px;
+}
+.approval{
+    color: #004899;
+   
+}
+
+/* Main container for the scale and its labels.
+   Limits width to prevent ugly stretching on wide screens. */
+.nps-container {
+  width: 100%;
+  max-width: 600px; /* Adjust this value as needed for your layout */
+  margin-top: 8px;
+  margin-bottom: 1rem; /* Add some space below */
+}
+
+/* The container for the buttons. Flexbox distributes them horizontally. */
+.nps-scale {
+  display: flex;
+  justify-content: space-between; /* This is the key property for horizontal distribution */
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+
+/* Individual ranking button styling */
+.nps-btn {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;      /* Ensure it doesn't shrink */
+  border-radius: 50%;   /* Makes it a circle */
+  border: 2px solid #ddd;
+  font-weight: 600;
+  background-color: #f8f9fa;
+  color: #333;
+  transition: all 0.2s ease-in-out; /* Smooth transitions for hover/selection */
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+/* Hover effect for better user experience */
+.nps-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+/* Color classes for different score ranges (using your existing logic) */
+
+
+.nps-score-1  { background-color: #e6f0ff; border-color: #c0d8f7; color: #004899; }
+.nps-score-2  { background-color: #d1e3ff; border-color: #a6c9f2; color: #004899; }
+.nps-score-3  { background-color: #adc9ff; border-color: #8db5ed; color: #004899; }
+.nps-score-4  { background-color: #89aeff; border-color: #6893e8; color: #004899; }
+
+/* Medium Blues (transitioning to light text) */
+.nps-score-5  { background-color: #6495ed; border-color: #437ae3; color: #fff; } /* CornflowerBlue - great midpoint */
+.nps-score-6  { background-color: #4682B4; border-color: #3a6d96; color: #fff; } /* SteelBlue */
+.nps-score-7  { background-color: #3b76ac; border-color: #2e5d8a; color: #fff; }
+
+/* Deep Blues (leading to your theme color, light text) */
+.nps-score-8  { background-color: #2a5a8a; border-color: #21476d; color: #fff; }
+.nps-score-9  { background-color: #154c79; border-color: #103b5f; color: #fff; }
+.nps-score-10 { background-color: #0650a5; border-color: #00336b; color: #fff; } /* YOUR THEME COLOR */
+
+
+
+/* Style for the currently selected button */
+.nps-btn.selected {
+  transform: scale(1.15); /* Make it slightly larger than hover */
+  border: 3px solid #00070f; /* Use a distinct, theme-colored border */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+  font-weight: 700;
+}
+
+/* Container for the text labels below the buttons */
+.nps-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #6c757d;
+  font-weight: 500;
+  padding: 0 5px; /* Align text slightly inward from the edges */
+}
+
+/* --- STYLING FOR DISABLED NPS BUTTONS --- */
+
+/* Targets the NPS buttons only when they have the disabled attribute */
+.nps-btn:disabled {
+  opacity: 0.9; /* Fades the button to visually indicate it's inactive */
+  cursor: not-allowed; /* Shows the standard 'not allowed' cursor on hover */
+}
+
+/* Explicitly remove hover effects when the button is disabled */
+.nps-btn:disabled:hover {
+  transform: none; /* Prevents the button from scaling up on hover */
+  box-shadow: none; /* Removes any hover shadow */
+}

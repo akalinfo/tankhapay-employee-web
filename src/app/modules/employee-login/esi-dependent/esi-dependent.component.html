@@ -1,0 +1,200 @@
+<div id="menu6" class="tab-pane fade1 active">
+    <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="card panel">
+           <div class="col-md-12">
+           
+            <div class="row">
+            
+            <div class="col-md-12 mrg-top-0 mrg-bot-25">
+            
+            <div class="card">
+
+                    <div class="card-header"> 
+                        <div class="col-md-12" style="text-align:right;">
+                            <button class="btn btn-primary btn-md" (click)="openCreateEsiDependent()"><i class="fa fa-plus"></i>&nbsp;Create ESI Dependent</button>
+                        </div>
+                     </div>	
+                    
+                    <div class="card-body padd-bot-10 padd-top-0">
+                    
+                    
+                    
+                        <div class="row">
+                        
+                        <div class="col-md-12 padd-top-0">
+                            <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+                                <table class="table" id="otherDeductionTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Relationship</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                    <tr *ngFor="let list of dependentLists ; let i = index">
+                                        <td>{{ i+1 }}</td>
+                                        <td>{{ list.dependent_name }}</td>
+                                        <td>{{ list.dependent_relation }}</td>
+                                        <td>
+                                            <i class="fa fa-edit" (click)="editDependent(list)" style="cursor: pointer;"></i>
+                                        </td>
+                                    </tr>
+                                </table>	
+                            </div>
+                        </div>
+                        </div>		
+                    </div>
+                </div>
+            
+             
+            
+            </div>
+            
+            
+            </div>
+
+           </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal"  [ngStyle]="{'display':createModalStatus?'block':'none'}">
+    <div class="modal-dialog modal-md ">
+        <div class="modal-content " >
+            <div class="modal-header theme-bg">
+                    <h4 class="modal-title">Create ESI Dependent</h4>
+                    <button type="button" class="close modal-close-btn" data-dismiss="modal" aria-label="Close"
+                        data-bs-dismiss="modal" (click)="closeCreateDependent()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+             <form [formGroup]="dependentForm">
+                <div class="modal-body" >
+                    <div class="row" style="max-height: 400px;overflow-y: scroll;">
+                        
+                        <div class="col-md-12">
+                            <label>Name Of Dependent <span class="required">*</span></label>
+                            <input type="text" class="form-control" (input)="restrictSpecialCharacters($event)" formControlName="dependentName" placeholder="Enter Name Of Dependent">
+                        </div>
+
+                        <div class="col-md-12">
+                            <label>Dependent's DOB <span class="required">*</span></label>
+                            <input type="date" class="form-control" (keydown)="disableTyping($event)" [max]="maxDate" formControlName="dependentDob" placeholder="Enter Name Of Dependent">
+                        </div>
+
+                        <div class="col-md-12">
+                            <label>Gender <span class="required">*</span></label>
+                            <select class="form-control" formControlName="dependentGender">
+                                <option value="">Select Gender</option>
+                                <option *ngFor="let gd of genderList" [value]="gd.genderType">{{ gd.genderType }}</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label>Relation <span class="required">*</span></label>
+                            <select class="form-control" formControlName="dependentRelation">
+                                <option value="">Select Relation</option>
+                                <option *ngFor="let er of esicRelationship" [value]="er.relationship_code">{{ er.relationship_name }}</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-12">
+                            
+                            <label>Choose Preferred Dispensary <span class="required">*</span></label>
+                            <select class="form-control" (change)="getDispensory($event)" formControlName="dependentPreferredDispensary">
+                                <option value="">Select State</option>
+                                <option *ngFor="let st of stateList" [value]="st.state">{{ st.state }}</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label>Choose Dispensary <span class="required">*</span></label>
+                            <select class="form-control"  formControlName="dependentDispensary" (change)="getDispensoryName($event)">
+                                <option value="">Select Dispensory</option>
+                                <option *ngFor="let dt of dispensoryList" [value]="dt.id">{{ dt.dispensary_name }}</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer" style="background-color: #fff;">
+                    
+                    <button class="btn btn-default"  (click)="saveDependentDetails()" data-dismiss="modal" >Add Dependent</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true" (click)="closeCreateDependent()">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal"  [ngStyle]="{'display':updateModalStatus?'block':'none'}">
+    <div class="modal-dialog modal-md ">
+        <div class="modal-content " >
+            <div class="modal-header theme-bg">
+                    <h4 class="modal-title">Update ESI Dependent</h4>
+                    <button type="button" class="close modal-close-btn" data-dismiss="modal" aria-label="Close"
+                        data-bs-dismiss="modal" (click)="closeUpdateDependent()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+             <form [formGroup]="updateDependentForm">
+                <div class="modal-body" >
+                    <div class="row" style="max-height: 400px;overflow-y: scroll;">
+                        
+                        <div class="col-md-12">
+                            <label>Name Of Dependent <span class="required">*</span></label>
+                            <input type="text" class="form-control" (input)="restrictSpecialCharacters($event)" formControlName="dependentName" placeholder="Enter Name Of Dependent">
+                        </div>
+
+                        <div class="col-md-12">
+                            <label>Dependent's DOB <span class="required">*</span></label>
+                            <input type="date" class="form-control" (keydown)="disableTyping($event)" [max]="maxDate" formControlName="dependentDob" placeholder="Enter Name Of Dependent" />
+                        </div>
+
+                        <div class="col-md-12">
+                            <label>Gender <span class="required">*</span></label>
+                            <select class="form-control" formControlName="dependentGender">
+                                <option value="">Select Gender</option>
+                                <option *ngFor="let gd of genderList" [value]="gd.genderType">{{ gd.genderType }}</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label>Relation <span class="required">*</span></label>
+                            <select class="form-control" formControlName="dependentRelation">
+                                <option value="">Select Relation</option>
+                                <option *ngFor="let er of esicRelationship" [value]="er.relationship_code">{{ er.relationship_name }}</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label>Choose Preferred Dispensary <span class="required">*</span></label>
+                            <select class="form-control" (change)="getDispensory($event)" formControlName="dependentPreferredDispensary">
+                                <option value="">Select State</option>
+                                <option *ngFor="let st of stateList" [value]="st.state">{{ st.state }}</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label>Choose Dispensary <span class="required">*</span></label>
+                            <select class="form-control"  formControlName="dependentDispensary" (change)="getDispensoryName($event)">
+                                <option value="">Select Dispensory</option>
+                                <option *ngFor="let dt of dispensoryList" [value]="dt.id">{{ dt.dispensary_name }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="background-color: #fff;">
+                    
+                    <button class="btn btn-default"  (click)="updateDependentDetails()" data-dismiss="modal" >Update Dependent</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true" (click)="closeUpdateDependent()">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,181 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+    <div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+        <div class="fakeLoader"></div>
+        <div id="page-wrapper">
+            <div class=" page-titles row">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="col-md-5 align-self-center">
+                            <h3 class="text-themecolor">Live Tracking</h3>
+                        </div>
+                        <div class="col-md-7 align-self-center">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a [routerLink]="['/dashboard']">Dashboard</a></li>
+                                <li class="breadcrumb-item"><a [routerLink]="['/live-tracking-list']">Live Tracking</a></li>
+                                <li class="breadcrumb-item active">Track Employee</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid">
+                <!-- /row -->
+                <div class="row">
+                    <form [formGroup]="trackEmployee_Form">
+                        <div class="row">
+                            <div class="col-sm-1 text-right">
+                            </div>
+                            <div class="col-md-2 padd-0">
+                                <input id="CurrentDate" #rd formControlName="CurrentDate" class="form-control"
+                                    placeholder="Select From Date" style="cursor: pointer;">
+                            </div>
+                            <div class="col-md-2 ">
+                                <button class="btn btn-primary" style="padding: 10px;"
+                                    (click)="searchTrackEmployee()">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <ul class="list">
+                            <li class="manage-list-row clearfix">
+                                <div class="job-info">
+                                    <div class="job-img">
+                                        <img src="{{profile_photo}}" class="attachment-thumbnail" alt="">
+                                    </div>
+                                    <div class="job-details">
+                                        <h3 class="job-name"><a class="job_name_tag" href="#">{{emp_name}}</a>
+                                        </h3>
+
+                                        <small class="job-company"><i class="ti-briefcase"></i>{{designation}}</small>
+                                        <small class="job-company"><i class="fa fa-phone"
+                                                aria-hidden="true"></i>{{mobile}}</small>
+                                        <small class="job-company"><i class="fa fa-envelope"
+                                                aria-hidden="true"></i>{{emp_email}}</small>
+                                        <div class="candi-skill">
+                                            <div class="blink"><span>Live Location:</span></div> Jet Air House, 13
+                                            Community Centre, Yusuf Sarai, New Delhi  110049. INDIA
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-12 col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 col-sm-4">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h4>Tracking Timeline</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="scrollable-div">
+                                                    <ul class="timeline">
+                                                        <ng-container
+                                                            *ngFor="let list_data of empEventListing; let i=index;">
+                                                            <li class="timeline-item" *ngIf="list_data.event_id!==''">
+                                                                <a (click)="trackEvent(list_data.event_id)"
+                                                                    style="cursor: pointer;">
+                                                                    <div class="timeline-badge primary">1</div>
+                                                                    <div class="timeline-panel">
+                                                                        <div class="timeline-heading">
+                                                                            <h4 class="timeline-title">Timeline Event 1
+                                                                            </h4>
+                                                                            <p><small class="text-muted"><i
+                                                                                        class="glyphicon glyphicon-time"></i>
+                                                                                        {{ calculateHoursAgo(list_data.actual_check_out_time) | number: '1.0-0' }}
+                                                                                    hours ago1</small></p>
+                                                                        </div>
+                                                                        <div class="timeline-body">
+                                                                            <p><i
+                                                                                    class="glyphicon glyphicon-map-marker"></i>
+                                                                                {{list_data.check_in_location}}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </a>
+                                                            </li>
+                                                            <span *ngIf="list_data.event_id===''">No Timeline
+                                                                Available</span>
+                                                        </ng-container>
+                                                        <!-- <li class="timeline-item">
+                                                            <div class="timeline-badge warning">2</div>
+                                                            <div class="timeline-panel">
+                                                                <div class="timeline-heading">
+                                                                    <h4 class="timeline-title">Timeline Event 2</h4>
+                                                                    <p><small class="text-muted"><i
+                                                                                class="glyphicon glyphicon-time"></i> 10
+                                                                            hours ago</small></p>
+                                                                </div>
+                                                                <div class="timeline-body">
+                                                                    <p><i class="glyphicon glyphicon-map-marker"></i>
+                                                                        Lorem ipsum dolor sit amet, consectetur
+                                                                        adipiscing elit.</p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="timeline-item">
+                                                            <div class="timeline-badge info">3</div>
+                                                            <div class="timeline-panel">
+                                                                <div class="timeline-heading">
+                                                                    <h4 class="timeline-title">Timeline Event 3</h4>
+                                                                    <p><small class="text-muted"><i
+                                                                                class="glyphicon glyphicon-time"></i> 9
+                                                                            hours ago</small></p>
+                                                                </div>
+                                                                <div class="timeline-body">
+                                                                    <p><i class="glyphicon glyphicon-map-marker"></i>
+                                                                        Lorem ipsum dolor sit amet, consectetur
+                                                                        adipiscing elit.</p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="timeline-item">
+                                                            <div class="timeline-badge danger">4</div>
+                                                            <div class="timeline-panel">
+                                                                <div class="timeline-heading">
+                                                                    <h4 class="timeline-title">Timeline Event 4</h4>
+                                                                    <p><small class="text-muted"><i
+                                                                                class="glyphicon glyphicon-time"></i> 8
+                                                                            hours ago</small></p>
+                                                                </div>
+                                                                <div class="timeline-body">
+                                                                    <p><i class="glyphicon glyphicon-map-marker"></i>
+                                                                        Lorem ipsum dolor sit amet, consectetur
+                                                                        adipiscing elit.</p>
+                                                                </div>
+                                                            </div>
+                                                        </li> -->
+                                                    </ul>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-sm-8">
+                                        <div *ngIf="loadmapDiv">
+                                            <!-- <iframe
+                                            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d14016.644012948309!2d77.2060235!3d28.56492765!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1715236786354!5m2!1sen!2sin"
+                                            width="100%" height="580" style="border:0;" allowfullscreen=""
+                                            loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
+                                            <!-- <span>Hello</span> -->
+                                            <div id="map"></div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /row -->
+            </div>
+        </div>
+    </div>
+</section>

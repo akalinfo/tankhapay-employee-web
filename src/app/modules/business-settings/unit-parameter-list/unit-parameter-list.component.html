@@ -1,0 +1,144 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+    <div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+        <div class="fakeLoader"></div>
+
+        <div id="page-wrapper">
+            <div class="row page-titles">
+            <div class="col-md-5 align-self-center">
+                <h3 class="text-themecolor">Unit Parameter</h3>
+            </div>
+            <div class="col-md-7 align-self-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                    <li class="breadcrumb-item active">Unit Parameter listing</li>
+                </ol>
+            </div>
+            </div>
+            <div class="container-fluid">
+            <!-- /row -->
+            <div class="row">
+                <div class="col-md-12 col-md-offset-0 mrg-top-2512 mrg-bot-25 employees-details-outer-box">
+                
+        
+                
+                    <div class="row">
+                    
+                    
+                    <div class="col-md-12 mrg-top-0 mrg-bot-25">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <!-- <div class="col-md-2 col-sm-2" style="display: flex; align-items: center;">
+                                <span style="margin: 1.5rem; font-weight: 500;" class="">Select Date:</span>
+                                </div> -->
+                                <div class="col-md-5 col-sm-5">
+                                
+                                <input type="text" class="form-control" style=" height: 41px!important;" placeholder="Search Unit..."
+                                (keyup)="searchUnit($event.target.value)" [(ngModel)]="keyword">
+                                </div>
+                                <!-- <div class="col-md-1 col-sm-1">
+                                <button class="btn btn-primary" style=" padding: 10px;border-radius: 2px;">Search</button>
+                                </div> -->
+                                <div class="col-md-5 col-sm-5"></div>
+                                <!--<div  class="col-md-4" style="margin-top: 1.2rem !important;"><span > Check-In : <b > 0</b></span> | <span > Check-Out :<b > 0</b></span> | <span > Total : <b >9 </b></span></div>-->
+                                <div class="col-md-2 col-sm-2">
+                                <div class="Show-Fields-top-outer-box" style="float: right;">
+                                    <div class="dropdown float-right-box">
+                                        <a [routerLink]="['/business-settings/unit-parameter-settings']"   class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn"  >Add Unit Parameter  </a>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body padd-bot-0 padd-top-0">
+                            <div class="row">
+                                <div class="col-md-12 padd-top-0">
+                                <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+                                    <table class="table user-list">
+                                        <thead>
+                                            <tr>
+                                            <th>Sn.</th>
+                                            <th>Company Name</th>
+                                            <th style="width:15%">Address</th>
+                                            <th>Contractor EPF Number</th>
+                                            <th>Contractor ESI Number</th>
+                                            <th>Department <br>Count</th>
+                                            <th>Designation <br>Count</th>
+                                            <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container *ngFor="let org of organzationUnitList | paginate: {itemsPerPage: pageSize, currentPage: p, totalItems :tot_records};let i=index;">
+                                                <tr>
+                                                    <td>{{(p-1)*pageSize+i+1}} </td>
+                                                    <td><a class="org_heading" 
+                                                        [routerLink]="['/business-settings/unit-parameter-listing',_e.aesEncrypt(org.id.toString())]">{{org.org_unit_name}}</a></td>
+                                                    <td><a class="org_heading"
+                                                        [routerLink]="['/business-settings/unit-parameter-listing',_e.aesEncrypt(org.id.toString())]">{{org.org_unit_address}}</a></td>
+                                                    <td><a class="org_heading"
+                                                        [routerLink]="['/business-settings/unit-parameter-listing',_e.aesEncrypt(org.id.toString())]">{{org.ou_epf_registration_number}}</a></td>
+                                                    <td><a class="org_heading"
+                                                        [routerLink]="['/business-settings/unit-parameter-listing',_e.aesEncrypt(org.id.toString())]">{{org.ou_esic_registration_number}}</a></td>
+                                                    <td>
+                                                        <a class="org_heading"
+                                                        [routerLink]="['/business-settings/unit-parameter-listing',_e.aesEncrypt(org.id.toString())]"> {{org.division_unit}} </a> 
+                                                    </td>
+                                                    <td>
+                                                        <a class="job_name_tag org_heading"
+                                                        [routerLink]="['/business-settings/unit-parameter-listing',_e.aesEncrypt(org.id.toString())]">{{org.unit_roll}}</a>
+                                                    </td>
+                                                    <td class="roles">
+                                                    
+                                                        <div class="job-buttons action-btn-outer-box">
+                                                                
+                                                            <a class="btn btn-shortlist manage-btn" data-placement="top" title="Edit"
+                                                            (click)="editorg(org)"><i class="ti-pencil-alt"></i></a>
+                                                                
+                                                        </div>
+                                                    
+                                                    </td>
+                                                <!-- </a> -->
+                                                </tr>
+                                            </ng-container>
+                                        </tbody>
+                                        
+                                    </table>
+                                </div>
+                                </div>
+                                <div class="col-md-12">    
+                                    <div class="col-md-8">
+                                        <pagination-controls (pageChange)="get_page($event)"
+                                        style="font-size: 1.5rem;padding: 6px;font-weight: bold" class="float-right"></pagination-controls>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="col-md-8">
+                                            <label style="float: right;">Entries per page : </label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control" (change)="getDynamicLimit($event.target.value);">
+                                                <option [value]="size" *ngFor="let size of pageSizeArr">{{size}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    
+                    </div> 
+                    
+                
+                
+                
+                </div>
+            </div>
+            <!-- /row -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<app-footer></app-footer>

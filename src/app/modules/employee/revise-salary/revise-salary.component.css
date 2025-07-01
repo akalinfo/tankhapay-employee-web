@@ -1,0 +1,22 @@
+[type="radio"] + label:before {
+    content: none;
+}
+[type="radio"] + label:after {
+    content: none;
+}
+
+input[type="radio"]{
+    display: inline-block;
+}
+
+[type="radio"]+label{
+    padding-left: 10px !important;
+}
+
+.no-click{
+    pointer-events: none;
+}
+
+.no-click .form-control{
+    all:unset;
+}

@@ -1,0 +1,15 @@
+[type="radio"] {
+    display: inline !important
+}
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .dropdown.float-right-box ul#menu3 {
+    left: -52px;
+}
+.same-size-textarea {
+  height: 38px;
+  resize: none; 
+}

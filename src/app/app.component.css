@@ -1,0 +1,121 @@
+.loader-overlay1 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  z-index: 9998; /* Below loader elements but above the main content */
+  display: none; /* Hidden by default */
+  pointer-events: all; /* Blocks interactions */
+}
+
+@keyframes loader-animation {
+  0% {
+      width: 0%;
+  }
+  49% {
+      width: 100%;
+      left: 0%
+  }
+  50% {
+      left: 100%;
+  }
+  100% {
+      left: 0%;
+      width: 100%
+  }
+}
+.loader1 {
+  height: 1rem;
+  width: 100%;
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+}
+.loader1 .bar {
+  position: relative;
+  height: 1rem;
+  background-color: dodgerblue;
+  animation-name: loader-animation;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+
+
+.loader {
+  animation: rotate 1s infinite;
+  height: 50px;
+  width: 50px;
+  display: none;
+  margin: 20% 0 0 48%;
+  position: fixed;
+  z-index: 999;
+}
+
+.loader:before,
+.loader:after {
+  border-radius: 50%;
+  content: "";
+  display: block;
+  height: 20px;
+  width: 20px;
+}
+.loader:before {
+  animation: ball1 1s infinite;
+  /* background-color: rgb(43, 40, 40);
+  box-shadow: 30px 0 0 #33b8fc; */
+  margin-bottom: 10px;
+
+}
+.loader:after {
+  animation: ball2 1s infinite;
+  /* background-color: #33b8fc;
+  box-shadow: 30px 0 0 rgb(43, 40, 40); */
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg) scale(0.8);
+
+ }
+  50% { transform: rotate(360deg) scale(1.2);
+
+      }
+  100% { transform: rotate(720deg) scale(0.8);
+
+    }
+}
+
+@keyframes ball1 {
+  0% {
+    /* box-shadow: 30px 0 0 #33b8fc; */
+  }
+  50% {
+    /* box-shadow: 0 0 0 #33b8fc; */
+    margin-bottom: 0;
+    transform: translate(15px, 15px);
+  }
+  100% {
+    /* box-shadow: 30px 0 0 #33b8fc; */
+    margin-bottom: 10px;
+  }
+}
+
+@keyframes ball2 {
+  0% {
+    /* box-shadow: 30px 0 0 rgb(43, 40, 40); */
+  }
+  50% {
+    /* box-shadow: 0 0 0 rgb(43, 40, 40); */
+    margin-top: -20px;
+    transform: translate(15px, 15px);
+  }
+  100% {
+    /* box-shadow: 30px 0 0 rgb(43, 40, 40); */
+    margin-top: 0;
+  }
+}

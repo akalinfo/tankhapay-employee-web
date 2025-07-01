@@ -1,0 +1,292 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+    <div id="wrapper" [ngClass]="{'active': showSidebar == false}">
+        <div class="fakeLoader"></div>
+
+
+        <div id="page-wrapper">
+
+            <div class="row page-titles" >
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Training Details</h3>
+                </div>
+                <div class="col-md-7 align-self-center" >
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a [routerLink]="['/profile/training']">Training</a></li>
+                        <li class="breadcrumb-item active">Training Details</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="container-fluid element" id="element">
+                <!-- /row -->
+                <div class="row">         
+                
+                    <div class="col-md-12">
+                            <div class="card caded-innder-head-box">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <img [src]="training.course_image_url" class="img-responsive" alt="Logo">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="title-inn_box" style="display:flex;justify-content: space-between;">
+                                                <a style="text-decoration:none;">
+                                                   <span class="font-semibold font-mm" style="font-size: 20px !important;">{{training?.trainingtype_name}}</span>
+                                                </a>
+                                                <a [ngClass]="{'status-complete':training.training_status=='Completed',
+                                                   'status-pending': training.training_status=='Pending',
+                                                   'status-expired': training.training_status=='Expired'
+                                                }">{{training.training_status}}</a>
+                                             </div>
+                           
+                                             <div class="row net-pay-data-without-bt">
+                                                <div class="training-content-box">
+                                                   <span class="project-name">{{training.course_name}}</span>
+                                                   <small><i class="fa fa-calendar" aria-hidden="true"></i> Start Date : {{training.startdate}}</small>
+                                                   <small><i class="fa fa-calendar" aria-hidden="true"></i> End Date : {{training.enddate}}</small>
+                                                   <small><i class="fa fa-user" aria-hidden="true"></i> Trainer : {{training.faculty_name}} </small>
+                                                   <small><i class="fa fa-map-marker" aria-hidden="true"></i> Venue :  {{training.venue}}</small>
+                                                   <small><a [href]="training.document_url" style="color:rgb(75 166 201);"><i class="fa fa-file" aria-hidden="true"></i> Download Certificate</a></small>
+                                                </div>  
+                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header card-innder-head-box">
+                                    <h4 class="list-name-text">Mark Attendance</h4>
+                                    <div class="btns">
+                                        <a style="font-weight:500" (click)="showExamQuestionModal()"
+                                        *ngIf="training.exam_eligibility=='Y'">View Exam</a>&nbsp;&nbsp;
+                                        <a style="font-weight:500" (click)="showFeedBackModal()">View Feedback</a>
+                                    </div>
+
+                                </div>
+                                <div class="card-body">
+                                    <div class="card" *ngFor="let attendance of training.attendance;">
+                                        <div class="attendance-body">
+                                            <div class="attendance-content-box">
+                                                <div class="date-container">
+                                                    <span class="date">{{ attendance.attendance_date | date:'dd' }}</span>
+                                                    <div class="month-year">
+                                                      <span class="month">{{ attendance.attendance_date | date:'MMM' }}</span>
+                                                      <span class="year">{{ attendance.attendance_date | date:"''yyyy" }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="training-time-box">
+                                                    <span style="margin:20px">
+                                                        <label for="">Start Time : </label>
+                                                        <span>{{attendance.start_time}}</span>
+                                                    </span>
+                                                    <span>
+                                                        <label for="">End Time : </label>
+                                                        <span>{{attendance.end_time}}</span>
+                                                    </span>
+                                                </div>
+                                                <div class="attendance-status">
+                                                    <a [ngClass]="{'attn-p':attendance.attendance_status=='P',
+                                                        'attn-exp': isAttnExpired(attendance) && attendance.attendance_status=='A'
+                                                    }" *ngIf="isAttnExpired(attendance); else notExpired">
+                                                        {{attendance.attendance_status=='A' ? 'Absent' : attendance.attendance_status=='P'? 'Present': attendance.attendance_status}}
+                                                  </a>&nbsp;
+                                                  <ng-template #notExpired>
+                                                    <a class="attn-p" (click)="employeeTrainingMarkAttendance(attendance,'A')" 
+                                                    *ngIf="attendance.attendance_status=='P'">
+                                                        Present
+                                                    </a>&nbsp;
+                                                    <a class="attn-a" (click)="employeeTrainingMarkAttendance(attendance,'P')"
+                                                    *ngIf="attendance.attendance_status=='A'">
+                                                    Present
+                                                    </a>
+                                                  </ng-template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<app-footer></app-footer>
+
+<!-------------Exam Question modal--------------->
+<div id="SendMessage2000" class="modal fade add-address-form-box in">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+        
+                <div class="modal-header theme-bg">						
+                    <h4 class="modal-title">Travel Expense Detail</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <form >
+                        <div class="form-group">
+
+                            <div class="Question-Type-outer-box" *ngFor="let question of examQuestion.exam_data; let i = index">
+                              <div class="col-md-12 padd-0">
+      
+                                <label class="col-md-3"><b>Question - {{i+1}}:</b> </label>
+                                <div class="col-md-9">
+                                    {{ question.question_text }}
+                                </div>
+                              </div>
+                              
+                              <!-- Single choice question (radio buttons) -->
+                              <div *ngIf="question.question_type === 'Single'" class="form-group question-single">
+                                <div class="col-md-3">
+                                  <label><b>Answer:</b></label>
+                                </div>
+                                <div class="col-md-9">
+                                  <div *ngFor="let choice of question.answer_choices"
+                                    class="radio radio-primary form-check-inline outer-form">
+                                    <input type="radio" [value]="choice.choice" [id]="choice.choice + i"
+                                      [name]="'radioPageType' + i" disbaled
+                                      [checked]="choice.choice== question.user_answers[0]" />
+                                    <label [for]="choice.choice + i">{{ choice.choice }}</label>
+      
+                                  </div>
+                                </div>
+                              </div>
+      
+                              <!-- Multiple choice question (checkboxes) -->
+                              <div *ngIf="question.question_type === 'Multiple'" class="form-group question-multi">
+                                <div class="col-md-3">
+                                  <label><b>Answer:</b></label>
+                                </div>
+                                <div class="col-md-9">
+                                  <div *ngFor="let choice of question.answer_choices"
+                                    class="checkbox checkbox-primary form-check-inline">
+                                    <input style="margin-left: 0px !important" type="checkbox" [value]="choice.choice"
+                                      [id]="choice.choice + i" [name]="'checkboxPageType' + i" disabled
+                                      [checked]="question.user_answers.includes(choice.choice)" />
+                                    <label [for]="choice.choice + i">{{ choice.choice }}</label>
+      
+                                  </div>
+                                </div>
+                              </div>
+      
+                              <!-- Comment type question -->
+      
+                                <div *ngIf="question.question_type === 'Comment'" class="form-group">
+                                    <div class="col-md-3">
+                                    <label><b>Answer:</b></label>
+                                    </div>
+                                    <div class="col-md-9 question-comment">
+                                    <textarea class="form-control" placeholder="Please enter your answer"
+                                        [readOnly]="true">{{question.answers_selected[0]}}</textarea>
+                                    </div>
+                                </div>
+                              <div class="col-md-12" *ngIf="question.user_answers.length>0">
+                                <h4>
+                                    <p *ngIf="isAnswerCorrect(question)" class="correct">✅ Correct</p>
+                                    <p *ngIf="!isAnswerCorrect(question)" class="wrong">❌ Wrong</p>
+                                </h4>
+                              </div>
+                            </div>
+                          </div>
+                    </form>
+                
+                </div>
+                <div class="modal-footer">
+                 
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                    
+                </div> 
+        
+        </div>
+    </div>
+</div>
+<!-------------Exam Question modal--------------->
+
+<!------------Feedback Modal------------------->
+<div id="SendMessage2001" class="modal fade add-address-form-box in">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+        
+                <div class="modal-header theme-bg">						
+                    <h4 class="modal-title">Travel Expense Detail</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <form >
+                        <div class="form-group">
+
+                            <div class="Question-Type-outer-box" *ngFor="let question of feedBackData.feedback_data; let i = index">
+                              <div class="col-md-12 padd-0">
+      
+                                <label class="col-md-3"><b>Question - {{i+1}}:</b> </label>
+                                <div class="col-md-9">
+                                    {{ question.question_text }}
+                                </div>
+                              </div>
+                              
+                              <!-- Single choice question (radio buttons) -->
+                              <div *ngIf="question.question_type === 'Single'" class="form-group question-single">
+                                <div class="col-md-3">
+                                  <label><b>Answer:</b></label>
+                                </div>
+                                <div class="col-md-9">
+                                  <div *ngFor="let choice of question.answer_choices"
+                                    class="radio radio-primary form-check-inline outer-form">
+                                    <input type="radio" [value]="choice.choice" [id]="choice.choice + i"
+                                      [name]="'radioPageType' + i" disbaled
+                                      [checked]="choice.choice== question.answers_selected[0]" />
+                                    <label [for]="choice.choice + i">{{ choice.choice }}</label>
+      
+                                  </div>
+                                </div>
+                              </div>
+      
+                              <!-- Multiple choice question (checkboxes) -->
+                              <div *ngIf="question.question_type === 'Multiple'" class="form-group question-multi">
+                                <div class="col-md-3">
+                                  <label><b>Answer:</b></label>
+                                </div>
+                                <div class="col-md-9">
+                                  <div *ngFor="let choice of question.answer_choices"
+                                    class="checkbox checkbox-primary form-check-inline">
+                                    <input style="margin-left: 0px !important" type="checkbox" [value]="choice.choice"
+                                      [id]="choice.choice + i" [name]="'checkboxPageType' + i" disabled
+                                      [checked]="question.answers_selected.includes(choice.choice)" />
+                                    <label [for]="choice.choice + i">{{ choice.choice }}</label>
+      
+                                  </div>
+                                </div>
+                              </div>
+      
+                              <!-- Comment type question -->
+      
+                                <div *ngIf="question.question_type === 'Comment'" class="form-group">
+                                    <div class="col-md-3">
+                                    <label><b>Answer:</b></label>
+                                    </div>
+                                    <div class="col-md-9 question-comment">
+                                    <textarea class="form-control" placeholder="Please enter your answer"
+                                        [readOnly]="true">{{question.answers_selected[0]}}</textarea>
+                                    </div>
+                                </div>
+                              
+                            </div>
+                          </div>
+                    </form>
+                
+                </div>
+                <div class="modal-footer">
+                 
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                    
+                </div> 
+        
+        </div>
+    </div>
+</div>
+<!------------Feedback Modal------------------->

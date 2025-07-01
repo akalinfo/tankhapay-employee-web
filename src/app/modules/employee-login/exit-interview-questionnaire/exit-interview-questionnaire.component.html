@@ -1,0 +1,319 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<section>
+  <div id="wrapper" [ngClass]="{ 'active': showSidebar }">
+    <div id="page-wrapper" style="margin-left: 5px;">
+
+      <!-- Loading State -->
+      <div *ngIf="isLoadingAccess" class="text-center p-5">
+        <p>Loading form...</p>
+      </div>
+
+      <!-- Access Denied State -->
+      <div *ngIf="!isLoadingAccess && !canAccessForm" class=" m-3 text-center">
+        Access Denied. You may not be authorized to view this form or it may not be applicable at this time.
+      </div>
+
+      <!-- Main Form -->
+      <div class="questionnaire-form-container container-fluid my-5" *ngIf="questionnaireForm">
+        <h2 class="mb-4 text-center">Exit Interview Questionnaire</h2>
+
+        <form [formGroup]="questionnaireForm" (ngSubmit)="onSubmit()">
+          <div class="section-container mb-4">
+            <div class="section-header p-3" (click)="toggleEmployeeInfo()">
+              <span class="section-title">Employee Information </span>
+
+              <i class="fa toggle-icon" [ngClass]="showEmployeeInfo ? 'fa-chevron-up' : 'fa-chevron-down'"
+                aria-hidden="true"></i>
+
+            </div>
+
+            <div class="section-body border border-top-0 p-3" *ngIf="showEmployeeInfo">
+              <!-- Employee Information -->
+              <fieldset class="mb-4 p-3 border rounded">
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="employeeName" class="form-label">Employee Name:</label>
+                    <input type="text" id="employeeName" class="form-control" formControlName="employeeName">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="employeeId" class="form-label">Employee ID:</label>
+                    <input type="text" id="employeeId" readonly class="form-control" formControlName="employeeId">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="department" class="form-label">Department:</label>
+                    <input type="text" id="department" readonly class="form-control" formControlName="department">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="designation" class="form-label">Designation:</label>
+                    <input type="text" id="designation" readonly class="form-control" formControlName="designation">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="annualSalary" class="form-label">Annual Salary (at exit):</label>
+                    <input type="text" id="annualSalary" readonly class="form-control" formControlName="annualSalary">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="dateOfJoining" class="form-label">Date of Joining:</label>
+                    <input type="text" id="dateOfJoining" readonly class="form-control" formControlName="dateOfJoining">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="designationAtJoining" class="form-label">Designation at Joining:</label>
+                    <input type="text" id="designationAtJoining" class="form-control"
+                      formControlName="designationAtJoining">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="salaryAtJoining" class="form-label">Salary at Joining:</label>
+                    <input type="text" id="salaryAtJoining" class="form-control" formControlName="salaryAtJoining">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="payroll" class="form-label">Payroll / Business Unit:</label>
+                    <input type="text" id="payroll" class="form-control" formControlName="payroll">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="lastWorkingDay" class="form-label">Last Working Day:</label>
+                    <input type="text" id="lastWorkingDay" class="form-control" formControlName="lastWorkingDay">
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="contactAddress" class="form-label">Contact Address :
+                  </label>
+                  <textarea id="contactAddress" class="form-control" formControlName="contactAddress"
+                    rows="3"></textarea>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="phoneNo" class="form-label">Phone No: </label>
+                    <input type="tel" id="phoneNo" class="form-control" formControlName="phoneNo">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="emailId" class="form-label">Personal Email ID:
+                    </label>
+                    <input type="email" id="emailId" class="form-control" formControlName="emailId">
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+
+
+          <div class="section-container mb-4">
+
+            <div class="section-header p-3" (click)="toggleReasons()">
+              <span class="section-title">Reason for Leaving </span>
+              <i class="fa toggle-icon" [ngClass]="showReasons ? 'fa-chevron-up' : 'fa-chevron-down'"
+                aria-hidden="true"></i>
+            </div>
+
+            <div class="section-body border border-top-0 p-3" *ngIf="showReasons">
+              <fieldset class="mb-4 p-3 border rounded">
+
+                <div formArrayName="reasonsControls" class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+                  <div *ngFor="let group of reasonsControlsArray.controls; let i = index" [formGroupName]="i"
+                    class="col mb-2">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" formControlName="selected"
+                        [id]="resignationReasons[i].masterreasoinid">
+                      <label class="form-check-label" [for]="resignationReasons[i].masterreasoinid">
+                        {{ resignationReasons[i].reason_resignation_name }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- If "Other" , show text input -->
+                <div *ngIf="reasonsControlsArray.length > 0" class="mt-3">
+                  <label class="form-label">If any other reason, please specify:</label>
+                  <input type="text" class="form-control" formControlName="reasonOtherSpecify"
+                    placeholder="Type here...">
+                </div>
+              </fieldset>
+            </div>
+          </div>
+
+
+          <!-- Rank Your Experience -->
+          <div class="section-container mb-4">
+            <div class="section-header p-3" (click)="toggleRankings()">
+              <span class="section-title">Rank Your Experience (1=Poor, 10=Excellent) </span>
+
+              <i class="fa toggle-icon" [ngClass]="showRankings ? 'fa-chevron-up' : 'fa-chevron-down'"
+                aria-hidden="true"></i>
+
+            </div>
+
+            <div class="section-body border border-top-0 p-3" *ngIf="showRankings">
+              <fieldset class="mb-4 p-3 border rounded">
+                <div formArrayName="rankingsControls">
+                  <ng-container *ngFor="let group of rankingsControlsArray.controls; let i = index" [formGroupName]="i">
+                    <div class="mb-4">
+                      <label [for]="rankingAspects[i]?.masteraspectid" class="form-label d-block">
+                        {{ rankingAspects[i]?.aspect_name }}
+                      </label>
+
+                    
+                      <!-- [UPDATED] NPS Rating Buttons Horizontal -->
+                      <div class="nps-container">
+                        <!-- This div will hold the buttons and arrange them horizontally -->
+                        <div class="nps-scale">
+                          <button *ngFor="let score of scores" type="button" class="nps-btn nps-score-{{score}}"
+                            [disabled]="is_submitted"
+                            [ngClass]="{ 'selected': group.get('rank_assigned')?.value === score }"
+                            (click)="toggleRank(group, score)">
+                            {{ score }}
+                          </button>
+                        </div>
+                        <!-- Optional: Labels below the scale for better user context -->
+                        <div class="nps-labels">
+                          <span class="nps-label-start">Lowest</span>
+                          <span class="nps-label-end">Highest</span>
+                        </div>
+                      </div>
+                      <!-- Validation -->
+                      <div
+                        *ngIf="group.get('rank_assigned')?.invalid && (group.get('rank_assigned')?.dirty || group.get('rank_assigned')?.touched)"
+                        class="text-danger small mt-1">
+                        <div *ngIf="group.get('rank_assigned')?.errors?.['required']">Rank is required.</div>
+                        <div
+                          *ngIf="group.get('rank_assigned')?.errors?.['min'] || group.get('rank_assigned')?.errors?.['max']">
+                          Rank must be between 1–10.
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </fieldset>
+            </div>
+
+          </div>
+
+          <!-- Additional Feedback -->
+          <div class="section-container mb-4">
+            <div class="section-header p-3" (click)="toggleFeedback()">
+              <span class="section-title">Additional Feedback </span>
+              <i class="fa toggle-icon" [ngClass]="showFeedback ? 'fa-chevron-up' : 'fa-chevron-down'"
+                aria-hidden="true"></i>
+            </div>
+            <div class="section-body border border-top-0 p-3" *ngIf="showFeedback">
+              <fieldset class="mb-4 p-3 border rounded">
+                <div formArrayName="additionalFeedback">
+                  <div *ngFor="let feedback of additionalFeedbackArray.controls; let i = index" [formGroupName]="i"
+                    class="mb-3">
+                    <label class="form-label">
+                      {{ feedback.value.label }}
+
+                    </label>
+                    <textarea class="form-control" formControlName="questionnaire_response" rows="3"></textarea>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+
+          <div class="section-container mb-4">
+            <div class="section-header p-3" (click)="toggleNewOrgDetails()">
+              <span class="section-title">New Organization & Final Details </span>
+              <i class="fa toggle-icon" [ngClass]="showNewOrgDetails ? 'fa-chevron-up' : 'fa-chevron-down'"
+                aria-hidden="true"></i>
+
+            </div>
+            <div class="section-body border border-top-0 p-3" *ngIf="showNewOrgDetails">
+              <fieldset class="mb-4 p-3 border rounded" formGroupName="newOrganizationDetails">
+
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="neworganizationname" class="form-label">New Organization Name: </label>
+                    <input type="text" id="neworganizationname" class="form-control"
+                      formControlName="neworganizationname">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="newdesignation" class="form-label">New Designation: </label>
+                    <input type="text" id="newdesignation" class="form-control" formControlName="newdesignation">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <!-- <div class="col-md-6 mb-3">
+                    <label for="exiting_employee_signature" class="form-label">Exiting Employee Signature:
+                      <span class="text-danger">*</span> </label>
+                    <input type="text" id="exiting_employee_signature" class="form-control"
+                      formControlName="exiting_employee_signature">
+                    
+                  </div> -->
+                  <!-- <div class="col-md-6 mb-3">
+                    <label for="exiting_employee_submissiondate" class="form-label">Employee Submission Date:
+                      <span class="text-danger">*</span></label>
+                  
+                    <input type="date" id="exiting_employee_submissiondate" class="form-control"
+                      formControlName="exiting_employee_submissiondate" placeholder="DD/MM/YYYY"
+                      (blur)="formatDate('exiting_employee_submissiondate')" />
+
+                  </div> -->
+                </div>
+
+                <!-- <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="hr_representative_signature" class="form-label">HR Representative Signature: </label>
+                    <input type="text" id="hr_representative_signature" class="form-control"
+                      formControlName="hr_representative_signature">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="hr_representative_approval_date" class="form-label">HR Approval Date: </label>
+                    <input type="text" id="hr_representative_approval_date" class="form-control"
+                      formControlName="hr_representative_approval_date" placeholder="DD/MM/YYYY">
+                  </div>
+                </div> -->
+              </fieldset>
+            </div>
+          </div>
+
+          <!-- Remarks Section -->
+          <div class="section-container mb-4">
+            <div class="section-header p-3" (click)="toggleRemarks()">
+              <span class="section-title">Remarks </span>
+
+
+              <i class="fa toggle-icon" [ngClass]="showRemarks ? 'fa-chevron-up' : 'fa-chevron-down'"
+                aria-hidden="true"></i>
+
+            </div>
+            <div class="section-body border border-top-0 p-3" *ngIf="showRemarks">
+
+              <fieldset class="mb-4 p-3 border rounded">
+
+                <div class="mb-3">
+                  <label for="remarks" class="form-label">If you have any other comments or remarks, please specify them
+                    here:</label>
+                  <textarea id="remarks" class="form-control" formControlName="remarks" rows="4"></textarea>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+
+
+
+          <div class="text-center" *ngIf="!is_submitted">
+            <button type="submit" class="btn btn-primary btn-lg ">Submit
+              Questionnaire</button>
+          </div>
+        </form>
+
+        <!-- Error Message Block -->
+        <!-- <div *ngIf=" submitted && questionnaireForm.invalid " class="alert alert-danger mt-3">
+          Please fill out all required fields correctly.
+        </div> -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

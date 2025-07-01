@@ -1,0 +1,153 @@
+.accordion .panel-heading {
+    background: #e9f6ff;
+    padding: 6px 13px !important;
+    width: 100%;
+    display: block;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 6px;
+    border: 1px solid #d3e7f5;
+}
+
+.tab-pane {
+    border-left: 1px solid #e8edef;
+    border-right: 1px solid #e8edef;
+    border-bottom: 1px solid #e8edef;
+    background: #fff;
+    padding: 20px;
+}
+
+.accordion .panel-heading h4 {
+    font-size: 16px;
+    color: #000;
+}
+
+.tab-pane .card {
+    border: none;
+}
+
+.tab-pane .card .card-body {
+    padding: 15px 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    border: 1px solid #d3e7f5;
+}
+
+.Appointment-outer-box.Salary-Details-outer-box tr:nth-of-type(odd) {
+    background-color: #ffffff !important;
+}
+
+.Appointment-outer-box.Salary-Details-outer-box tr:nth-of-type(even) {
+    background-color: #ffffff !important;
+}
+
+.Appointment-outer-box.Salary-Details-outer-box table tr th, .Appointment-outer-box.Salary-Details-outer-box table tr td {
+    border-bottom: 1px solid #f1f1f1 !important;
+}
+
+.Appointment-outer-box.Salary-Details-outer-box table tr th, .Appointment-outer-box.Salary-Details-outer-box table tr td {
+    border-bottom: 1px solid #f1f1f1 !important;
+}
+.component-input{
+    width: 100px !important;
+} 
+.card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid #e8eef1;
+    border-radius: .25rem;
+}
+.employees-details-outer-box label {
+    font-weight: 400;
+}
+label {
+    font-weight: 500;
+}
+a {
+    /* color: #67757c; */
+    text-decoration: none;
+}
+label .fa {
+    font-size: 1.3em;
+    margin: 0 0.4em 0 0;
+}
+.accordion .form-group strong {
+    min-width: 230px;
+    display: inline-block;
+}
+
+.external b, strong {
+    font-weight: 600;
+}
+.employees-details-outer-box label {
+    font-weight: 400;
+}
+html body .mrg-bot-15 {
+    margin-bottom: 15px;
+}
+html body .padd-top-15 {
+    padding-top: 15px;
+}
+.ml-2 {
+    margin-left: 10px; 
+}
+
+input[type="checkbox"] {
+    position: relative;
+    width: 44px;
+    height: 17px;
+    -webkit-appearance: none;
+    background: #c6c6c6;
+    outline: none;
+    border-radius: 20px;
+    box-shadow: inset 0 0 5px rgba(255, 0, 0, 0.2);
+    transition: 0.7s;
+}
+
+input:checked[type="checkbox"] {
+  background: #03a9f4;
+}
+
+input[type="checkbox"]:before {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 20px;
+  top: 0;
+  left: 0;
+  background: #ffffff;
+  transform: scale(1.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: .5s;
+}
+
+input:checked[type="checkbox"]:before {
+  left: 28px;
+}
+
+.no-click input, .no-click select{
+    background-color: gainsboro;
+    pointer-events: none;
+}
+.no-click label{
+    /* background-color: gainsboro; */
+    pointer-events: none;
+}
+
+.form-padd{
+    padding : 10px 10px;
+}
+
+.disabled-select {
+  pointer-events: none;      
+  background-color: #e9ecef; 
+  color: #85888b;          
+}

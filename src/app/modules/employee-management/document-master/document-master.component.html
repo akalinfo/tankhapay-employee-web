@@ -1,0 +1,230 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+  <div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+    <div class="fakeLoader"></div>
+    <!-- Sidebar Navigation -->
+    <div id="page-wrapper">
+      <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+          <h3 class="text-themecolor">Document Master
+          </h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="['/employee-mgmt/employees']">Employees</a>
+            </li>
+            <li class="breadcrumb-item active">Document Master
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <!-- /row -->
+        <div class="row">
+          <div class="col-md-12 mrg-top-0 mrg-bot-25">
+            <div class="card">
+              <div class="card-header caded-innder-head-box">
+                <div class="col-sm-6 text-left">
+                  <h4 class="sub-title-inn-box View-Roles-list-outer-box">Documents listing</h4>
+                </div>
+                <div class="col-sm-6 text-right">
+                  <a (click)="open_category_popup()" data-toggle="modal"
+                    class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn" data-placement="top">Add New
+                    Category </a>
+                  <a (click)="open_popup()" data-toggle="modal"
+                    class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn" data-placement="top">Add New
+                    Document </a>
+                </div>
+              </div>
+              <div class="card-body padd-bot-0 padd-top-0">
+                <div class="row">
+                  <div class="col-md-12 padd-top-0">
+                    <div class="add-address-form-box">
+                      <div class="modal-body">
+                       
+                        <form [formGroup]="masterCategoryForm">
+                          
+                            <div class="form-group">
+                              <div class="row">
+                                <div class="col-md-3">
+                                  <h4>Select Employee :</h4>
+                                </div>
+                                <div class="col-md-9">
+                                    <ng-multiselect-dropdown
+                                      [placeholder]="'Select Employee'"
+                                      [data]=filteredEmployees
+                                      [settings]="dropdownSettings"
+                                      formControlName="empIds"
+                                      >
+                                    </ng-multiselect-dropdown>
+                                </div>
+                              </div>
+
+                            </div>
+                            <div formArrayName="masterCatArray">
+                              <div  *ngFor="let category of masterFormArr.controls; let j = index" [formGroupName]="j" class="form-group">
+                                <!-- Document Category Checkbox -->
+                                <h4 class="top-shif-title-box"><!--cursor: not-allowed; -->
+                                   <input type="checkbox" formControlName="fieldStatus" [ngStyle]="{ 
+                                    'pointer-events': !checkStatus(document_master_data[j].master_documents_details) ? 'none' : 'auto',
+                                    'cursor': !checkStatus(document_master_data[j].master_documents_details) ? 'not-allowed' : 'pointer'
+                                  }" value="{{ category.get('fieldStatus') }}"/> {{ category.get('document_category_name').value }}
+                                </h4>
+                                <!-- Documents within the Category -->
+                               
+                                <div *ngIf="document_master_data[j].master_documents_details != null && (document_master_data[j].master_documents_details).length >0">
+                                  <div *ngFor="let document of document_master_data[j].master_documents_details" class="form-group">
+                                    
+                                    <label class="control-label col-sm-3">{{ document.master_document_name }}</label>
+                                    <div class="col-sm-6">
+                                      <div class="input-group">
+                                        <div class="Search-By-all-box">
+                                          &nbsp;&nbsp;
+                                          <input type="radio" [id]="'enable-' + document.master_document_id"
+                                            [name]="'SearchBy-' + document.master_document_id" value="Enable"
+                                            [checked]="document.master_document_status === 'Y'"
+                                            (change)="onActionChange('Enable', document.master_document_id)">
+                                          <label [for]="'enable-' + document.master_document_id">Enable</label>&nbsp;&nbsp;
+                                          <input type="radio" [id]="'disable-' + document.master_document_id"
+                                            [name]="'SearchBy-' + document.master_document_id" value="Disable"
+                                            [checked]="document.master_document_status === 'N'"
+                                            (change)="onActionChange('Disable', document.master_document_id)">
+                                          <label [for]="'disable-' + document.master_document_id">Disable</label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                 
+                              </div>
+                            </div>
+                          <div class="col-md-12" style="text-align: center;">
+                            <input type="button" class="btn btn-success" value="Update" style="border-radius: 1px;margin: 20px;" (click)="updateMasterCatDefineEmployee()">
+                          </div>
+                        </form>
+                      </div>
+
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="col-md-12 col-12 padd-top-15 text-center">
+                                <a class="btn btn-primary save-btn">Save</a>
+                                <a class="btn btn-primary reset-btn">Reset</a>
+                                <br><br>
+                            </div> -->
+            </div>
+          </div>
+          <!-- /row -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Add category popup by ARPIT -->
+<div [@grooveState]="open_add_category_popup ? 'active' : 'inactive'" id="allowanceDeduct" class="modal">
+  <div [@dongleState]="open_add_category_popup ? 'active' : 'inactive'" class="modal-dialog" style="margin:auto;">
+    <div class="modal-content" style="height: 100%; margin-top: 100px; max-height: 80vh; overflow-y: auto;">
+      <form [formGroup]="CategoryForm">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Add Category</h4>
+          <button type="button" class="close" data-dismiss="modal" (click)="close_category_popup()">&times;</button>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">
+              Category Name <span class="text-danger">*</span>
+            </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" formControlName="CategoryName" placeholder=" ">
+            </div>
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" data-dismiss="modal" value="Save" (click)="AddNew_Catagory()">
+          <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel"
+            (click)="close_category_popup()">
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Add Document popup by ARPIT -->
+<div [@grooveState]="open_document_popup ? 'active' : 'inactive'" id="allowanceDeduct" class="modal">
+  <div [@dongleState]="open_document_popup ? 'active' : 'inactive'" class="modal-dialog" style="margin:auto;">
+    <div class="modal-content" style="height: 100%; margin-top: 100px; max-height: 80vh; overflow-y: auto;">
+      <form [formGroup]="DocumentForm">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Add Document</h4>
+          <button type="button" class="close" data-dismiss="modal" (click)="close_popup()">&times;</button>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label class="control-label col-sm-5">
+              Document Category <span class="text-danger">*</span>
+            </label>
+            <div class="col-sm-7">
+              <div class="input-group-box">
+                <select class="form-control" formControlName="DocumentCategory">
+                  <option value="">Select</option>
+                  <option *ngFor="let category of document_master_data" [value]="category.document_category_name">
+                    {{ category.document_category_name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <label class="control-label col-sm-5">
+              Document Name<span class="text-danger">*</span>
+            </label>
+            <div class="col-sm-7">
+              <input type="text" formControlName="DocumentName" class="form-control" placeholder="  ">
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <label class="control-label col-sm-5">
+              Document Mandatory <span class="text-danger">*</span>
+            </label>
+            <div class="col-sm-7">
+              <div class="input-group">
+                <div class="Search-By-all-box">
+                  &nbsp;&nbsp;
+                  <input type="radio" id="SearchBy002" formControlName="DocumentMandatory" value="Y"
+                    class="1SearchBy-new">
+                  <label for="SearchBy002">Yes</label>
+                  &nbsp;&nbsp;
+                  <input type="radio" id="Search-By-003" formControlName="DocumentMandatory" value="N"
+                    class="1SearchBy-new">
+                  <label for="Search-By-003">No</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" data-dismiss="modal" value="Save"
+            (click)="AddCatagory_DocumentName()">
+          <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel" (click)="close_popup()">
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

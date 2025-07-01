@@ -1,0 +1,196 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+  <div id="wrapper" [ngClass]="{ 'active': showSidebar }">
+    <div id="page-wrapper" style="margin-left: 5px;">
+
+      <!-- Loading State -->
+      <div *ngIf="isLoadingAccess" class="text-center p-5">
+        <p>Loading form...</p>
+      </div>
+
+      <!-- Access Denied State -->
+      <div *ngIf="!isLoadingAccess && !canAccessForm" class="m-3 text-center">
+         Access Denied. You may not be authorized to view this form or it may not be applicable at this time.
+      </div>
+
+      <!-- Main Form -->
+      <div class="clearance-form-container container-fluid my-5" *ngIf="clearanceForm">
+        <h2 class="mb-4 text-center">Exit clearance Form</h2>
+
+        <form [formGroup]="clearanceForm" (ngSubmit)="onSubmit()">
+          <div class="section-container mb-4">
+            <div class="section-header p-3" (click)="toggleEmployeeInfo()">
+              <span class="section-title">Employee Details</span>
+
+              <i class="fa toggle-icon" [ngClass]="showEmployeeInfo ? 'fa-chevron-up' : 'fa-chevron-down'"
+                aria-hidden="true"></i>
+
+            </div>
+
+            <div class="section-body border border-top-0 p-3" *ngIf="showEmployeeInfo">
+              <fieldset class="mb-4 p-3 border rounded">
+
+                <div class="row">
+                  <div class="col-md-6 mb-2">
+                    <label class="form-label">Employee Name:</label>
+                    <input type="text" class="form-control" formControlName="employeeName">
+                  </div>
+                  <div class="col-md-6 mb-2">
+                    <label class="form-label">Employee Code:</label>
+                    <input type="text" class="form-control" formControlName="employeeCode">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-2">
+                    <label class="form-label">Designation:</label>
+                    <input type="text" class="form-control" formControlName="designation">
+                  </div>
+                  <div class="col-md-6 mb-2">
+                    <label class="form-label">Department:</label>
+                    <input type="text" class="form-control" formControlName="department">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-2">
+                    <label class="form-label">Date of Joining:</label>
+                    <input type="text" class="form-control" formControlName="dateOfJoining">
+                  </div>
+                  <div class="col-md-6 mb-2">
+                    <label class="form-label">HoD/ RO:</label>
+                    <input type="text" class="form-control" formControlName="hodRo">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-2">
+                    <label class="form-label">Date of Resignation:</label>
+                    <input type="text" class="form-control" formControlName="dateOfResignation">
+                  </div>
+                  <div class="col-md-6 mb-2">
+                    <label class="form-label">Last Working Day:</label>
+                    <input type="text" class="form-control" formControlName="lastWorkingDay">
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+          <!-- Clearance Sections -->
+          <div class="section-container mb-4">
+
+            <div class="section-header p-3" (click)="toggleTable()">
+              <span class="section-title">Assset Record </span>
+              <i class="fa toggle-icon" [ngClass]="showTable ? 'fa-chevron-up' : 'fa-chevron-down'"
+                aria-hidden="true"></i>
+            </div>
+            <div class="section-body border border-top-0 p-3" *ngIf="showTable">
+              <fieldset class="mb-4 p-3 border rounded">
+                <div class="table-responsive">
+                  <div class="table-responsive">
+                    <!-- Bind the table to the FormArray -->
+                    <table class="table table-bordered align-middle">
+                      <thead class="table-light">
+                        <tr>
+                          <th style="width: 25%;">Department</th>
+                          <th style="width: 50%;">Assets / Item Description</th>
+                          <th style="width: 25%;">Handed Over? (Y/N)</th>
+                          <!-- <th style="width: 40%;">Verification/ Remarks by HoD</th> -->
+                        </tr>
+                      </thead>
+                      <!-- Use formArrayName to connect this section to the 'clearanceItems' FormArray -->
+                      <tbody formArrayName="clearanceItems">
+                        <!-- 
+        First, we loop through the departments (the visual groups).
+        We use 'departmentKeys' which is a simple array of strings for clean looping.
+       -->
+                        <ng-container *ngFor="let deptKey of departmentKeys">
+                          <!-- 
+          Then, we loop through the items within that specific department.
+          'groupedItems[deptKey]' gives us the array of items for the current department.
+         -->
+                          <ng-container *ngFor="let item of groupedItems[deptKey]; let isFirst = first">
+                            <!-- 
+            Each 'tr' is a FormGroup within the FormArray.
+            We use [formGroupName] and bind it to the 'originalIndex' we saved.
+            This links the row in the view to the correct FormGroup in the model.
+          -->
+                            <tr [formGroupName]="item.originalIndex">
+                              <!-- 
+              Use *ngIf and rowspan to merge the department cells, 
+              making it look grouped.
+            -->
+                              <td *ngIf="isFirst" [attr.rowspan]="groupedItems[deptKey].length">
+                                <b>{{ item.department_name }}</b>
+                              </td>
+                              <td>
+                                {{ item.asset_item }}
+                              </td>
+                              <td>
+                                <!-- 
+                This select is now bound to the 'status' control inside
+                the FormGroup for this specific row.
+                
+              -->
+                                <!-- <ng-container *ngIf="!['Yes', 'No'].includes(item.status); else readOnlyStatus"> -->
+                                  <ng-container>
+                                  <select class="form-select" formControlName="status">
+                                    <option value="" disabled>-- Select --</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                  </select>
+                                  <div
+                                    *ngIf="clearanceItemsArray.controls[item.originalIndex].get('status')?.invalid && clearanceItemsArray.controls[item.originalIndex].get('status')?.touched"
+                                    class="text-danger small mt-1">
+                                    Selection is required.
+                                  </div>
+                                </ng-container>
+                                <!-- <ng-template #readOnlyStatus>
+                                  <input class="form-control" [value]="item.status" disabled />
+                                </ng-template> -->
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+              </fieldset>
+            </div>
+          </div>
+
+          <!-- Signatures -->
+          <!-- <div class="section-container mb-4">
+            <div class="section-header p-3" (click)="toggleSignature()">
+              <span class="section-title">Signature </span>
+              <i class="fa toggle-icon" [ngClass]="showSignature ? 'fa-chevron-up' : 'fa-chevron-down'"
+                aria-hidden="true"></i>
+
+            </div>
+            <div class="section-body border border-top-0 p-3" *ngIf="showSignature">
+              <fieldset class="mt-4 p-3 border rounded">
+
+                <div class="row mt-3">
+                  <div class="col-md-4 mb-3">
+                    <label for="employeeSignature" class="form-label">Employee Signature (Type Name):</label>
+                    <input type="text" id="employeeSignature" class="form-control" formControlName="employeeSignature">
+                  </div>
+                  <div class="col-md-2 mb-3">
+                    <label for="employeeDate" class="form-label">Date:</label>
+                    <input type="date" id="employeeDate" class="form-control" formControlName="employeeDate">
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div> -->
+
+          <div class="text-center mt-4" *ngIf="!is_submitted">
+            <button type="submit" class="btn btn-primary btn-lg">Submit Clearance
+              Form</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+<app-footer></app-footer>

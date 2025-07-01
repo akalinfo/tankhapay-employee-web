@@ -1,0 +1,570 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<section>
+  <div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+    <div class="fakeLoader"></div>
+
+    <!-- Sidebar Navigation -->
+
+    <div id="page-wrapper">
+      <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+          <h3 class="text-themecolor">Company Details</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item" title="Home"><a [routerLink]="['/dashboard']" title="Home">Home</a></li>
+            <li class="breadcrumb-item active">Company Details</li>
+          </ol>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <!-- /row -->
+        <div class="row">
+
+          <div class="col-md-10 col-md-offset-1 mrg-top-10 mrg-bot-10">
+
+
+            <div class="card">
+
+              <div class="card-header">
+                <h4>Business Info </h4>
+
+              </div>
+
+              <div class="card-body padd-bot-10 padd-top-0">
+                <div class="row">
+
+                  <div class="col-md-12 padd-top-15">
+
+
+                    <div class="col-sm-3 ">
+                      <div class="form-group mrg-bot-0">
+                        <div class="contact-img mrg-bot-0 mrg-top-0">
+
+                          <img alt="{{employer_profile.company_name}}" class=" img-responsive"
+                            src="{{employer_profile.profile_photo_path}}">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-9">
+                      <h4><b>{{employer_profile.company_name}}</b></h4>
+                      <p *ngIf="employer_profile.user_type!='Individual'"><b>GSTIN:</b>
+                        {{employer_profile.gstin_no}} </p>
+                      <p *ngIf="employer_profile.user_type=='Individual'"><b>PAN:</b>
+                        {{employer_profile.pan_no}} </p>
+
+                      <p><b>E-mail:</b> {{employer_profile.employer_email}} </p>
+                    </div>
+
+                  </div>
+
+                </div>
+                <alert></alert>
+              </div>
+            </div>
+
+            <!-- General Information -->
+            <div class="card">
+
+              <div class="card-header">
+                <h4>Company Details </h4>
+
+              </div>
+              <alert></alert>
+              <form [formGroup]="business_detail" autocomplete="off">
+                <div class="card-body">
+                  <div class="row">
+
+                    <div class="col-md-12 padd-top-15">
+
+                      <div class="col-sm-6 mrg-bot-15 noClick">
+                        <label>Employer Name <span class="text-danger">*</span></label>
+                        <input type="text" autocomplete="chrome-off" maxlength="100" class="form-control"
+                          formControlName="employer_name">
+                      </div>
+
+                      <div class="col-sm-6 mrg-bot-15 noClick">
+                        <label>Employer Type <span class="text-danger">*</span></label>
+                        <input type="text" autocomplete="chrome-off" maxlength="100" class="form-control"
+                          formControlName="user_type">
+                      </div>
+
+                      <div class="col-sm-6 mrg-bot-15 was-validated">
+                        <label for="validationCustom01" class="form-label">Registered Mobile Number <span
+                            class="text-danger">*</span></label>
+                        <div class="input-group-box">
+                          <input type="text" autocomplete="chrome-off" id="validationCustom01"
+                            formControlName="employer_mobile" maxlength="10" class="form-control noClick">
+                          <div class="input-group-append">
+                            <a (click)="open_update_mobile_no()" data-toggle="modal" class=" fa-btn-edit-btn "
+                              data-placement="top"><i class="fa fa-edit"></i> </a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6 m-clear mrg-bot-15 was-validated">
+                        <label>Email (Optional)</label>
+                        <div class="input-group-box">
+                          <input type="text" placeholder="employer email id" maxlength="100" autocomplete="chrome-off"
+                            class="form-control noClick" formControlName="employer_email">
+                          <div class="input-group-append">
+                            <a (click)="open_update_email()"
+                              data-toggle="modal" class=" fa-btn-edit-btn " data-placement="top"><i
+                                                                                                                                                                                                                    class="fa fa-edit"></i> </a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-12 m-clear mrg-bot-15 noClick">
+                        <label>Registered Address</label>
+                        <input type="text" class="form-control" formControlName="registered_address">
+                      </div>
+                      <!--div class="col-sm-12 m-clear mrg-bot-15 noClick">
+                        <label>Billing Address</label>
+                        <input type="text" class="form-control" formControlName="billing_address">
+                        
+
+                      </div-->
+                      <div class="col-sm-12 m-clear mrg-bot-15 noClick">
+                        <label>Payout Date</label>
+                        <input type="text" class="form-control" placeholder="10th of every month"
+                          formControlName="payout_date">
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </form>
+            </div>
+
+
+          <!--Set Default Billing Address -->
+          <div class="card" style="padding: 1.25rem 1.25rem 0rem 1.25rem !important;">
+            <div class="card-header">
+              <h4>Billing Address</h4>
+            </div>
+
+            <div class="card-body">
+              <div id="collapseSeven" role="tabpanel" aria-labelledby="">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-sm-12">
+
+                      <span *ngIf="companyBillingAddress !=''">
+                        <table class="table table-border">
+                          <tr>
+                            <th style="width:5%;padding: 9px;">Default</th>
+                            <th style="width:95%;padding: 9px;">Address</th>
+                          </tr>
+                          <tr *ngFor="let address of companyBillingAddress">
+                            <td style="text-align: center;;">
+                              <input type="radio" (change)="setBillingAddress(address.account_id)" name="account" [value]="address.account_id" style="display: inline;" [checked]="address.isdefaultbillingaddress == 'Y'?true:false">
+                            </td>
+                            <td>
+                              {{address.bill_address+" "+address.bill_state}}
+                            <span *ngIf="address.gstin_no"> <b> GST:-</b> {{address.gstin_no}}</span>
+                            <span *ngIf="address.pan_no"> <b> PAN:-</b> {{address.pan_no}}</span>
+                             
+                            </td>
+                          </tr>
+                        </table>
+                      </span>
+
+                    </div>
+                  </div>  
+                  
+                          
+                </div>
+              </div>
+              <alert></alert>
+            </div>
+            
+          </div>
+
+
+<!-- Company Logo Card Made by Arpit -->
+<div class="card">
+  <div class="card-header">
+    <h4>Company Logo</h4>
+  </div>
+
+  <div class="card-body">
+    <div id="collapseSeven" role="tabpanel" aria-labelledby="">
+      <div class="panel-body">
+        <div class="row">
+          <!-- File upload and new logo preview -->
+
+          <div class="col-sm-12">
+            <div class="showPdf">
+              <div style="margin-top: 10px; margin-bottom: 10px;">
+                <img 
+                  alt="{{employer_profile.company_name}}" 
+                  class="img-responsive" 
+                  src="{{employer_profile.profile_photo_path}}" 
+                  style="max-width: 300px; max-height: 100px; border: 1px solid #ccc; border-radius: 5px;"
+                  title="Previous Company Logo">
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-sm-6">
+            <div class="custom-file-upload">
+             
+              <input 
+                type="file" 
+                class="form-control" 
+                accept=".jpg,.jpeg,.png" 
+                id="empLogoId"  
+                (change)="empLogoSelect($event)">
+            </div>
+  
+            <!-- Show preview of the newly selected logo with a remove option -->
+            <div *ngIf="logoData" class="d-flex align-items-center" style="margin-top: 15px;">
+              <div>
+                <label>Preview</label>
+                <img 
+                  [src]="logoData" 
+                  alt="Selected Logo" 
+                  class="img-responsive" 
+                  style="max-width: 100px; max-height: 100px; border: 1px solid #ccc; border-radius: 5px;">
+              </div>
+              <!-- Cross icon placed beside the preview -->
+              <button 
+                type="button" 
+                (click)="removeLogoPreview()" 
+                style="margin-left: 10px; background: red; color: white; border: none; border-radius: 50%; width: 25px; height: 25px;">
+                ×
+              </button>
+            </div>
+  
+            <!-- Validation error message -->
+            <!-- <div *ngIf="el.employerLogoSubmitted.value && el.data.errors" 
+                 class="invalid-feedback inline-pos" 
+                 style="margin-top: 10px;">
+              <small *ngIf="el.data.errors.required" class="text-danger">
+                Company Logo is required
+              </small>
+            </div> -->
+  
+          </div>
+  
+          <!-- Save button -->
+          <div class="col-sm-2">
+            <button type="button" (click)="saveEmpLogo()"  
+                    class="btn btn-lg theme-btn blue-btn" 
+                    [disabled]="!logoData">
+              <i class="fa fa-upload" style="font-size:20px; margin: 0 5px 0 0;"></i>Upload
+            </button>
+          </div>
+    <!-- Display the previous company logo -->
+  
+
+    <div class="col-sm-12" style="margin-top: 10px; font-size: 14px; color: #b90707;">
+      <small><strong>Note:</strong> Image dimensions must be between 50x50 pixels and 1000x1000 pixels.</small>
+    </div>
+    <div class="col-sm-12" style="margin-top: 5px; font-size: 14px; color: #b90707;">
+      <small><strong>Note:</strong>Image file size must be between 5 KB and 500 KB, and only files with .jpg, .png, or .jpeg extensions are allowed</small>
+    </div>
+
+        </div>  
+        
+                 
+      </div>
+    </div>
+    <alert></alert>
+  </div>
+  
+</div>
+
+            <div *ngIf="showAssistantBtn" class="col-md-12 col-12 padd-top-15 flexed">
+              <a [routerLink]="['/dashboard/welcome']" class="btn btn-primary">Back</a>
+              <a (click)="routeToPayout()" class="btn btn-primary">Next</a>
+            </div>
+
+          </div>
+        </div>
+        <!-- /row -->
+      </div>
+    </div>
+  </div>
+</section>
+<app-footer></app-footer>
+
+
+
+<!-- Send Message -->
+<div id="SendMessage" class="modal fade add-address-form-box">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Your Address</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" class="form-control">
+          </div>
+
+
+          <div class="form-group">
+            <label>Mobile Number</label>
+            <input type="text" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label>Flat, House No, Building, Company, Apartment</label>
+            <input type="text" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Area, Street, Sector, Village</label>
+            <input type="text" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label>Landmark</label>
+            <input type="text" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Pincode</label>
+            <input type="text" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Town/City</label>
+            <input type="text" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>State</label>
+            <select class="form-control" id="inputState">
+              <option value="SelectState">Select State</option>
+              <option value="Andra Pradesh">Andra Pradesh</option>
+              <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+              <option value="Assam">Assam</option>
+              <option value="Bihar">Bihar</option>
+              <option value="Chhattisgarh">Chhattisgarh</option>
+              <option value="Goa">Goa</option>
+              <option value="Gujarat">Gujarat</option>
+              <option value="Haryana">Haryana</option>
+              <option value="Himachal Pradesh">Himachal Pradesh</option>
+              <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+              <option value="Jharkhand">Jharkhand</option>
+              <option value="Karnataka">Karnataka</option>
+              <option value="Kerala">Kerala</option>
+              <option value="Madya Pradesh">Madya Pradesh</option>
+              <option value="Maharashtra">Maharashtra</option>
+              <option value="Manipur">Manipur</option>
+              <option value="Meghalaya">Meghalaya</option>
+              <option value="Mizoram">Mizoram</option>
+              <option value="Nagaland">Nagaland</option>
+              <option value="Orissa">Orissa</option>
+              <option value="Punjab">Punjab</option>
+              <option value="Rajasthan">Rajasthan</option>
+              <option value="Sikkim">Sikkim</option>
+              <option value="Tamil Nadu">Tamil Nadu</option>
+              <option value="Telangana">Telangana</option>
+              <option value="Tripura">Tripura</option>
+              <option value="Uttaranchal">Uttaranchal</option>
+              <option value="Uttar Pradesh">Uttar Pradesh</option>
+              <option value="West Bengal">West Bengal</option>
+              <option disabled="" style="background-color:#aaa; color:#fff">UNION Territories
+              </option>
+              <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+              <option value="Chandigarh">Chandigarh</option>
+              <option value="Dadar and Nagar Haveli">Dadar and Nagar Haveli</option>
+              <option value="Daman and Diu">Daman and Diu</option>
+              <option value="Delhi">Delhi</option>
+              <option value="Lakshadeep">Lakshadeep</option>
+              <option value="Pondicherry">Pondicherry</option>
+            </select>
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" data-dismiss="modal" value="Add Address">
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--Update Mobile Number-->
+<div id="mobile_modal_id1" class="modal fade add-address-form-box" [ngClass]="{'in': show_update_mobile_no}"
+  [ngStyle]="{'display': show_update_mobile_no ? 'block': 'none'}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Update Mobile</h4>
+          <button (click)="close_update_mobile_no()" type="button" class="close" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label>Mobile Number</label>
+            <input type="text" class="form-control" maxlength="10" [(ngModel)]="input_update_mobile_no"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <input (click)="open_mobile_otp()" type="button" class="btn btn-default" data-dismiss="modal" value="Update">
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--Update Mobile Number-->
+
+<!--Update Mobile OTP-->
+<div *ngIf="show_mobile_otp" id="mobile_modal_id2" class="modal fade add-address-form-box" [ngClass]="{'in': show_mobile_otp}"
+  [ngStyle]="{'display': show_mobile_otp ? 'block': 'none'}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Update Mobile</h4>
+          <button (click)="close_mobile_otp()" type="button" class="close" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+
+          <h4 class="modal-title">
+            To change mobile no. please enter 4 digit one time password (OTP) Sent to your mobile.
+            <b>({{input_update_mobile_no}})</b>
+          </h4>
+
+          <div class="form-group otp-outer-button-box">
+
+            <label for="validationCustom02" class="form-label col-md-12">Enter OTP<span
+                class="text-danger">*</span></label>
+            <div class="col-md-3"><input type="text" class="form-control " maxlength="1" [(ngModel)]="input_otp1"
+                (input)="moveFocus($event, otp2, null)" #otp1 [ngModelOptions]="{standalone: true}"></div>
+            <div class="col-md-3"><input type="text" class="form-control " maxlength="1" [(ngModel)]="input_otp2"
+                (input)="moveFocus($event, otp3, otp1)" #otp2 [ngModelOptions]="{standalone: true}"></div>
+            <div class="col-md-3"><input type="text" class="form-control " maxlength="1" [(ngModel)]="input_otp3"
+                (input)="moveFocus($event, otp4, otp2)" #otp3 [ngModelOptions]="{standalone: true}"></div>
+            <div class="col-md-3"><input type="text" class="form-control " maxlength="1" [(ngModel)]="input_otp4"
+                (input)="moveFocus($event, null, otp3)" #otp4 [ngModelOptions]="{standalone: true}"></div>
+            <p class="Resend-button-box col-md-12"><span>OTP Sent Successfully.</span>
+              <!-- <a (click)="resend_mobile_otp()">Resend</a> -->
+            </p>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <input (click)="otp_verify_mobile()" type="button" class="btn btn-default" data-dismiss="modal" value="Update">
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--Update Mobile OTP-->
+
+
+<!--Update Email ID-->
+<div id="email_modal_id1" class="modal fade add-address-form-box" [ngClass]="{'in': show_update_email}"
+  [ngStyle]="{'display': show_update_email ? 'block': 'none'}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Update Email</h4>
+          <button (click)="close_update_email()" type="button" class="close" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label>Email ID</label>
+            <input type="text" class="form-control" [(ngModel)]="input_update_email"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <input (click)="open_email_otp()" type="button" class="btn btn-default" data-dismiss="modal" value="Update">
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--Update Email ID-->
+
+<!--Update Email OTP-->
+<div *ngIf="show_email_otp" id="email_modal_id2" class="modal fade add-address-form-box" [ngClass]="{'in': show_email_otp}"
+  [ngStyle]="{'display': show_email_otp ? 'block': 'none'}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Update Email ID</h4>
+          <button (click)="close_email_otp()" type="button" class="close" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+
+          <h4 class="modal-title">
+            To change Email ID please enter 4 digit one time password (OTP) Sent to your Email ID.
+            <b>({{input_update_email}})</b>
+          </h4>
+
+          <div class="form-group otp-outer-button-box">
+
+            <label for="validationCustom02" class="form-label col-md-12">Enter OTP<span
+                class="text-danger">*</span></label>
+            <div class="col-md-3"><input type="text" class="form-control " maxlength="1" [(ngModel)]="input_otp11"
+                (input)="moveFocus($event, otp22, null)" #otp11 [ngModelOptions]="{standalone: true}"></div>
+            <div class="col-md-3"><input type="text" class="form-control " maxlength="1" [(ngModel)]="input_otp22"
+                (input)="moveFocus($event, otp33, otp11)" #otp22 [ngModelOptions]="{standalone: true}"></div>
+            <div class="col-md-3"><input type="text" class="form-control " maxlength="1" [(ngModel)]="input_otp33"
+                (input)="moveFocus($event, otp44, otp22)" #otp33 [ngModelOptions]="{standalone: true}"></div>
+            <div class="col-md-3"><input type="text" class="form-control " maxlength="1" [(ngModel)]="input_otp44"
+                (input)="moveFocus($event, null, otp33)" #otp44 [ngModelOptions]="{standalone: true}"></div>
+            <p class="Resend-button-box col-md-12"><span>OTP Sent Successfully.</span>
+              <!-- <a (click)="resend_email_otp()">Resend</a> -->
+            </p>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <input (click)="otp_verify_email()" type="button" class="btn btn-default" data-dismiss="modal" value="Update">
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--Update Email OTP-->
+
+
+<!-- Modal -->
+<div id="myModal" class="modal" role="dialog" [ngStyle]="{'display':comformationAlertStatus?'block':'none'}">
+  <div class="modal-dialog modal-sm">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header bg-info" style="color:#fff !important;">
+        <button type="button" class="close" data-dismiss="modal" (click)="closeConfirmationAlert()">&times;</button>
+        <h4 class="modal-title">Alert</h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to set this as the default billing address ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-xs btn btn-default" (click)="closeConfirmationAlert()">No</button>
+        <button type="button" class="btn-xs btn btn-info" (click)="setDefaultBillingAddress()">Yes</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+

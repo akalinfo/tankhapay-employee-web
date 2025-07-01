@@ -1,0 +1,173 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+    <div id="wrapper" [ngClass]="{'active': showSidebar == true}">
+      <div class="fakeLoader"></div>
+  
+      <div id="page-wrapper">
+        <div class="row page-titles">
+        	<div class="col-md-5 align-self-center">
+                <h3 class="text-themecolor">Visitors Summary</h3>
+            </div>
+          <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a [routerLink]="['/reports']">Reports</a></li>
+  
+              <li class="breadcrumb-item active">Visitors Summary</li>
+            </ol>
+          </div>
+        </div>
+        <div class="container-fluid">
+            <!-- /row -->
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                  <form [formGroup]="Datepicker_Form">
+                    <div class="card">
+                    
+                        <div class="card-header">
+                        <div class="row">
+                        <div class="col-md-2" style="display: flex; align-items: center;">
+                           
+                           <span style="margin: 1.5rem; font-weight: 500;" class="">Select Date:</span>
+                          
+                        </div>
+                        
+                        <div class="col-md-3">
+                          <input id="FromDate2" #rd class="form-control" type="text" style="cursor: pointer;"
+                            formControlName="FromDate" placeholder="dd-mm-yyyy" autocomplete="off" readonly>
+                        </div>
+
+                        <div class="col-md-3">
+                          <input id="ToDate2" #rd class="form-control" type="text" style="cursor: pointer;"
+                            formControlName="ToDate" placeholder="dd-mm-yyyy" autocomplete="off" readonly>
+                        </div>
+                        
+                        <div class="col-md-2">
+                           <button class="btn btn-primary" style=" padding: 10px;" (click)="Visitor_list()">Search</button>
+                        </div>
+                        
+                       
+                        
+                        </div>
+                        </div>
+                        
+                        <!-- <div class="card-body"> -->
+                            
+                            <div class="row">
+                        
+                        <!-- <div class="col-md-12 padd-top-0">
+                          <div class="row justify-content-end">
+                            <div class="col-md-3 text">
+                                <p><strong>Total Visitors: {{ visitor_list_data?.length }}</strong></p>
+                            </div>
+                            <div class="col-md-3" style="float: right;">
+                                <input type="text" formControlName="searchKeyword" placeholder="Search" class="form-control" (keyup)="search($event)" />
+                            </div>
+                        </div>
+                        
+                        </div> -->
+                        
+
+                        <div class="col-md-6 col-sm-6">
+                            <div class="card leave-templates-box">
+                              <div class="card-header">
+                                <h4 class="mb-0">
+                                  <span style=" position: relative;"
+                                    class="badge badge-action default-btn">
+                                    <a class="btn btn-user btn-default btn-round btn-outline">New Visitors registration</a>
+                                  </span>
+                
+                                </h4>
+                              </div>
+                              <div class="card-body">
+                
+                                <div class="widget standard-widget">
+                                  <div class="row">
+                                    <div class="widget-caption danger">
+                                      <div class="col-xs-4 no-pad">
+                                        <i class="fa fa-user fa-4x" aria-hidden="true"></i>
+                                      </div>
+                                      <div class="col-xs-8 no-pad">
+                                        <div class="widget-detail">
+                                          <p>Same Day Count:
+                                          
+                                            <strong >
+                                              {{this.visitor_list_data[0]?.same_day_count}}</strong>
+                                          </p>
+                                          <p>&nbsp;</p>
+                
+                                        </div>
+                                      </div>
+                                      <div class="col-xs-12">
+                                        <div class="widget-line bg-danger">
+                                          <span style="width:90%;" class="bg-primary widget-horigental-line"></span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                
+                                </div>
+                         
+                
+                              </div>
+                
+                            </div>
+                          </div>
+                
+                          <div class="col-md-6 col-sm-6">
+                            <div class="card leave-templates-box">
+                              <div class="card-header">
+                                <h4 class="mb-0">
+                                  <span style=" position: relative;"
+                                    class="badge badge-action default-btn">
+                                    <a class="btn btn-user btn-default btn-round btn-outline">Old Visitors registration</a>
+                                  </span>
+                
+                                </h4>
+                              </div>
+                              <div class="card-body">
+                
+                                <div class="widget standard-widget">
+                                  <div class="row">
+                                    <div class="widget-caption danger">
+                                      <div class="col-xs-4 no-pad">
+                                        <i class="fa fa-user fa-4x" aria-hidden="true"></i>
+                                      </div>
+                                      <div class="col-xs-8 no-pad">
+                                        <div class="widget-detail">
+                                            <p>Different Day Count:
+                                            
+                                              <strong >
+                                                {{this.visitor_list_data[0]?.different_day_count}}</strong>
+                                            </p>
+                                            <p>&nbsp;</p>
+                  
+                                          </div>
+                                      </div>
+                                      <div class="col-xs-12">
+                                        <div class="widget-line bg-danger">
+                                          <span style="width:90%;" class="bg-primary widget-horigental-line"></span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                
+                                </div>
+                         
+                
+                              </div>
+                
+                            </div>
+                          </div>
+                            
+                        </div>		
+                            
+                        <!-- </div> -->
+                    </div>
+                  </form>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>	
+      </div>
+    </div>
+</section>

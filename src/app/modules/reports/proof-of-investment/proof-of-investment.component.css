@@ -1,0 +1,321 @@
+[type="radio"] {
+    display: inline !important
+}
+
+
+.light-skyblue {
+    background: lightblue;
+}
+
+.white {
+    background: white;
+}
+
+.export-button {
+    background-color: rgb(114, 238, 116);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  .dropdown.float-right-box ul#menu3 {
+    left: -52px;
+}
+.top-right-outer-box {
+    display: flex;
+    justify-content: flex-start;
+}
+.form-check {
+    padding-top: 10px;
+}
+.form-check .form-check-input {
+    height: 20px;
+    width: 20px;
+    vertical-align: text-bottom;
+    margin: 3px 5px 0 0;
+}
+.save-button .btn.btn-primary:hover {
+    background: #87ceeb !important;
+}
+.save-button .btn.btn-primary {
+    background: #d1ebfc;
+    color: #000;
+    border: 1px solid #87ceeb;
+    padding: 10px 14px;
+}
+html body .btn-primary:hover, html body .btn-primary:focus {
+    color: #ffffff;
+}
+.btn-primary:hover, .btn-primary:focus {
+    color: #fff;
+    background-color: #1194f7 !important;
+    border-color: #1194f7 !important;
+}
+.btn.focus, .btn:focus, .btn:hover {
+    /* color: #67757c !important; */
+    text-decoration: none;
+}
+
+.Show-Fields-top-outer-box {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.dropdown.btn-group.Show-Fields-outer-box .btn-primary {
+    padding: 10px 15px;
+}
+
+.showhide {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.dropdown-menu {
+    border-color: #e8eef1;
+    padding: 0;
+    box-shadow: none;
+    margin: 0px 0 0;
+}
+
+.Show-Fields-top-outer-box .dropdown.float-right-box .btn-primary:hover {
+    color: #fff;
+    background-color: #1194f7;
+    border-color: #1194f7;
+}
+.Show-Fields-top-outer-box .dropdown.float-right-box .btn-primary {
+    border-radius: 0;
+}
+
+.save-button .btn.btn-primary.Reset-btn-box:hover {
+    background: #dbdbdb;
+    border: 1px solid #c4c6c7;
+}
+
+.table-responsive.reports-new-table-outer-box thead {
+    color: #ffffff !important;
+    background: #6fbbdb!important;
+    vertical-align: top;
+}
+
+.table-bordered {
+    border: 1px solid #ddd !important;
+}
+  .table-bordered {
+    border: 1px solid #e8edef !important;
+}
+
+.save-button .btn.btn-primary.Reset-btn-box {
+    background: #e3e3e3;
+    border: 1px solid #c4c6c7;
+}
+.save-button .btn.btn-primary:hover {
+    background: #87ceeb;
+}
+.save-button .btn.btn-primary {
+    background: #d1ebfc;
+    color: #000;
+    border: 1px solid #87ceeb;
+    padding: 10px 14px;
+}
+html body .btn-primary:hover, html body .btn-primary:focus {
+    color: #ffffff;
+}
+.btn-primary:hover, .btn-primary:focus {
+    color: #fff;
+    background-color: #1194f7;
+    border-color: #1194f7;
+}
+.btn.focus, .btn:focus, .btn:hover {
+    text-decoration: none;
+}
+
+html body .btn-primary {
+    background: #1194f7;
+}
+
+.dropdown-menu>li:last-child a {
+    border-bottom: none;
+}
+.dropdown-menu>li>a {
+    display: block;
+    padding: 14px 12px 14px 12px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #67757c;
+    white-space: nowrap;
+    border-bottom: 1px solid #f1f6f9;
+}
+
+.Appointment-outer-box table thead th {
+    background: #31869b;
+    color: #fff;
+    font-size: 14px;
+    padding: 12px;
+}
+
+.table>thead>tr>th {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #ddd !important;
+}
+
+.modal-title {
+    margin: 0;
+    line-height: 1.42857143;
+}
+.h4, h4 {
+    font-size: 18px;
+}
+
+.dataTables_wrapper label {
+    color: #898989;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.modal-title {
+    margin: 0;
+    line-height: 1.42857143;
+}
+
+.Appointment-outer-box tbody tr:nth-of-type(odd) {
+    background-color: #b7dee8;
+}
+
+.modal-body {
+    position: relative;
+    padding: 15px;
+}
+
+.modal-header {
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.showhide {
+    max-height: 200px; /* Set a maximum height for the dropdown */
+    overflow-y: auto; /* Add a vertical scrollbar if necessary */
+  }
+  
+  .dropdown-item label {
+    display: block;
+    white-space: nowrap; /* Prevent text from wrapping to the next line */
+  }
+  
+  .dropdown-item input {
+    margin-right: 5px; /* Add some spacing between the checkbox and the text */
+  }
+
+  /* Add these styles to your global styles or component styles */
+  #changeDateModal table tr td{
+    font-size: 12px;
+  }
+
+  /* Fullscreen modal styling by ak 22-02-2025*/
+ .full-screen-modal {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .full-screen-modal .modal-dialog {
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    margin: 0;
+  }
+  
+  .full-screen-modal .modal-content {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .full-screen-modal .modal-header,
+  .full-screen-modal .modal-footer {
+    flex-shrink: 0;
+  }
+  
+  .full-screen-modal .modal-body {
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+  
+  
+  @media (max-width: 768px) {
+    .full-screen-modal .modal-dialog {
+      width: 100vw;
+      height: 100vh;
+    }
+  
+    .full-screen-modal .modal-content {
+      height: 100vh;
+    }
+  } 
+  
+  
+  @media (min-width: 1200px) {
+    .modal-xl {
+      width: 1220px!important;
+    }
+  }
+  
+  .custom-inline-group {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adjust spacing between label and input */
+  }
+  
+  .custom-inline-group label {
+    white-space: nowrap; /* Prevents label from wrapping */
+    font-weight: bold;
+  }
+  
+  .custom-inline-group input {
+    flex: 1; /* Makes the input take the remaining space */
+  }
+  
+  .download-options {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+.download-icon {
+  font-size: 18px;
+  color: #007bff;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.download-icon:hover {
+  color: #0056b3;
+}
+.download-icon .fa-file-excel {
+  color: #28a745;
+}
+.download-icon .fa-file-excel:hover {
+  color: #1e7e34;
+}
+.download-icon .fa-file-pdf {
+  color: #dc3545;
+}
+.download-icon .fa-file-pdf:hover {
+  color: #b02a37;
+}

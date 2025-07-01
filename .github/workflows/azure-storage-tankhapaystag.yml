@@ -1,0 +1,33 @@
+name: Deploy to Azure Storage Account - tankhapaystag
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Set up Azure CLI
+      uses: azure/cli-action@v1
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        client-id: 93134dfa-9eeb-4f64-81b0-7ccddffa5635
+        tenant-id: 0610cf2c-5ec4-4b4e-99da-d9bfb7f1f129
+        client-secret: b947342b-0e2b-4408-8db4-50884f974343
+        subscription-id: 3ca32944-1fc8-4e6b-addc-88cb2d7aeeaf
+
+    - name: Deploy to $web Container
+      run: |
+        STORAGE_ACCOUNT_NAME="tankhapaystag"
+        STORAGE_CONTAINER_NAME="$web"
+        SOURCE_FOLDER="./"
+        az account show
+        az storage blob upload-batch \
+          --account-name "tankhapaystag" \
+          --destination "$web" \
+          --source "./" \
+          --pattern "*"
+        echo "Deployment to Azure Storage Account complete!"
