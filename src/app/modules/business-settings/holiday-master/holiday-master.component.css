@@ -1,0 +1,40 @@
+.row-head {
+  align-items: baseline;
+  display: flex;
+}
+.cur-ptr {
+  cursor: pointer;
+}
+.fa-edit {
+  color: blue;
+}
+.fa-check-square-o{
+  color: #07bf07;
+}
+.fa-trash {
+  color: red;
+}
+.verified-holiday {
+
+  color: red;
+}
+.verified-holiday-rh {
+
+  color: green;
+}
+.verified-holiday-spl
+{
+  color: green;
+}
+.verified-holiday-rh-spl {
+
+  color: green;
+}
+.inactive-holiday {
+
+  color: gray;
+}
+.read-only {
+  user-select: none !important;
+  pointer-events: none !important;
+}

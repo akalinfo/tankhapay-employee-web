@@ -1,0 +1,537 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+  <div id="wrapper" [ngClass]="{'active': showSidebar == false}">
+    <div class="fakeLoader"></div>
+
+
+    <div id="page-wrapper">
+
+      <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+          <h3 class="text-themecolor">Missed Punch Report</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="['/reports']">Reports</a></li>
+            <li class="breadcrumb-item active">Missed Punch Report</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="container-fluid">
+        <div class="row">
+          <app-common-filter [extraFilters]="addOnFilters" [isSideBar]="isSideBar"
+            (filterChanged)="searchOnFilters($event)"></app-common-filter>
+
+          <div class="col-md-12 col-sm-12">
+            <div class="card">
+              <div class="card-header">
+                <div class="row">
+
+                  <div class="col-md-12 col-sm-12 filter-outer-main-box">
+
+                    <div class="row">
+
+                      <div class="col-md-9 col-sm-9">
+
+                        <div class="col-md-4 col-sm-4 padd-0">
+                          <input type="text" class="form-control" placeholder="Search"
+                            (keyup)="search($event.target.value)" maxlength="200" />
+                        </div>
+
+                        <!-- <div class="col-md-2 col-sm-2">
+                          <select class="form-control" (change)="changeMonth($event)">
+                            <option *ngFor="let ma of monthsArray" [selected]="month==ma.id" [value]="ma.id">
+                              {{ma.month}}
+                            </option>
+                          </select>
+                        </div> -->
+
+                        <!-- <div class="col-md-2 col-sm-2">
+                          <select class="form-control" (change)="changeYear($event)">
+                            <option *ngFor="let ya of yearsArray" [selected]="year==ya" [value]="ya">{{ya}}</option>
+
+                          </select>
+                        </div> -->
+                        <div class="col-md-3 col-sm-3" style="display: none;">
+                          <span style="margin: 10px;font-weight: bold;">Category</span>
+                          <select class="form-control" [(ngModel)]="attendanceCategory"
+                            (change)="change_att_category()">
+                            <!-- <option value="">All</option> -->
+                            <!-- <option value="DE">Deviation</option> -->
+                            <option value="MP">Missed Punch</option>
+                          </select>
+                          <!-- <span style="margin: 10px;font-weight: bold;">&nbsp;</span>
+                          <a style="font-weight: 500;color: black;border-color: #0e49ed !important;    margin-left: 2rem;"
+                            class="btn btn-secondary manage-btn" (click)="get_missed_punch_att()">
+                            Search</a> -->
+                        </div>
+                        <div class="col-md-3" style="display: flex;"
+                          *ngIf="istToGermanTimeService.checkIfGermanTimeZone()">
+                          <!-- <strong>Timezone : &nbsp;</strong> -->
+                          <div class="form-check-inline">
+                            <input id="ist" type="radio" [(ngModel)]="showGermanTime" [ngModelOptions]="{standalone: true}" name="timezone" value="IST"
+                              class="form-check-input" (change)="onTimezoneChange()">
+                            <label for="ist" class="form-check-label">IST</label>
+                          </div>
+                          <div class="form-check-inline">
+                            <input id="cet" type="radio" [(ngModel)]="showGermanTime" [ngModelOptions]="{standalone: true}" name="timezone" value="CET"
+                              class="form-check-input" (change)="onTimezoneChange()">
+                            <label for="cet" class="form-check-label">CET/CEST</label>
+                          </div>
+
+                        </div>
+                        <div class="col-md-2 col-sm-2">
+                          <span class="form-control"
+                            style="font-weight: bold;background-color:white;border-color: white;">Total :
+                            {{missed_punch_data.length}}</span>
+                        </div>
+                      </div>
+
+                      <div class="col-md-3 col-sm-3">
+                        <div class="Show-Fields-top-outer-box" style="float: right;">
+                          <div class="dropdown float-right-box">
+                            <a class="btn btn-round btn-success excel-btn-box" style="padding-top: 9px;"
+                              (click)="exportToExcel()">&nbsp;<i class="fa fa-file-excel-o" aria-hidden="true"></i></a>
+
+                            <a class="btn btn-round btn-success pdf-btn-box" style="padding-top: 9px;"
+                              (click)="exportToPdf('missed-punch-report.pdf','Missed Punch Report')">&nbsp;<i
+                                class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
+                          </div>
+                        </div>
+                      </div>
+
+
+                    </div>
+
+
+
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="card-body padd-bot-0 padd-top-0">
+
+                <div class="row">
+                  <div class="col-md-12 padd-top-0">
+                    <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+                      <p style="color:blue; display:  none;"><span>Note*</span><span
+                          style="font-size: 12px; color: #00a4df;"> &nbsp;For
+                          bulk actions, please select the items you wish to update and then click the 'Update Marking
+                          Status' button to apply the changes.</span></p>
+                      <table class="table user-list" #reportTable>
+                        <thead style="background: skyblue;">
+                          <tr>
+                            <th *ngIf="1">
+                              <input class="form-check-input" type="checkbox" id="selectAll" [(ngModel)]="selectAll"
+                                (change)="toggleSelectAll()" *ngIf="showSelectionCheckboxes">
+                            </th>
+                            <th>#</th>
+                            <th>Employee Name</th>
+                            <th>Email</th>
+                            <th>Org Unit Name</th>
+                            <th>Attendance Date</th>
+                            <th>Assign Shift</th>
+                            <th>Status</th>
+                            <th>Intime</th>
+                            <th>OutTime</th>
+                            <th>Working hrs</th>
+                            <th>Project Name</th>
+                            <th>Vendor Name</th>
+                            <th>Salary Book Project</th>
+                            <!-- <th></th> -->
+                            <!-- <th>Action</th> -->
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <ng-container *ngFor="let mpd of missed_punch_data; let i = index">
+                            <tr>
+                              <td *ngIf="1">
+                                <input type="checkbox" [(ngModel)]="mpd.selected" (change)="onEmployeeCheckboxChange()"
+                                  *ngIf="showSelectionCheckboxes && mpd.emp_name != 'Grand Total'">
+                              </td>
+                              <td> {{i+1}}</td>
+                              <!-- <td>
+                                {{mpd.emp_name}} [{{mpd.orgempcode? mpd.orgempcode:mpd.cjcode}}]
+                                <div><strong>{{mpd?.email}}</strong></div>
+                              </td> -->
+                              <td>
+                                {{ mpd.emp_name }}
+                                <span *ngIf="mpd.orgempcode || mpd.cjcode">[{{ mpd.orgempcode ? mpd.orgempcode :
+                                  mpd.cjcode }}]</span>
+                              </td>
+                              <td>{{ mpd?.email }}</td>
+                              <td>{{ mpd.assigned_ou_names }}</td>
+                              <td>{{mpd.att_date}}</td>
+                              <td>{{mpd.shift_name_and_timing}}</td>
+                              <td>
+                                {{!mpd.att_catagory_txt ? mpd.attendance_type: mpd.att_catagory_txt}} </td>
+                              <td>
+                                <ng-container *ngIf="showGermanTime=='IST'">{{mpd.check_in_time}}</ng-container>
+                                <ng-container *ngIf="showGermanTime=='CET'">{{ getGermanTime(mpd.check_in_time,
+                                  mpd.att_date) }}</ng-container>
+                                <!-- {{mpd.check_in_time}} -->
+                              </td>
+                              <td>
+                                <ng-container *ngIf="showGermanTime=='IST'">{{mpd.check_out_time}}</ng-container>
+                                <ng-container *ngIf="showGermanTime=='CET'">{{ getGermanTime(mpd.check_out_time,
+                                  mpd.att_date) }}</ng-container>
+                              </td>
+                              <td>{{mpd.no_of_hours_worked}}</td>
+                              <td>{{ mpd.project_name }}</td>
+                              <td>{{ mpd.vendor_name}}</td>
+                              <td>{{ mpd.salary_book_project}}</td>
+                              <!-- <td>
+                                <span *ngIf="mpd.mis_punch_approval_status == 'P' ">
+                                 <button class="btn btn-xs btn-success" (click)="approveMissPunchStatus(mpd)">Approve</button>&nbsp;&nbsp;
+                                 <button class="btn btn-xs btn-danger" (click)="rejectMissPunchStatus(mpd)">Reject</button>
+                                </span>
+                                <span *ngIf="mpd.mis_punch_approval_status != 'P' ">
+                                  <span *ngIf="mpd.mis_punch_approval_status == 'A'" style="text-color:green;">Approved</span>
+                                  <span *ngIf="mpd.mis_punch_approval_status == 'R'" style="text-color:red;">Rejected</span>
+                                </span>
+                              </td> -->
+                              <!-- <td>
+                                <ng-container *ngIf="mpd?.is_salary_processed != 'Y'">
+                                  <a style="cursor :pointer;" (click)="openAttCalendar2(i)"><i class="fa fa-edit"></i></a>
+
+                                  <a (click)="manage_biometric_att_single(mpd.orgempcode, mpd.att_date)"
+                                    title="Re-sync the punches if the check-in/out times are not showing."
+                                    style="cursor :pointer; margin-left:10px;">
+                                    <i *ngIf="mpd.is_biomatric_device_enable=='Y' && mpd.orgempcode"
+                                      class="fa fa-refresh" aria-hidden="true"></i>
+                                  </a>
+                                </ng-container>
+                              </td> -->
+                            </tr>
+                          </ng-container>
+
+                          <tr *ngIf="missed_punch_data.length == 0">
+                            <td colspan="100%" style="text-align: center;">No Data Found</td>
+                          </tr>
+
+                        </tbody>
+
+                      </table>
+
+                      <div class="col-md-4 col-sm-4">
+                        <div *ngIf="selected_missed_punches.length>0">
+                          <button class="btn btn-success btn-lg " (click)="openAttCalendar()">Update Marking
+                            Status</button>
+                        </div>
+
+                        <br>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <alert></alert>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+<app-footer></app-footer>
+
+
+<!------------Attendance Calendar 1-------->
+<div [@grooveState]="showAttCalendarPopup?'active':'inactive'" id="Attendance" class="modal">
+  <div [@dongleState]="showAttCalendarPopup?'active':'inactive'" class="modal-dialog"
+    style="margin:auto auto auto auto;">
+    <div *ngIf="showAttCalendarPopup" class="modal-content" style="height:100%;margin-top:100px;">
+      <form>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Update Missed Punch Status</h4>
+          <button type="button" class="close" aria-hidden="true" (click)="closeAttCalendar()">&times;</button>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label>Mark Attendance</label>
+            <div class="custom-radio">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="col-md-6">
+                    <input type="radio" id="present" name="att_options" value="PP" (change)="changeAttType('PP')">
+                    <label for="present">Present [PP]</label>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="radio" id="wfh" name="att_options" value="WFH" (change)="changeAttType('WFH')">
+                    <label for="wfh">Work From Home [WFH]</label>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="col-md-6">
+                    <input type="radio" id="od" name="att_options" value="OD" (change)="changeAttType('OD')">
+                    <label for="od">OnDuty [OD]</label>
+                  </div>
+                  <div class="col-md-6">
+
+                    <input type="radio" id="week_off" name="att_options" value="WO" (change)="changeAttType('WO')">
+                    <label for="week_off">Weekly-Off [WO]</label>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="col-md-6">
+                    <input type="radio" id="absent" name="att_options" value="AA" (change)="changeAttType('AA')">
+                    <label for="absent">Absent [AA]</label>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="radio" id="holiday" name="att_options" value="HO" (change)="changeAttType('HO')">
+                    <label for="holiday">Holiday [HO]</label>
+                  </div>
+                </div>
+
+                <!-- <div class="col-md-12">
+                  <div class="col-md-12">
+                    <input type="radio" id="half" name="att_options" value="HD" (change)="changeAttType('HD')">
+                    <label for="half">Half Day [HD]</label><br>
+                    <div *ngIf="attCalendarForm.controls.attendancetype.value=='HD'"
+                      style="display: flex;flex-wrap: wrap;font-size: 11px;margin-left: 1rem;">
+                      <div class="row">
+
+                        <ng-container *ngFor="let fe of leave_sub_type_arr;">
+                          <div class="col-md-6">
+                            <input type="radio" id="{{fe.typecode}}" name="leave_options" value="{{fe.typecode}}"
+                              (change)="changeLeaveType($event)">
+                            <label for="{{fe.typecode}}">{{fe.typename}} [{{fe.typecode}}] -
+                            </label>
+                          </div>
+                        </ng-container>
+                        <div class="col-md-6">
+                          <input type="radio" id="AA" name="leave_options" value="AA"
+                            (change)="changeLeaveType($event,'')"
+                            [checked]="attCalendarForm.controls.leavetype.value==''">
+                          <label for="AA">Absent [AA] </label>
+                        </div>
+                      </div>
+
+                    </div>
+
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="col-md-12">
+                    <input type="radio" id="leave" name="att_options" value="LL" (change)="changeAttType('LL')"
+                      [checked]="attCalendarForm.controls.attendancetype.value=='LL'">
+                    <label for="leave">Leave [LL]</label>
+
+                    <div
+                      *ngIf="attCalendarForm.controls.attendancetype.value=='LL'"
+                      style="display:flex;flex-wrap:wrap;font-size: 11px;margin-left: 1rem;">
+                      <div class="row">
+                        <ng-container *ngFor="let fe of leave_sub_type_arr;">
+                          <div class="col-md-6">
+                            <input type="radio" id="{{fe.typecode}}" name="leave_options" value="{{fe.typecode}}"
+                              (change)="changeLeaveType($event)">
+                            <label for="{{fe.typecode}}">{{fe.typename}} [{{fe.typecode}}] -
+                            </label>
+                          </div>
+                        </ng-container>
+                        <ng-container>
+                          <div class="col-md-6">
+                            <input type="radio" id="CO" name="leave_options" value="CO"
+                            (change)="changeLeaveType($event)">
+                            <label for="CO">CompOff [CO]</label>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                </div> -->
+
+                <div class="col-md-12 col-sm-12" style="margin-top: 10px;">
+                  <textarea class="form-control" placeholder="Enter Remarks..." [(ngModel)]="mark_remarks"
+                    [ngModelOptions]="{standalone: true}">
+                  </textarea>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" (click)="closeAttCalendar()" value="Cancel">
+          <input type="submit" class="btn btn-success" (click)="manage_missed_punch_att()" value="Update">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!------------end-------->
+
+
+<!------------Attendance Calendar 2-------->
+<div [@grooveState]="showSingleAttCalendarPopup?'active':'inactive'" id="Attendance" class="modal">
+  <div [@dongleState]="showSingleAttCalendarPopup?'active':'inactive'" class="modal-dialog"
+    style="margin:auto auto auto auto;">
+    <div *ngIf="showSingleAttCalendarPopup" class="modal-content" style="height:100%;margin-top:100px;">
+      <form>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Update Missed Punch Status</h4>
+          <button type="button" class="close" aria-hidden="true" (click)="closeAttCalendar()">&times;</button>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label>Mark Attendance</label>
+            <div class="custom-radio">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="col-md-6">
+                    <input type="radio" id="present" name="att_options" value="PP" (change)="changeAttType('PP')">
+                    <label for="present">Present [PP]</label>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="radio" id="wfh" name="att_options" value="WFH" (change)="changeAttType('WFH')">
+                    <label for="wfh">Work From Home [WFH]</label>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="col-md-6">
+                    <input type="radio" id="od" name="att_options" value="OD" (change)="changeAttType('OD')">
+                    <label for="od">OnDuty [OD]</label>
+                  </div>
+                  <div class="col-md-6">
+
+                    <input type="radio" id="week_off" name="att_options" value="WO" (change)="changeAttType('WO')">
+                    <label for="week_off">Weekly-Off [WO]</label>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="col-md-6">
+                    <input type="radio" id="absent" name="att_options" value="AA" (change)="changeAttType('AA')">
+                    <label for="absent">Absent [AA]</label>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="radio" id="holiday" name="att_options" value="HO" (change)="changeAttType('HO')">
+                    <label for="holiday">Holiday [HO]</label>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="col-md-12">
+                    <input type="radio" id="half" name="att_options" value="HD" (change)="changeAttType('HD')">
+                    <label for="half">Half Day [HD]</label><br>
+                    <div *ngIf="mark_att_type=='HD'"
+                      style="display: flex;flex-wrap: wrap;font-size: 11px;margin-left: 1rem;">
+                      <div class="row">
+
+                        <ng-container *ngFor="let fe of this.missed_punch_data[single_selected_index]?.balance_txt;">
+                          <div class="col-md-6">
+                            <input type="radio" id="{{fe.typecode}}" name="leave_options" value="{{fe.typecode}}"
+                              (change)="changeLeaveType($event, fe.prev_bal)">
+                            <label for="{{fe.typecode}}">{{fe.typename}} [{{fe.typecode}}] -
+                              <strong>{{fe.prev_bal}}</strong>
+                              Days
+                            </label>
+                          </div>
+                        </ng-container>
+                        <div class="col-md-6">
+                          <input type="radio" id="AA" name="leave_options" value="AA"
+                            (change)="changeLeaveType($event,'')" [checked]="mark_leave_type==''">
+                          <label for="AA">Absent [AA] </label>
+                        </div>
+                      </div>
+
+                    </div>
+
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="col-md-12">
+                    <input type="radio" id="leave" name="att_options" value="LL" (change)="changeAttType('LL')">
+                    <label for="leave">Leave [LL]</label>
+
+                    <div *ngIf="mark_att_type=='LL'"
+                      style="display:flex;flex-wrap:wrap;font-size: 11px;margin-left: 1rem;">
+                      <div class="row">
+                        <ng-container *ngFor="let fe of this.missed_punch_data[single_selected_index]?.balance_txt">
+                          <div class="col-md-6">
+                            <input type="radio" id="{{fe?.typecode}}" name="leave_options" value="{{fe.typecode}}"
+                              (change)="changeLeaveType($event, fe.prev_bal)">
+                            <label for="{{fe.typecode}}">{{fe.typename}} [{{fe.typecode}}] -
+                              <strong>{{fe.prev_bal}}</strong>
+                              Days</label>
+                          </div>
+                        </ng-container>
+                        <ng-container
+                          *ngIf="is_comp_off_applicable(this.missed_punch_data[single_selected_index]?.comp_off_txt)">
+                          <div class="col-md-6">
+                            <input type="radio" id="CO" name="leave_options" value="CO"
+                              (change)="changeLeaveType($event, get_tot_co_bal(this.missed_punch_data[single_selected_index]?.comp_off_txt))">
+                            <label for="CO">CompOff [CO] -
+                              <strong>{{get_tot_co_bal(this.missed_punch_data[single_selected_index]?.comp_off_txt)}}</strong></label>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12" style="margin-top: 10px;">
+                  <textarea class="form-control" placeholder="Enter Remarks..." [(ngModel)]="mark_remarks"
+                    [ngModelOptions]="{standalone: true}">
+                  </textarea>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" (click)="closeAttCalendar()" value="Cancel">
+          <input type="submit" class="btn btn-success" (click)="manage_missed_punch_att()" value="Update">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!------------end-------->
+
+<div class="modal" [ngStyle]="{'display':confirmationModal?'block':'none'}">
+  <div class="modal-dialog modal-sm ">
+    <div class="modal-content ">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Alert</h4>
+        <button type="button" class="close modal-close-btn" data-dismiss="modal" aria-label="Close"
+          data-bs-dismiss="modal" (click)="closeConfirmModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12" style="min-height:50px;">
+            <p>Are you sure you want to <span *ngIf="approveStatus=='A'">approve</span><span
+                *ngIf="approveStatus=='R'">reject</span> attendance?</p>
+          </div>
+        </div>
+
+        <!-- Modal footer -->
+
+        <div class="modal-footer" style="background-color: #fff;">
+          <button class="btn btn-success btn-xs" data-dismiss="modal" (click)="approveOrRejectStatus()">Yes</button>
+          <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal" aria-hidden="true"
+            (click)="closeConfirmModal()">No</button>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>

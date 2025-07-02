@@ -1,0 +1,76 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+
+    <div id="wrapper" [ngClass]="{'active':showSidebar}">
+
+        <div class="fakeLoader"></div>
+        <!-- Navigation -->
+
+        <!-- Sidebar Navigation -->
+
+        <div id="page-wrapper">
+            <div class="row page-titles padd-0"> </div>
+            <div class="container-fluid">
+
+                <div class="row">
+
+                    <!-- Single Freelancer Employees --> 
+                    <div id="att_payroll" class="col-md-4 col-sm-6">
+                        <a [routerLink]="['/dashboard/summary-dashboard']">
+                            <div class="freelance-container style-2 Dashboard-outer-box-design">
+                                <div class="freelance-box">
+
+                                    <div class="freelance-inner-box padd-top-0">
+                                        <div class="freelance-box-thumb">
+                                            <img src="assets/img/employee.png" class="img-responsive img-circle1"
+                                                alt="">
+                                        </div>
+                                        <div class="freelance-box-detail">
+                                            <h4>Payrolling & Attendance  </h4>
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- <a  [routerLink]="['/employees']" class="btn btn-blue manage-btn">Click Employee</a> -->
+
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="tnd" class="col-md-4 col-sm-6">
+                        <a (click)="routeToTND()">
+                            <div class="freelance-container style-2 Dashboard-outer-box-design">
+                                <div class="freelance-box">
+
+                                    <div class="freelance-inner-box padd-top-0">
+                                        <div class="freelance-box-thumb">
+                                            <img src="assets/img/employee.png" class="img-responsive img-circle1"
+                                                alt="">
+                                        </div>
+                                        <div class="freelance-box-detail">
+                                            <h4>Training & Development </h4>
+
+                                        </div>
+
+                                    </div>
+
+                               
+
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+</section>
+
+<app-footer></app-footer>

@@ -1,0 +1,188 @@
+<!-- <app-header></app-header> -->
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<section>
+  <div id="wrapper" [ngClass]="{'active': showSidebar == false}">
+    <div class="fakeLoader"></div>
+
+    <div id="page-wrapper">
+      <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+          <h3 class="text-themecolor">Make Payments</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item" title="Home">
+              <a [routerLink]="['/dashboard']">Home</a>
+            </li>
+
+            <li class="breadcrumb-item active">Make Payments</li>
+          </ol>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <!-- /row -->
+        <div class="row">
+          <div class="col-md-12 col-sm-12">
+            <div class="card">
+              <!-- <div class="card-header">
+                <div class="row">
+                  <div class="col-md-4 col-sm-4">
+                  <input type="text" class="form-control wide-width" placeholder="Search and Type" maxlength="100"/>
+                  </div>
+                  <div class="col-md-8 col-sm-8">
+                  <div class="top-right-outer-box">
+                    <span style="margin: 1.5rem;font-weight: bold;">Month - Year</span>					
+                    <select class="form-control" style="margin:  0.2rem;width: 150px;" (change)="changeMonth($event)">
+
+                    <option *ngFor="let ma of monthsArray" [selected]="month==ma.id" [value]="ma.id">{{ma.month}}</option>
+                    </select>									   
+                    <select class="form-control" style="margin:  0.2rem; width: 100px;" (change)="changeYear($event)">
+                    <option *ngFor="let ya of yearsArray" [selected]="year==ya" [value]="ya">{{ya}}</option>
+                    </select>
+        
+                    <select class="form-control" style="margin:  0.2rem;width: 150px;"(change)="changeProductType($event)" title="Product Type">
+                    <option value="1" [selected]="product_type=='1'">Social Security</option>
+                    <option value="2" [selected]="product_type=='2'">Payrolling</option>
+                    </select>
+        
+                    <select class="form-control" style="margin:  0.2rem;width: 150px;" [(ngModel)]="selectedPayoutType" name="payoutType">
+                    <option value="All">All</option>
+                    <option value="pending">Pending</option>
+                    <option value="partial">Partial</option>
+                    <option value="completed">Completed</option>
+                  </select>
+                  </div>
+        
+                  </div>
+                </div>
+                </div> -->
+              <div class="card-body">
+                <ul class="list" *ngFor="let payout_detail of summary; let i = index">
+                  
+                  <li class="manage-list-row manage-pay-select clearfix">
+                    <div class="job-info">
+                      <div class="job-img calender-btn-box">
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                        <p>{{payout_detail.month_name}}</p>
+                      </div>
+                      <div class="job-details">
+                        <h3 class="job-name">
+                          <a class="job_name_tag" href="#"
+                            > Payout Amount: <b> ₹ {{payout_detail.amount}}</b></a
+                          >
+                        </h3>
+                        <br/>
+                        <small class="job-company"
+                          ><strong>Associates:</strong> {{payout_detail.totalemployees}} </small
+                        ><br/>
+                        <small class="job-company"
+                          ><strong>Payout Date:</strong> {{payout_detail.payoutdate1}}</small
+                        ><br />
+                        <small class="job-company"
+                          ><strong>Days to Payout:</strong> 
+                          <span style="color: orange;">{{payout_detail.days_left}}</span>
+                          </small
+                        ><br />
+                        <small class="job-company"
+                        ><strong>Status:</strong> 
+                        <span style="color: red;">{{payout_detail.status}}</span>
+                        </small
+                      ><br />
+                      </div>
+                    </div>
+                    <div class="job-buttons">
+                      <a
+                       routerLink="/payouts/make-payments"
+                       href="javascript:void(0)"
+                        class="btn btn-blue manage-btn"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        ><b>PAY</b>
+                        </a>
+
+                    </div>
+                  </li>
+
+
+                </ul>
+
+                <div class="card-body">
+                  <ul class="list" *ngFor="let user of detail; let i = index">
+                <li class="manage-list-row clearfix">
+                  <div class="job-info">
+                    <div class="job-img calender-btn-box make-payments-btn">
+                      <!-- photopath -->
+                     <ng-container *ngIf="user.photopath">
+                        <!-- Display the photo as a circular image if photopath is available -->
+                        <img
+                          src="{{ user.photopath }}"
+                          class="circular-image attachment-thumbnail"
+                          alt="User Photo"
+                        />
+                      </ng-container>
+                      <ng-container *ngIf="!user.photopath">
+                        <!-- Display the user's name initial with a blue background in a circle if photopath is not available -->
+                        <div class="circular-initial-character" [ngStyle]="{'background-color': 'blue'}">
+                          {{ user.emp_name.charAt(0).toUpperCase() }}
+                        </div>
+                      </ng-container>
+                    </div>
+                    <div class="job-details">
+                      <h3 class="job-name">
+                        <a class="job_name_tag" 
+                          ><i class="fa fa-user" aria-hidden="true"></i>
+                          {{user.emp_name}}</a
+                        >
+                      </h3>
+                      <small class="job-company">
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                        <strong>Pay Days:</strong> {{user.paiddays}}</small
+                      ><br />
+                      <small class="job-company"
+                        ><i class="fa fa-inr" aria-hidden="true"></i
+                        ><strong>Amount:</strong>₹ {{user.amount}}</small
+                      ><br />
+                    </div>
+                  </div>
+                  <div class="job-buttons">
+                    <div role="presentation" class="dropdown">
+                      <a
+                        
+                        class="dropdown-toggle btn btn-user btn-round btn-success"
+                        id="drop6"
+                        data-toggle="dropdown"
+                        role="button"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        >{{user.approvalstatus}} <span class="caret"></span>
+                      </a>
+                      <ul
+                        class="dropdown-menu"
+                        id="menu3"
+                        aria-labelledby="drop6"
+                      >
+                        <li><a routerLink="/payouts/make-payments">Hold</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+
+              
+              </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /row -->
+      </div>
+    </div>
+    <!-- /#page-wrapper -->
+
+
+  </div>
+
+</section>
+
+<app-footer></app-footer>

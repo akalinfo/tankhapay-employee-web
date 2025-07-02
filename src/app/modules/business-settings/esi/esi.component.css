@@ -1,0 +1,114 @@
+.form-control {
+    height: 50px;
+    border: 1px solid #dde6ef;
+    margin-bottom: 10px;
+    box-shadow: none;
+    border-radius: 0;
+    background: #fbfdff;
+    font-size: 15px;
+    color: #6b7c8a;
+    font-weight: 400;
+}
+
+.form-control {
+    color: #607d8b;
+    font-size: 15px;
+    height: 40px;
+    box-shadow: none;
+    border-radius: 2px;
+    border: 1px solid #e8eef1;
+}
+
+label {
+    font-weight: 500;
+}
+
+.Contribution-btn-box span {
+    width: 126px;
+    margin-left: 10px;
+}
+
+.Contribution-btn-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h4.font-semibold.mb-2.custom-radio {
+    color: #000;
+    margin-top: 30px!important;
+    font-weight: 500;
+}
+
+.salary-component-disable-note {
+    padding: 10px 10px 0;
+    background-color: #FFF5E3;
+    margin: 10px 0;
+    border: 1px dashed #ff6e6e !important;
+}
+
+.card-header {
+    background: #ffffff;
+    border-bottom: 0px;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0;
+    border-bottom: 1px solid #e8eef1;
+}
+
+.card-header h4 {
+    margin: 0;
+    color: #1a6bb7 !important;
+    font-weight: 500;
+}
+.card-header h4 {
+    font-weight: 400;
+}
+
+.disabled-link {
+    pointer-events: none;
+  }
+  
+.card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid #e8eef1;
+    border-radius: 0.25rem;
+}
+body {
+    background-color: #eef5f9;
+    color: #67757c;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    line-height: 1.618;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+    font-weight: 400;
+}
+
+.custom-radio {
+    margin-top: 14px;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 400;
+    line-height: 1.382;
+    margin: 0 0 10px;
+    margin: 0 0 1rem;
+    color: #455a64;
+}
+
+.text-dashed-underline {
+    border-bottom: 1px dashed #969696;
+    color: initial;
+}
+label {
+    font-weight: 500;
+}
+

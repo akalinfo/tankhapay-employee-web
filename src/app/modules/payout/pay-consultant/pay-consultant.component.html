@@ -1,0 +1,1225 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+   <div id="wrapper" [ngClass]="{'active': showSidebar == true}">
+      <div class="fakeLoader"></div>
+
+      <div id="page-wrapper">
+         <div class="row page-titles">
+            <div class="col-md-5 align-self-center">
+               <h3 class="text-themecolor">Pay Consultant</h3>
+            </div>
+            <div class="col-md-7 align-self-center">
+               <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a [routerLink]="['/payouts']">Payouts</a></li>
+                  <li class="breadcrumb-item active">Pay Consultant</li>
+               </ol>
+            </div>
+         </div>
+
+         <div class="container-fluid">
+            <!-- /row -->
+            <div class="row">
+
+               <div class="col-md-12 col-sm-12">
+                  <div class="card">
+                     <div class="card-header">
+
+                    <div class="col-lg-3 col-md-3 ">
+                     <div class="top-right-outer-box">
+                       <span style=" font-weight: bold; margin-top: 1.2rem;">Month - Year</span>
+                       <select 
+                         class="form-control" 
+                         style="margin: 0.2rem; width: 200px;"
+                         (change)="changeMonthYear($event)"
+                         [(ngModel)]="month" [ngModelOptions]="{standalone: true}">
+                         <option value="">Select Month</option>
+                         <option *ngFor="let monthObj of filteredMonths" [value]="monthObj.value">
+                           {{ monthObj.name }} {{ year}}
+                         </option>
+                       </select>
+                     </div>
+                   </div>
+                   
+                   <div class="col-lg-4 col-md-4" *ngIf="payoutSummary.length > 0">
+                     <strong>Total Number of Employees :</strong>
+                     {{ this.payoutSummary[0]?.totalemployees }}<br>
+      
+                     <strong>Days Left to Payout :</strong>
+                     {{ this.payoutSummary[0].days_left }}
+                   </div>
+
+                   <div class="col-md-3 col-md-3" *ngIf="payoutSummary.length > 0">
+                     <strong>Status :</strong>
+                    {{this.payoutSummary[0].status}}<br>
+     
+                    <strong>Payout Date :</strong>
+                    {{this.payoutSummary[0].payoutdate1}}</div>
+                   
+
+                        <div class="col-lg-2 col-md-2 text-right" style="float: right;">
+                           <a data-toggle="modal" data-placement="top"
+                              class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn"
+                              style="margin: 8px 0 0 0;" (click)="open_consultant_popup()">Add Consultant </a>
+
+                        </div>
+
+                     </div>
+
+                     <div class="card-body">
+
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                           <div class="table-responsive reports-table-outer-box reports-new-table-outer-box">
+                              <table class="table table-striped table-bordered ">
+                                 <thead style="background: skyblue;">
+                                    <tr>
+                                       <th>#</th>
+                                       <th  style="text-align: center;" *ngIf="this.payoutSummary[0]?.status!='Completed' ">
+                                          <input type="checkbox" style="transform: scale(1.5)" name="header_checkbox"
+                                            [(ngModel)]="header_checkbox" [ngModelOptions]="{standalone: true}"
+                                            (change)="selectAll($event)">
+                                        </th>
+                                       <th >Name</th>
+                                       <th >Invoice</th>
+                                       <th >Payment Date</th>
+                                       <!-- <th >Type</th> -->
+                                       <th>Amount</th>
+                                       <th>GST</th>
+
+                                       <th >Remarks </th>
+                                       <th *ngIf="this.payoutSummary[0]?.status!='Completed'">Action</th>
+                                       
+
+
+
+                                    </tr>
+                                 </thead>
+                                 <tbody style="background: aliceblue;">
+                                    <ng-container *ngFor="let consultant of consultant_detail_data; let i = index">
+													<tr [ngClass]="{'light-skyblue': i % 2 == 0, 'white': i % 2 != 0}">
+                                          <td>{{i+1}}</td>
+                                          <td style="text-align: center;" *ngIf="this.payoutSummary[0]?.status!='Completed' && consultant.payout_done_flag !== 'Y' ">
+                                             <input type="checkbox" style="transform: scale(1.5)" name="yourCheckboxName"
+                                               [(ngModel)]="consultant.isSelected" [ngModelOptions]="{standalone: true}"
+                                               (change)="onCheckbox_Change($event, consultant, i)">
+                                           </td>
+                                           <td *ngIf=" consultant.payout_done_flag == 'Y' && this.payoutSummary[0]?.status!='Completed'"></td>
+                                       <td> {{consultant.emp_name}} </td>
+                                       <td class="text-center" class="text-left">
+                                          <ng-container *ngIf="consultant.invoicepath; else emptyCell">
+                                            <a [href]="consultant.invoicepath" title="View Invoice Document" target="_blank">
+                                              <i class="fa fa-file-pdf-o" style="font-size:16px;color:red"></i>
+                                              {{ getDocumentNameWithoutExtension(consultant.original_document_name) }}
+                                            </a>
+                                          </ng-container>
+                                          <ng-template #emptyCell></ng-template>
+                                        </td>
+
+                                       <td> {{consultant.payment_date}} </td>
+                                       <!-- <td> Quarterly </td> -->
+                                       <td>
+                                          <span data-toggle="modal" data-placement="top">
+                                            <i class="fa fa-inr" aria-hidden="true"></i> {{ consultant.grossearning }}
+                                          </span>
+                                        </td>                                        
+                                       <td> {{consultant.gst_number}} </td>
+                                       <td>{{consultant.remark}}
+                                       </td>
+                                       <td *ngIf="this.payoutSummary[0]?.status!='Completed' && consultant.payout_done_flag !== 'Y' ">
+                                          <div class="job-buttons action-btn-outer-box">
+                                            <a data-toggle="modal"
+                                              class="btn btn-shortlist manage-btn"
+                                              data-placement="top" title="Edit" (click)="open_edit_popup(consultant,$event)">
+                                              <i class="ti-pencil-alt"></i>
+                                            </a>
+                                        
+                                            <a data-toggle="modal"
+                                              class="btn btn-shortlist manage-btn"
+                                              data-placement="top" title="Delete" (click)="DeleteConsultant_PayoutRecord(consultant)">
+                                              <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </a>
+                                          </div>
+                                        </td>
+                                        <td *ngIf=" consultant.payout_done_flag == 'Y' && this.payoutSummary[0]?.status!='Completed'">
+                                          <span style="color: rgb(33, 203, 233);"> Paid</span>
+                                        </td>
+
+
+                                    </tr>
+                                    </ng-container>
+
+                                 </tbody>
+
+
+                                 <tfoot style="background: #ededed;">
+                                    <tr>
+
+                                       <th colspan="2"><b>Total Amount:</b></th>
+                                  
+                                       <th></th>
+                                       <th></th>
+                                       <th></th>
+                                       <th><b>₹ {{ netpay_sum | number:'1.2-2' }}</b></th>
+                                             <th *ngIf="this.payoutSummary[0]?.status!='Completed' "></th>
+                                             <th *ngIf="this.payoutSummary[0]?.status!='Completed' "></th>
+
+                                       <th >
+                                       <div class="job-buttons text-right">
+
+                                       <th ></th>
+                                       <!-- <a *ngIf="this.consultant_detail_data.length!='0' && (this.payout_mode_type != 'self')  && !(this.currentMonth == this.payoutSummary.mprmonth && this.currentYear == 
+                                          this.payoutSummary.mpryear) && this.payoutSummary.status != 'Completed' "  href="#ApprovePayroll" data-toggle="modal"
+                                          class="btn btn-primary manage-btn emp-edit-btn-box12" data-placement="top"
+                                          title="Edit">Pay <i aria-hidden="true" class="fa fa-chevron-right"></i></a> NotGenerated -->
+                                          <th colspan="2"> 
+                                             <div class="job-buttons text-right" >
+                                          <a *ngIf="this.consultant_detail_data.length!='0' && (this.payout_mode_type === 'self' && (this.payoutSummary[0].status != 'Low Balance' &&  !(this.payoutSummary[0].status == 'Pending' && this.payoutSummary[0].invoicevalue == 0)))&& !button_status && !(this.currentMonth == this.payoutSummary[0].mprmonth && this.currentYear == 
+                                          this.payoutSummary[0].mpryear) && this.payoutSummary[0].status != 'Completed' && this.payoutSummary[0].status != 'NotGenerated'" data-toggle="modal" data-placement="top" class="btn btn-primary manage-btn"
+                                          [ngClass]="{'disabled': !anyRowSelected()}" data-original-title="" title="" (click)="approve_popup()">Record Payment <i aria-hidden="true" class="fa fa-chevron-right"></i></a> 
+                                    
+                                     
+                                     <div class="dropdown float-right-box Download-Report-drop-btn" *ngIf="this.payout_mode_type === 'self' && button_status && !(this.currentMonth == this.payoutSummary[0]?.mprmonth && this.currentYear == 
+                                     this.payoutSummary[0]?.mpryear) && report_button && this.payoutSummary[0]?.status != 'Completed'">
+                                       <ul role="tablist" class="nav nav-pills">
+                                          <li role="presentation" class="dropdown">
+                                            <a  data-toggle="dropdown" class="dropdown btn-round btn-primary"  style="cursor: pointer;" aria-expanded="false">Download Reports <span class="caret"></span></a>
+                                            <ul class="dropdown-menu">
+                                              <li><a [routerLink]="['/reports/pre-attendance']" >Salary Advice</a></li>
+                                              <li><a [routerLink]="['/reports/disbursement-report']" >Disbursement Report</a></li>
+                                              <li> <a [routerLink]="['/reports/pay-summary']" data-toggle="modal" data-placement="top">Pay Slip</a> </li>
+                                            </ul>
+                                          </li>
+                                       </ul>
+                                     </div>
+   
+                                     <div class="dropdown float-right-box Download-Report-drop-btn" *ngIf="this.payout_mode_type === 'self' && this.payoutSummary[0]?.status == 'Completed' && !(this.currentMonth == this.payoutSummary[0]?.mprmonth && this.currentYear == 
+                                     this.payoutSummary[0]?.mpryear)">
+                                       <ul role="tablist" class="nav nav-pills">
+                                          <li role="presentation" class="dropdown">
+                                            <a  data-toggle="dropdown" class="dropdown btn-round btn-primary"  style="cursor: pointer;" aria-expanded="false">Download Reports <span class="caret"></span></a>
+                                            <ul class="dropdown-menu">
+                                              <li><a [routerLink]="['/reports/pre-attendance']" >Salary Advice</a></li>
+                                              <li><a [routerLink]="['/reports/disbursement-report']" >Disbursement Report</a></li>
+                                              <li> <a [routerLink]="['/reports/pay-summary']" data-toggle="modal" data-placement="top">Pay Slip</a> </li>
+                                            </ul>
+                                          </li>
+                                       </ul>
+                                     </div>
+
+                                          </div></th>
+
+                           </div>
+                           </th>
+
+                           </tr>
+                           </tfoot>
+
+                           </table>
+                           <div class="col-md-12 text-center large-text"
+										*ngIf="payoutSummary.length > 0 && payoutSummary[0].status === 'Completed'" [ngClass]="{'completed-status': true}">
+										<span><b>Status: Completed</b></span>
+									</div>
+										<alert></alert>
+                        </div>
+                     </div>
+
+                     <div class="col-md-12 col-sm-12 Reimbursement-outer-box "
+                     *ngIf="payoutSummary.length > 0 && consultant_detail_data != 0 && this.payoutSummary[0].status !== 'Completed' 
+                        && (this.payout_mode_type != 'self'  || (this.payoutSummary[0].status == 'Low Balance'  )) 
+                        && !(this.currentMonth == this.payoutSummary[0].mprmonth && this.currentYear == this.payoutSummary[0].mpryear)" 
+                     style="overflow-x: auto;">
+                                 <div class="row">
+                     
+                  
+                                    <div class="col-md-3 mrg-top-25 mrg-bot-25">
+
+
+                                       <div class="card">
+                     
+                                          <div class="card-header">
+                                             <h4>Current Balance </h4>
+                     
+                                          </div>
+                     
+                                          <div class="card-body" style=" height: 215px;">
+                                             <div class="row">
+                     
+                                                <div class="col-md-12 padd-bot-15 padd-top-15">
+                     
+                                                   <div class="col-sm-12">
+                                                      <h1 class="Payment-due-outer-box1">₹{{(customerSummary!=''?
+                                                         customerSummary.balance:'0.00')}}</h1>
+                                                   </div>
+                     
+                                                </div>
+                     
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div> 
+   
+                                     <div class="col-md-3 mrg-top-25 mrg-bot-25">
+   
+   
+                                       <div class="card">
+                     
+                                          <div class="card-header">
+                                             <h4>Payout Amount </h4>
+                     
+                                          </div>
+                     
+                                         <div class="card-body" style="  height: 215px;">
+                                             <div class="row">
+                     
+                                                <div class="col-md-12 padd-bot-15 ">
+                     
+                                                  <div class="col-sm-12">
+                                                      <h1 class="Payment-due-outer-box1">₹ {{ netpay_sum | number:'1.2-2' }}</h1>
+                                                   </div> 
+                                                <div class="col-sm-12" *ngIf="this.payoutSummary[0].status === 'Low Balance' && this.payoutSummary[0].invoicevalue == 0 && this.payoutSummary[0].days_left == 0">
+                                                      <table class="table noborder-table mrg-bot-0">
+                                                         <tbody>
+                                                            <tr>
+                                                              <td class="payrun-label" style=" font-size: 11px; ">Service & GST Charges</td>
+                                                            
+                                                            </tr>
+                                                            <tr>
+                                                            
+                                                            <td class="text-left"><strong>₹{{ this.invoice_detail_data?.invoiceamount }}</strong></td>
+                                                          </tr>
+                                                            <tr>
+                                                              <td class="payrun-label" style=" font-size: 11px; ">Total Amount</td>
+                                                            
+                                                            </tr>
+                     
+                                                            <tr>
+                                                            
+                                                            <td class="text-left" style="font-size: large;"> <strong>₹{{ this.total_Amount }}</strong></td>
+                                                          </tr>
+                                                           
+                                                           
+                                                         </tbody>
+                                                       </table>
+                     
+                                                      </div>
+                     
+                                                      <div class="col-sm-12" *ngIf="( this.payoutSummary[0].status === 'Pending') && this.payoutSummary[0].invoicevalue == 0 && this.payoutSummary[0].days_left == 0 && this.payout_mode_type=='self' " >
+                                                         <table class="table noborder-table mrg-bot-0">
+                                                            <tbody>
+                                                               <tr>
+                                                                 <td class="payrun-label" style=" font-size: 11px; ">Service & GST Charges</td>
+                                                               
+                                                               </tr>
+                                                               <tr>
+                                                               
+                                                               <td class="text-left"><strong>₹{{ this.invoice_detail_data?.invoiceamount }}</strong></td>
+                                                             </tr>
+                                                               <tr>
+                                                                 <td class="payrun-label" style=" font-size: 11px; ">Total Amount</td>
+                                                               
+                                                               </tr>
+                        
+                                                               <tr>
+                                                               
+                                                               <td class="text-left" style="font-size: large;"> <strong>₹{{ this.total_Amount }}</strong></td>
+                                                             </tr>
+                                                              
+                                                              
+                                                            </tbody>
+                                                          </table>
+                        
+                                                         </div>
+                     
+                                                </div>
+                     
+                                             </div>
+                                          </div> 
+                     
+                                          
+                                       </div>
+                                    </div>
+                                 
+                                    <div class="col-md-3 mrg-top-25 mrg-bot-25" *ngIf="this.payoutSummary[0].days_left==0">
+   
+   
+                                       <div class="card">
+                     
+                                          <div class="card-header">
+                                             <h4>Shortfall </h4>
+                     
+                                          </div>
+                     
+                                          <div class="card-body padd-top-0 " style=" height: 215px;">
+                                             <div class="row">
+                     
+                                                <div class="col-md-12 padd-bot-15 padd-top-15">
+                     
+                                                   <div class="col-sm-12">	
+                                                         <h5 class="Payment-due-outer-box1">
+   
+                                                         <input type="text" class="form-control Required-Balance-input-text"
+                                                            [value]="formatAmount( this.total_Amount, customerSummary?.balance)"
+                                                            readonly>
+                                                      </h5>
+                                                      <p class="please-add-text-box ">Please add at least
+                                                         <strong>{{ formatAmount(  this.total_Amount,
+                                                            customerSummary?.balance)
+                                                         }}</strong>
+                                                         to your account to proceed with your transaction.
+                                                      </p>
+                                                   </div>
+                     
+                                                </div>
+                     
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                  
+                                 <div class="col-md-3 mrg-top-25 mrg-bot-25" *ngIf=" this.payoutSummary[0].amount != '0' && this.payoutSummary[0].days_left == 0  && this.payoutSummary[0].status != 'Completed' && this.payoutSummary[0].status != ''">
+                                    <div class="card">
+                  
+                                       <div class="card-header">
+                                          <h4>Pay Now</h4>
+                                       </div>
+                                       <div class="card-body" style=" height: 215px;">
+                                          <!-- {{payoutSummary && payoutSummary.length > 0  |json}} -->
+                                             <div *ngIf="payoutSummary && payoutSummary.length > 0">
+                                    <div  *ngFor="let payout of payoutSummary; let i = index">
+                  <!-- {{(payout.status == 'Low Balance' || payout.status == 'Pending')&& !isShortfallZero() |json}} -->
+                                       <div class="job-button" *ngIf="consultant_detail_data && (payout.status == 'Low Balance' || payout.status == 'Pending')&& !isShortfallZero()">
+                                          <a  class="btn btn-primary manage-btn emp-edit-btn-box12" data-toggle="tooltip"
+                                             data-placement="top" (click)="addBalance(tb_account_id_ency,payout.amount,payout.totalemployees,payout.status)">Pay Now 
+                                             <i aria-hidden="true" class="fa fa-chevron-right"></i></a>
+                                                <p class="please-add-text-box"
+                                                *ngIf="!isShortfallZero()" style="margin-top: 10px;"> &nbsp; &nbsp;
+                                                Your account balance is insufficient. Please add balance to make the payment.</p>
+                                       </div>
+
+                                       <!-- {{(payout.status == 'Low Balance')&& isShortfallZero()"|json}} -->
+                                       <div class="job-button" *ngIf="consultant_detail_data && (payout.status == 'Low Balance')&& isShortfallZero()">
+                                          <a  class="btn btn-primary manage-btn emp-edit-btn-box12" data-toggle="tooltip"
+                                             data-placement="top" (click)="addBalance(tb_account_id_ency,payout.amount,payout.totalemployees,payout.status)">Pay Now 
+                                             <i aria-hidden="true" class="fa fa-chevron-right"></i></a>
+                                                <p class="please-add-text-box"
+                                                *ngIf="!isShortfallZero()" style="margin-top: 10px;"> &nbsp; &nbsp;
+                                                Your account balance is insufficient. Please add balance to make the payment.</p>
+                                       </div>
+                                       
+                                       <div class="job-button" *ngIf="consultant_detail_data && (payout.status == 'PartiallyPending')&& !isShortfallZero()">
+                                          <a  class="btn btn-primary manage-btn emp-edit-btn-box12" data-toggle="tooltip"
+                                             data-placement="top" (click)="addBalance(tb_account_id_ency,payout.amount,payout.totalemployees,payout.status)">Pay Now
+                                             <i aria-hidden="true" class="fa fa-chevron-right"></i></a>
+                                                <p class="please-add-text-box"
+                                                *ngIf="!isShortfallZero()" style="margin-top: 10px;"> &nbsp; &nbsp;
+                                                Your account balance is insufficient. Please add balance to make the payment.</p>
+                                       </div>
+                  
+                                       <div class="job-button" *ngIf="(!consultant_detail_data)">
+                                          <a class="btn btn-blue manage-Update myButton-box" data-toggle="tooltip"
+                                             data-placement="top" (click)="PayoutDetails(payout)">Pay Now<i
+                                                class="fa fa-chevron-right" aria-hidden="true"></i></a>
+                                       </div>
+
+                                       <div class="job-button" *ngIf="consultant_detail_data && payout.status == 'Pending' && payout.days_left == 0 &&  payout.amount != '0' && isShortfallZero()">
+                                          <a class="btn btn-primary manage-btn emp-edit-btn-box12" (click)="submitPayButton(payout)">Pay
+                                             <i aria-hidden="true" class="fa fa-chevron-right"></i>
+                  
+                                          </a>
+                                          <p class="please-add-text-box"
+                                                *ngIf="!isShortfallZero()">&nbsp; &nbsp;
+                                                Your account balance is insufficient. Please add balance to make the payment.</p>
+                                       </div>
+                                       <div class="job-button" *ngIf="consultant_detail_data && payout.status == 'PartiallyPending' && payout.days_left == 0 &&  payout.amount != '0' && isShortfallZero()">
+                                          <a class="btn btn-blue manage-Update myButton-box" (click)="submitPayButton(payout)">Pay
+                                             <i aria-hidden="true" class="fa fa-chevron-right"></i>
+                                          </a>
+                                          <p class="please-add-text-box"
+                                                *ngIf="!isShortfallZero()">&nbsp; &nbsp;
+                                                Your account balance is insufficient. Please add balance to make the payment.</p>
+                                       </div> 
+                                    </div>
+                                       </div>
+                                          </div>
+                                    </div>
+                  
+                              </div>
+                              <div class="col-md-3 mrg-top-25 mrg-bot-25" *ngIf=" this.payoutSummary[0].days_left == 0  && this.payoutSummary[0].status != 'Completed' && this.payoutSummary[0].status != 'self' && this.payoutSummary[0].amount == 0 && this.total_Amount > 0 "> 
+                                 <div class="card">
+                                 <div class="card-header">
+                                    <h4>Pay Now</h4>
+                                 </div>
+                                 <div class="card-body" style=" height: 215px;">
+                                 <div *ngIf="payoutSummary && payoutSummary.length > 0">
+                                    <div  *ngFor="let payout of payoutSummary; let i = index">
+                  <!-- {{payout.status == 'Low Balance' && payout.days_left == 0  |json}} -->
+                                 <div class="job-button" *ngIf="consultant_detail_data && payout.status == 'Low Balance' && payout.days_left == 0  ">
+                                    <a  class="btn btn-primary manage-btn emp-edit-btn-box12" data-toggle="tooltip"
+                                             data-placement="top" (click)="addBalance(tb_account_id_ency,payout.amount,payout.totalemployees,payout.status)">Pay Now
+                                             <i aria-hidden="true" class="fa fa-chevron-right"></i></a>
+                                                <p class="please-add-text-box"
+                                                *ngIf="!isShortfallZero()" style="margin-top: 10px;"> &nbsp; &nbsp;
+                                                Your account balance is insufficient. Please add balance to make the payment.</p>
+                                 </div> 
+                                    </div>
+                                 </div>
+                              </div>
+                              </div>
+                              </div>
+                  
+                              </div>
+                           </div>
+
+<!-- self div -->
+                           <div
+                              class="col-md-12 col-sm-12 Reimbursement-outer-box" *ngIf="payoutSummary.length > 0 && this.payoutSummary[0].status !== 'Completed'
+                              && (this.payout_mode_type == 'self'  &&  (this.payoutSummary[0].status == 'Pending' && this.payoutSummary[0].invoicevalue == 0)) 
+                              && !(this.currentMonth == this.payoutSummary[0].mprmonth && this.currentYear == this.payoutSummary[0].mpryear)" 
+                           style="overflow-x: auto;">
+                              <div class="row ">
+                                <div class="col-md-3 mrg-top-25 mrg-bot-25">
+
+
+                                    <div class="card">
+                  
+                                       <div class="card-header">
+                                          <h4>Current Balance </h4>
+                  
+                                       </div>
+                  
+                                       <div class="card-body" style=" height: 215px;">
+                                          <div class="row">
+                  
+                                             <div class="col-md-12 padd-bot-15 padd-top-15">
+                  
+                                                <div class="col-sm-12">
+                                                   <h1 class="Payment-due-outer-box1">₹{{(customerSummary!=''?
+                                                      customerSummary.balance:'0.00')}}</h1>
+                                                </div>
+                  
+                                             </div>
+                  
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div> 
+
+                              	 <div class="col-md-3 mrg-top-25 mrg-bot-25">
+
+
+                                    <div class="card">
+                  
+                                       <div class="card-header">
+                                          <h4>Payout Amount </h4>
+                  
+                                       </div>
+                  
+                                      <div class="card-body" style="  height: 215px;">
+                                          <div class="row">
+                  
+                                             <div class="col-md-12 padd-bot-15 ">
+                  
+                                               <div class="col-sm-12">
+                                                   <h1 class="Payment-due-outer-box1">₹ {{ netpay_sum | number:'1.2-2' }}</h1>
+                                                </div> 
+                                             <div class="col-sm-12" *ngIf="this.payoutSummary[0].status === 'Low Balance' && this.payoutSummary[0].invoicevalue == 0 && this.payoutSummary[0].days_left == 0">
+                                                   <table class="table noborder-table mrg-bot-0">
+                                                      <tbody>
+                                                         <tr>
+                                                           <td class="payrun-label" style=" font-size: 11px; ">Service & GST Charges</td>
+                                                         
+                                                         </tr>
+                                                         <tr>
+                                                         
+                                                         <td class="text-left"><strong>₹{{ this.invoice_detail_data?.invoiceamount }}</strong></td>
+                                                       </tr>
+                                                         <tr>
+                                                           <td class="payrun-label" style=" font-size: 11px; ">Total Amount</td>
+                                                         
+                                                         </tr>
+                  
+                                                         <tr>
+                                                         
+                                                         <td class="text-left" style="font-size: large;"> <strong>₹{{ this.total_Amount }}</strong></td>
+                                                       </tr>
+                                                        
+                                                        
+                                                      </tbody>
+                                                    </table>
+                  
+                                                   </div>
+                  
+                                                   <div class="col-sm-12" *ngIf="( this.payoutSummary[0].status === 'Pending') && this.payoutSummary[0].invoicevalue == 0 && this.payoutSummary[0].days_left == 0 && this.payout_mode_type=='self' " >
+                                                      <table class="table noborder-table mrg-bot-0">
+                                                         <tbody>
+                                                            <tr>
+                                                              <td class="payrun-label" style=" font-size: 11px; ">Service & GST Charges</td>
+                                                            
+                                                            </tr>
+                                                            <tr>
+                                                            
+                                                            <td class="text-left"><strong>₹{{ this.invoice_detail_data?.invoiceamount }}</strong></td>
+                                                          </tr>
+                                                            <tr>
+                                                              <td class="payrun-label" style=" font-size: 11px; ">Total Amount</td>
+                                                            
+                                                            </tr>
+                     
+                                                            <tr>
+                                                            
+                                                            <td class="text-left" style="font-size: large;"> <strong>₹{{ this.total_Amount }}</strong></td>
+                                                          </tr>
+                                                           
+                                                           
+                                                         </tbody>
+                                                       </table>
+                     
+                                                      </div>
+                  
+                                             </div>
+                  
+                                          </div>
+                                       </div> 
+                  
+                                       
+                                    </div>
+                                 </div>
+                              
+                                 <div class="col-md-3 mrg-top-25 mrg-bot-25" *ngIf="this.payoutSummary[0].days_left==0">
+
+
+                                    <div class="card">
+                  
+                                       <div class="card-header">
+                                          <h4>Shortfall </h4>
+                  
+                                       </div>
+                  
+                                       <div class="card-body padd-top-0 " style=" height: 215px;">
+                                          <div class="row">
+                  
+                                             <div class="col-md-12 padd-bot-15 padd-top-15">
+                  
+                                                <div class="col-sm-12">	
+                                                      <h5 class="Payment-due-outer-box1">
+
+                                                      <input type="text" class="form-control Required-Balance-input-text"
+                                                         [value]="formatAmount( this.total_Amount, customerSummary?.balance)"
+                                                         readonly>
+                                                   </h5>
+                                                   <p class="please-add-text-box ">Please add at least
+                                                      <strong>{{ formatAmount(  this.total_Amount,
+                                                         customerSummary?.balance)
+                                                      }}</strong>
+                                                      to your account to proceed with your transaction.
+                                                   </p>
+                                                </div>
+                  
+                                             </div>
+                  
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+
+                                 <div class="col-md-3 mrg-top-25 mrg-bot-25" *ngIf=" this.payoutSummary[0].amount == '0' && this.payoutSummary[0].days_left == 0  && this.payoutSummary[0].status != 'Completed' && this.payout_mode_type == 'self' && this.payoutSummary[0].status != '' ">
+                                    <div class="card">
+                  
+                                       <div class="card-header">
+                                          <h4>Pay Now</h4>
+                                       </div>
+                                       <div class="card-body" style=" height: 215px;">
+                                          <!-- <div class="row"> -->
+                                             <div *ngIf="payoutSummary && payoutSummary.length > 0">
+                                    <div  *ngFor="let payout of payoutSummary; let i = index">
+                                       <!-- {{payoutDetail && (payout.status == 'Pending' && payout.invoicevalue == 0 ) && this.payout_mode_type == 'self'|json}} -->
+                                       <div class="job-button" *ngIf="consultant_detail_data && (payout.status == 'Pending' && payout.invoicevalue == 0 ) && this.payout_mode_type == 'self'">
+                                          <a  class="btn btn-primary manage-btn emp-edit-btn-box12" data-toggle="tooltip"
+                                             data-placement="top" (click)="addBalance(tb_account_id_ency,payout.amount,payout.totalemployees,payout.status)">Pay Now 
+                                             <i aria-hidden="true" class="fa fa-chevron-right"></i></a>
+                                                <p class="please-add-text-box"
+                                                *ngIf="!isShortfallZero()" style="margin-top: 10px;"> &nbsp; &nbsp;
+                                                Your account balance is insufficient. Please add balance to make the payment.</p>
+                                       </div>
+                                 
+                                    </div>
+                                       </div>
+                                          </div>
+                                    </div>
+                  
+                              </div>
+
+                              <div class="col-md-3 mrg-top-25 mrg-bot-25" *ngIf=" this.payoutSummary[0].days_left == 0  && this.payoutSummary[0].status != 'Completed' && this.payout_mode_type != 'self' && this.payoutSummary[0].amount == 0 && this.total_Amount > 0 "> 
+                                 <div class="card">
+                                 <div class="card-header">
+                                    <h4>Pay Now</h4>
+                                 </div>
+                                 <div class="card-body" style=" height: 215px;">
+                                 <div *ngIf="payoutSummary && payoutSummary.length > 0">
+                                    <div  *ngFor="let payout of payoutSummary; let i = index">
+
+                                 <div class="job-button" *ngIf="consultant_detail_data && payout.status == 'Low Balance' && payout.days_left == 0  && isShortfallZero()">
+                                    <a  class="btn btn-primary manage-btn emp-edit-btn-box12" data-toggle="tooltip"
+                                             data-placement="top" (click)="addBalance(tb_account_id_ency,payout.amount,payout.totalemployees,payout.status)">Pay Now
+                                             <i aria-hidden="true" class="fa fa-chevron-right"></i></a>
+                                                <p class="please-add-text-box"
+                                                *ngIf="!isShortfallZero()" style="margin-top: 10px;"> &nbsp; &nbsp;
+                                                Your account balance is insufficient. Please add balance to make the payment.</p>
+                                 </div> 
+                                    </div>
+                                 </div>
+                              </div>
+                              </div>
+                              </div>
+
+                            </div>
+                           </div>
+
+
+                   
+
+                  </div>
+               </div>
+            </div>
+
+
+         </div>
+
+      </div>
+   </div>
+   </div>
+<!-- Edit Consultant popup by Arpit-->
+<div class="modal" [ngStyle]="{'display':edit_consultant_popup?'block':'none'}">
+   <div class="modal-dialog" style="max-height: 90vh; overflow-y: auto;">
+      <div class="modal-content">
+         <form [formGroup]="edit_consultant_Form">
+            <div class="modal-header theme-bg">
+               <h4 class="modal-title">Make all external payments to Consultant</h4>
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                  (click)="close_edit_consultant_popup()">&times;</button>
+            </div>
+            <div class="modal-body col-md-12 " style="  background: #fff;">
+
+               <div class="col-sm-12 mrg-bot-15">
+                  <label> Who do you want to make the payment to? <span class="text-danger">*</span></label>
+                  <select id="consultant-select" class="form-control" (change)="onConsultantSelect($event)">
+                     <!-- <option value="" selected>Select Consultant</option> -->
+                     <ng-container *ngIf="selected_row_Consultant">
+                       <option [value]="selected_row_Consultant.emp_code">
+                         {{ selected_row_Consultant.emp_name }} ({{ selected_row_Consultant.consultant_emp_code }})
+                       </option>
+                     </ng-container>
+                   </select>
+                </div>
+                
+                <div class="col-sm-12 mrg-bot-15">
+                  <label>Invoice images or PDFs (maximum 1 MB each) </label>
+                  <div class="table table-bordered table-striped" id="fieldsWrapper">
+                    <div class="custom-file">
+                      <input type="file" name="img[]" class="file" id="fileInput" (change)="onFileSelected($event)" style="display: none;">
+                      <div class="input-group">
+                        <input type="text" class="form-control" [value]="documentName" placeholder="Upload Image or PDF" style="margin-bottom: 0;" readonly>
+                        <span class="input-group-btn">
+                          <button class="browse btn btn-primary" type="button" (click)="triggerFileInput()"><i class="glyphicon glyphicon-search"></i> Browse</button>
+                        </span>
+                      </div>
+                      <!-- Display icon based on file type -->
+                      <span *ngIf="isImage(documentName)">
+                        <a *ngIf="!base64Data; else base64ImageLink" href="{{ invoicePath }}" target="_blank"><i class="fa fa-file-image-o" style="font-size:24px;color:blue"></i></a>
+                      </span>
+                      <ng-template #base64ImageLink>
+                        <div class="attached-image">
+                          <img [src]="'data:image/' + documentType + ';base64,' + base64Data"  alt="Uploaded Image">
+                          <i class="fa fa-times remove" (click)="removeImage()"></i>
+                        </div>
+                      </ng-template>
+                      <span *ngIf="isPdf(documentName)">
+                        <a *ngIf="!base64Data; else base64PdfLink" href="{{ invoicePath }}" target="_blank"><i class="fa fa-file-pdf-o" style="font-size:24px;color:red"></i></a>
+                      </span>
+                      <ng-template #base64PdfLink>
+                        <div class="attached-pdf">
+                          <i class="fa fa-file-pdf-o" style="font-size:24px;color:red"></i>
+                          <!-- <span>{{ documentName }}</span> -->
+                          <i class="fa fa-times remove" (click)="removeImage()"></i>
+                        </div>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+                
+                
+                <div class="col-sm-6 m-clear mrg-bot-15">
+                  <label>Payment Date <span class="text-danger">*</span></label>
+                  <input id="payment_Date" #rd  formControlName="payment_Date"
+                  placeholder="dd-mm-yyyy" autocomplete="off" style="cursor: pointer;" autocomplete="chrome-off" class="form-control">
+                  <small class="omnipresent" id="payment-date">Your payment will automatically get processed on this
+                     date. Please
+                     ensure you have enough Tpay balance.</small>
+               </div>
+
+               <div class="col-sm-6 m-clear mrg-bot-15">
+                  <label>Invoice Date</label>
+                  <input id="invoice_Date" #rd formControlName="invoice_Date"
+                  placeholder="dd-mm-yyyy" autocomplete="off" style="cursor: pointer;"  autocomplete="chrome-off" class="form-control">
+                  <small class="omnipresent" id="payment-date">Date of invoice. This is used to calculate the date of
+                     TDS payment (if any). Invoice date will be ignored in case of recurring payments.</small>
+               </div>
+
+               <div class="col-sm-6 m-clear mrg-bot-15">
+                  <label>Amount <span class="text-danger">*</span></label>
+                  <input type="text" placeholder=" Enter Amount" maxlength="15" formControlName="amount" autocomplete="chrome-off" class="form-control">
+                  <small class="omnipresent" id="amount">Gross amount to be paid including TDS, but not including
+                     GST, VAT, sales tax etc.</small>
+               </div>
+
+               <div class="col-sm-12 m-clear mrg-bot-15 d-flex justify-content-between">
+                  <div class="col-sm-6 m-clear mrg-bot-15 p-0">
+                     <label>GST </label>
+                     <input type="text" placeholder="Enter GST Amount" maxlength="15"  formControlName="gst" autocomplete="chrome-off" class="form-control">
+                     <small class="omnipresent" id="tax">GST, VAT, sales tax etc.</small>
+                  </div>
+                  <div class="col-sm-6 m-clear mrg-bot-15 p-0">
+                     <label>GSTIN</label>
+                     <input type="text" placeholder="Enter GST Number" maxlength="20" autocomplete="chrome-off" class="form-control"
+                            formControlName="gstNumber"> <!-- Connect formControlName to your form group -->
+                     <!-- <div *ngIf="add_consultant_Form.get('gstNumber').invalid && (add_consultant_Form.get('gstNumber').dirty || add_consultant_Form.get('gstNumber').touched)">
+                       <small class="text-danger" *ngIf="add_consultant_Form.get('gstNumber').errors?.pattern">
+                         GST Number format is invalid.
+                       </small>
+                       <small class="text-danger" *ngIf="add_consultant_Form.get('gstNumber').errors?.required">
+                         GST Number is required.
+                       </small>
+                     </div> -->
+                   </div>
+                   
+               </div>
+
+               <div class="col-sm-12 mrg-bot-15">
+                  <label>Any Remarks? </label>
+                  <textarea class="form-control" formControlName="remarks" name="w3review" rows="4" cols="50"
+                     style=" height: 70px;  text-align: left;">  </textarea>
+                  <small class="omnipresent" id="remarks">We will include this in the email notifying the contractor
+                     of the payment.</small>
+
+
+               </div>
+
+
+               <div class="col-sm-12 mrg-bot-15">
+                  <label>Please select the payment purpose.</label>
+                  <div
+                     class="table__containter--inner table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+                     <table class="table">
+                        <thead>
+                           <tr>
+                              <th scope="Row"></th>
+                              <th>Purpose</th>
+                              <th>TDS</th>
+                              <th>Tax Code</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr *ngFor="let purpose of paymentpurpose_data;let i=index;">
+                              <td>
+                                 <input type="radio"  [value]="purpose.id"
+                                 [checked]="Edit_SelectedPurpose(purpose)" formControlName="payment_purpose" 
+                                 (change)="onPaymentPurposeChange(purpose)" required />
+                              </td>
+                              <td>{{ purpose.purpose }}</td>
+                              <td>{{ purpose.tds }}%</td>
+                              <td>
+                                 <a>{{ purpose.tax_code }}</a>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+
+
+               <div class="col-sm-12 mrg-bot-15">
+                  <label>
+                     <small>Click <a id="tds-override-link" (click)="toggleTDSBox()">here</a> to override the TDS
+                        percentage.</small>
+                  </label>
+               </div>
+
+               <div *ngIf="showTDSBox" id="TDS-percentage-box">
+                  <div class="col-sm-12 mrg-bot-15">
+                     <label for="tds-override">Please enter the new TDS percentage to deduct</label>
+                     <input class="form-control" type="number" id="tds-override" formControlName="tds" 
+                        aria-describedby="tds-override" placeholder="eg 0.10" step="0.01" min="0.01" max="100" (input)="onTdsOverrideChange_for_edit()"
+                        required>
+                     <small class="omnipresent">
+                        Please be extremely careful while overriding the TDS percentage.
+                        TankhaPay will not be able to change the TDS amount after the payment has been made, and will
+                        report
+                        the same in TDS filings without any possibility of change. This should only be done for
+                        contractors
+                        that have a lower TDS deduction certificate under Section 197.
+                     </small>
+                  </div>
+
+                  <div class="col-sm-12 mrg-bot-15">
+                     <label for="section-197-certificate-number">Section 197 Certificate Number</label>
+                     <input class="form-control" formControlName="certificateNumber" type="text" id="section-197-certificate-number"
+                       name="section-197-certificate-number" aria-describedby="section-197-certificate-number"
+                       maxlength="10" pattern="[0-9]{10}" title="Certificate number must be 10 digits long" (input)="onTdsOverrideChange_for_edit()" required>
+                     <small class="omnipresent">
+                       Certificate number issued by the Assessing Officer u/s 197 for lower deduction.
+                       Please make sure the certificate is valid and not expired.
+                     </small>
+                     <div *ngIf="add_consultant_Form.get('certificateNumber').invalid && (add_consultant_Form.get('certificateNumber').dirty || add_consultant_Form.get('certificateNumber').touched)">
+                       <small class="text-danger" *ngIf="add_consultant_Form.get('certificateNumber').errors?.pattern">
+                         Certificate number must be exactly 10 digits.
+                       </small>
+                       <small class="text-danger" *ngIf="add_consultant_Form.get('certificateNumber').errors?.required">
+                         Certificate number is required.
+                       </small>
+                     </div>
+                   </div>
+                   
+               </div>
+
+            </div>
+            <div class="modal-footer">
+               <input type="button" class="btn btn-default" data-dismiss="modal" value="Save" (click)="Edit_Consultant_PayoutDetails()"
+                  style="margin-top: 10px;">
+            </div>
+         </form>
+
+      </div>
+   </div>
+</div>
+
+   <!-- Add Consultant popup by Arpit -->
+   <div class="modal" [ngStyle]="{'display':add_consultant_popup?'block':'none'}">
+      <div class="modal-dialog" style="max-height: 90vh; overflow-y: auto;">
+         <div class="modal-content">
+            <form [formGroup]="add_consultant_Form">
+               <div class="modal-header theme-bg">
+                  <h4 class="modal-title">Make all external payments to Consultant</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                     (click)="close_consultant_popup()">&times;</button>
+               </div>
+               <div class="modal-body col-md-12 " style="  background: #fff;">
+
+                  <div class="col-sm-12 mrg-bot-15">
+                     <label> Who do you want to make the payment to? <span class="text-danger">*</span></label>
+                     <select class="form-control" (change)="onConsultantSelect($event)">
+                       <option value=""  selected>Select Consultant</option>
+                       <ng-container *ngFor="let consultant of consultant_list_data">
+                         <option *ngIf="consultant.jobtype === 'Consultant'" [value]="consultant.emp_code">
+                           {{ consultant.emp_name }} ({{ consultant.emp_code }})
+                         </option>
+                       </ng-container>
+                     </select>
+                   </div>
+                   
+
+                  <div class="col-sm-12 mrg-bot-15">
+                     <label>Invoice images or PDFs (maximum 1 MB each) </label>
+                     <div class="table table-bordered table-striped" id="fieldsWrapper">
+                       <div class="custom-file">
+                         <input type="file" name="img[]" class="file" id="fileInput" (change)="onFileSelected($event)" style="display: none;">
+                         <div class="input-group">
+                           <input type="text" class="form-control" [value]="documentName" placeholder="Upload Image or PDF" style="margin-bottom: 0;" readonly>
+                           <span class="input-group-btn">
+                             <button class="browse btn btn-primary" type="button" (click)="triggerFileInput()"><i class="glyphicon glyphicon-search"></i> Browse</button>
+                           </span>
+                         </div>
+                         <span *ngIf="isImage(documentName)">
+                           <a *ngIf="!base64Data; else base64ImageLink" href="{{ invoicePath }}" target="_blank"><i class="fa fa-file-image-o" style="font-size:24px;color:blue"></i></a>
+                         </span>
+                         <ng-template #base64ImageLink>
+                           <div class="attached-image">
+                             <img [src]="'data:image/' + documentType + ';base64,' + base64Data"  alt="Uploaded Image">
+                             <i class="fa fa-times remove" (click)="removeImage()"></i>
+                           </div>
+                         </ng-template>
+                         <span *ngIf="isPdf(documentName)">
+                           <a *ngIf="!base64Data; else base64PdfLink" href="{{ invoicePath }}" target="_blank"><i class="fa fa-file-pdf-o" style="font-size:24px;color:red"></i></a>
+                         </span>
+                         <ng-template #base64PdfLink>
+                           <div class="attached-pdf">
+                             <i class="fa fa-file-pdf-o" style="font-size:24px;color:red"></i>
+                             <!-- <span>{{ documentName }}</span> -->
+                             <i class="fa fa-times remove" (click)="removeImage()"></i>
+                           </div>
+                         </ng-template>
+
+                       </div>
+                     </div>
+                   </div>
+                   
+                   <div class="col-sm-6 m-clear mrg-bot-15">
+                     <label>Payment Date <span class="text-danger">*</span></label>
+                     <input id="paymentDate" #rd  formControlName="paymentDate"
+                     placeholder="dd-mm-yyyy" autocomplete="off" style="cursor: pointer;" autocomplete="chrome-off" class="form-control">
+                     <small class="omnipresent" id="payment-date">Your payment will automatically get processed on this
+                        date. Please
+                        ensure you have enough Tpay balance.</small>
+                  </div>
+
+                  <div class="col-sm-6 m-clear mrg-bot-15">
+                     <label>Invoice Date</label>
+                     <input id="invoiceDate" #rd formControlName="invoiceDate"
+                     placeholder="dd-mm-yyyy" autocomplete="off" style="cursor: pointer;"  autocomplete="chrome-off" class="form-control">
+                     <small class="omnipresent" id="payment-date">Date of invoice. This is used to calculate the date of
+                        TDS payment (if any). Invoice date will be ignored in case of recurring payments.</small>
+                  </div>
+
+                  <div class="col-sm-6 m-clear mrg-bot-15">
+                     <label>Amount <span class="text-danger">*</span></label>
+                     <input type="text" placeholder=" Enter Amount" maxlength="15" formControlName="amount" autocomplete="chrome-off" class="form-control">
+                     <small class="omnipresent" id="amount">Gross amount to be paid including TDS, but not including
+                        GST, VAT, sales tax etc.</small>
+                  </div>
+
+                  <div class="col-sm-12 m-clear mrg-bot-15 d-flex justify-content-between">
+                     <div class="col-sm-6 m-clear mrg-bot-15 p-0">
+                        <label>GST </label>
+                        <input type="text" placeholder="Enter GST Amount" maxlength="15"  formControlName="gst" autocomplete="chrome-off" class="form-control">
+                        <small class="omnipresent" id="tax">GST, VAT, sales tax etc.</small>
+                     </div>
+                     <div class="col-sm-6 m-clear mrg-bot-15 p-0">
+                        <label>GSTIN </label>
+                        <input type="text" placeholder="Enter GST Number" maxlength="20" autocomplete="chrome-off" class="form-control"
+                               formControlName="gstNumber"> <!-- Connect formControlName to your form group -->
+                        <!-- <div *ngIf="add_consultant_Form.get('gstNumber').invalid && (add_consultant_Form.get('gstNumber').dirty || add_consultant_Form.get('gstNumber').touched)">
+                          <small class="text-danger" *ngIf="add_consultant_Form.get('gstNumber').errors?.pattern">
+                            GST Number format is invalid.
+                          </small>
+                          <small class="text-danger" *ngIf="add_consultant_Form.get('gstNumber').errors?.required">
+                            GST Number is required.
+                          </small>
+                        </div> -->
+                      </div>
+                      
+                  </div>
+
+                  <div class="col-sm-12 mrg-bot-15">
+                     <label>Any Remarks? </label>
+                     <textarea class="form-control" formControlName="remarks" name="w3review" rows="4" cols="50"
+                        style=" height: 70px;  text-align: left;">  </textarea>
+                     <small class="omnipresent" id="remarks">We will include this in the email notifying the contractor
+                        of the payment.</small>
+
+
+                  </div>
+
+
+                  <div class="col-sm-12 mrg-bot-15">
+                     <label>Please select the payment purpose.</label>
+                     <div
+                        class="table__containter--inner table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+                        <table class="table">
+                           <thead>
+                              <tr>
+                                 <th scope="Row"></th>
+                                 <th>Purpose</th>
+                                 <th>TDS</th>
+                                 <th>Tax Code</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <tr *ngFor="let purpose of paymentpurpose_data;let i=index;">
+                                 <td>
+                                    <input  type="radio"  [value]="purpose.id" 
+                                    [checked]="isSelectedPurpose(purpose)" formControlName="payment_purpose" 
+                                    (change)="onPaymentPurposeChange(purpose)" required />
+                                 </td>
+                                 <td>{{ purpose.purpose }}</td>
+                                 <td>{{ purpose.tds }}%</td>
+                                 <td>
+                                    <a>{{ purpose.tax_code }}</a>
+                                 </td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+
+
+                  <div class="col-sm-12 mrg-bot-15">
+                     <label>
+                        <small>Click <a id="tds-override-link" (click)="toggleTDSBox()">here</a> to override the TDS
+                           percentage.</small>
+                     </label>
+                  </div>
+
+                  <div *ngIf="showTDSBox" id="TDS-percentage-box">
+                     <div class="col-sm-12 mrg-bot-15">
+                        <label for="tds-override">Please enter the new TDS percentage to deduct</label>
+                        <input class="form-control" type="number" id="tds-override" formControlName="tds" 
+                           aria-describedby="tds-override" placeholder="eg 0.10" step="0.01" min="0.01" max="100" (input)="onTdsOverrideChange()"
+                           required>
+                        <small class="omnipresent">
+                           Please be extremely careful while overriding the TDS percentage.
+                           TankhaPay will not be able to change the TDS amount after the payment has been made, and will
+                           report
+                           the same in TDS filings without any possibility of change. This should only be done for
+                           contractors
+                           that have a lower TDS deduction certificate under Section 197.
+                        </small>
+                     </div>
+
+                     <div class="col-sm-12 mrg-bot-15">
+                        <label for="section-197-certificate-number">Section 197 Certificate Number</label>
+                        <input class="form-control" formControlName="certificateNumber" type="text" id="section-197-certificate-number"
+                          name="section-197-certificate-number" aria-describedby="section-197-certificate-number"
+                          maxlength="10" pattern="[0-9]{10}" title="Certificate number must be 10 digits long" (input)="onTdsOverrideChange()" required>
+                        <small class="omnipresent">
+                          Certificate number issued by the Assessing Officer u/s 197 for lower deduction.
+                          Please make sure the certificate is valid and not expired.
+                        </small>
+                        <div *ngIf="add_consultant_Form.get('certificateNumber').invalid && (add_consultant_Form.get('certificateNumber').dirty || add_consultant_Form.get('certificateNumber').touched)">
+                          <small class="text-danger" *ngIf="add_consultant_Form.get('certificateNumber').errors?.pattern">
+                            Certificate number must be exactly 10 digits.
+                          </small>
+                          <small class="text-danger" *ngIf="add_consultant_Form.get('certificateNumber').errors?.required">
+                            Certificate number is required.
+                          </small>
+                        </div>
+                      </div>
+                      
+                  </div>
+
+               </div>
+               <div class="modal-footer">
+                  <input type="button" class="btn btn-default" data-dismiss="modal" value="Save" (click)="Add_Consultant_PayoutDetails()"
+                     style="margin-top: 10px;">
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+
+</section>
+
+<!-- Confirm Popup  -->
+<div class="modal" [ngStyle]="{'display':confirmPaymentPop?'block':'none'}" style="z-index: 2;">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header theme-bg">
+					<h4 class="modal-title">Alert</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+						(click)="closeModal()">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label>Do you want pay now ?</label>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-danger" data-dismiss="modal" value="No" (click)="closeModal()">
+					<input type="submit" class="btn btn-success" value="Yes" (click)="submitPaySalary()">
+				</div>
+			</form>
+		</div>
+	</div>
+</div> 
+
+  <!-- Approve Payroll Popup By Arpit  -->
+  <div class="modal" [ngStyle]="{'display':open_approve_popup?'block':'none'}" style="z-index: 1;">
+	<div class="modal-dialog ">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header theme-bg">
+					<h4 class="modal-title">Approve Payroll</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="close_approve_popup()">&times;</button>
+				</div>
+				<div class="modal-body" *ngIf="payoutSummary.length > 0">					
+					
+					<p>  You are about to approve this payroll for <strong>{{this.payoutSummary[0].month_name}}</strong>. Once you approve it, you can make payments for all your employees on the paydate <strong>{{this.payoutSummary[0].payoutdate1}}</strong>. </p>
+					
+				</div>
+
+				<div class="modal-footer">
+					<div *ngIf="consultant_detail_data && consultant_detail_data.length > 0">
+					<a class="btn btn-success"  (click)="submit_Button()">Submit and Approve</a>
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel" (click)="close_approve_popup()">
+				
+					</div>
+
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+  <!-- Record Payment Popup By Arpit dated 15/05/24-->
+  <div class="modal" [ngStyle]="{'display':record_popup?'block':'none'}">
+	<div class="modal-dialog" style="max-height: 90vh; overflow-y: auto;">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header theme-bg">
+					<h4 class="modal-title">Record Payment</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+						(click)="close_record_popup()">&times;</button>
+				</div>
+				<div class="modal-body col-sm-12">
+					<form [formGroup]="payout_form">
+                    <div class="col-sm-12 mrg-bot-15">
+                        <p>You are about to record payment for this pay run.</p>
+                    </div>
+                    <div class="col-sm-12 mrg-bot-15">
+                        <div class="row">
+                            <label class="col-sm-4">Employee(s) paid on <span class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                                <input id="FromDate2" #rd type="text" style="cursor: pointer;" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 mrg-bot-15">
+                        <div class="table-responsive reports-table-outer-box reports-new-table-outer-box">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Payment Mode</th>
+                                        <th>Employees</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <select class="form-control Payment-Mode-btn" formControlName="selected_payout_mode" style="margin: 0.2rem; width: 133px;">
+                                                <option *ngFor="let mode of payment_mode_type" [value]="mode.id">
+													{{ mode.payment_type }}</option>
+                                            </select>
+                                        </td>
+                                        <td *ngIf="payoutSummary.length > 0">{{this.payoutSummary[0].totalemployees}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 form-check">
+                    </div>
+					</form>
+
+					<!-- <div class="col-lg-12 form-check">
+						<label class="form-check-label">
+						  <input id="ember695" class="ember-checkbox ember-view form-check-input" type="checkbox">
+							<span class="font-medium"><b>App notification will be sent to the active employees to view the salary slip</b></span> &nbsp;
+						  <span class="mr-1">
+							<span id="ember696" class="tooltip-container ember-view">
+							   <i class="fa fa-info-circle"></i>
+							</span>
+						  </span>
+						</label>
+						
+					  
+					  
+				  </div> -->
+				  
+				</div>
+				<div class="modal-footer">
+                    <a class="btn btn-success" (click)="Record_Payment()">Submit</a>
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel" (click)="close_record_popup()">
+                </div>
+			</form>
+		</div>
+	</div>
+</div>

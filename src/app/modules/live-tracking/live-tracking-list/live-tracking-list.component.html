@@ -1,0 +1,82 @@
+<app-sidebar></app-sidebar>
+<section>
+  <div id="wrapper">
+    <div class="fakeLoader"></div>
+    <!-- Navigation -->
+    <div id="page-wrapper">
+      <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+          <h3 class="text-themecolor" style="margin-left: 20px;">Live Tracking List</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item" title="Home"><a [routerLink]="['/dashboard']">Home</a>
+            </li>
+            <li class="breadcrumb-item active">Live Tracking List</li>
+          </ol>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <!-- /row -->
+        <div class="row">
+          <div class="col-md-12 col-sm-12">
+            <div class="card">
+              <div class="card-header">
+                <div class="row row-head">
+                  <div class="col-md-9 col-sm-12">
+                    <!-- <input type="text" value="" placeholder="Search Organization unit" class="form-control wide-width"
+                      style="width: 100%;" (keyup)="search($event)" /> -->
+                  </div>
+                  <div class="col-md-3 col-sm-12">
+                    <!-- <div class="top-right-outer-box">
+                      <div class="dropdown float-right-box">
+                        <button data-toggle="modal" class=" btn btn-primary btn-sm" data-placement="top"
+                          (click)="OpenNewOUPopup()">Add Organization Unit</button>
+                      </div>
+                    </div> -->
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>TPCode</th>
+                      <th>Organization Employee Code</th>
+                      <th>Mobile</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let list_data of liveTracking_list_data; let i=index;">
+                      <tr>
+                        <td>{{i+1}}</td>
+
+                        <td>{{list_data.emp_name}}</td>
+                        <td>{{list_data.tp_code}}</td>
+                        <td>{{list_data.orgempcode}}</td>
+                        <td>{{list_data.mobile}}</td>
+                        <td> <a   (click)="liveTrackingParticularId(list_data.emp_code)" data-toggle="tooltip"
+                            data-placement="top"><span class="pointer text-primary">Live Track</span></a></td>
+                      </tr>
+                    </ng-container>
+
+                    <tr *ngIf="liveTracking_list_data_count == 0">
+                      <td colspan="10" style="text-align: center;">No Data Found</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <!-- <alert></alert> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

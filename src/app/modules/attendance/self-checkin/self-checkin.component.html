@@ -1,0 +1,305 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+  <div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+    <div class="fakeLoader"></div>
+    <div id="page-wrapper">
+      <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+          <h3 class="text-themecolor">Check In</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+
+            <li class="breadcrumb-item active">Check In</li>
+          </ol>
+        </div>
+      </div>
+      <div class="container-fluid element" id="element">
+        <!-- /row -->
+        <div class="row">
+          <div class="col-md-12 col-sm-12">
+            <div class="card">
+
+              <div class="card-header">
+                <div class="row text-right">
+
+                  <div class="col-md-4" style="display: flex;" *ngIf="istToGermanTimeService.checkIfGermanTimeZone()">
+                    <!-- <strong>Timezone : &nbsp;</strong> -->
+                    <div class="form-check-inline">
+                      <input id="ist" type="radio" [(ngModel)]="showGermanTime" [ngModelOptions]="{standalone: true}" name="timezone" value="IST"
+                        class="form-check-input" (change)="onTimezoneChange()">
+                      <label for="ist" class="form-check-label">IST</label>
+                    </div>
+                    <div class="form-check-inline">
+                      <input id="cet" type="radio" [(ngModel)]="showGermanTime" [ngModelOptions]="{standalone: true}" name="timezone" value="CET"
+                        class="form-check-input" (change)="onTimezoneChange()">
+                      <label for="cet" class="form-check-label">CET/CEST</label>
+                    </div>
+
+                  </div>
+                  <!-- <div class="col-md-3 col-sm-3" style="display: flex; align-items: center;">
+                    <span style="margin: 1.5rem; font-weight: 500;" class="">Employee Name /
+                      Code:</span>
+
+                  </div> -->
+                  <div class="col-md-3 col-sm-3">
+                    <input type="text" value="" placeholder="Search Emp Name/Code" class="form-control wide-width"
+                      style="width: 100%;" (keyup)="search($event.target.value)" />
+                  </div>
+                  <form [formGroup]="checkin_Form">
+                    <div class="col-md-2">
+                      <select id="markedDropdown" class="form-control" formControlName="markedStatus">
+                        <option value="Marked">Marked</option>
+                        <option value="Not Marked">Not Marked</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-2 col-sm-2">
+                      <!-- <h5 style="color: #38abf2; margin-top: 1.3rem; font-size: 13px; font-weight: bold;">Today : {{ rxTime | date: 'EEEE, d-MMM-y, HH:mm:ss' }} </h5> -->
+                      <!-- <input type="date" class="form-control" formControlName="markDateAttr"
+                        (keydown)="blockTyping($event)" [min]="minDate" (change)="markDateFun()"> -->
+                      <input type="hidden" id="recdate_filter" (click)="markDateFun()">
+                      <input id="FromDate_filter" class="form-control" type="text" style="cursor: pointer;"
+                        placeholder="dd-mm-yyyy" autocomplete="off" readonly>
+                    </div>
+                    <!-- <div class="col-md-1 col-sm-1"> &nbsp;
+                    </div> -->
+                  </form>
+                  <div class="col-md-1 col-sm-1">
+                    <button (click)="toggleFullscreen()"> <i class="fa fa-expand" aria-hidden="true"></i></button>
+                    <input id="button" type="button" value="X" (click)="closeFullscreen()" *ngIf="isFullscreen">
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="card-body">
+                <alert></alert>
+                <ul class="list self-checkin-checkout-outerbox">
+                  <li class="manage-list-row manage-pay-select clearfix"
+                    *ngFor="let emp_data of filteredEmployees | paginate: { itemsPerPage: limit, currentPage: p }; let i = index">
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <div title="Click to View Details" class="job-info" style="cursor: pointer;">
+                          <div class="profile-container">
+                            <div class="job-img">
+
+                              <img src="{{emp_data.photopath}}" class="attachment-thumbnail" alt="user-images" *ngIf="(emp_data.photopath != '' && emp_data.photopath != null
+                                                                && emp_data.photopath !='https://api.contract-jobs.com/crm_api/'
+                                                                && emp_data.photopath !='http://1akal.in/crm_api/') ">
+                              <div class="profile-img-box"
+                                *ngIf="(emp_data.photopath == '' || emp_data.photopath == null
+                                                                || emp_data.photopath == 'http://1akal.in/crm_api/'
+                                                                 || emp_data.photopath == 'https://api.contract-jobs.com/crm_api/') " alt="user">
+                                <span>
+                                  {{emp_data.emp_name.charAt(0)}}{{emp_data.emp_name.charAt(emp_data.emp_name.indexOf('')
+                                  + 1)}} </span>
+                              </div>
+
+                            </div>
+
+                          </div>
+                          <div class="job-details">
+                            <h5 class="job-name"><a class="job_name_tag" style="cursor: pointer;">{{emp_data.emp_name}}
+                                ({{
+                                emp_data.orgempcode ? emp_data.orgempcode :
+                                emp_data.tpcode }}) </a></h5>
+                            <!-- <small class="job-sallery"
+                                                           *ngIf="(emp_data.orgempcode!='' && emp_data.orgempcode!=null && emp_data.orgempcode!=undefined)"><strong>ORG
+                                                               EMP Code
+                                                           </strong>
+                                                           <span>{{emp_data.orgempcode}}</span></small>
+                                                       <small class="job-sallery"
+                                                           *ngIf="(emp_data.orgempcode=='' || emp_data.orgempcode==null || emp_data.orgempcode==undefined) && emp_data.tpcode"><strong>
+                                                               TPCode
+                                                           </strong>
+                                                           <span>{{emp_data.tpcode}}</span></small> -->
+                          </div>
+
+                        </div>
+                      </div>
+                      <div class="col-sm-2">
+
+                        <!-- <div class="job-company job-com-bottom-mar-box">
+                                                    <a [class.disabled]="emp_data.check_in_time !== '00:00'"
+                                                        (click)="emp_data.check_in_time === '00:00' && TpCheck_In_Out(emp_data.emp_code,'In')"
+                                                        class="btn btn-blue punchin-Button-box">Check In</a>
+                                                </div>-->
+                        <div class="Out-in-btn-text-box">
+                          <ng-container *ngIf="emp_data?.is_night_shift && emp_data?.is_night_shift == 'Y'">
+                            <p> {{emp_data?.check_in_date}}</p>
+
+                          </ng-container>
+                          <strong>In Time:</strong> <ng-container
+                            *ngIf="showGermanTime=='IST'">{{emp_data.check_in_time}}</ng-container> <ng-container
+                            *ngIf="showGermanTime=='CET'">
+                            {{ getGermanTime(emp_data.check_in_time, emp_data.check_in_date) }}
+                          </ng-container>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-2">
+
+                        <!-- <div class="job-company job-com-bottom-mar-box">
+                                                    <a [class.disabled]="(emp_data.check_out_time !== '00:00' ||emp_data.check_in_time == '00:00' )"
+                                                        (click)="emp_data.check_out_time === '00:00'
+                                                        && TpCheck_In_Out(emp_data.emp_code,'Out')"
+                                                        class="btn btn-blue punchout-Button-box">Check Out</a>
+                                                </div> -->
+                        <div class="Out-in-btn-text-box">
+                          <ng-container *ngIf="emp_data?.is_night_shift && emp_data?.is_night_shift == 'Y'">
+                            <p> {{emp_data?.check_out_date}}</p>
+                          </ng-container>
+                          <strong>Out Time:</strong> <ng-container
+                            *ngIf="showGermanTime=='IST'">{{emp_data.check_out_time}}</ng-container>
+                          <ng-container *ngIf="showGermanTime=='CET'">
+                            {{ getGermanTime(emp_data.check_out_time, emp_data.check_out_date) }}
+                          </ng-container>
+                        </div>
+
+                      </div>
+                      <div class="col-sm-2">
+                        <div class="job-details Out-in-btn-text-box" title="Assign Shift & is Night Shift"
+                          style="font-size: 12px;">
+
+                          <p>Shift : {{emp_data?.shift_name}}</p>
+                          <span style="color: rgb(7, 7, 126);">[ Night Shift : {{emp_data?.is_night_shift}}]</span>
+                        </div>
+
+                      </div>
+
+                      <div class="col-md-3">
+                        <p>&nbsp;</p>
+
+                        <div class="job-company">
+                          <strong>Total Hrs:</strong> {{emp_data.no_of_hours_worked}}
+                          <!-- [class.disabled]="(emp_data.check_in_time === '00:00' || emp_data.check_out_time === '00:00')" -->
+
+                          <!-- (showEditButton && emp_data.check_in_time !== '00:00' && emp_data.check_out_time !== '00:00')
+                                                        &&  -->
+
+                          <!-- *ngIf="(emp_data.is_night_shift =='N')" -->
+                          <a data-toggle="modal" data-placement="top"
+                            (click)="openPopup(emp_data.emp_name,emp_data.attendancedate, emp_data.check_in_date, emp_data.check_out_date,emp_data.check_in_time,emp_data.check_out_time,emp_data.emp_code, emp_data.is_night_shift)">
+                            <i class="fa fa-pencil-square-o punchinout-btn" aria-hidden="true"></i>
+                          </a>
+
+                        </div>
+                      </div>
+
+                    </div>
+
+                  </li>
+
+
+                </ul>
+
+                <div class="flexbox padd-10" *ngIf="filteredEmployees?.length > limit">
+                  <pagination-controls (pageChange)="get_page($event)"
+                    style="font-size: 2rem; padding: 6px; font-weight: bold" class="float-right"></pagination-controls>
+                </div>
+              </div>
+
+
+
+            </div>
+          </div>
+        </div>
+        <!-- /row -->
+      </div>
+    </div>
+  </div>
+</section>
+<app-footer></app-footer>
+
+
+<!--------Edit check-in/check-out time Popup-------->
+<div [@grooveState]="showPopup?'active':'inactive'" id="allowanceDeduct" class="modal">
+  <div [@dongleState]="showPopup?'active':'inactive'" class="modal-dialog" style="margin:auto auto auto auto;">
+    <div class="modal-content" style="height:100%;margin-top:100px;">
+      <form>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Edit Check-In/Out </h4>
+          <button type="button" class="close" (click)="closePopup()" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+        </div>
+
+        <div class="modal-body">
+
+          <div class="row">
+            <alert></alert>
+            <form [formGroup]="Edit_Form">
+              <div class="form-group">
+                <h4 class="col-md-6">{{this.emp_name}}</h4>
+                <h4 class="col-md-6 text-right">{{get_date()}} </h4>
+              </div>
+              <div class="form-group" *ngIf="Edit_Form.value.isNightShiftFlag=='Y'">
+                <label class="col-md-3">Check In / Out Date </label>
+                <div class="col-md-3">
+                  <p>In Date</p>
+                  <input type="text" id="FromDate" class="form-control" style="cursor: pointer;"
+                    placeholder="dd/mm/yyyy" autocomplete="off" readonly>
+                </div>
+
+                <input type="hidden" id="recdate" (click)="filterFromToDateLeads()">
+
+
+                <div class="col-md-3">
+                  <p>Out Date</p>
+                  <input type="text" id="ToDate" class="form-control" style="cursor: pointer;" placeholder="dd/mm/yyyy"
+                    autocomplete="off" readonly>
+
+                </div>
+              </div>
+
+
+
+
+              <div class="form-group">
+                <label class="col-md-3">Check In / Out </label>
+                <div class="col-md-3">
+                  <p>In Time</p>
+                  <input type="text" class="form-control" formControlName="inTime" placeholder="Enter Check In Time">
+                </div>
+
+
+
+                <div class="col-md-3">
+                  <p>Out Time</p>
+                  <input type="text" class="form-control" formControlName="outTime" placeholder="Enter Check Out Time">
+
+                </div>
+                <!-- <div class="col-md-3" >
+                                  <p>&nbsp;</p>
+                                  <select class="form-control">
+                                      <option class="" value="1" ng-reflect-value="1">AM</option>
+                                      <option class="" value="2" ng-reflect-value="2">PM</option>
+                                  </select>
+
+                                    </div> -->
+              </div>
+
+
+
+
+            </form>
+
+
+          </div>
+          <div class="row">
+            <div class="col-md-12" style="text-align: center;">
+              <span style="color:red"> [All times should be entered in 24-hour format]</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-info" (click)="SaveEmployee_CheckinCheckOut()">save</button>
+
+          <button class="btn btn-cancel" (click)="closePopup()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

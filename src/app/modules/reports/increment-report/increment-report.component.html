@@ -1,0 +1,323 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+    <div id="wrapper" [ngClass]="{'active': showSidebar == false}">
+        <div class="fakeLoader"></div>
+
+        <div id="page-wrapper">
+            <div class="row page-titles">
+                <div class="col-md-6 align-self-center">
+                    <h3 class="text-themecolor">Increment Report</h3>
+                </div>
+
+                <div class="col-md-6 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a [routerLink]="['/reports']">Reports</a></li>
+
+                        <li class="breadcrumb-item active">Increment Report</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="card filter-outer-main-box">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <input type="date" name="fromDate" [(ngModel)]="fromDate" class="form-control"
+                                            (ngModelChange)="onDateChange($event)">
+                                    </div>
+                                    <div class="col-md-3 padd-0">
+                                        <input type="date" name="toDate" [(ngModel)]="toDate" class="form-control"
+                                            (ngModelChange)="onDateChange($event)" [max]="maxDate">
+                                    </div>
+                                    <div class="col-md-1 padd-0">
+                                        <a class="btn excel-btn-box results btn-primary"
+                                            style="padding: 9px; border-radius: 0;" (click)="getIncrementReport()">
+                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="showRoundedVal"
+                                                [(ngModel)]="isShowRoundedVal" />
+                                            <label class="form-check-label" for="showRoundedVal">&nbsp; Show
+                                                round
+                                                values</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" value="" placeholder="Search Employee(s)"
+                                            class="form-control wide-width" style="width: 100%;"
+                                            (keyup)="search($event)" />
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="card-body">
+
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div
+                                        class="table-responsive reports-table-outer-box reports-new-table-outer-box reports-main-outerbox-table">
+                                        <table class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 28.3333px;">S.No</th>
+                                                    <th style="width: 103.333px;">Employee Name</th>
+                                                    <th style="width: 63.3333px;">Emp code</th>
+                                                    <th style="width: 102.333px;">Email Id</th>
+                                                    <th style="width: 33.3333px;">Basic</th>
+                                                    <th style="width: 65.3333px;">Allowance</th>
+                                                    <th style="width: 27.3333px;">HRA</th>
+                                                    <th style="width: 145.333px;">Conveyance Allowance</th>
+                                                    <th style="width: 118.333px;">Medical Allowance</th>
+                                                    <th style="width: 114.333px;">Special Allowance</th>
+                                                    <th style="width: 35.3333px;">Gross</th>
+                                                    <th style="width: 119.333px;">Created Date</th>
+                                                    <th style="width: 89.3333px;">Effective Date</th>
+                                                    <th style="width: 120.333px;">Employer EPF Rate</th>
+                                                    <th style="width: 115.333px;">Employer ESI Rate</th>
+                                                    <th style="width: 56.3333px;">New CTC</th>
+                                                    <th style="width: 72.3333px;">Govt Bonus</th>
+                                                    <th style="width: 88.3333px;">VPF Employer</th>
+                                                    <th style="width: 100.333px;">OT &amp; PI with ESI</th>
+                                                    <th style="width: 106.333px;">Security Amount</th>
+                                                    <th style="width: 102.333px;">Professional Tax</th>
+                                                    <th style="width: 102.333px;">Vendor Name</th>
+                                                    <th style="width: 102.333px;">Project Name</th>
+                                                    <th style="width: 102.333px;">Salary Book Project</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let data of filteredReportData;let i=index">
+                                                    <td>{{i+1}}</td>
+                                                    <td>{{data.emp_name}}</td>
+                                                    <td><a (click)="getEmpCodeReport(data.emp_code)"> {{
+                                                            data.orgempcode !== "" &&
+                                                            data.orgempcode != null &&
+                                                            data.orgempcode != undefined
+                                                            ? data.orgempcode
+                                                            : data.cjcode
+                                                            }}</a></td>
+                                                    <td>{{data.email}}</td>
+                                                    <td>{{!isShowRoundedVal ?
+                                                        truncateToTwoDecimals(data.basic) :
+                                                        getRoundedVal(data.basic)
+                                                        }}</td>
+                                                    <td>{{!isShowRoundedVal ?
+                                                        truncateToTwoDecimals(data.allowance) :
+                                                        getRoundedVal(data.allowance)
+                                                        }}</td>
+                                                    <td>{{!isShowRoundedVal ?
+                                                        truncateToTwoDecimals( data.hra) :
+                                                        getRoundedVal(data.hra)
+                                                        }}</td>
+                                                    <td>{{!isShowRoundedVal ?
+                                                        truncateToTwoDecimals(data.conveyance_allowance) :
+                                                        getRoundedVal(data.conveyance_allowance)
+                                                        }}</td>
+                                                    <td>{{!isShowRoundedVal ?
+                                                        truncateToTwoDecimals(data.medical_allowance) :
+                                                        getRoundedVal(data.medical_allowance)
+                                                        }}</td>
+                                                    <td>{{!isShowRoundedVal ?
+                                                        truncateToTwoDecimals(data.special_allowance) :
+                                                        getRoundedVal(data.special_allowance)
+                                                        }}</td>
+                                                    <td>{{!isShowRoundedVal ?
+                                                        truncateToTwoDecimals(data.gross) :
+                                                        getRoundedVal(data.gross)
+                                                        }}</td>
+                                                    <td>{{data.createddate.substring(0,10)}}</td>
+                                                    <td>{{data.effectivedate}}</td>
+                                                    <td>{{!isShowRoundedVal ?
+                                                        truncateToTwoDecimals(data.employerepfrate) :
+                                                        getRoundedVal(data.employerepfrate)
+                                                        }}</td>
+                                                    <td>{{!isShowRoundedVal ?
+                                                        truncateToTwoDecimals(data.employeresirate) :
+                                                        getRoundedVal(data.employeresirate)
+                                                        }}</td>
+                                                    <td>{{!isShowRoundedVal ?
+                                                        truncateToTwoDecimals(data.ctc) :
+                                                        getRoundedVal(data.ctc)
+                                                        }}</td>
+                                                    <td>{{!isShowRoundedVal ?
+                                                        truncateToTwoDecimals(data.govt_bonus_amt) :
+                                                        getRoundedVal(data.govt_bonus_amt)
+                                                        }}</td>
+                                                    <td>{{!isShowRoundedVal ?
+                                                        truncateToTwoDecimals(data.vpf) :
+                                                        getRoundedVal(data.vpf)
+                                                        }}</td>
+                                                    <td>{{!isShowRoundedVal ?
+                                                        truncateToTwoDecimals(data.ot_and_pi_withesi) :
+                                                        getRoundedVal(data.ot_and_pi_withesi)
+                                                        }}</td>
+                                                    <td>{{!isShowRoundedVal ?
+                                                        truncateToTwoDecimals(data.security_amt) :
+                                                        getRoundedVal(data.security_amt)
+                                                        }}</td>
+                                                    <td>{{!isShowRoundedVal ?
+                                                        truncateToTwoDecimals(data.professionaltax) :
+                                                        getRoundedVal(data.professionaltax)
+                                                        }}</td>
+                                                    <td>{{data.vendor_name}}</td>
+                                                    <td>{{data.project_name}}</td>
+                                                    <td>{{data.salary_book_project}}</td>
+                                                </tr>
+                                                <tr *ngIf="reportData.length==0">
+                                                    <td colspan="100%" style="text-align: center;">
+                                                        <strong>No data to display.</strong>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<div [@grooveState]="isShowEmpCodeReport?'active':'inactive'"
+    class="modal fade add-address-form-box Component-outer-box in">
+    <div class="modal-dialog modal-lg" [@dongleState]="isShowEmpCodeReport?'active':'inactive'">
+        <div class="modal-content">
+            <div class="modal-header theme-bg">
+                <h4 class="modal-title">Employee Details</h4>
+                <button type="button" class="close" (click)="hideModal()" aria-hidden="true">
+                    x
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-outer-box">
+                    <div
+                        class="table-responsive reports-table-outer-box reports-new-table-outer-box reports-main-outerbox-table">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width: 28.3333px;">S.No</th>
+                                    <th style="width: 103.333px;">Employee Name</th>
+                                    <th style="width: 63.3333px;">Emp code</th>
+                                    <th style="width: 33.3333px;">Basic</th>
+                                    <th style="width: 65.3333px;">Allowance</th>
+                                    <th style="width: 27.3333px;">HRA</th>
+                                    <th style="width: 145.333px;">Conveyance Allowance</th>
+                                    <th style="width: 118.333px;">Medical Allowance</th>
+                                    <th style="width: 114.333px;">Special Allowance</th>
+                                    <th style="width: 35.3333px;">Gross</th>
+                                    <th style="width: 119.333px;">Created Date</th>
+                                    <th style="width: 89.3333px;">Effective Date</th>
+                                    <th style="width: 120.333px;">Employer EPF Rate</th>
+                                    <th style="width: 115.333px;">Employer ESI Rate</th>
+                                    <th style="width: 56.3333px;">New CTC</th>
+                                    <th style="width: 92.3333px;">Previous Gross</th>
+                                    <th style="width: 72.3333px;">Govt Bonus</th>
+                                    <th style="width: 88.3333px;">VPF Employer</th>
+                                    <th style="width: 100.333px;">OT &amp; PI with ESI</th>
+                                    <th style="width: 106.333px;">Security Amount</th>
+                                    <th style="width: 82.3333px;">Previous CTC</th>
+                                    <th>Salary Paid Months</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of empCodeReport;let i=index">
+                                    <td>{{i+1}}</td>
+                                    <td>{{data.emp_name}}</td>
+                                    <td>{{data.emp_code}}</td>
+                                    <td>{{!isShowRoundedVal ?
+                                        truncateToTwoDecimals(data.basic) :getRoundedVal(data.basic) }}</td>
+                                    <td>{{!isShowRoundedVal ?
+                                        truncateToTwoDecimals(data.allowance) :
+                                        getRoundedVal(data.allowance)
+                                        }}</td>
+                                    <td>{{!isShowRoundedVal ?
+                                        truncateToTwoDecimals(data.hra) :
+                                        getRoundedVal(data.hra)
+                                        }}</td>
+                                    <td>{{!isShowRoundedVal ?
+                                        truncateToTwoDecimals(data.conveyance_allowance) :
+                                        getRoundedVal(data.conveyance_allowance)
+                                        }}</td>
+                                    <td>{{!isShowRoundedVal ?
+                                        truncateToTwoDecimals( data.medical_allowance ):
+                                        getRoundedVal(data.medical_allowance)
+                                        }}</td>
+                                    <td>{{!isShowRoundedVal ?
+                                        truncateToTwoDecimals(data.special_allowance) :
+                                        getRoundedVal(data.special_allowance)
+                                        }}</td>
+                                    <td>{{!isShowRoundedVal ?
+                                        truncateToTwoDecimals(data.gross) :
+                                        getRoundedVal(data.gross)
+                                        }}</td>
+                                    <td>{{data.createddate.substring(0,10)}}</td>
+                                    <td>{{data.effectivedate}}</td>
+                                    <td>{{!isShowRoundedVal ?
+                                        truncateToTwoDecimals(data.employerepfrate) :
+                                        getRoundedVal(data.employerepfrate)
+                                        }}</td>
+                                    <td>{{!isShowRoundedVal ?
+                                        truncateToTwoDecimals(data.employeresirate) :
+                                        getRoundedVal(data.employeresirate)
+                                        }}</td>
+                                    <td>{{!isShowRoundedVal ?
+                                        truncateToTwoDecimals(data.ctc) :
+                                        getRoundedVal(data.ctc)
+                                        }}</td>
+                                    <td>{{!isShowRoundedVal ?
+                                        truncateToTwoDecimals(data.previousgross) :
+                                        getRoundedVal(data.previousgross)
+                                        }}</td>
+                                    <td>{{!isShowRoundedVal ?
+                                        truncateToTwoDecimals(data.govt_bonus_amt) :
+                                        getRoundedVal(data.govt_bonus_amt)
+                                        }}</td>
+                                    <td>{{!isShowRoundedVal ?
+                                        truncateToTwoDecimals(data.vpf) :
+                                        getRoundedVal(data.vpf)
+                                        }}</td>
+                                    <td>{{!isShowRoundedVal ?
+                                        truncateToTwoDecimals(data.ot_and_pi_withesi) :
+                                        getRoundedVal(data.ot_and_pi_withesi)
+                                        }}</td>
+                                    <td>{{!isShowRoundedVal ?
+                                        truncateToTwoDecimals(data.security_amt) :
+                                        getRoundedVal(data.security_amt)
+                                        }}</td>
+                                    <td>{{!isShowRoundedVal ?
+                                        truncateToTwoDecimals(data.previousctc) :
+                                        getRoundedVal(data.previousctc)
+                                        }}</td>
+                                    <td style="white-space: nowrap;">{{data.salarypaidmonth}}</td>
+                                </tr>
+                                <tr *ngIf="empCodeReport.length==0">
+                                    <td colspan="22" style="text-align: center;">
+                                        <strong>No data to display.</strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" (click)="hideModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>

@@ -1,0 +1,24 @@
+.Show-Fields-top-outer-box {
+  float: right;
+  margin-top: 15px;
+}
+
+.blu{
+  color: #0084ff;
+}
+
+#employeelist a.btn.btn-round.btn-success.excel-btn-box {
+  color: #279f00;
+  background-color: #00000000;
+  border-color: #eef5f900;
+  font-size: 20px;
+  padding: 6px 9px 6px 5px !important;
+  text-align: center;
+}
+#employeelist .table-responsive.Reimbursements-outer-box {
+  margin-top: -10px;
+}
+.table-responsive.Reimbursements-outer-box a.btn.btn-round.btn-success.excel-btn-box {
+  background-color: #eef5f900;
+  border-color: #eef5f900;
+}

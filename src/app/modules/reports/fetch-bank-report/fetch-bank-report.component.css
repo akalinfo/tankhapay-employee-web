@@ -1,0 +1,44 @@
+
+.light-skyblue {
+    background: lightblue;
+}
+
+.white {
+    background: white;
+}
+
+.export-button {
+    background-color: rgb(114, 238, 116);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  .dropdown.float-right-box ul#menu3 {
+    left: -52px;
+}
+.top-right-outer-box {
+    display: flex;
+    justify-content: flex-start;
+}
+.form-check {
+    padding-top: 10px;
+}
+.form-check .form-check-input {
+    height: 20px;
+    width: 20px;
+    vertical-align: text-bottom;
+    margin: 3px 5px 0 0;
+}
+/* .table-responsive.reports-table-outer-box thead {
+    background: #1669b6;
+    color: #fff;
+} */
+

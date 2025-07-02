@@ -1,0 +1,612 @@
+<!--harsh-->
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+  <div id="wrapper" [ngClass]="{'active': showSidebar==true}">
+    <div class="fakeLoader"></div>
+    <!-- Navigation -->
+
+    <!-- Sidebar Navigation -->
+
+    <div id="page-wrapper">
+      <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+          <h3 class="text-themecolor">Bulk Employee</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item" title="Home"><a [routerLink]="['/employees']">Employees</a></li>
+            <li class="breadcrumb-item active">Bulk Employee</li>
+          </ol>
+        </div>
+      </div>
+      <div class="loader-overlay" *ngIf="isLoader">
+        <div class="loader"></div>
+      </div>
+
+      <div class="loader-overlay" *ngIf="showProgressLoader">
+        <div class="progress-container">
+          <div class="progress-bar" [style.width.%]="progressPercentage">
+            {{ progressPercentage }}%
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid">
+        <!-- /row -->
+        <div class="row">
+
+
+          <div class="col-md-12 mrg-top-25 mrg-bot-25">
+
+
+            <!-- General Information -->
+            <div class="card">
+
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-12 padd-bot-15 padd-top-15">
+                    <h3>Bulk Add Employee(s)</h3>
+                    <ul *ngIf="excelToTableData?.length==0" style="padding-left:10px ;">
+                      <li tabindex="0" (blur)="closeDropdown()">1. Please download our <a
+                          (click)="toggleDropdown($event)" style="cursor: pointer;" target="_blank"
+                          title="Download Bulk Add Employees sample file">template</a> for Bulk Add
+                        Employees
+                        <div class="subdropdown-menu" *ngIf="showDropdown">
+                          <ul>
+                            <li (click)="downloadSampleExcel()">
+                              <i class="icon-add"></i> Add Employees
+                            </li>
+                            <li (click)="exportToExcel('Onboarding Pending')">
+                              <i class="icon-onboarding"></i> Onboard Employees
+                            </li>
+                            <li (click)="exportToExcel('Active')">
+                              <i class="icon-active"></i> Active Employees
+                            </li>
+                          </ul>
+                        </div>
+                      </li>
+                      <li>2. Edit this file in Excel, and add all your employees and their details.
+                      </li>
+                      <li>3. Save and upload this file below. Any other file will be rejected.
+                      </li>
+                      <!-- <li>4. Salary updates performed here will be effective from 1st of the current month, to add a custom effective date please use <a href="javascript:void()">bulk salary revision</a>.</li> -->
+
+                    </ul>
+                    <!-- </div> -->
+
+                    <h3 class="mrg-top-15" *ngIf="excelToTableData?.length==0">Template file instructions -</h3>
+
+                    <ul *ngIf="excelToTableData?.length==0" style="padding-left:10px ;">
+                      <li>1. There are two tabs. Please fill in the data accordingly.</li>
+                      <li style="color: red;">2. Please do not add/remove columns & do not change any column names.</li>
+                      <li style="color: red;">3. Please use the date format in [ DD/MM/YYYY ] for all dates, including
+                        DOB, DOJ, etc.</li>
+                      <li>4. If there is no data for a particular cell, leave it empty. Don't enter "-", "NA", etc.
+                      </li>
+                      <li>5. Please do not use all capital letters in address, name, title etc.</li>
+                      <li *ngIf="payout_method=='attendance'" style="color: red;">6. Following are the mandatory fields
+                        :<br>
+                        &nbsp; <span style="font-size: 12px;font-style: italic;"> (Name, Father/Husband's Name
+                          ,Gender(M/F/T), DOB(DD/MM/YYYY), DOJ(DD/MM/YYYY),
+                          Mobile no.)</span>
+                      </li>
+                      <li *ngIf="payout_method!='attendance'" style="color: red;">6. Following are the mandatory fields
+                        :<br>
+                        &nbsp; <span style="font-size: 12px;font-style: italic;"> (Name, Father/Husband's Name
+                          ,Gender(M/F/T), DOB(DD/MM/YYYY), DOJ(DD/MM/YYYY),
+                          Mobile no., Aadhaar/Pan Card No, Bank A/c no, IFSC Code, Bank Name, Bank Branch, Permanent
+                          Address)</span>
+                      </li>
+                      <li>7. <span class="text-info" style="font-weight: bold;"> Note .</span><span
+                          style="color: rgba(136, 12, 253, 0.959); font-weight: 500;">
+                          <ol type="i">
+                            <li *ngIf="payout_method!='attendance'">
+                              For active employees, you are not allowed to change Employee name, Mobile no, TP code.
+                            </li>
+                            <li>For bulk upload, Excel
+                              files with maximum 500 records allowed at a time. If records are > 500, then split the
+                              file and upload.
+                            </li>
+                          </ol>
+                        </span>
+                      </li>
+                    </ul>
+
+                    <div class="col-sm-6">
+                      <input type="file" *ngIf="payout_method!='attendance'"
+                        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                        name="employee_doc" class="allowed_jpg_jpeg_pdf form-control" id="employee_doc"
+                        (change)="onFileChange($event)">
+                      <input type="file" *ngIf="payout_method=='attendance'"
+                        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                        name="employee_doc" class="allowed_jpg_jpeg_pdf form-control" id="employee_doc"
+                        (change)="onFileChangeaAttn($event)">
+                    </div>
+                    <div class="col-sm-6" *ngIf="excelToTableData?.length!=0">
+                      <span style="float: left;cursor:pointer;" (click)="clearInput()"><a><i
+                            class="fa fa-lg fa-refresh"></i></a></span>
+                      <a class="btn btn-danger" style="float: right;cursor:pointer;"
+                        (click)="removeErrorRecords()">Remove error record</a>
+
+                      <a class="btn btn-success" style="float: right; cursor: pointer; margin-right: 5px;"
+                        (click)="exportInvalidRecords()">
+                        Download Invalid Records
+                      </a>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="card" *ngIf="excelToTableData.length>0">
+                        <div class="card-body" style="overflow:auto;" id="style-1">
+                          <table class="table table-bordered" *ngIf="excelToTableData.length>0 && !isActiveEmp">
+                            <thead>
+                              <tr>
+                                <th><i class="fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i></th>
+                                <th>#</th>
+                                <!-- <th><strong>Salutation</strong></th> -->
+                                <th><strong>Errors</strong></th>
+                                <th><strong>Name</strong><span class="text-danger">*</span></th>
+                                <th><strong>Father/Husband's Name</strong><span class="text-danger">*</span></th>
+                                <th><strong>Gender(M/F/T)</strong><span class="text-danger">*</span></th>
+                                <th><strong>DOB(DD/MM/YYYY)</strong><span class="text-danger">*</span></th>
+                                <th><strong>DOJ(DD/MM/YYYY)</strong><span class="text-danger">*</span></th>
+                                <th *ngIf="payout_method!='attendance'"><strong>Post Offered</strong></th>
+                                <th *ngIf="payout_method!='attendance'"><strong>Department</strong></th>
+                                <th *ngIf="payout_method!='attendance'"><strong>Org Unit Name</strong></th>
+                                <th><strong>Mobile no.</strong><span class="text-danger">*</span></th>
+                                <th><strong>Email id</strong></th>
+                                <th><strong>Job Type</strong></th>
+                                <!-- <th><strong>Passport Size Photo</strong></th> -->
+                                <th *ngIf="payout_method!='attendance'"><strong>Aadhaar Card No.</strong><span
+                                    class="text-danger">*</span></th>
+                                <!-- <th><strong>Aadhaar Copy (Y/N)</strong></th> -->
+                                <th *ngIf="payout_method!='attendance'"><strong>Pan Card No.</strong><span
+                                    class="text-danger">*</span></th>
+                                <!-- <th><strong>Pan Copy (Y/N)</strong></th> -->
+                                <th *ngIf="payout_method!='attendance'"><strong>Bank a/c no.</strong><span
+                                    class="text-danger">*</span></th>
+                                <th *ngIf="payout_method!='attendance'"><strong>IFSC Code</strong><span
+                                    class="text-danger">*</span></th>
+                                <th *ngIf="payout_method!='attendance'"><strong>Bank Name</strong><span
+                                    class="text-danger">*</span></th>
+                                <th *ngIf="payout_method!='attendance'"><strong>Bank Branch</strong><span
+                                    class="text-danger">*</span></th>
+                                <!-- <th><strong>Cancelled Chq/Passbook (Y/N)</strong></th> -->
+                                <th *ngIf="payout_method!='attendance'"><strong>PF rqd (Y/N)</strong></th>
+                                <!-- <th><strong>Form 11(Y/N)</strong></th> -->
+                                <th *ngIf="payout_method!='attendance'"><strong>UAN no.</strong></th>
+                                <!-- <th><strong>UAN Copy (Y/N)</strong></th> -->
+                                <th *ngIf="payout_method!='attendance'"><strong>ESIC rqd (Y/N)</strong></th>
+                                <th *ngIf="payout_method!='attendance'"><strong>ESIC no.</strong></th>
+                                <th *ngIf="payout_method!='attendance'"><strong>ESIC Dependent Details</strong></th>
+                                <!-- <th><strong>ESIC Copy (Y/N)</strong></th> -->
+                                <!-- <th><strong>Qualification copy (Y/N)</strong></th> -->
+                                <!-- <th><strong>Contract id</strong></th> -->
+                                <!-- <th><strong>Job Id</strong></th> -->
+                                <!-- <th><strong>Position id</strong></th> -->
+                                <th *ngIf="payout_method!='attendance'"><strong>Emergency Contact (with blood
+                                    relation)</strong>
+                                </th>
+                                <th *ngIf="payout_method!='attendance'"><strong>Blood Relation Name</strong></th>
+                                <th *ngIf="payout_method!='attendance'"><strong>Permanent Address</strong><span
+                                    class="text-danger">*</span></th>
+                                <th *ngIf="payout_method!='attendance'"><strong>Residential Address</strong></th>
+                                <th *ngIf="payout_method!='attendance'"><strong>Organization Employee Code</strong></th>
+                                <th *ngIf="payout_method!='attendance'"><strong>Reporting Manager Name</strong></th>
+                                <th *ngIf="payout_method!='attendance'"><strong>Job Type Category</strong></th>
+                                <th *ngIf="payout_method!='attendance'"><strong>Vendor Name</strong></th>
+                                <th *ngIf="payout_method!='attendance'"><strong>Salary Booked Under Project</strong>
+                                </th>
+                                <th *ngIf="payout_method!='attendance'"><strong>Contract End Date</strong></th>
+                                <th *ngIf="payout_method!='attendance'"><strong>Probation Confirmation Date</strong>
+                                <th *ngIf="payout_method!='attendance'"><strong>Personal Email Id</strong> </th>
+
+                                <!-- <ng-container *ngFor="let ad of excelToTableData[0].attendanceDates">
+                                  <th><strong>{{ad.attendancedate}}</strong></th>
+                                  </ng-container> -->
+                              </tr>
+                            </thead>
+
+                            <tbody>
+                              <!-- [ngStyle]="{'color': et.rowColor==false ? 'red' : 'green'}" -->
+                              <ng-container *ngFor="let et of excelToTableData;let i=index;">
+                                <tr [ngStyle]="{'color': (excelerrors[i]==false || !et.rowColor || (!et.panFormat && et.isPan && payout_method!='self') || (!et.aadharRegex && et.isAadhar && payout_method!='self') || !invalidRow[i]
+                                  || mobileObj.includes(i) ||  empCodeObj.includes(i))? 'red' : 'green',}">
+                                  <td><a class="text-danger" style="cursor:pointer;" (click)="removeRow(i)"><i
+                                        class="fa fa-remove fa-lg"></i></a></td>
+                                  <td>{{i+1}}</td>
+                                  <td>
+                                    <span class="error-badge" *ngIf="!et.fatherName || !et.fatherNameValid">{{
+                                      et.fatherName !='' && !et.fatherNameValid?"Invalid Father/Husband's Name. Only
+                                      Alphabets are allowed": et.fatherName=='' ?'Father Name missing':''}}</span>
+                                    <span *ngIf="!et.gender">{{!et.gender ? 'Gender missing' :''}}</span>
+                                    <span *ngIf="(!et.dobValid && et.dobType)|| !et.dobType">{{!et.dobValid &&
+                                      et.dobType ? 'Invalid Date of birth.' : ''}}{{et.dobType?' Please change field
+                                      type to text in excel':''}} </span>
+                                    <span *ngIf="(!et.dojValid && et.dojType) || !et.dojType">{{!et.dojValid &&
+                                      et.dojType ? 'Invalid Date of joining.' : ''}}{{ et.dojType ? ' Please change
+                                      field type to text':''}}</span>
+                                    <span *ngIf="mobileObj.includes(i)">
+                                      Duplicate Mobile number exists in the excel.<br>
+                                    </span>
+                                    <span *ngIf="excelErrorMsg[i]?.mobilemsg">{{excelErrorMsg[i]?.mobilemsg}}</span>
+                                    <span *ngIf="et.email!='' && !et.emailRegex">Invalid email</span>
+                                    <span *ngIf="et.personalEmailId!='' && !et.personalEmailRegex">Invalid personal email</span>
+                                    <span *ngIf="!et.isJobTypeValid">Invalid Job Type</span>
+                                    <span
+                                      *ngIf="payout_method!='attendance' && excelErrorMsg[i]?.aadharmsg">{{excelErrorMsg[i]?.aadharmsg}}
+                                    </span>
+                                    <span
+                                      *ngIf="payout_method!='attendance' && payout_method!='self' && !et.aadharRegex && et.isAadhar">Invalid
+                                      Aadhaar no.</span>
+                                    <span
+                                      *ngIf="payout_method!='attendance' && payout_method!='self' && !et.isPan && !et.isAadhar">Aadhaar
+                                      or Pan required</span>
+                                    <span
+                                      *ngIf="payout_method!='attendance' && excelErrorMsg[i]?.panmsg">{{excelErrorMsg[i]?.panmsg}}
+                                    </span>
+                                    <span
+                                      *ngIf="payout_method!='attendance' && payout_method!='self' && !et.panFormat && et.isPan">Invalid
+                                      Pan no.</span>
+                                    <span
+                                      *ngIf="payout_method!='attendance' && payout_method!='self' && (!et.bankAccountNo || !et.bankAccountNoValid)">{{!et.bankAccountNo
+                                      && payout_method!='attendance' &&
+                                      this.payout_method!='self'? 'No value in Bank Account No.' : et.bankAccountNo &&
+                                      !et.bankAccountNoValid && payout_method!='attendance' && payout_method!='self' ?
+                                      'Invalid bank account number. Account number should only contain
+                                      numbers.':''}}</span>
+                                    <span
+                                      *ngIf="payout_method!='attendance' && excelErrorMsg[i]?.bankmsg">{{excelErrorMsg[i]?.bankmsg}}</span>
+                                    <span
+                                      *ngIf="payout_method!='attendance' && !et.ifscCodeValid">{{getIfscMsg(et)}}</span>
+                                    <span
+                                      *ngIf="payout_method!='attendance' && !et.bankNameValid">{{getBankNameMsg(et)}}</span>
+                                    <span
+                                      *ngIf="!et.bankBranchValid && payout_method!='attendance' && payout_method!='self'">No
+                                      value in Bank Branch</span>
+                                    <span *ngIf="payout_method!='attendance'&& !et.uanNoValid">Invalid UAN no.</span>
+                                    <span *ngIf="payout_method!='attendance' && !et.esicNovalid">Invalid Esic no.</span>
+                                    <span *ngIf="payout_method!='attendance' && !et.permAddValid">No value in Permanent
+                                      Address</span>
+                                    <span *ngIf="payout_method!='attendance' && empCodeObj.includes(i)">
+                                      Duplicate Org Empcode exists in the excel.
+                                    </span>
+                                    <span
+                                      *ngIf="payout_method!='attendance'&& excelErrorMsg[i]?.orgEmpCodeMsg">{{excelErrorMsg[i]?.orgEmpCodeMsg}}</span>
+                                  </td>
+                                  <!-- <td>{{et?.salutation}}</td> -->
+                                  <td>{{et.empName}}</td>
+                                  <td [ngClass]="{'color':!et.fatherNameValid}">{{et.fatherName}}</td>
+                                  <td [ngClass]="{'color':!et.gender}">{{et.gender}} </td>
+                                  <td [ngClass]="{'color':!et.dobValid}">{{et.dob}} </td>
+                                  <td [ngClass]="{'color':!et.dojValid}">{{et.doj}} </td>
+                                  <td *ngIf="payout_method!='attendance'">{{et?.postOffered}}</td>
+                                  <td *ngIf="payout_method!='attendance'">{{et?.postingDepartment}}</td>
+                                  <td *ngIf="payout_method!='attendance'">{{et?.orgUnitName}}</td>
+                                  <td
+                                    [ngClass]="{'color': (excelErrorMsg[i]!=undefined && (!tableDataValidation[i]?.empMobileStatus) || et.rowColor==false || mobileObj.includes(i))}">
+                                    {{et.mobile}}</td>
+                                  <td [ngClass]="{'color': (et.email!='' && !et.emailRegex)}">{{et.email}}</td>
+                                  <td [ngClass]="{'color':!et.isJobTypeValid}">{{et.jobType}}</td>
+                                  <td *ngIf="payout_method!='attendance'"
+                                    [ngClass]="{'color': (excelErrorMsg[i]!=undefined && (!tableDataValidation[i]?.aadharCardNoStatus || !tableDataValidation[i]?.aadhaarCardNoValidStatus)) || ( !et.aadharRegex && et.isAadhar && payout_method!='self')
+                                                                    || (!et.isPan && !et.isAadhar && payout_method!='self')}">
+                                    {{et.aadharCardNo}}
+                                  </td>
+                                  <td *ngIf="payout_method!='attendance'"
+                                    [ngClass]="{'color': (excelErrorMsg[i]!=undefined && (!tableDataValidation[i]?.panCardNoStatus || !tableDataValidation[i]?.panCardNoValidStatus)) || (!et.panFormat && et.isPan && payout_method!='self')
+                                                                        || (!et.isPan && !et.isAadhar && payout_method!='self')}">
+                                    {{et.panCardNo}}
+                                  </td>
+                                  <td *ngIf="payout_method!='attendance'"
+                                    [ngClass]="{'color': (excelErrorMsg[i]!=undefined && !tableDataValidation[i]?.bankAccountNoStatus) || (!et.bankAccountNo && !et.bankAccountNoValid && payout_method!='attendance' && payout_method!='self')}">
+                                    {{et.bankAccountNo}}
+                                  </td>
+                                  <td *ngIf="payout_method!='attendance'"
+                                    [ngClass]="{'color':!et.ifscCodeValid && payout_method!='attendance'}">
+                                    {{et.ifscCode}} </td>
+                                  <td *ngIf="payout_method!='attendance'"
+                                    [ngClass]="{'color':!et.bankNameValid && payout_method!='attendance'}">
+                                    {{et.bankName}}</td>
+                                  <td *ngIf="payout_method!='attendance'"
+                                    [ngClass]="{'color':!et.bankBranchValid && payout_method!='attendance' && payout_method!='self'}">
+                                    {{et.bankBranch}}</td>
+                                  <td *ngIf="payout_method!='attendance'">{{et.pfOpted}}</td>
+                                  <td *ngIf="payout_method!='attendance'" [ngClass]="{'color':!et.uanNoValid}">
+                                    {{et.uanNumber}}</td>
+                                  <td *ngIf="payout_method!='attendance'">{{et.esicOpted}}</td>
+                                  <td *ngIf="payout_method!='attendance'" [ngClass]="{'color':!et.esicNovalid}">
+                                    {{et.esicNumber}} </td>
+                                  <td *ngIf="payout_method!='attendance'">{{et.esicDependentDetails}}</td>
+                                  <td *ngIf="payout_method!='attendance'">{{et.emergencyContact}} </td>
+                                  <td *ngIf="payout_method!='attendance'">{{et.bloodRelationName}}</td>
+                                  <td [ngClass]="{'color':!et.permAddValid}" *ngIf="payout_method!='attendance'">
+                                    {{et.permanentAddress}}</td>
+                                  <td *ngIf="payout_method!='attendance'">{{et.residentialAddress}}</td>
+                                  <td *ngIf="payout_method!='attendance'"
+                                    [ngClass]="{'color': (excelErrorMsg[i]!=undefined && excelErrorMsg[i]?.orgEmpCodeMsg!='') || empCodeObj.includes(i)}">
+                                    {{et.orgEmpCode}}
+                                  </td>
+                                  <td *ngIf="payout_method!='attendance'">{{et.reportingManagerName}}</td>
+                                  <td *ngIf="payout_method!='attendance'"
+                                    [ngClass]="{'color': !checkJobTypeCategoryValid(et.jobTypeCategory)}">
+                                    {{et.jobTypeCategory}}
+                                    <small *ngIf="!checkJobTypeCategoryValid(et.jobTypeCategory)">
+                                      <br> Job Type Category is not exists.
+                                    </small>
+                                  </td>
+                                  <td *ngIf="payout_method!='attendance'"
+                                    [ngClass]="{'color': !checkVendorNameValid(et.agencyName)}">
+                                    {{et.agencyName}}
+                                    <small *ngIf="!checkVendorNameValid(et.agencyName)">
+                                      <br>Vendor Name is not exists.
+                                    </small>
+                                  </td>
+                                  <td *ngIf="payout_method!='attendance'"
+                                    [ngClass]="{'color': !checkSalarybookedValid(et.salaryBookedProjectName)}">
+                                    {{et.salaryBookedProjectName}}
+                                    <small *ngIf="!checkSalarybookedValid(et.salaryBookedProjectName)">
+                                      <br>Salary Booked Under Project is not exists.
+                                    </small>
+                                  </td>
+                                  <td *ngIf="payout_method!='attendance'">
+                                    {{et.contractEndDate}}
+
+                                  </td>
+                                  <td *ngIf="payout_method!='attendance'">
+                                    {{et.probationConfirmationDate}}
+                                  </td>
+                                  <td *ngIf="payout_method!='attendance'">
+                                    {{et.personalEmailId}}
+                                  </td>
+                                  <!-- onboarding -->
+                                </tr>
+                              </ng-container>
+                            </tbody>
+                          </table>
+
+                          <table class="table table-bordered" *ngIf="isActiveEmp">
+                            <thead>
+                              <tr>
+                                <th><strong>Action</strong></th>
+                                <th><strong>#</strong></th>
+                                <th><strong>Name</strong><span class="text-danger">*</span></th>
+                                <th><strong>Mobile</strong><span class="text-danger">*</span></th>
+                                <th><strong>TP Code</strong></th>
+                                <th><strong>Father/Husband's Name</strong><span class="text-danger">*</span></th>
+                                <th><strong>Gender(M/F/T)</strong><span class="text-danger">*</span></th>
+                                <th><strong>DOB(DD/MM/YYYY)</strong><span class="text-danger">*</span></th>
+                                <th><strong>Post Offered</strong></th>
+                                <th><strong>Department</strong></th>
+                                <th><strong>Org Unit Name</strong></th>
+                                <th><strong>Email id</strong></th>
+                                <th><strong>Personal Email Id</strong></th>
+                                <th><strong>Aadhaar Card No.</strong><span class="text-danger">*</span></th>
+                                <th><strong>Pan Card No.</strong><span class="text-danger">*</span></th>
+                                <th><strong>Bank a/c no.</strong><span class="text-danger">*</span></th>
+                                <th><strong>IFSC Code</strong><span class="text-danger">*</span></th>
+                                <th><strong>Bank Name</strong><span class="text-danger">*</span></th>
+                                <th><strong>Bank Branch</strong><span class="text-danger">*</span></th>
+                                <th><strong>UAN no.</strong></th>
+                                <th><strong>ESIC no.</strong></th>
+                                <th><strong>ESIC Dependent Details</strong></th>
+                                <th><strong>Emergency Contact (with blood relation)</strong></th>
+                                <th><strong>Blood Relation Name</strong></th>
+                                <th><strong>Permanent Address</strong><span class="text-danger">*</span></th>
+                                <th><strong>Residential Address</strong></th>
+                                <th><strong>Organization Employee Code</strong></th>
+                                <th><strong>Reporting Manager Name</strong></th>
+                                <th><strong>Job Type Category</strong></th>
+                                <th><strong>Vendor Name</strong></th>
+                                <th><strong>Salary Booked Under Project</strong></th>
+                                <th><strong>Contract End Date</strong></th>
+                                <th><strong>Probation Confirmation Date</strong></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let et of excelToTableData;let i=index;" [ngStyle]="{'color':!invalidRow[i] || !excelerrors[i] ? 'red' : 'green'}
+                                                            ">
+                                <td><a class="text-danger" style="cursor:pointer;" (click)="removeRowActive(i)"><i
+                                      class="fa fa-remove fa-lg"></i></a>
+                                  <small><br>{{validateArr[i] && validateArr[i].status_code=='0'? validateArr[i].msg
+                                    :''}}</small>
+                                </td>
+                                <td>{{i+1}}</td>
+                                <td>{{et.empName}}</td>
+                                <td>{{et.mobile}}</td>
+                                <td>{{et.tpCode}}</td>
+                                <td [ngClass]="{'color':!et.fatherNameValid}">{{et.fatherName}} <br><span
+                                    *ngIf="!et.fatherName || !et.fatherNameValid">{{ et.fatherName !='' &&
+                                    !et.fatherNameValid?"Invalid Father/Husband's Name. Only Alphabets are
+                                    allowed":et.fatherName==''?'Father name missing':''}}</span></td>
+                                <td [ngClass]="{'color':!et.gender}">{{et.gender}} <br><span *ngIf="!et.gender">Gender
+                                    missing</span></td>
+                                <td [ngClass]="{'color':!et.dobValid}">{{et.dob}} <br><span
+                                    *ngIf="!et.dobValid && et.dobType">{{!et.dobValid && et.dobType ? 'Invalid Date of
+                                    birth.' : ''}}{{!et.dobType?' Please change field type to text in excel':''}}
+                                  </span></td>
+                                <td>{{et.postOffered}}</td>
+                                <td>{{et.postingDepartment}}</td>
+                                <td>{{et.orgUnitName}}</td>
+                                <td [ngClass]="{'color': (et.email!='' && !et.emailRegex)}">
+                                  {{et.email}}
+                                  <span *ngIf="et.email!='' && !et.emailRegex">Invalid email</span>
+                                </td>
+                                <td [ngClass]="{'color': (et.personalEmailId!='' && !et.personalEmailRegex)}">
+                                  {{et.personalEmailId}}
+                                  <span *ngIf="et.personalEmailId!='' && !et.personalEmailRegex">Invalid personal email</span>
+                                </td>
+                                <td>{{et.aadharCardNo}}
+                                  <small
+                                    *ngIf="validateArr[i] && validateArr[i].aadhar_card_exists=='Y'"><br>{{validateArr[i]
+                                    && validateArr[i].aadhar_card_exists=='Y'
+                                    ? validateArr[i].aadhar_card_message :''}}</small>
+                                  <small
+                                    *ngIf="validateArr[i] && validateArr[i].is_aadhar_card_changed=='Y'"><br>{{validateArr[i]
+                                    && validateArr[i].is_aadhar_card_changed=='Y'
+                                    ? validateArr[i].is_aadhar_card_message :''}}</small>
+                                </td>
+                                <td>{{et.panCardNo}}
+                                  <small
+                                    *ngIf="validateArr[i] && validateArr[i].pan_card_exists=='Y'"><br>{{validateArr[i]
+                                    && validateArr[i].pan_card_exists=='Y'
+                                    ? validateArr[i].pan_card_message :''}}</small>
+                                  <small
+                                    *ngIf="validateArr[i] && validateArr[i].is_pan_card_changed=='Y'"><br>{{validateArr[i]
+                                    && validateArr[i].is_pan_card_changed=='Y'
+                                    ? validateArr[i].is_pan_card_message :''}}</small>
+                                </td>
+                                <td>{{et.bankAccountNo}}
+                                  <small
+                                    *ngIf="validateArr[i] && validateArr[i].bank_no_exists=='Y'"><br>{{validateArr[i] &&
+                                    validateArr[i].bank_no_exists=='Y'
+                                    ? validateArr[i].bank_no_message :''}}</small>
+                                  <small
+                                    *ngIf="validateArr[i] && validateArr[i].is_bank_no_changed=='Y'"><br>{{validateArr[i]
+                                    && validateArr[i].is_bank_no_changed=='Y'
+                                    ? validateArr[i].is_bank_no_message :''}}</small>
+                                </td>
+                                <td>{{et.ifscCode}}</td>
+                                <td>{{et.bankName}}</td>
+                                <td>{{et.bankBranch}}</td>
+                                <td
+                                  [ngClass]="{'color':validateArr[i] && (validateArr[i].uan_no_exists=='Y' || validateArr[i].is_uan_no_changed=='Y')}">
+                                  {{et.uanNumber}}
+                                  <small
+                                    *ngIf="validateArr[i] && validateArr[i].uan_no_exists=='Y'"><br>{{validateArr[i] &&
+                                    validateArr[i].uan_no_exists=='Y'
+                                    ? validateArr[i].uan_no_message :''}}</small>
+                                  <small
+                                    *ngIf="validateArr[i] && validateArr[i].is_uan_no_changed=='Y'"><br>{{validateArr[i]
+                                    && validateArr[i].is_uan_no_changed=='Y'
+                                    ? validateArr[i].is_uan_no_message :''}}</small>
+                                </td>
+                                <td
+                                  [ngClass]="{'color':validateArr[i] && (validateArr[i].esic_no_exists=='Y' || validateArr[i].is_esic_no_changed=='Y')}">
+                                  {{et.esicNumber}}
+                                  <small
+                                    *ngIf="validateArr[i] && validateArr[i].esic_no_exists=='Y'"><br>{{validateArr[i] &&
+                                    validateArr[i].esic_no_exists=='Y'
+                                    ? validateArr[i].esic_no_message :''}}</small>
+                                  <small
+                                    *ngIf="validateArr[i] && validateArr[i].is_esic_no_changed=='Y'"><br>{{validateArr[i]
+                                    && validateArr[i].is_esic_no_changed=='Y'
+                                    ? validateArr[i].is_esic_no_message :''}}</small>
+                                </td>
+                                <td>{{et.esicDependentDetails}}</td>
+                                <td>{{et.emergencyContact}}</td>
+                                <td>{{et.bloodRelationName}}</td>
+                                <td>{{et.permanentAddress}}</td>
+                                <td>{{et.residentialAddress}}</td>
+                                <td>{{et.orgEmpCode}}
+                                  <small
+                                    *ngIf="validateArr[i] && validateArr[i].org_emp_code_exists=='Y'"><br>{{validateArr[i]
+                                    && validateArr[i].org_emp_code_exists=='Y'
+                                    ? validateArr[i].org_emp_code_message : ''}}</small>
+                                  <small
+                                    *ngIf="validateArr[i] && validateArr[i].is_org_emp_code_changed=='Y'"><br>{{validateArr[i]
+                                    && validateArr[i].is_org_emp_code_changed=='Y'
+                                    ? validateArr[i].is_org_emp_code_message : ''}}</small>
+                                </td>
+                                <td>{{et.reportingManagerName}}</td>
+
+                                <td
+                                  [ngClass]="{'color':validateArr[i] && (validateArr[i].is_job_type_category_exists=='N')}">
+                                  {{et.jobTypeCategory}}
+                                  <small
+                                    *ngIf="validateArr[i] && validateArr[i].is_job_type_category_exists=='N'"><br>{{validateArr[i]
+                                    && validateArr[i].is_job_type_category_exists=='N'
+                                    ? validateArr[i].is_job_type_category_exists_message :''}}</small>
+                                </td>
+                                <td [ngClass]="{'color': !checkVendorNameValid(et.agencyName)}">
+                                  {{et.agencyName}}
+                                  <small *ngIf="!checkVendorNameValid(et.agencyName)">
+                                    <br>Vendor Name is not exists.
+                                  </small>
+                                </td>
+                                <td [ngClass]="{'color': !checkSalarybookedValid(et.salaryBookedProjectName)}">
+                                  {{et.salaryBookedProjectName}}
+                                  <small *ngIf="!checkSalarybookedValid(et.salaryBookedProjectName)">
+                                    <br>Salary Booked Under Project is not exists.
+                                  </small>
+                                </td>
+                                <td>
+                                  {{et.contractEndDate}}
+
+                                </td>
+                                <td>
+                                  {{et.probationConfirmationDate}}
+
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- <div class="col-sm-12 mrg-bot-15">
+                                    <label for="name">Please choose whether you want to only insert new users, or also update them.</label>
+                                    <select class="form-control" name="update-mode" id="update-mode">
+                                        <option value="insert-update">Insert &amp; update employees/contractors</option>
+                                        <option value="insert-only">Only insert new employees/contractors</option>
+                                    </select>
+                                </div> -->
+
+                    <!-- <div class="col-sm-12 m-clear mrg-bot-15">
+                                    <label class="label--values label--options" for="send-welcome-emails">
+                                    <input type="checkbox" name="send-welcome-emails" id="send-welcome-emails" checked="">
+                                    Send welcome emails to new additions
+                                </label>
+                                </div> -->
+
+
+
+                    <div class="col-md-12 col-12 padd-top-20 text-center" *ngIf="excelToTableData?.length!=0">
+
+                      <div class="col-md-3" *ngIf="!isActiveEmp">
+                        <input type="radio" name="employee" id="addEmployee" (change)="add_update_employee()"
+                          [checked]="isAddemployee">
+                        <label for="addEmployee">
+                          Add Employee
+                        </label>
+                      </div>
+
+                      <div class="col-md-3" *ngIf="!isActiveEmp">
+                        <input type="radio" name="employee" id="updateEmployee" (change)="add_update_employee()"
+                          [checked]="!isAddemployee">
+                        <label for="updateEmployee">
+                          Update Employee
+                        </label>
+                      </div>
+
+                      <div class="col-md-3" style="text-align: left;">
+                        <a class="btn btn-primary" (click)="uploadExcel()"
+                          *ngIf="excelToTableData.length>0 && isExcelErrorFree && !isInvalidData && isAddemployee && !isActiveEmp">Upload</a>
+
+                        <a class="btn btn-primary" (click)="update_employee_details()"
+                          *ngIf="excelToTableData.length>0 && !isAddemployee && payout_method!='attendance' && !isInvalidData && !isActiveEmp">Update</a>
+
+                        <a class="btn btn-primary" (click)="update_attn_employee_details()"
+                          *ngIf="excelToTableData.length>0 && !isAddemployee && payout_method=='attendance' && !isInvalidData && !isActiveEmp">Update</a>
+
+                        <a class="btn btn-primary" (click)="updateActiveEmp()"
+                          *ngIf="excelToTableData.length>0 && isActiveEmp">Update</a>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+
+        </div>
+        <!-- /row -->
+      </div>
+    </div>
+  </div>
+</section>
+<app-footer></app-footer>

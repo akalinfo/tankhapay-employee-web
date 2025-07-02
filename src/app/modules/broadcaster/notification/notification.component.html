@@ -1,0 +1,404 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+	<div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+		<div class="fakeLoader"></div>
+		<div id="page-wrapper">
+			<div class=" page-titles row">
+				<div class="col-md-12">
+					<div class="">
+						<div class="col-md-5 align-self-center">
+							<h3 class="text-themecolor">Push Notification</h3>
+						</div>
+						<div class="col-md-7 align-self-center">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a [routerLink]="['/dashboard']">Dashboard</a></li>
+								<li class="breadcrumb-item active">Push Notification</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="container-fluid">
+				<!-- /row -->
+				<div class="row">
+					<div class="col-md-12 mrg-top-0 mrg-bot-25">
+						<div class="card">
+							<div class="card-header" style="margin-top: 10px;">
+								<form [formGroup]="Campaign_Form">
+									<div class="row">
+										<div class="col-sm-1" style="margin-top: 10px;">
+											<label style="margin-left: 15px;">Filters:</label>
+										</div>
+										<div class="col-md-3">
+											<input type="text" value="" formControlName="searchKeyword"
+											placeholder="Search.." (keyup)="search($event)"
+											class="form-control wide-width" style="width: 100%;">
+										</div>
+										<div class="col-md-2">
+											<input id="FromDate2" #rd formControlName="FromDate" class="form-control"
+												placeholder="Select From Date" style="cursor: pointer;">
+										</div>
+										<div class="col-md-2">
+											<input id="ToDate2" #rd formControlName="ToDate" class="form-control"
+											    placeholder="Select To Date" style="cursor: pointer;">
+										</div>
+										<div class="col-md-2 padd-0" style="margin-top: 6px;">
+											<button class="btn btn-primary" (click)="searchCampaigns()">Search</button>
+										</div>
+										<div class="col-md-2 padd-0" style="margin-top: 6px;">
+											<button class="btn btn-primary" (click)="OpenCreateNewNotifications()">Create New</button>
+										</div>
+									</div>
+								</form>
+
+								<div class="col-md-3 col-sm-3">
+									<h4 class="sub-title-inn-box View-Roles-list-outer-box">
+										Notification List View
+									</h4>
+								</div>
+							</div>
+							<div class="card-body padd-bot-0 padd-top-0">
+								<div class="row">
+									<div class="col-md-12 padd-top-0">
+										<div
+											class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+											<table class="table user-list">
+												<thead>
+													<tr>
+														<th class="sortable header-user-role ember-view">#</th>
+														<th class="sortable header-user-role ember-view">
+															Campaign Name
+															<!---->
+														</th>
+														<th class="sortable header-user-role ember-view">
+															Notification Title
+															<!---->
+														</th>
+														<th class="sortable header-user-role ember-view">
+															Notification Description
+
+														</th>
+
+														<th class="sortable header-user-role ember-view">
+															Audience
+															<!---->
+														</th>
+														<th class="sortable header-user-role ember-view">
+															Start Date
+															<!---->
+														</th>
+														<th class="sortable header-user-role ember-view"
+															style=" width: 100px;">
+															End Date
+															<!---->
+														</th>
+														<th class="header-actions text-center">Status</th>
+														<th class="header-actions text-center">Action</th>
+													</tr>
+												</thead>
+												<tbody>
+													<ng-container
+														*ngFor="let Campaign of filteredcampaign_detail; let i = index">
+														<tr>
+															<td>{{i+1}}</td>
+															<td>{{Campaign.campaign_name}}</td>
+
+															<td>{{Campaign.notification_title}}</td>
+
+															<!-- <td><div [innerHTML]="decodeHtmlContent(Campaign.notification_desc)"></div></td> -->
+															<td>
+																<div
+																	[innerHTML]="sanitizeDescription(Campaign.campaign_id, Campaign.notification_desc)">
+																</div>
+															</td>
+															<td><a data-toggle="modal" data-placement="top"
+																	style="cursor: pointer;"
+																	(click)="open_audiencepopup(Campaign.campaign_id)">{{Campaign.audience_count}}</a>
+															</td>
+															<td>{{Campaign.start_date}} </td>
+															<td>{{Campaign.end_date}}</td>
+
+															<!-- <td class="status-bar" id="status-bar">Approved</td>-->
+															<td>
+																<span [ngClass]="{'appro-btn-ved': Campaign.approval_status === 'Approved',
+																 'pend-btn-ved1': Campaign.approval_status === 'Pending',
+																 'appro-btn-ved1': Campaign.approval_status === 'Rejected'}">
+																	{{ Campaign.approval_status === 'Approved' ? 'Published' : Campaign.approval_status }}
+																</span>
+															</td>
+															<td>
+																<div class="dropdown float-right dropleft">
+																	<ng-container *ngIf="Campaign.approval_status === 'Pending' &&
+																	Campaign.approval_status !== 'Approved' &&
+																	Campaign.approval_status !== 'Rejected'">
+																		<a class="dropdown-toggle no-caret text-muted cursor-pointer"
+																			data-toggle="dropdown" aria-haspopup="true"
+																			aria-expanded="false">
+																			<svg width="512" height="512"
+																				viewBox="0 0 512 512" class="icon">
+																				<path
+																					d="M162 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32M256 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32M350 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32"
+																					id="Path"></path>
+																				<path
+																					d="M256 480c123.712 0 224-100.288 224-224S379.712 32 256 32 32 132.288 32 256s100.288 224 224 224zm0 32C114.615 512 0 397.385 0 256S114.615 0 256 0s256 114.615 256 256-114.615 256-256 256z"
+																					id="Oval-1"></path>
+																			</svg>
+																		</a>
+																		<ul class="dropdown-menu"
+																			aria-labelledby="dropdownMenuButton">
+																			<li class="dropdown-item"
+																				(click)="updateStatus('Approved',Campaign)">
+																				Approved
+																			</li>
+																			<!-- <li class="dropdown-item"
+																				(click)="updateStatus('Pending',Campaign)">
+																				Pending
+																			</li> -->
+																			<li class="dropdown-item"
+																				(click)="updateStatus('Rejected',Campaign)">
+																				Rejected
+																			</li>
+																		</ul>
+
+																		<a data-toggle="modal" data-placement="top"
+																			class="eye-btn-menu"
+																			(click)="openEditPopup(Campaign.campaign_id)"><i
+																				class="fa fa-edit"></i></a>
+																	</ng-container>
+																	<!-- <ng-container *ngIf="Campaign.approval_status !== 'Pending' &&
+																	Campaign.approval_status === 'Approved' &&
+																	Campaign.approval_status !== 'Rejected'">
+																		<a class="dropdown-toggle no-caret text-muted cursor-pointer"
+																			data-toggle="dropdown" aria-haspopup="true"
+																			aria-expanded="false">
+																			<svg width="512" height="512"
+																				viewBox="0 0 512 512" class="icon">
+																				<path
+																					d="M162 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32M256 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32M350 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32"
+																					id="Path"></path>
+																				<path
+																					d="M256 480c123.712 0 224-100.288 224-224S379.712 32 256 32 32 132.288 32 256s100.288 224 224 224zm0 32C114.615 512 0 397.385 0 256S114.615 0 256 0s256 114.615 256 256-114.615 256-256 256z"
+																					id="Oval-1"></path>
+																			</svg>
+																		</a>
+																		<ul class="dropdown-menu"
+																			aria-labelledby="dropdownMenuButton">
+																			<li class="dropdown-item"
+																				(click)="publishCampaign(Campaign)">
+																				Publish
+																			</li>
+																		</ul>
+																	</ng-container> -->
+																	<a data-toggle="modal" data-placement="top"
+																		class="eye-btn-menu"
+																		(click)="open_viewpopup(Campaign.campaign_id)"><i
+																			class="fa fa-eye"></i></a>
+																</div>
+															</td>
+														</tr>
+													</ng-container>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<!-- /row -->
+			</div>
+		</div>
+	</div>
+</section>
+
+<div class="modal" [@grooveState]="showSaveNotificationsPopup?'active':'inactive'" aria-labelledby="myModalLabel"
+	style="overflow-x: hidden; overflow-y: auto;">
+	<div [@dongleState]="showSaveNotificationsPopup?'active':'inactive'" class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<form [formGroup]="Save_Notification_Form">
+				<div class="modal-header theme-bg">
+					<h4 class="modal-title">{{Form_title_name}}</h4>
+					<button type="button" class="close" (click)="close_NotificationPopup()" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<h4 class="top-shif-title-box">Notification</h4>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-3">Campaign Name <span class="text-danger">*</span></label>
+						<div class="col-sm-9">
+							<input type="hidden" formControlName="action" id="action" class="form-control"
+								[readonly]="action === ''">
+							<input type="hidden" formControlName="campaignId" id="campaignId" class="form-control"
+								[readonly]="action === ''">
+							<input type="text" formControlName="campaignName" id="campaignName" class="form-control"
+								[readonly]="action === ''">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-3">Notification Title <span
+								class="text-danger">*</span></label>
+						<div class="col-sm-9">
+							<input type="text" formControlName="notificationTitle" id="notificationTitle"
+								class="form-control" [readonly]="action === ''">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-3">
+							Notification Description <span class="text-danger">*</span>
+						</label>
+						<div class="col-sm-9">
+							<!-- <textarea
+							class="push-notification-box"
+							formControlName="notificationDescription"
+							id="notificationDescription"
+							rows="4"
+							cols="50"
+							[readonly]="action === ''"
+							maxlength="500"
+							(input)="updateCharCount()"
+						  ></textarea> -->
+							<div [(ngModel)]="Save_Notification_Form.value.notificationDescription"
+								[ngxSummernote]="config" id="body-editor" formControlName="notificationDescription"
+								(onChange)="onEditorChange($event)" (onKeyup)="limitTextLength()" required>
+							</div>
+							<div class="character-count">
+								Max characters: 500. Remaining: {{ remainingChars }}
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-sm-3">Organization Unit(s)</label>
+						<div class="col-sm-8">
+							<ng-multiselect-dropdown
+								[placeholder]="'Select Organization Units'"
+								[settings]="dropdownSettings"
+								[data]="organizationUnitData"
+								formControlName="organizationUnitModal"
+								(onSelect)="filterAudienceList()"
+								(onDeSelect)="filterAudienceList()"
+								(onSelectAll)="filterAudienceList()"
+								(onDeSelectAll)="filterAudienceList()">
+							</ng-multiselect-dropdown>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-3">Department(s)</label>
+						<div class="col-sm-8">
+							<ng-multiselect-dropdown
+								[placeholder]="'Select Department'"
+								[settings]="deptDropdownSettings"
+								[data]="departmentData"
+								formControlName="departmentModal"
+								(onSelect)="filterAudienceList()"
+								(onDeSelect)="filterAudienceList()"
+								(onSelectAll)="filterAudienceList()"
+								(onDeSelectAll)="filterAudienceList()">
+							</ng-multiselect-dropdown>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-3">Designation(s)</label>
+						<div class="col-sm-8">
+							<ng-multiselect-dropdown
+								[placeholder]="'Select Designation'"
+								[settings]="desgDropdownSettings"
+								[data]="designationData"
+								formControlName="designationModal"
+								(onSelect)="filterAudienceList()"
+								(onDeSelect)="filterAudienceList()"
+								(onSelectAll)="filterAudienceList()"
+								(onDeSelectAll)="filterAudienceList()">
+							</ng-multiselect-dropdown>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<h4 class="top-shif-title-box" style="margin-top: 15px;">Audience <span class="text-danger">*</span></h4>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-3">Choose </label>
+						<div class="col-sm-8">
+							<ng-multiselect-dropdown [placeholder]="placeholder" [settings]="audienceDropdownSettings"
+								[data]="Audience_list_data" (onSelect)="onItemSelect($event)"
+								(onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onUnselectAll($event)"
+								(onDeSelect)="onItemUnselect($event)" formControlName="notificationAudienceIds"
+								class="custom-dropdown">
+							</ng-multiselect-dropdown>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<h4 class="top-shif-title-box">Schedule <span class="text-danger">*</span></h4>
+					</div>
+
+					<!-- start - new jQuery Dates sidharth kaul dated 09.05.2025 -->
+					<div class="form-group">
+					<label class="control-label col-sm-3"> </label>
+					<div class="col-md-3">
+						<input type="hidden" id="recdate" (click)="filterByDate()">
+						<label style="color:#000; font-weight: 500;">From Date</label>
+						<input id="FromDate" class="form-control" type="text" style="cursor: pointer;" placeholder="dd/mm/yyyy"
+						autocomplete="off" readonly>
+					</div>
+					<div class="col-md-3">
+						<label style="color:#000; font-weight: 500;">To Date</label>
+						<input id="ToDate" class="form-control" type="text" style="cursor: pointer;" placeholder="dd/mm/yyyy"
+						autocomplete="off" readonly>
+					</div>
+					</div>
+					<!-- end - new jQuery Dates sidharth kaul dated 09.05.2025 -->
+
+					</div>
+					<div class="modal-footer">
+						<ng-container *ngIf="action!=''">
+							<input type="button" class="btn btn-default" data-dismiss="modal" value="Submit"
+								(click)="Creat_New_PushNotifications()" [disabled]="Save_Notification_Form.invalid"
+								class="btn btn-success">
+						</ng-container>
+						<input type="button" class="btn btn-default" data-dismiss="modal"
+							(click)="close_NotificationPopup()" value="Cancel">
+					</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal" [@grooveState]="showAudiencePopup?'active':'inactive'" aria-labelledby="myModalLabel"
+	style="overflow-x: hidden; overflow-y: auto;">
+	<div [@dongleState]="showAudiencePopup?'active':'inactive'" class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header theme-bg">
+				<h4 class="modal-title">Target Audience</h4>
+				<button type="button" class="close" (click)="closeshowAudiencePopup()" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body" style="overflow-x: hidden; overflow-y: auto; height: 500px;">
+				<table class="table user-list">
+					<thead>
+						<tr>
+							<th class="sortable header-user-role ember-view">#</th>
+							<th class="header-actions">Audience Name</th>
+						</tr>
+					</thead>
+					<tbody>
+						<ng-container *ngFor="let data of targetAudience__data; let i = index">
+							<tr>
+								<td>{{i+1}}</td>
+								<td>{{data.emp_name}}</td>
+							</tr>
+						</ng-container>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<input type="button" class="btn btn-default" data-dismiss="modal" (click)="closeshowAudiencePopup()"
+					value="Cancel">
+			</div>
+		</div>
+	</div>
+</div>

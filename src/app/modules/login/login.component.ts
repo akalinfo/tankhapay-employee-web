@@ -94,7 +94,7 @@ export class LoginComponent implements OnInit {
     //  // Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-z]{2,4}$'),
     const queryParamValue = this.route.snapshot.queryParamMap.get('frombd');
     console.log(queryParamValue);
-  
+
 
     if (queryParamValue != '' && queryParamValue !== undefined && queryParamValue != null) {
 
@@ -250,14 +250,14 @@ export class LoginComponent implements OnInit {
             let gstin_no_isverify_y_n = token.gstin_no_isverify_y_n;
             let user_type = token.user_type;
             localStorage.setItem('product_type', token.product_type);
-            
+
             // Activity Log
             this.activityLogsService.insertActivityLog(token,'Login',this.router?.url);
 
             this.get_show_bus_setting_page = token.show_bus_setting_page;
 
             localStorage.setItem('show_bus_setting_page', token.show_bus_setting_page);
-            this._AppinitalizerService.setSession();            
+            this._AppinitalizerService.setSession();
             this._masterService.get_url_access_right_global({ roleid: token.role }).subscribe((resData1: any) => {
               if (resData1.statusCode) {
                 let access_data = (this._EncrypterService.aesDecrypt(resData1.commonData));
@@ -376,7 +376,10 @@ export class LoginComponent implements OnInit {
     }
 
     // let postData = this.loginForm_otp.value;
-    this._LoginService.send_OTP({
+
+    // Harsh commented on - 02-Jul-25
+    // this._LoginService.send_OTP({
+    this._LoginService.send_employee_otp({
       "encrypted": this._EncrypterService.aesEncrypt(
         JSON.stringify({
           "employer_mobile": this.loginForm_otp.get('mobile')?.value,
@@ -415,7 +418,9 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this._LoginService.verify_OTP({
+    // Harsh commented on - 02-Jul-25
+    // this._LoginService.verify_OTP({
+    this._LoginService.verify_employee_otp({
       "encrypted": this._EncrypterService.aesEncrypt(
         JSON.stringify({
           "employer_mobile": this.loginForm_otp.get('mobile')?.value,
@@ -442,12 +447,12 @@ export class LoginComponent implements OnInit {
           if(resData.employer_type=='Employee'){
              this.router.navigate(['/profile/employee-detail']);
              localStorage.setItem('login_type','Employee');
-             return 
-             
+             return
+
             }else{
               localStorage.setItem('login_type','Employer');
             }
-          
+
           this._masterService.get_url_access_right_global({ roleid: token.role }).subscribe((resData1: any):any => {
             if (resData1.statusCode) {
               let access_data = (this._EncrypterService.aesDecrypt(resData1.commonData));
@@ -456,7 +461,7 @@ export class LoginComponent implements OnInit {
             }
             if(localStorage.getItem('employer_type')=='Employee'){
               return this.router.navigate(['/profile']);
-            }  
+            }
           })
         }
       } else {

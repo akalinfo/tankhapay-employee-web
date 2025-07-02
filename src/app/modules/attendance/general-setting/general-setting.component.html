@@ -1,0 +1,951 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<section>
+
+    <div id="wrapper" class="main"  [ngClass]="{'active': showSidebar==false}">
+    <div class="fakeLoader"></div>
+    
+    <div id="page-wrapper">
+        <div class="row page-titles">
+            <div class="col-md-5">
+                <h3 class="text-themecolor" style="margin-left: 10px;">General Settings</h3>
+            </div>
+            <div class="col-md-7 align-self-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                    <li class="breadcrumb-item active">General Settings </li>
+                </ol>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+            <div class="col-md-12 mrg-top-0 mrg-bot-25">
+            <div class="card">
+            <!-- <div class="card-header"> <h4 class="sub-title-inn-box View-Roles-list-outer-box">General Settings
+            </h4> </div>	 -->
+            <div class="card-body padd-bot-0 padd-top-0">
+            <div class="row">
+            <div class="col-md-12 padd-top-0">
+            <div class="add-address-form-box">
+            <div class="modal-body">
+
+                <form [formGroup]="generalSettingForm">
+                        <div class="form-group">
+                            <h4 class="top-shif-title-box">Scheduler Details</h4>
+                        </div>	
+
+                        <div class="form-group">
+                             <label class="control-label col-sm-3">Effective from</label>
+                            <div class="col-sm-6">
+                                     <input type="date" class="form-control" placeholder="2024-04-10 " value="2024-04-10"
+                                     formControlName="date">
+                                     <ng-container *ngIf="generalSettingForm.get('date').errors && generalSettingForm.get('date').touched"
+                                     class="text-danger">
+                                     <p class="text-danger">Date is required</p>
+                                   </ng-container>
+                              </div>
+                        </div>
+                        
+                        
+                        <div class="form-group">
+                             <label class="control-label col-sm-3">Default shift time</label>
+                            <div class="col-sm-6">
+                                    <div class="input-group">
+                                      <select class="form-control" formControlName="shift_id">
+                                       <option *ngFor="let item of shiftDetails" value="{{item?.shift_id}}">{{item.shift_name}}</option>
+                                       
+                                      </select>
+                                        
+                                    </div>
+
+                                    <ng-container *ngIf="generalSettingForm.get('shift_id').errors && generalSettingForm.get('shift_id').touched"
+                                    class="text-danger">
+                                    <p class="text-danger">Shift is required</p>
+                                  </ng-container>
+                              </div>
+                             
+                        </div>
+
+
+                        
+                        <!-- <div class="form-group">
+                             <label class="control-label col-sm-3">Scale view</label>
+                            <div class="col-sm-6">
+                                    <div class="input-group">
+                                   <div class="Search-By-all-box">
+                                      &nbsp;&nbsp;
+                                      <input type="radio" id="Search-ByAllnew" name="scale_view" class="SearchBy-new" value="Y" formControlName="scale_view">
+                                      <label for="Search-ByAllnew">Enable</label>&nbsp;&nbsp;
+                                      <input type="radio" id="Search-ByEmployeeCodenew" name="scale_view" class="SearchBy-new" value="N" formControlName="scale_view">
+                                      <label for="Search-ByEmployeeCodenew">Disable</label>
+                                   </div>
+                                </div>
+
+                                <ng-container *ngIf="generalSettingForm.get('scale_view').errors && generalSettingForm.get('scale_view').touched"
+                                class="text-danger">
+                                <p class="text-danger">Scale view required</p>
+                              </ng-container>
+                              </div>
+                              
+                        </div> -->
+                        
+                        
+                        <div class="form-group">
+                            <h4 class="top-shif-title-box">Working Hours</h4>
+                        </div>	
+                        
+                        <div class="form-group">
+                           <label class="control-label col-sm-3">Total hours calculation</label>
+                           <div class="col-sm-9">
+                              <div class="input-group">
+                                 <div class="Search-By-all-box">
+                                    &nbsp;&nbsp;
+                                     <input type="radio" name="total_hrs_calc" id="FilterByTaxReport"  value="first-checkin" formControlName="total_hrs_calc">
+                                     <label for="FilterByTaxReport">First Check-in &amp; Last Check-out</label>
+                                     <input type="radio" name="total_hrs_calc" id="FilterByAll" value="every-valid" formControlName="total_hrs_calc">
+                                     <label for="FilterByAll"> Every Valid Check-in &amp; Check-out </label>
+                                 </div>
+                              </div>
+
+                              <ng-container *ngIf="generalSettingForm.get('total_hrs_calc').errors && generalSettingForm.get('total_hrs_calc').touched"
+                              class="text-danger">
+                              <p class="text-danger">Total hours calculation required</p>
+                            </ng-container>
+                           </div>
+                        </div>
+                        
+                        
+                        <div class="form-group">
+                             <label class="control-label col-sm-3">Minimum hours required for day</label>
+                            <div class="col-sm-9">
+                                    <div class="input-group">
+                                       <div class="Search-By-all-box">
+                                           &nbsp;&nbsp;
+                                           <input type="radio" id="SearchByAll" name="minimum_hrs" class="SearchBy"  formControlName="minimum_hrs"  value="Strict">
+                                           <label for="SearchByAll">Strict Mode</label>&nbsp;&nbsp;
+                                           <input type="radio" id="SearchByEmployeeCode" name="minimum_hrs" class="SearchBy" formControlName="minimum_hrs" value="Lenient" >
+                                           <label for="SearchByEmployeeCode">Lenient Mode (Expected Hours)</label>
+                                        </div>
+                                    </div>
+                                    <ng-container *ngIf="generalSettingForm.get('minimum_hrs').errors && generalSettingForm.get('minimum_hrs').touched"
+                                    class="text-danger">
+                                    <p class="text-danger">Minimum hours required</p>
+                                  </ng-container>
+                              </div>
+                        </div>
+
+
+                        <div class="form-group" *ngIf="this.generalSettingForm.value.minimum_hrs == 'Strict' ">
+                        <label class="control-label col-sm-3"> </label>
+                        <div class="col-sm-6 ">
+                        <div class="row Start-Time-end-time-box">
+                        <div class="form-group" id="ZPAtt_shiftMarginStartLayout">
+                         
+                           <div class="col-sm-9">
+                               <label class="control-label FL PT4I">
+                               <input type="radio" id="Search-ByAllnew12" name="manual_input" class="SearchBy-new12" value="manual_input" formControlName="manual_input">
+                                      <label for="Search-ByAllnew12">Manual Input</label>&nbsp;&nbsp;
+                                      <input type="radio" id="Search-ByEmployeeCodenew12" name="manual_input" class="SearchBy-new12" value="shift_hrs"  formControlName="manual_input">
+                                      <label for="Search-ByEmployeeCodenew12">Shift Hours</label>
+                               </label>
+
+                               <ng-container *ngIf="generalSettingForm.get('manual_input').errors && generalSettingForm.get('manual_input').touched" class="text-danger">
+                                <p class="text-danger">manual input is required</p>
+                              </ng-container>
+                           </div>
+                        </div>
+
+                        <ng-container *ngIf="this.generalSettingForm.value.manual_input == 'manual_input' ">
+                        <div class="form-group" id="ZPAtt_shiftMarginStartLayout" >
+                 
+
+                           <div class="col-sm-9">
+                            <label class="control-label FL PT4I">Full Day</label>
+                         
+                            <div class="PL0 FL MR10">
+                            <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr">
+                               <input id="ZPAtt_shiftMarginStarts" type="text" class="form-control"  placeholder="00:00" formControlName="min_full_day" readonly > 
+                               <span class="input-group-addon" (click)="togglePopover(popoverMinFullDay);formatTime(min_full_day,'min_full_day')" #popoverMinFullDay="bs-popover" [popover]="popoverContentMinFullDay" triggers="manual" [outsideClick]="true">
+                                <i class="fa fa-clock-o"></i></span>
+                            </div>
+                           </div>
+                               
+                           <ng-container *ngIf="generalSettingForm.get('min_full_day').errors && generalSettingForm.get('min_full_day').touched" class="text-danger">
+                            <p class="text-danger">Full day is required</p>
+                           </ng-container>
+                           <ng-template #popoverContentMinFullDay>
+                            <timepicker [(ngModel)]="min_full_day"  (ngModelChange)="formatTime(min_full_day,'min_full_day')" [hourFormat]="24" [showMeridian]="false" [ngModelOptions]="{standalone: true}"></timepicker>
+                           </ng-template>
+                         
+                           </div>
+
+
+                        </div>
+                        
+                        <div id="Shift-Margin-box">
+                        <div class="form-group" id="ZPAtt_shiftMarginStartLayout">
+
+                           <div class="col-sm-9">
+                             <label class="control-label FL PT4I">Half Day</label>
+                         
+                            <div class="PL0 FL MR10">
+                            <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr">
+                               <input id="ZPAtt_shiftMarginStarts" type="text" class="form-control"  placeholder="00:00" formControlName="min_half_day" readonly > 
+                               <span class="input-group-addon" (click)="togglePopover(popoverMinHalfDay);formatTime(min_half_day,'min_half_day')" #popoverMinHalfDay="bs-popover" [popover]="popoverContentMinHalfDay" triggers="manual" [outsideClick]="true">
+                                <i class="fa fa-clock-o"></i></span>
+                            </div>
+                           </div>
+                               
+                           <ng-container *ngIf="generalSettingForm.get('min_half_day').errors && generalSettingForm.get('min_half_day').touched" class="text-danger">
+                            <p class="text-danger">Full day is required</p>
+                           </ng-container>
+                           <ng-template #popoverContentMinHalfDay>
+                            <timepicker [(ngModel)]="min_half_day"  (ngModelChange)="formatTime(min_half_day,'min_half_day')" [hourFormat]="24" [showMeridian]="false" [ngModelOptions]="{standalone: true}"></timepicker>
+                           </ng-template>
+                         
+                           </div>
+
+
+
+                        </div>
+                        </div>
+
+
+                       </ng-container>
+
+                    
+
+                       <ng-container *ngIf="this.generalSettingForm.value.manual_input == 'shift_hrs' ">
+
+                        <!-- <div class="form-group" id="ZPAtt_shiftMarginStartLayout" >
+                            <div class="col-sm-9 ">
+                                <label class="control-label FL PT4I">Per Day</label>
+                               <div class="PL0 FL MR10">
+                                  <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr">
+                                     <input id="ZPAtt_shiftMarginStarts" type="text" class="form-control" placeholder="8:00" formControlName="min_per_day"> 
+                                     <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                  </div>
+                               </div>
+                            </div>
+                         </div> -->
+                        <div class="form-group" id="ZPAtt_shiftMarginStartLayout" >
+                          
+                            <div class="col-sm-9">
+                                <div style="margin-top:5px;">
+                                 Full Day : Duration of the Shift
+                                </div>
+                                <div style="margin-top: 20px;padding-bottom: 10px;">
+                                 Half Day : Half of the shift Duration
+                                </div>
+                            
+                              </div>
+                         </div>
+
+                       </ng-container>
+
+                </div>
+                    
+                        </div>
+                        </div>
+                        
+
+                        <div class="form-group" *ngIf="this.generalSettingForm.value.minimum_hrs =='Lenient'">
+                            <label class="control-label col-sm-3"> </label>
+                            <div class="col-sm-6">
+                            <div class="row Start-Time-end-time-box">
+                            <div class="form-group" id="ZPAtt_shiftMarginStartLayout">
+                             
+                               <div class="col-sm-9">
+                                   <label class="control-label FL PT4I">
+                                    <input type="radio" id="Search-ByAllnew12" name="manual_input" class="SearchBy-new12" value="manual_input_lenient" formControlName="manual_input">
+                                    <label for="Search-ByAllnew12">Manual Input</label>&nbsp;&nbsp;
+                                    <input type="radio" id="Search-ByEmployeeCodenew12" name="manual_input" class="SearchBy-new12" value="shift_hrs_lenient" formControlName="manual_input">
+                                    <label for="Search-ByEmployeeCodenew12">Shift Hours</label>
+                                   </label>
+                                   <ng-container *ngIf="generalSettingForm.get('manual_input').errors && generalSettingForm.get('manual_input').touched" class="text-danger">
+                                    <p class="text-danger">manual input is required</p>
+                                  </ng-container>
+                               </div>
+
+                            </div>
+    
+                            <div class="form-group" id="ZPAtt_shiftMarginStartLayout" *ngIf="this.generalSettingForm.value.manual_input=='manual_input_lenient'">
+
+                               <!-- <div class="col-sm-9 ">
+                                   <label class="control-label FL PT4I">Per Day</label>
+                                  <div class="PL0 FL MR10">
+                                     <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr">
+                                        <input id="ZPAtt_shiftMarginStarts" type="text" class="form-control" placeholder="8:00" formControlName="min_per_day"> 
+                                        <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                     </div>
+                                  </div>
+                                  <ng-container *ngIf="generalSettingForm.get('min_per_day').errors && generalSettingForm.get('min_per_day').touched" class="text-danger">
+                                    <p class="text-danger">Per day is required</p>
+                                  </ng-container>
+                               </div> -->
+
+                               <div class="col-sm-9">
+                                <label class="control-label FL PT4I">Per Day</label>
+                             
+                                <div class="PL0 FL MR10">
+                                <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr">
+                                   <input id="ZPAtt_shiftMarginStarts" type="text" class="form-control"  placeholder="00:00" formControlName="min_per_day" readonly > 
+                                   <span class="input-group-addon" (click)="togglePopover(popoverMinPerDay);formatTime(min_per_day,'min_per_day')" #popoverMinPerDay="bs-popover" [popover]="popoverContentMinPerDay" triggers="manual" [outsideClick]="true">
+                                    <i class="fa fa-clock-o"></i></span>
+                                </div>
+                               </div>
+                                   
+                               <ng-container *ngIf="generalSettingForm.get('min_per_day').errors && generalSettingForm.get('min_per_day').touched" class="text-danger">
+                                <p class="text-danger">Per day is required</p>
+                               </ng-container>
+                               <ng-template #popoverContentMinPerDay>
+                                <timepicker [(ngModel)]="min_per_day" (ngModelChange)="formatTime(min_per_day,'min_per_day')" [hourFormat]="24" [showMeridian]="false" [ngModelOptions]="{standalone: true}"></timepicker>
+                               </ng-template>
+                             
+                               </div>
+
+
+                            </div>
+
+                            <ng-container *ngIf="this.generalSettingForm.value.manual_input =='shift_hrs_lenient'">
+
+                                <div class="form-group" id="ZPAtt_shiftMarginStartLayout" >
+                          
+                                    <div class="col-sm-9">
+                                        <div style="margin-top:5px;">
+                                         Per Day : Duration of the Shift
+                                        </div>
+                                
+                                      </div>
+                                 </div>
+
+                            </ng-container>
+
+                            </div>
+                        
+                            </div>
+                            </div>
+
+
+
+                        <div class="form-group">
+                             <label class="control-label col-sm-3">&nbsp;</label>
+                            <div class="col-sm-6">
+                                    <div class="input-group">
+                                   <div class="Search-By-all-box">
+                                      &nbsp;&nbsp;
+                                      <input type="checkbox" name="SearchBy-new65" class="SearchBy-new65" value="ALL"  formControlName="show_over_time">
+                                      <label for="Search-ByAllnew" class="administrator">Show Overtime / Deviation</label>&nbsp;&nbsp;
+                                       
+                                   </div>
+                                </div>
+                              </div>
+                              
+                        </div>
+                        
+                        
+                        <div class="form-group">
+                             <label class="control-label col-sm-3">Maximum hours required for day</label>
+                            <div class="col-sm-7">
+                                    <div class="input-group">
+                                       <div class="Search-By-all-box">
+                                           &nbsp;&nbsp;
+                                            <input type="radio" name="maximum_hrs" id="FilterByTaxReport-Maximum" value="Disable"  formControlName="maximum_hrs" >
+                                            <label for="FilterByTaxReport-Maximum">Disable</label>
+                                            <input type="radio" name="maximum_hrs" id="FilterByAll-Maximum"  formControlName="maximum_hrs" value="Enable">
+                                           <label for="FilterByAll-Maximum">Enable </label>
+                                           
+                                        </div>
+                                    </div>
+
+                                    <ng-container *ngIf="generalSettingForm.get('maximum_hrs').errors && generalSettingForm.get('maximum_hrs').touched"
+                                    class="text-danger">
+                                    <p class="text-danger">Maximum hours required</p>
+                                  </ng-container>
+                              </div>
+                        </div>
+                        
+                        
+                        <ng-container *ngIf="this.generalSettingForm.value.maximum_hrs == 'Enable'">
+
+                        <div id="weekend-box-inner" *ngIf="this.generalSettingForm.value.minimum_hrs == 'Strict'">
+                         <label class="control-label col-sm-3">&nbsp;</label>
+                        <div class="col-sm-6">	 
+                        <div class="Start-Time-end-time-box">
+                        <div class="form-group" id="ZPAtt_shiftMarginStartLayout">
+
+
+                          <div class="col-sm-9">
+                            <label class="control-label FL PT4I">Full Day</label>
+                         
+                            <div class="PL0 FL MR10">
+                            <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr">
+                               <input id="ZPAtt_shiftMarginStarts" type="text" class="form-control"  placeholder="00:00" formControlName="max_full_day" readonly > 
+                               <span class="input-group-addon" (click)="togglePopover(popoverMaxFullDay);formatTime(max_full_day,'max_full_day')" #popoverMaxFullDay="bs-popover" [popover]="popoverContentMaxFullDay" triggers="manual" [outsideClick]="true">
+                                <i class="fa fa-clock-o"></i></span>
+                            </div>
+                           </div>
+                               
+                           <ng-container *ngIf="generalSettingForm.get('max_full_day').errors && generalSettingForm.get('max_full_day').touched" class="text-danger">
+                            <p class="text-danger">Full day is required</p>
+                           </ng-container>
+                           <ng-template #popoverContentMaxFullDay>
+                            <timepicker [(ngModel)]="max_full_day"  (ngModelChange)="formatTime(max_full_day,'max_full_day')" [hourFormat]="24" [showMeridian]="false" [ngModelOptions]="{standalone: true}"></timepicker>
+                           </ng-template>
+                         
+                           </div>
+
+
+
+                        </div>
+                        
+                        <div class="form-group" id="ZPAtt_shiftMarginEndLayout">
+                 
+
+                        <div class="col-sm-9">
+                            <label class="control-label FL PT4I">Half Day</label> 
+                         
+                            <div class="PL0 FL MR10">
+                            <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr">
+                               <input id="ZPAtt_shiftMarginStarts" type="text" class="form-control"  placeholder="00:00" formControlName="max_half_day" readonly > 
+                               <span class="input-group-addon" (click)="togglePopover(popoverMaxHalfDay);formatTime(max_half_day,'max_half_day')" #popoverMaxHalfDay="bs-popover" [popover]="popoverContentMaxHalfDay" triggers="manual" [outsideClick]="true">
+                                <i class="fa fa-clock-o"></i></span>
+                            </div>
+                           </div>
+                               
+                           <ng-container *ngIf="generalSettingForm.get('max_half_day').errors && generalSettingForm.get('max_half_day').touched" class="text-danger">
+                            <p class="text-danger">Half day is required</p>
+                           </ng-container>
+                           <ng-template #popoverContentMaxHalfDay>
+                            <timepicker [(ngModel)]="max_half_day"  (ngModelChange)="formatTime(max_half_day,'max_half_day')" [hourFormat]="24" [showMeridian]="false" [ngModelOptions]="{standalone: true}"></timepicker>
+                           </ng-template>
+                         
+                           </div>
+
+
+
+
+                            <!-- ///////////////////////////////// -->
+                         
+                        
+                        </div>
+
+                        </div>
+                        </div>
+                        </div>
+
+<!-- /////////////////////////////////////////////////// -->
+
+
+
+<div id="weekend-box-inner" *ngIf="this.generalSettingForm.value.minimum_hrs == 'Lenient'">
+    <label class="control-label col-sm-3">&nbsp;</label>
+   <div class="col-sm-6">	 
+   <div class="Start-Time-end-time-box">
+
+   <div class="form-group" id="ZPAtt_shiftMarginStartLayout">
+
+   
+      <div class="col-sm-9">
+        <label class="control-label FL PT4I">Per Day</label>
+     
+        <div class="PL0 FL MR10">
+        <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr">
+           <input id="ZPAtt_shiftMarginStarts" type="text" class="form-control"  placeholder="00:00" formControlName="max_per_day" readonly > 
+           <span class="input-group-addon" (click)="togglePopover(popoverMaxPerDay);formatTime(max_per_day,'max_per_day')" #popoverMaxPerDay="bs-popover" [popover]="popoverContentMaxPerDay" triggers="manual" [outsideClick]="true">
+            <i class="fa fa-clock-o"></i></span>
+        </div>
+       </div>
+           
+       <ng-container *ngIf="generalSettingForm.get('max_per_day').errors && generalSettingForm.get('max_per_day').touched" class="text-danger">
+        <p class="text-danger">Per day is required</p>
+       </ng-container>
+       <ng-template #popoverContentMaxPerDay>
+        <timepicker [(ngModel)]="max_per_day" (ngModelChange)="formatTime(max_per_day,'max_per_day')" [hourFormat]="24" [showMeridian]="false" [ngModelOptions]="{standalone: true}"></timepicker>
+       </ng-template>
+     
+       </div>
+
+   </div>
+   
+   </div>
+   </div>
+</div>
+
+
+                        </ng-container>
+                        
+                        
+                        <div class="form-group">
+                             <label class="control-label col-sm-3">Round-Off</label>
+                            <div class="col-sm-7">
+                                    <div class="input-group">
+                                     
+                                       <div class="Search-By-all-box">
+                                           &nbsp;&nbsp;
+                                            <input type="radio" name="round_off" id="FilterByTaxReport-Maximum12" formControlName="round_off"  value="Disable" checked="checked">
+                                            <label for="FilterByTaxReport-Maximum12">Disable</label>
+                                            <input type="radio" name="round_off" id="FilterByAll-Maximum12"  formControlName="round_off" value="Enable">
+                                           <label for="FilterByAll-Maximum12">Enable </label>
+                                           
+                                        </div>
+                                    </div>
+
+                                    <ng-container *ngIf="generalSettingForm.get('round_off').errors && generalSettingForm.get('round_off').touched"
+                                    class="text-danger">
+                                    <p class="text-danger">Round off is  required</p>
+                                  </ng-container>
+                              </div>
+                        </div>
+                        
+                        
+                        <div id="weekend-box-inner12" *ngIf="this.generalSettingForm.value.round_off =='Enable'">
+                         <label class="control-label col-sm-3">&nbsp;</label>
+                        <div class="col-sm-6">	 
+                        <div class="Start-Time-end-time-box">
+                        <div class="form-group" id="ZPAtt_shiftMarginStartLayout">
+                         
+                           <div class="col-sm-12 ">
+                           <label class="control-label FL PT4I">First Check-In &nbsp;&nbsp;</label>
+                              <div class="PL0 FL MR10">
+                                 <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr">
+                                    <input  autocomplete="off" id="ZPAtt_shiftMarginStarts" type="text" class="form-control" placeholder="" formControlName="first_check_in" maxlength="4"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4)"> 
+                                     
+                                 </div>
+                              </div>
+                               <label class="control-label FL PT4I">minutes</label> 
+
+                               <ng-container *ngIf="generalSettingForm.get('first_check_in').errors && generalSettingForm.get('first_check_in').touched"
+                               class="text-danger">
+                               <p class="text-danger">First Checkin is  required</p>
+                             </ng-container>
+                              
+                           </div>
+                        </div>
+                        
+                        <div class="form-group" id="ZPAtt_shiftMarginEndLayout">
+                            
+                           <div class="col-sm-12">
+                            <label class="control-label FL PT4I">Last Check-Out</label> 
+                              <div class="PL0 FL MR10">
+                                 <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr">
+                                    <input  oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4)" autocomplete="off" id="ZPAtt_shiftMarginEnds" type="text" class="form-control" placeholder=""  formControlName="last_check_out"> </div>
+                                 
+                              </div>
+                               <label class="control-label FL PT4I">minutes</label> 
+
+                               <ng-container *ngIf="generalSettingForm.get('last_check_out').errors && generalSettingForm.get('last_check_out').touched"
+                               class="text-danger">
+                               <p class="text-danger">Last Checkout is  required</p>
+                              </ng-container>
+                              
+                           </div>
+                         
+                        
+                        </div>
+                        <div class="form-group" id="ZPAtt_shiftMarginEndLayout">
+                            
+                           <div class="col-sm-12">
+                            <label class="control-label FL PT4I">Worked Hours&nbsp;&nbsp;</label> 
+                              <div class="PL0 FL MR10">
+                                 <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr">
+                                    <input autocomplete="off" id="ZPAtt_shiftMarginEnds" type="text" class="form-control" placeholder="" formControlName="worked_hrs"
+                                     oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4)">  </div>
+                              </div>
+                               <label class="control-label FL PT4I">minutes</label> 
+                               <ng-container *ngIf="generalSettingForm.get('worked_hrs').errors && generalSettingForm.get('worked_hrs').touched"
+                               class="text-danger">
+                               <p class="text-danger">Worked hour is  required</p>
+                             </ng-container>
+                           </div>
+                         
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <h4 class="top-shif-title-box">Pay Days/Hours Calculation</h4>
+                        </div>	
+                        
+                        <div class="form-group">
+                           <label class="control-label col-sm-3">Include Weekend(s)</label>
+                           <div class="col-sm-9">
+                              <div class="input-group">
+                                 <div class="Search-By-all-box">
+                                    &nbsp;&nbsp;
+                                    <input type="radio" name="include_weekend" id="Include1" value="Y" formControlName="include_weekend">
+                                    <label for="Include1">Enable</label>
+                                    <input type="radio" name="include_weekend" value="N" id="Include2"  formControlName="include_weekend">
+                                    <label for="Include2"> Disable </label>
+                                 </div>
+                              </div>
+                              <ng-container *ngIf="generalSettingForm.get('include_weekend').errors && generalSettingForm.get('include_weekend').touched"
+                              class="text-danger">
+                              <p class="text-danger">Include weekend  is required</p>
+                            </ng-container>
+                           </div>
+                        </div>
+                        
+                        <div class="form-group">
+                           <label class="control-label col-sm-3">Include Holidays</label>
+                           <div class="col-sm-9">
+                              <div class="input-group">
+                                 <div class="Search-By-all-box">
+                                    &nbsp;&nbsp;
+                                    <input type="radio" name="include_holiday" id="Include3" formControlName="include_holiday" value="Y">
+                                    <label for="Include3">Enable</label>
+                                    <input type="radio" name="include_holiday" id="Include4" value="N"  formControlName="include_holiday">
+                                    <label for="Include4"> Disable </label>
+                                 </div>
+                              </div>
+                              <ng-container *ngIf="generalSettingForm.get('include_holiday').errors && generalSettingForm.get('include_holiday').touched"
+                              class="text-danger">
+                              <p class="text-danger">Include holiday is required</p>
+                            </ng-container>
+                           </div>
+                        </div>
+                        
+                        <div class="form-group">
+                           <label class="control-label col-sm-3">Include Leave</label>
+                           <div class="col-sm-9">
+                              <div class="input-group">
+                                 <div class="Search-By-all-box">
+                                    &nbsp;&nbsp;
+                                    <input type="radio" name="include_leave" id="Include5"  formControlName="include_leave" value="Y" >
+                                    <label for="Include5">Enable</label>
+                                    <input type="radio" name="include_leave" id="Include6" formControlName="include_leave"  value="N">
+                                    <label for="Include6"> Disable </label>
+                                 </div>
+                              </div>
+                              <ng-container *ngIf="generalSettingForm.get('include_leave').errors && generalSettingForm.get('include_leave').touched"
+                                class="text-danger">
+                               <p class="text-danger">Include leave is required</p>
+                              </ng-container>
+                           </div>
+                        </div>
+                        
+                        <div class="form-group">
+                           <label class="control-label col-sm-3">Carry over balance hours in overtime report</label>
+                           <div class="col-sm-9">
+                              <div class="input-group ">
+                                 <div class="Search-By-all-box">
+                                    &nbsp;&nbsp;
+                                    <input type="radio" name="carry_over_balance" id="Include7" value="Y" formControlName="carry_over_balance">
+                                    <label for="Include7">Enable</label>
+                                    <input type="radio" name="carry_over_balance" id="Include8" value="N" formControlName="carry_over_balance">
+                                    <label for="Include8"> Disable </label>
+                                 </div>
+                              </div>
+                              <ng-container *ngIf="generalSettingForm.get('carry_over_balance').errors && generalSettingForm.get('carry_over_balance').touched"
+                              class="text-danger">
+                             <p class="text-danger">Carry over balance is required</p>
+                            </ng-container>
+                           </div>
+                        </div>
+                  
+                        
+                        
+                        <div class="form-group">
+                            <h4 class="top-shif-title-box">Shift Settings</h4>
+                        </div>	
+
+                             <div class="form-group">
+                                <label class="control-label col-sm-3">View employee shift mapping</label>
+                                <div class="col-sm-6">
+                                  <ng-multiselect-dropdown
+                                  [placeholder]="'Select users'"
+                                  [settings]="dropdownSettings"
+                                  formControlName="view_employee_shift_mapping"
+                                  [data]="roleList"
+                                  (onSelect)="onItemSelect($event)"
+                                  (onSelectAll)="onSelectAll($event)"
+                                  (onDeSelectAll)="onUnselectAll($event)"
+                                  (onDeSelect)="onItemUnselect($event)">
+                                </ng-multiselect-dropdown>
+                                 <ng-container *ngIf="generalSettingForm.get('view_employee_shift_mapping').errors && generalSettingForm.get('view_employee_shift_mapping').touched" class="text-danger">
+                                   <p class="text-danger">View employee shift mapping is required</p>
+                                 </ng-container>
+                                </div>
+                            </div>
+
+
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Edit employee shift mapping</label>
+                            <div class="col-sm-6">
+                              <ng-multiselect-dropdown
+                              [placeholder]="'Select users'"
+                              [settings]="dropdownSettings"
+                              formControlName="edit_employee_shift_mapping"
+                              [data]="roleList"
+                              (onSelect)="onItemSelect($event)"
+                              (onSelectAll)="onSelectAll($event)"
+                              (onDeSelectAll)="onUnselectAll($event)"
+                              (onDeSelect)="onItemUnselect($event)">
+                            </ng-multiselect-dropdown>
+                             <ng-container *ngIf="generalSettingForm.get('edit_employee_shift_mapping').errors && generalSettingForm.get('edit_employee_shift_mapping').touched" class="text-danger">
+                               <p class="text-danger">Edit employee shift mapping for is required</p>
+                             </ng-container>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <h4 class="top-shif-title-box"><input type="checkbox" name="WeekendStatus4"  id="OnDuty-main-btn"  
+                                [checked]="generalSettingForm.get('is_types_of_on_duty').value==='Y'"
+                                (change)="getOnDutyValue($event.target.checked)"> On Duty  </h4>
+                        </div>	                        
+                        
+                        <div class="form-group" *ngIf="generalSettingForm.get('is_types_of_on_duty').value==='Y'">
+                             <label class="control-label col-sm-12"> 
+                             <input type="checkbox" name="WeekendStatus4"  id="Include12" (change)="getFirstCheckBox($event.target.checked)" 
+                             [checked]="generalSettingForm.get('is_make_reason_mandatory_for_on_duty_request').value==='Y'">&nbsp;
+                             <label for="Include12"><b>Make reason mandatory for On Duty request</b></label>&nbsp;&nbsp;&nbsp;&nbsp;
+                             </label>
+                        </div>
+                        
+                        
+                        <div class="form-group" *ngIf="generalSettingForm.get('is_types_of_on_duty').value==='Y'">
+                             <label class="control-label col-sm-12"> 
+                             
+                             <input type="checkbox" name="WeekendStatus4"  id="Include11" (change)="getSecondCheckBox($event.target.checked)" 
+                             [checked]="generalSettingForm.get('is_restrict_on_duty_requests_for_future_dates').value==='Y'">&nbsp;
+                             <label for="Include11"><b>Restrict on duty requests for future dates</b></label>&nbsp;&nbsp;&nbsp;&nbsp;
+                              </label>
+                              
+                        </div>
+                        
+                        <div class="form-group" *ngIf="generalSettingForm.get('is_types_of_on_duty').value==='Y'"
+                        >
+                         
+                         
+                             <label class="control-label col-sm-12"> 
+                             
+                             <input type="checkbox" name="WeekendStatus4" checked  id="approval_rqd" 
+                             (change)="getThirdCheckBox($event.target.checked)" 
+                             [checked]="generalSettingForm.get('is_approval_required').value==='Y'">&nbsp;
+                             <label for="approval_rqd"><b>Approval required</b></label>&nbsp;&nbsp;&nbsp;&nbsp;
+                              </label>
+                              
+                        </div>
+                </form>
+                    </div>
+                     
+                </div>
+            
+                            
+                            
+                        </div>
+                        
+                
+                            
+                            
+                        </div>		
+                    </div>
+                </div>
+            
+            
+            <div class="col-md-12 col-12 padd-top-15 text-center">
+            <a  class="btn btn-primary mr" (click)="submitGeneralSetting()">Submit</a>
+             <a  class="btn btn-primary" (click)="resetGeneralSetting()">Reset</a>
+
+            </div>
+            
+            </div>
+            
+            
+            </div>
+        </div>	
+    </div>
+    <!-- /#page-wrapper -->
+    <!-- <div id="sidebar-wrapper">
+        <a id="right-close-sidebar-toggle" href="https://demo.1akal.in/tpay/tpay_v1/general-settings.html#" class="theme-bg btn close-toogle toggle">
+        Setting Pannel <i class="ti-close"></i></a>
+        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;"><div class="right-sidebar" id="side-scroll" style="overflow: hidden; width: auto; height: 100%;">
+            <div class="user-box">
+                <div class="profile-img">
+                    <img src="./Jobvivo - Manage Your Dashboard123_files/user-3.jpg" alt="user">
+                    <div class="notify setpos"> <span class="heartbit"></span> <span class="point"></span> </div>
+                </div>
+                <div class="profile-text">
+                    <h4>Daniel Dax</h4>
+                     <a href="https://demo.1akal.in/tpay/tpay_v1/general-settings.html#" class="user-setting"><i class="ti-settings"></i></a>
+                     <a href="https://demo.1akal.in/tpay/tpay_v1/general-settings.html#" class="user-mail"><i class="ti-email"></i></a>
+                     <a href="https://demo.1akal.in/tpay/tpay_v1/general-settings.html#" class="user-call"><i class="ti-headphone"></i></a>
+                     <a href="https://demo.1akal.in/tpay/tpay_v1/general-settings.html#" class="user-logout"><i class="ti-power-off"></i></a>
+                </div>
+                <div class="tabbable-line">
+                    <ul class="nav nav-tabs ">
+                        <li class="active">
+                            <a href="https://demo.1akal.in/tpay/tpay_v1/general-settings.html#options" data-toggle="tab">
+                            <i class="ti-palette"></i> </a>
+                        </li>
+                        <li>
+                            <a href="https://demo.1akal.in/tpay/tpay_v1/general-settings.html#comments" data-toggle="tab">
+                            <i class="ti-bell"></i> </a>
+                        </li>
+                        <li>
+                            <a href="https://demo.1akal.in/tpay/tpay_v1/general-settings.html#freinds" data-toggle="tab">
+                            <i class="ti-comment-alt"></i> </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="options">
+                            <div class="accept-request">
+                                <div class="friend-overview">
+                                    <div class="friend-overview-img">
+                                        <img src="../assets/img/user-1.jpg" class="img-responsive img-circle" alt="">
+                                        <span class="fr-user-status online"></span>
+                                    </div>
+                                    <div class="fr-request-detail">
+                                        <h4>Adam Dax <span class="task-time pull-right">Just Now</span></h4>
+                                        <p>Accept Your Friend Request</p>
+                                    </div>
+                                </div>
+                                <div class="friend-overview">
+                                    <div class="friend-overview-img">
+                                        <img src="../assets/img/user-2.jpg" class="img-responsive img-circle" alt="">
+                                        <span class="fr-user-status offline"></span>
+                                    </div>
+                                    <div class="fr-request-detail">
+                                        <h4>Rita Ray <span class="task-time pull-right">2 Min Ago</span></h4>
+                                        <p>Accept Your Friend Request</p>
+                                    </div>
+                                </div>
+                                <div class="friend-overview">
+                                    <div class="friend-overview-img">
+                                        <img src="../assets/img/user-3.jpg" class="img-responsive img-circle" alt="">
+                                        <span class="fr-user-status busy"></span>
+                                    </div>
+                                    <div class="fr-request-detail">
+                                        <h4>Daniel Mark <span class="task-time pull-right">7 Min Ago</span></h4>
+                                        <p>Accept Your Friend Request</p>
+                                    </div>
+                                </div>
+                                <div class="friend-overview">
+                                    <div class="friend-overview-img">
+                                        <img src="../assets/img/user-4.jpg" class="img-responsive img-circle" alt="">
+                                        <span class="fr-user-status offline"></span>
+                                    </div>
+                                    <div class="fr-request-detail">
+                                        <h4>Shruti Singh <span class="task-time pull-right">10 Min Ago</span></h4>
+                                        <p>Accept Your Friend Request</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="comments">
+                            <div class="task">
+                                <div class="task-overview">
+                                    <div class="alpha-box alpha-a">
+                                        <span>A</span>
+                                    </div>
+                                    <div class="task-detail">
+                                        <p>Hello, I am Maryam.</p>
+                                        <span class="task-time">2 Min Ago</span>
+                                    </div>
+                                </div>
+                                <div class="task-overview">
+                                    <div class="alpha-box alpha-d">
+                                        <span>D</span>
+                                    </div>
+                                    <div class="task-detail">
+                                        <p>Hello, I am Maryam.</p>
+                                        <span class="task-time">2 Min Ago</span>
+                                    </div>
+                                </div>
+                                <div class="task-overview">
+                                    <div class="alpha-box alpha-s">
+                                        <span>S</span>
+                                    </div>
+                                    <div class="task-detail">
+                                        <p>Hello, I am Maryam.</p>
+                                        <span class="task-time">2 Min Ago</span>
+                                    </div>
+                                </div>
+                                <div class="task-overview">
+                                    <div class="alpha-box alpha-h">
+                                        <span>H</span>
+                                    </div>
+                                    <div class="task-detail">
+                                        <p>Hello, I am Maryam.</p>
+                                        <span class="task-time">2 Min Ago</span>
+                                    </div>
+                                </div>
+                                <div class="task-overview">
+                                    <div class="alpha-box alpha-g">
+                                        <span>G</span>
+                                    </div>
+                                    <div class="task-detail">
+                                        <p>Hello, I am Maryam.</p>
+                                        <span class="task-time">2 Min Ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="freinds">
+                            <div class="accept-request">
+                                <div class="friend-overview">
+                                    <div class="friend-overview-img">
+                                        <img src="../assets/img/user-1.jpg" class="img-responsive img-circle" alt="">
+                                        <span class="fr-user-status online"></span>
+                                    </div>
+                                    <div class="fr-request-detail">
+                                        <h4>Adam Dax <span class="task-time pull-right">Just Now</span></h4>
+                                        <p>Accept Your Friend Request</p>
+                                    </div>
+                                </div>
+                                <div class="friend-overview">
+                                    <div class="friend-overview-img">
+                                        <img src="../assets/img/user-2.jpg" class="img-responsive img-circle" alt="">
+                                        <span class="fr-user-status offline"></span>
+                                    </div>
+                                    <div class="fr-request-detail">
+                                        <h4>Rita Ray <span class="task-time pull-right">2 Min Ago</span></h4>
+                                        <p>Accept Your Friend Request</p>
+                                    </div>
+                                </div>
+                                <div class="friend-overview">
+                                    <div class="friend-overview-img">
+                                        <img src="../assets/img/user-3.jpg" class="img-responsive img-circle" alt="">
+                                        <span class="fr-user-status busy"></span>
+                                    </div>
+                                    <div class="fr-request-detail">
+                                        <h4>Daniel Mark <span class="task-time pull-right">7 Min Ago</span></h4>
+                                        <p>Accept Your Friend Request</p>
+                                    </div>
+                                </div>
+                                <div class="friend-overview">
+                                    <div class="friend-overview-img">
+                                        <img src="../assets/img/user-4.jpg" class="img-responsive img-circle" alt="">
+                                        <span class="fr-user-status offline"></span>
+                                    </div>
+                                    <div class="fr-request-detail">
+                                        <h4>Shruti Singh <span class="task-time pull-right">10 Min Ago</span></h4>
+                                        <p>Accept Your Friend Request</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><div class="slimScrollBar" style="background: rgb(0, 0, 0); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 577.922px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+    </div> -->
+</div>
+</section>
+
+<app-footer></app-footer>
+
+
+
+<!-- <div class="ck ck-reset_all ck-body ck-rounded-corners">
+    <div class="ck ck-balloon-panel ck-balloon-panel_arrow_nw ck-balloon-panel_with-arrow" style="top: 0px; left: 0px;">
+    </div></div>
+    <div class="ck ck-reset_all ck-body ck-rounded-corners">
+    <div class="ck ck-balloon-panel ck-balloon-panel_arrow_nw ck-balloon-panel_with-arrow" style="top: 0px; left: 0px;">
+    </div></div>
+    <div class="ck ck-reset_all ck-body ck-rounded-corners">
+    <div class="ck ck-balloon-panel ck-balloon-panel_arrow_nw ck-balloon-panel_with-arrow" style="top: 0px; left: 0px;"></div></div> -->

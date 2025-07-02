@@ -1,0 +1,179 @@
+textarea.form-control-box {
+    border: 1px solid #dde6ef;
+    margin-bottom: 10px;
+    box-shadow: none;
+    border-radius: 0;
+    background: #fbfdff;
+    font-size: 15px;
+    color: #6b7c8a;
+    font-weight: 400;
+    width: 100%;
+    vertical-align: top;
+	padding: 6px 12px;
+	line-height: 1.42857143;
+}
+td.CP {
+    color: #000;
+}
+.ZPusrName {
+    padding-left: 48px;
+    padding-top: 9px;
+}
+.ZPLRow img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid #e3e3e3;
+}
+.ZSdte {
+    display: block;
+    margin-top: 8px;
+    color: #999;
+    font-size: 13px;
+}
+ .multiple-select-dropdown-btn :nth-of-type(2) {
+    display: none;
+}
+.multiple-select-dropdown-btn button.btn.dropdown-toggle.btn-default {
+    height: 40px;
+    border: 1px solid #dde6ef;
+    margin-bottom: 10px;
+    box-shadow: none;
+    border-radius: 0;
+    background: #fbfdff;
+    font-size: 15px;
+    color: #6b7c8a;
+    font-weight: 400;
+    line-height: 18px;
+    text-align: left;
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.multiple-select-dropdown-btn .dropdown-menu {
+     
+    left: 14px;
+	float: left;
+    min-width: 271px;
+    padding: 5px 0;
+    margin: -10px 0 0;
+     
+}
+.multiple-select-dropdown-btn .dropdown-menu li a label {
+        padding: 0 18px!important;
+    font-weight: 400;
+    font-size: 14px;
+    margin: 6px 0;
+}
+.multiple-select-dropdown-btn .dropdown-menu li a label input {
+    height: 16px;
+    width: 18px;
+}
+.multiple-select-dropdown-btn .dropdown-menu>.active>a, .multiple-select-dropdown-btn .dropdown-menu>.active>a:hover, .multiple-select-dropdown-btn .dropdown-menu>.active>a:focus {
+    background-color: #d1cfff;
+}
+table.Users-dashboard-outer-box span.badge.bg-primary1 {
+    font-size: 15px;
+    padding: 10px 20px;
+	background: transparent;
+	
+}
+table.Users-dashboard-outer-box h3 {
+    font-size: 15px;
+    margin: 0;
+	color: #636363;
+	font-weight: 400;
+}
+table.table.table-lg tr th, table.table tr td {
+    border-color: #eaeff5;
+    padding: 7px 10px;
+    vertical-align: middle;
+    font-size: 14px;
+}
+span.multiselect-native-select select#dates-field2 {
+    display: none;
+}
+
+.multiple-select-dropdown-btn .dropdown-menu li a {
+     padding: 3px 16px;
+    
+}
+
+.ZPusrName span b {
+     color: #999;
+    margin-right: 5px;
+	font-weight: 600;
+}
+.PL15 {
+    border: 1px solid #dde6ef;
+    margin: 40px 0;
+    box-shadow: none;
+    border-radius: 0;
+    font-size: 14px;
+    color: #181818;
+    font-weight: 400;
+    width: 100%;
+    vertical-align: top;
+    padding: 40px;
+    line-height: 1.42857143;
+}
+label.checkbox.DIBI.VM input {
+    margin: 3px 0 0 0;
+}
+label.checkbox.DIBI.VM span {
+    padding: 0 0 0 22px;
+}
+
+.main{
+  font-family: Montserrat, sans-serif;
+  color:#67757c;
+  font-size: 14px;
+}
+.general{
+margin-top: -15px;
+}
+
+.user-corner{
+  margin-right: 15px;
+}
+
+.shiftTitleMain{
+  display:flex;
+  justify-content: space-between;
+}
+
+/* ///////////////////////////// */
+
+/* CSS */
+.input-container {
+    position: relative;
+    width: 100%;
+  }
+  
+  .time-input {
+    width: calc(100% - 25px); /* Adjust width to accommodate icon */
+    padding-right: 25px; /* Ensure space for the icon */
+  }
+  
+  .icon-container {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+  }
+  
+  /* Adjust icon style as needed */
+  .icon-container i {
+    font-size: 16px;
+    color: #555; /* Adjust color as needed */
+  }
+
+  .marginLeft{
+  margin-left: 233px;
+  }
+  
+  .disabled-dropdown {
+    pointer-events: none;
+    opacity: 0.5; /* Optionally, reduce opacity to visually indicate it's disabled */
+  }

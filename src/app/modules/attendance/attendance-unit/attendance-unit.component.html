@@ -1,0 +1,1080 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+
+  <div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+    <div class="fakeLoader"></div>
+
+    <div id="page-wrapper">
+      <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+          <h3 class="text-themecolor">&nbsp;&nbsp;Unit Attendance</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item" title="Home"><a [routerLink]="['/dashboard']">Home</a></li>
+
+            <li class="breadcrumb-item active">Unit Attendance</li>
+          </ol>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <div class="row">
+          <div *ngIf="is_insufficient_fund" class="col-md-12 col-sm-12">
+            <div class="alert-group alert-box">
+              <div class="notice notice-danger alert-dismissable">
+
+                <strong>Insufficient Account Balance:</strong> Please add funds to your account to cover payroll
+                expenses.
+                <a class="Add-balancebtn" [routerLink]="['/payouts']" title="Click for Add balance"><strong>Add
+                    balance</strong></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 col-sm-12" [ngClass]="{'blur': is_insufficient_fund}">
+            <div class="card">
+
+              <div class="card-header">
+
+                <div class="row">
+                  <!-- <div class="col-md-2 col-sm-2">
+                    <b>Row(s)</b>
+                    <br>
+                    <select class="form-control" (change)="changePage($event)" style="font-size: 12px;">
+                      <option value={{filteredEmployees.length}} [selected]="limit==filteredEmployees.length">All
+                      </option>
+                      <option value="10" [selected]="limit==10">10</option>
+                      <option value="20" [selected]="limit==20">20</option>
+                      <option value="50" [selected]="limit==50">50</option>
+                      <option value="100" [selected]="limit==100">100</option>
+                    </select>
+                  </div> -->
+
+                  <!-- <div class="col-md-3 col-sm-3">
+                    <b>Search</b> <br>
+                    <input type="text" class="form-control wide-width" placeholder="Search Employee(s)"
+                      (keyup)="search($event.target.value)" maxlength="200" />
+                  </div>
+                  <div class="col-md-2 col-sm-2">
+                    <b> Status</b>
+                    <select class="form-control" (change)="filter_emp($event.target.value)">
+                      <option value="All">All</option>
+                      <option value="UnMarked">Yet to Mark</option>
+                      <option value="Marked">Marked</option>
+                      <option value="Verified">Verified</option>
+                    </select>
+                  </div> -->
+
+                  <!-- <div class="row">
+                      <div class="col-md-4">
+                        <span style="margin: 10px;font-weight: bold;">Month</span>
+                        <select class="form-control" (change)="changeMonth($event)">
+                          <option *ngFor="let ma of monthsArray" [selected]="month==ma.id" [value]="ma.id">{{ma.month}}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-md-3">
+                        <span style="margin: 10px;font-weight: bold;">Year</span>
+                        <select class="form-control" (change)="changeYear($event)">
+                          <option *ngFor="let ya of yearsArray" [selected]="year==ya" [value]="ya">{{ya}}</option>
+                        </select>
+                      </div>
+
+                    </div> -->
+
+                  <div class="col-md-3 col-sm-3">
+                    <input type="text" class="form-control wide-width" placeholder="Search Employee(s)"
+                      (keyup)="search($event.target.value)" maxlength="200" />
+                  </div>
+
+                  <div class="col-md-2 col-sm-2" style="padding-top: 9px;">
+                    <span style="color: blue; font-weight: bold;  font-size: 12px;"> Total :
+                      {{filteredEmployees_new.length}}</span>
+                  </div>
+
+                  <div class="col-md-5 col-sm-5">
+
+                  </div>
+
+                  <div class="col-md-2 col-sm-2">
+                    <a (click)="openSidebar()" class="btn excel-btn-box results filter-onlick-btn"
+                      style="padding-top: 9px;">Search<i class="fa fa-filter"></i></a>
+                  </div>
+
+                </div>
+
+                <span class="col-md-12" style="color: lightcoral;font-size: 1.3rem;" *ngIf="!check_access_right_cdn()">
+                  You only have permission to view attendance records. Any changes or modifications
+                  are not allowed
+
+                </span>
+
+              </div>
+            </div>
+
+            <!---Company Wise--->
+            <div *ngIf="filter_wise=='company'" class="card-body" style="font-size: 12px;">
+              <ul class="list">
+
+                <ng-container
+                  *ngFor="let emp_data of filteredEmployees | paginate: { itemsPerPage: limit, currentPage: p };let i=index">
+                  <li class="manage-list-row clearfix">
+
+
+                    <div class="job-info">
+                      <div class="job-img">
+
+
+                        <img src="{{emp_data.photopath}}" class="attachment-thumbnail" alt="user-images"
+                          *ngIf="(emp_data.photopath != '' && emp_data.photopath != null)">
+                        <div class="img-responsive img-circle txt"
+                          *ngIf="(emp_data.photopath == '' || emp_data.photopath == null)" alt="user">
+                          {{emp_data.emp_name.charAt(0)}}{{emp_data.emp_name.charAt(emp_data.emp_name.indexOf('
+                          ') + 1)}}</div>
+
+
+                      </div>
+                      <div class="job-details">
+                        <h3 class="job-name"><a class="job_name_tag">{{emp_data.emp_name}}
+                            [{{emp_data.mobile}}]</a>
+                        </h3>
+                        <small class="job-company" title="Designation"><i
+                            class="ti-briefcase"></i>{{emp_data.post_offered}}&nbsp;&nbsp;</small>
+                            <small class="job-company" title="Department"><i class="fa fa-sitemap">
+                            </i> {{emp_data.posting_department}}</small>
+                        <small class="job-company"><strong>Marked Attn.:</strong>
+                          {{emp_data.marked_attendance}}</small>
+                        <small class="job-sallery"><strong>Approved Attn.: </strong>
+                          {{emp_data.approved_attendance}}</small>
+                        <small><strong>DOJ:</strong>
+                          {{emp_data.dateofjoining}}</small>
+                        <small *ngIf="emp_data.dateofrelieveing"><strong>DOL:</strong>
+                          {{emp_data.dateofrelieveing}}</small>
+                        <small class="job-sallery"><strong>Emp Code </strong>
+                          {{emp_data.orgempcode}}</small>
+                        <div class="candi-skill">
+                          <span class="social-box"
+                            title="Salary Setup Manday(s) | Mandays (Days Opted) ">{{emp_data.salary_days_opted=='N'?'Full-Day':emp_data.salarydays}}
+                            ({{emp_data.salary_days_opted}})</span> &nbsp;
+                          <span class="social-box-new" title="Attendance Marking Status"
+                            [ngStyle]="{'color': (emp_data.monthly_att_approval_status == 'Y') ? 'green':  (emp_data?.monthly_att_approval_status == 'N' && (emp_data.marked_attendance?.split(' ')[0])>0) ? 'blue' : '#e63946'}">
+                            {{emp_data.monthly_att_approval_status == 'Y'?'Verified':
+                            (emp_data.monthly_att_approval_status == 'N' && (emp_data.marked_attendance?.split('
+                            ')[0])>0)?'Marked':'Yet to Mark'}}</span>
+                        </div>
+
+                      </div>
+                    </div>
+                    <div *ngIf="(emp_data.time_criteria =='Full Time' && emp_data.lockstatus!='Locked')"
+                      class="job-buttons">
+                      <a class="btn btn-blue manage-Update myButton-box" data-toggle="tooltip" data-placement="top"
+                        (click)="toggleCalendar(i, emp_data, 'toggle')">Update
+                        Attendance</a>
+
+                    </div>
+
+                    <!-- <div *ngIf="(emp_data.time_criteria =='Full Time' && emp_data.lockstatus == 'Locked')"
+                      class="job-buttons">
+                      <a class="btn btn-success manage-btn myButton-box" data-toggle="tooltip" data-placement="top"
+                        (click)="toggleCalendar(i, emp_data, 'toggle')">View
+                        Attendance</a>
+
+
+                    </div> -->
+
+
+                    <div class="hide-show-outer-box" [ngClass]="{'start': emp_data.showCalendar==true}">
+
+                      <form [formGroup]="company_attendance_unit_form">
+
+                        <div class="table-responsive  attendance1-box-outer-box ">
+                          <table class="table user-list">
+                            <thead>
+                              <tr>
+
+
+                                <th>Employee Name </th>
+                                <th style=" width: 20%;">Division/Unit </th>
+                                <th style=" width: 20%;">Unit Roll</th>
+                                <th style=" width: 8%;">Present </th>
+                                <th style=" width: 8%;">Absent</th>
+                                <th style=" width: 8%;">Days</th>
+                                <th style=" width: 5%;">Action</th>
+
+
+                              </tr>
+                            </thead>
+                            <tbody>
+
+                              <ng-container formArrayName="company_attendance_units">
+                                <tr *ngFor="let item of company_attendance_unit_array.controls; let ic=index;"
+                                  [formGroupName]="ic">
+
+
+                                  <td> <input type="text" formControlName="emp_name" autocomplete="off" maxlength="100"
+                                      class="form-control"></td>
+                                  <td>
+                                    <select formControlName="division" class="form-control">
+                                      <option value="">Select</option>
+                                      <option value="1" selected="">Division 1</option>
+                                      <option value="2">Division 2</option>
+                                      <option value="3">Division 3</option>
+
+                                    </select>
+                                  </td>
+                                  <td>
+                                    <select formControlName="unit_roll" class="form-control">
+                                      <option value="">Select</option>
+                                      <option value="1" selected="">Finance</option>
+                                      <option value="2">Human Resources</option>
+                                      <option value="3">Research and development</option>
+                                      <option value="3">Information Technology Department</option>
+                                    </select>
+                                  </td>
+                                  <td>
+                                    <input type="text" formControlName="present_days" autocomplete="off" maxlength="100"
+                                      class="form-control">
+                                  </td>
+                                  <td>
+                                    <input type="text" formControlName="absent_days" autocomplete="off" maxlength="100"
+                                      class="form-control">
+                                  </td>
+                                  <td>
+                                    <input type="text" formControlName="days" autocomplete="off" maxlength="100"
+                                      class="form-control">
+                                  </td>
+
+                                  <td class="text-center"><a (click)="remove_company_unit_att_array(ic)"
+                                      data-toggle="modal" class="" data-placement="top" title="delete"><i
+                                        class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                </tr>
+                              </ng-container>
+
+
+                              <!-- <tr>
+
+                                <td> <input type="text" placeholder="Rajesh Kumar " autocomplete="off"
+                                    maxlength="100" class="form-control"></td>
+
+                                <td>
+                                  <select name="SalCategoryList" id="SalCategoryList" onchange="setofferedpackage()"
+                                    class="form-control">
+                                    <option value="0">Select</option>
+                                    <option value="1">Division 1</option>
+                                    <option value="2" selected="">Division 2</option>
+                                    <option value="3">Division 3</option>
+
+                                  </select>
+                                </td>
+                                <td>
+                                  <select name="SalCategoryList" id="SalCategoryList" onchange="setofferedpackage()"
+                                    class="form-control">
+                                    <option value="0">Select</option>
+                                    <option value="1">Finance</option>
+                                    <option value="2" selected="">Human Resources</option>
+                                    <option value="3">Research and development</option>
+                                    <option value="3">Information Technology Department</option>
+                                  </select>
+                                </td>
+                                <td>
+                                  <input type="text" placeholder="9 " autocomplete="off" maxlength="100"
+                                    class="form-control">
+                                </td>
+                                <td>
+                                  <input type="text" placeholder="1 " autocomplete="off" maxlength="100"
+                                    class="form-control">
+                                </td>
+                                <td>
+                                  <input type="text" placeholder="8 " autocomplete="off" maxlength="100"
+                                    class="form-control">
+                                </td>
+                                <td class="text-center"><a data-toggle="modal" class=" " data-placement="top"
+                                    title="delete"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+                              </tr> -->
+
+                              <!-- <tr>
+
+                                <td> <input type="text" placeholder="Ram Kumar " autocomplete="off"
+                                    maxlength="100" class="form-control"></td>
+
+                                <td>
+                                  <select name="SalCategoryList" id="SalCategoryList" onchange="setofferedpackage()"
+                                    class="form-control">
+                                    <option value="0">Select</option>
+                                    <option value="1">Division 1</option>
+                                    <option value="2">Division 2</option>
+                                    <option value="3" selected="">Division 3</option>
+
+                                  </select>
+                                </td>
+                                <td>
+                                  <select name="SalCategoryList" id="SalCategoryList" onchange="setofferedpackage()"
+                                    class="form-control">
+                                    <option value="0">Select</option>
+                                    <option value="1">Finance</option>
+                                    <option value="2">Human Resources</option>
+                                    <option value="3" selected="">Research and development</option>
+                                    <option value="3">Information Technology Department</option>
+                                  </select>
+                                </td>
+                                <td>
+                                  <input type="text" placeholder="9 " autocomplete="off" maxlength="100"
+                                    class="form-control">
+                                </td>
+                                <td>
+                                  <input type="text" placeholder="1 " autocomplete="off" maxlength="100"
+                                    class="form-control">
+                                </td>
+                                <td>
+                                  <input type="text" placeholder="8 " autocomplete="off" maxlength="100"
+                                    class="form-control">
+                                </td>
+                                <td class="text-center"><a data-toggle="modal" class=" " data-placement="top"
+                                    title="delete"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+                              </tr> -->
+
+
+                              <tr>
+
+                                <td>
+                                  <!-- <input type="text" placeholder=" " autocomplete="off" maxlength="100"
+                                    class="form-control"></td> -->
+
+                                <td>
+                                  <!-- <input type="text" placeholder=" " autocomplete="off" maxlength="100"
+                                    class="form-control"> -->
+                                </td>
+                                <td>
+                                  <!-- <input type="text" placeholder=" " autocomplete="off" maxlength="100"
+                                    class="form-control"> -->
+                                </td>
+                                <td>
+                                  <!-- <input type="text" placeholder="  " autocomplete="off" maxlength="100"
+                                    class="form-control"> -->
+                                </td>
+                                <td>
+                                  <!-- <input type="text" placeholder="  " autocomplete="off" maxlength="100"
+                                    class="form-control"> -->
+                                </td>
+                                <td>
+                                  <!-- <input type="text" placeholder="  " autocomplete="off" maxlength="100"
+                                    class="form-control"> -->
+                                </td>
+                                <td class="text-center">
+                                  <div class="job-buttons action-btn-outer-box">
+
+                                    <a (click)="add_company_unit_att_array()" data-toggle="modal" class=" "
+                                      data-placement="top" title="Add column"><i class="fa fa-plus-circle"
+                                        aria-hidden="true"></i></a>
+
+                                  </div>
+                                </td>
+
+                              </tr>
+
+
+
+
+                            </tbody>
+
+                            <tfoot>
+
+                              <tr>
+                                <td colspan="6" class="text-right">Total Days :- </td>
+                                <td class="text-center">30</td>
+
+                              </tr>
+
+
+
+                            </tfoot>
+
+                          </table>
+                        </div>
+
+
+                      </form>
+
+
+
+
+                    </div>
+
+
+                  </li>
+                </ng-container>
+
+
+              </ul>
+
+              <div class="flexbox padd-10" *ngIf="filteredEmployees.length >limit">
+                <div class="flexbox padd-10">
+                  <pagination-controls (pageChange)="get_page($event)"
+                    style="font-size: 2rem;padding: 6px;font-weight: bold" class="float-right"></pagination-controls>
+                </div>
+              </div>
+            </div>
+            <!---END--->
+
+            <!---Employee Wise--->
+            <div *ngIf="filter_wise=='employee'" class="card-body" style="font-size: 12px;">
+              <ul class="list">
+
+                <ng-container
+                  *ngFor="let emp_data of filteredEmployees_new | paginate: { itemsPerPage: limit, currentPage: p };let i=index">
+                  <li class="manage-list-row clearfix">
+
+                    <div class="job-info">
+                      <div class="job-img">
+
+
+                        <img src="{{emp_data.photopath}}" class="attachment-thumbnail" alt="user-images"
+                          *ngIf="(emp_data.photopath != '' && emp_data.photopath != null)">
+                        <div class="img-responsive img-circle txt"
+                          *ngIf="(emp_data.photopath == '' || emp_data.photopath == null)" alt="user">
+                          {{emp_data.emp_name.charAt(0)}}{{emp_data.emp_name.charAt(emp_data.emp_name.indexOf('
+                          ') + 1)}}</div>
+
+
+                      </div>
+                      <div class="job-details">
+                        <h3 class="job-name"><a class="job_name_tag">{{emp_data.emp_name}}
+                            [{{emp_data.mobile}}]</a>
+                        </h3>
+                        <small class="job-company"><i
+                            class="ti-briefcase"></i>{{emp_data.post_offered}}&nbsp;&nbsp;</small>
+                            <!-- <small class="job-company" title="Department"><i class="fa fa-sitemap">
+                            </i> {{emp_data.posting_department}}</small> -->
+                        <small class="job-company"><strong>Marked Attn.:</strong>
+                          {{emp_data.marked_attendance}}</small>
+                        <small class="job-sallery"><strong>Approved Attn.: </strong>
+                          {{emp_data.approved_attendance}}</small>
+                        <small><strong>DOJ:</strong>
+                          {{emp_data.dateofjoining}}</small>
+                        <small *ngIf="emp_data.dateofrelieveing"><strong>DOL:</strong>
+                          {{emp_data.dateofrelieveing}}</small>
+                        <small class="job-sallery"><strong>Emp Code </strong>
+                          {{emp_data.orgempcode}} {{emp_data.tpcode}}</small>
+                        <div class="candi-skill">
+                          <span class="social-box" title="Month Days ">Month Days
+                            ({{days_count}})</span> &nbsp;
+                          <span class="social-box-new" title="Attendance Marking Status"
+                            [ngStyle]="{'color': (emp_data.monthly_att_approval_status == 'Y') ? 'green':  (emp_data?.monthly_att_approval_status == 'N' && (emp_data.marked_attendance?.split(' ')[0])>0) ? 'blue' : '#e63946'}">
+                            {{emp_data.monthly_att_approval_status == 'Y'?'Verified':
+                            (emp_data.monthly_att_approval_status == 'N' && (emp_data.marked_attendance?.split('
+                            ')[0])>0)?'Marked':'Yet to Mark'}}</span>
+                        </div>
+                        <small class="job-company" title="Department"><i class="fa fa-sitemap">
+                        </i> {{emp_data.posting_department}}</small>
+                      <small class="job-company" title="Organization Unit"><i class="fa fa-building-o">
+                        </i> {{emp_data.assignedous}}</small>
+
+                      </div>
+                    </div>
+
+                    <!-- *ngIf="(emp_data.time_criteria =='Full Time' && emp_data.lockstatus!='Locked')" -->
+                    <div class="job-buttons">
+                      <a class="btn btn-blue manage-Update myButton-box" data-toggle="tooltip" data-placement="top"
+                        (click)="toggle_emp_att(i, emp_data, 'toggle_btn')">Update
+                        Attendance</a>
+
+
+                      <!-- <a (click)="get_monthly_attendance(emp_data)" data-toggle="modal" data-placement="top"
+                        class="btn btn-blue manage-btn "><i class="fa fa-calendar" aria-hidden="true"></i></a> -->
+
+                    </div>
+
+                    <!-- <div *ngIf="(emp_data.time_criteria =='Full Time' && emp_data.lockstatus == 'Locked')"
+                      class="job-buttons">
+                      <a class="btn btn-success manage-btn myButton-box" data-toggle="tooltip" data-placement="top"
+                        (click)="toggleCalendar(i, emp_data, 'toggle')">View
+                        Attendance</a>
+                    </div> -->
+
+
+                    <div class="hide-show-outer-box" [ngClass]="{'start': emp_data.showEmpInnerAttendance==true}">
+
+                      <form [formGroup]="employee_attendance_unit_form">
+
+                        <div class="table-responsive  attendance1-box-outer-box">
+                          <table class="table user-list">
+                            <thead>
+                              <tr>
+                                <th><span class="text-danger">*</span>Company Name</th>
+                                <th><span class="text-danger">*</span>Department </th>
+                                <th><span class="text-danger">*</span>Designation</th>
+                                <th>From Date</th>
+                                <th>To Date</th>
+                                <th style="width: 75px;"><span class="text-danger">*</span>Present (Days) </th>
+                                <!-- <th style=" width: 8%;">Leave </th>
+                                <th style=" width: 8%;">Absent</th>
+                                <th style=" width: 8%;">Total</th> -->
+                                <th style="width: 75px;"><span class="text-danger">*</span>Overtime (Hours)</th>
+                                <th>Remarks</th>
+                                <th>Status</th>
+                                <th>Action</th>
+
+
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <ng-container formArrayName="employee_attendance_units">
+
+                                <ng-container *ngIf="emp_data.showEmpInnerAttendance">
+
+                                  <tr *ngFor="let item of employee_attendance_unit_array.controls; let ix=index;"
+                                    [formGroupName]="ix"
+                                    [ngClass]="{'no-event':get_original_salary_status(ix)=='Paid'}">
+
+                                    <td>
+                                      <select formControlName="unitid" class="form-control" (change)="change_unitid(ix)"
+                                        [ngClass]="{'border-red': item.get('unitid').hasError('required') && item.get('unitid').touched}">
+                                        <option value="">Select</option>
+                                        <option *ngFor="let uml of unit_master_list_data;" [value]="uml.org_unit_id">
+                                          {{uml.org_unit_name}}</option>
+                                      </select>
+                                    </td>
+
+                                    <td>
+                                      <select formControlName="departmentid" class="form-control"
+                                        (change)="change_departmentid(ix)"
+                                        [ngClass]="{'border-red': item.get('departmentid').hasError('required') && item.get('departmentid').touched}">
+                                        <option value="">Select</option>
+                                        <option
+                                          *ngFor="let dept of item.get('filtered_department_master_list_data').value"
+                                          [value]="dept.departmentid">{{dept.departmentname}}</option>
+                                      </select>
+                                    </td>
+
+                                    <td>
+                                      <select formControlName="designationid" class="form-control"
+                                        (change)="change_designationid(ix)"
+                                        [ngClass]="{'border-red': item.get('designationid').hasError('required') && item.get('designationid').touched}">
+                                        <option value="">Select</option>
+                                        <option *ngFor="let role of item.get('filtered_role_master_list_data').value;"
+                                          [value]="role.dsignationid">{{role.designationname}}</option>
+                                      </select>
+                                    </td>
+
+                                    <td>
+                                      <input [id]="'recdate'+ix" type="hidden" (click)="filterFromToDateLeads(ix)">
+                                      <input [id]="'att_from'+ix" type="text" formControlName="attendancefrom"
+                                        autocomplete="off" maxlength="10" class="form-control jquery-fromdt">
+                                    </td>
+
+                                    <td>
+                                      <input [id]="'att_to'+ix" type="text" formControlName="attendanceto"
+                                        autocomplete="off" maxlength="10" class="form-control jquery-todt">
+                                    </td>
+
+                                    <td>
+                                      <input type="text" formControlName="presentcount" autocomplete="off"
+                                        [ngClass]="{'border-red': item.get('presentcount').hasError('required') && item.get('presentcount').touched}"
+                                        maxlength="10" class="form-control" (keyup)="check_present_value(ix, $event)">
+                                    </td>
+                                    <!-- <td>
+                                    <input type="text" formControlName="leavecount" autocomplete="off"
+                                      maxlength="100" class="form-control">
+                                  </td> -->
+                                    <!-- <td>
+                                    <input type="text" formControlName="absentcount" autocomplete="off"
+                                      maxlength="100" class="form-control">
+                                  </td> -->
+                                    <!-- <td>
+                                    <input type="text" formControlName="totaldays" autocomplete="off" maxlength="100"
+                                      class="form-control">
+                                  </td> -->
+                                    <td>
+                                      <input type="text" formControlName="overtimehrs" autocomplete="off"
+                                        [ngClass]="{'border-red': item.get('overtimehrs').hasError('required') && item.get('overtimehrs').touched}"
+                                        maxlength="20" class="form-control" (keyup)="check_overtime_value(ix, $event)">
+                                    </td>
+
+                                    <td>
+                                      <input type="text" formControlName="remarks" autocomplete="off" maxlength="200"
+                                        class="form-control">
+                                    </td>
+
+                                    <td>
+                                      <!-- <ng-container *ngIf="item.value.salarypaystatus=='Paid'; else elseBlock">
+                                        {{item.value.salarypaystatus}}
+                                      </ng-container>
+                                      <ng-template #elseBlock>
+                                        Not Paid
+                                      </ng-template> -->
+
+                                      <span *ngIf="item.value.salarypaystatus=='Paid'" style="color: red;"> Paid</span>
+                                      <span *ngIf="(item.value.salarypaystatus=='P' || !item.value.salarypaystatus)"
+                                        style="color: blue;"> Pending</span>
+                                      <span *ngIf="item.value.salarypaystatus=='A'" style="color: green;">
+                                        Approved</span>
+
+                                    </td>
+
+                                    <td class="text-center"><a
+                                        *ngIf="get_original_salary_status(ix)!='Paid' && check_access_right_cdn()"
+                                        (click)="remove_employee_unit_att_array(ix)" data-toggle="modal" class=""
+                                        data-placement="top" title="delete"><i class="fa fa-lg fa-trash"
+                                          aria-hidden="true" style="color: red;"></i></a></td>
+
+                                  </tr>
+                                </ng-container>
+
+                              </ng-container>
+
+                              <tr>
+                                <td colspan="5"><b style="float: right;">Total :</b>
+                                <td style="text-align: center;">{{get_present_days_cnt()}}</td>
+                                <td style="text-align: center;">{{get_overtime_days_cnt()}}</td>
+                                <td></td>
+                                <td></td>
+                                <td class="text-center">
+                                  <div class="job-buttons action-btn-outer-box">
+                                    <!-- <a (click)="saveUnitConsolidatedAttendance()" title="Save"><i
+                                        class="fa fa-2x fa-floppy-o" aria-hidden="true"></i></a> -->
+
+                                    &nbsp;&nbsp;
+                                    <a (click)="add_employee_unit_att_array()" data-toggle="modal" class=" "
+                                      data-placement="top" title="Add New Row"><i class="fa fa-plus-circle"
+                                        aria-hidden="true" *ngIf="check_access_right_cdn()"></i></a>
+
+                                  </div>
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td colspan="10" style="text-align: center;">
+                                  <a class="btn btn-primary manage-btn myButton-box"
+                                    (click)="saveUnitConsolidatedAttendance('SaveUnitConsolidatedAttendance')"
+                                    *ngIf="check_access_right_cdn()">Save
+                                    Attendance</a> &nbsp;&nbsp;
+                                  <a class="btn btn-success manage-btn myButton-box"
+                                    (click)="saveUnitConsolidatedAttendance('ApproveUnitConsolidatedAttendance')"
+                                    *ngIf="check_access_right_cdn()">Approve
+                                    Attendance</a>
+
+
+                                </td>
+
+
+
+                              </tr>
+
+
+
+
+                            </tbody>
+
+                            <!-- <tfoot>
+                              <tr>
+                                <td colspan="8" class="text-right">Total Days :- </td>
+                                <td class="text-center">30</td>
+                              </tr>
+                            </tfoot> -->
+
+                          </table>
+                        </div>
+
+
+                      </form>
+
+                    </div>
+
+
+                  </li>
+                </ng-container>
+
+
+              </ul>
+
+              <div class="flexbox padd-10" *ngIf="filteredEmployees_new.length >limit">
+                <div class="flexbox padd-10">
+                  <pagination-controls (pageChange)="get_page($event)"
+                    style="font-size: 2rem;padding: 6px;font-weight: bold" class="float-right"></pagination-controls>
+                </div>
+              </div>
+            </div>
+            <!---END--->
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+<app-footer></app-footer>
+
+
+
+<!--====>Calendar Work-===-->
+<div *ngIf="show_new_calendar" id="punchin-punchout-box" class="modal fade punchin-punchout-outer1-box in"
+  style="display:block;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="width:100rem;">
+      <form>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Unit Attendance</h4>
+          <button type="button" class="close" (click)="closeNewCalendar()">×</button>
+        </div>
+        <div class="modal-body" style="height: 40rem; overflow-y: scroll;">
+
+          <div class="form-group">
+            <div class="col-md-12">
+
+
+              <div class="hide-show-outer-box" style="display:contents; pointer-events: none;">
+
+                <ul class="calendar-inner-box " style="overflow: hidden;">
+
+
+                  <li class="nav-item head-title-box  "><span class="day-box1 ">Mon</span> </li>
+                  <li class="nav-item head-title-box  "><span class="day-box1 ">Tue</span> </li>
+                  <li class="nav-item head-title-box  "><span class="day-box1 ">Wed</span> </li>
+                  <li class="nav-item head-title-box  "><span class="day-box1 ">Thu</span> </li>
+                  <li class="nav-item head-title-box  "><span class="day-box1 ">Fri</span> </li>
+                  <li class="nav-item head-title-box  "><span class="day-box1 ">Sat</span> </li>
+                  <li class="nav-item head-title-box  "><span class="day-box1 ">Sun</span> </li>
+
+                  <ng-container *ngFor="let dd of blankCalendar; let im=index;">
+                    <!-- {{calendar_data[0]?.attday==dd.w_date.split('-')[0]}} -->
+
+                    <li [ngClass]="{'present-days': dd?.attendance_type=='PP' ,'od-days': dd?.attendance_type=='OD',
+                      'absent-days': dd?.attendance_type=='AA' , 'weekoff-days': dd?.attendance_type=='WO',
+                      'half-days': dd?.attendance_type=='HD', 'holiday': dd?.attendance_type=='HO',
+                      'leave-days': dd?.attendance_type=='LL' || dd?.leavetype=='CO', 'missed-punch': dd?.attendance_type=='MP',
+                      'disabled-date': check_date(dd.w_date, im), 'wfh-days': dd?.attendance_type=='WFH',}"
+                      class="nav-item" (click)="calendarClick(dd, im)" (mousedown)="onMouseDown($event, dd)"
+                      (mousemove)="onMouseMove($event, dd)" (mouseup)="onMouseUp($event)">
+                      <a class="calender-box"><span
+                          [ngStyle]="{'color': dd?.attendance_type=='' || dd.attendance_type==undefined || dd.attendance_type=='CLS' ? 'black': 'white'}"
+                          [ngClass]="{'selected-items':dd.localSelection == true}" class="date-box">{{dd.w_date
+                          != '' ? dd.w_date.split('-')[0] : ''}} </span>
+
+                        <span
+                          *ngIf="dd.attendance_type != undefined && dd.attendance_type!='CLS' && dd.attendance_type != 'LL' && dd.attendance_type != 'HD'"
+                          class="label-design"
+                          [ngStyle]="dd.localSelection ? {'margin-left':'70px', 'margin-right': '-4px'} : {}"><i
+                            *ngIf="dd.approval_status=='A'" style="left:-85px;" class="fa fa-check"
+                            aria-hidden="true"></i>({{dd.attendance_type}})
+                        </span>
+
+                        <span
+                          *ngIf="dd.attendance_type != undefined && dd.attendance_type!='CLS' && (dd.attendance_type == 'LL' || dd.attendance_type == 'HD')"
+                          class="label-design"
+                          [ngStyle]="dd.localSelection ? {'margin-left':'70px', 'margin-right': '-4px'} : {}"><i
+                            *ngIf="dd.approval_status=='A'" style="left:-75px;" class="fa fa-check"
+                            aria-hidden="true"></i>({{dd.attendance_type}} <ng-container
+                            *ngIf="dd.leavetype">-{{dd.leavetype}}</ng-container>)
+
+                        </span>
+                      </a>
+                    </li>
+
+
+                  </ng-container>
+
+                </ul>
+
+                <div class="payout-breakup" (click)="remove_selection()">
+
+
+                  <div class="row" style="border: 1px; border-collapse: collapse;">
+
+                    <div class="col-md-2"><strong>Pay Days</strong></div>
+                    <div class="col-md-2">{{payroll_data.salarydays}}</div>
+                    <div class="col-md-2"><strong>EPF Contribution</strong></div>
+                    <div class="col-md-2">&#8377; {{payroll_data.epfcontribution}}</div>
+                    <div class="col-md-2"><strong>Pay Amount</strong></div>
+                    <div class="col-md-2">&#8377; {{payroll_data.costtoemployer}}</div>
+
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-2"><strong>ESIC Contribution</strong></div>
+                    <div class="col-md-2">&#8377; {{payroll_data.esicontribution}}</div>
+
+                    <ng-container *ngFor="let vd of voucher_data;">
+                      <div class="col-md-2"><strong>{{vd?.voucher_name}} </strong></div>
+                      <div class="col-md-2">
+                        <span *ngIf="vd?.amount"> &#8377; {{vd?.amount}}</span>
+                      </div>
+                    </ng-container>
+                  </div>
+
+
+                  <!-- <div class="row">
+                  <div class="col-md-2"><strong>{{voucher_data[1]?.voucher_name}}</strong></div>
+                  <div class="col-md-2"> <span *ngIf="voucher_data[1]?.amount">&#8377;
+                      {{voucher_data[1]?.amount}}</span></div>
+
+                </div>
+
+                <div class="row">
+
+                  <div class="col-md-8">&nbsp;</div>
+
+                  <div class="col-md-2"><strong>{{voucher_data[2]?.voucher_name}}</strong></div>
+                  <div class="col-md-2"><span *ngIf="voucher_data[2]?.amount">&#8377;
+                      {{voucher_data[2]?.amount}}</span></div>
+                </div>
+
+                <div class="row">
+
+                  <div class="col-md-8">&nbsp;</div>
+
+                  <div class="col-md-2"><strong>{{voucher_data[3]?.voucher_name}}</strong></div>
+                  <div class="col-md-2"><span *ngIf="voucher_data[3]?.amount">&#8377;
+                      {{voucher_data[3]?.amount}}</span></div>
+                </div>
+
+                <div class="row">
+
+                  <div class="col-md-8">&nbsp;</div>
+
+                  <div class="col-md-2"><strong>{{voucher_data[4]?.voucher_name}}</strong></div>
+                  <div class="col-md-2"><span *ngIf="voucher_data[4]?.amount">&#8377;
+                      {{voucher_data[4]?.amount}}</span></div>
+                </div> -->
+
+                </div>
+
+                <div class="row" style="font-size: 14px;border-style:groove;" (click)="remove_selection()">
+                  <div class="col-md-3"><strong>Cost To Employer</strong></div>
+                  <div class="col-md-3">&#8377; {{payroll_data.costtoemployer}}
+                  </div>
+
+                  <div class="col-md-3"><strong>Payout of Associate</strong>
+
+                  </div>
+                  <div class="col-md-3"> &#8377; {{payroll_data.inhandsalary}}</div>
+                </div>
+                <div class="row" style="font-size: 12px;border-style: groove;border-top: 2px solid #eef5f7;">
+                  <div class="col-md-2">
+                    <label>Leave Template</label>
+                  </div>
+                  <div class="col-md-2">
+                    <span *ngIf='selected_emp_data_new.template_txt'>
+                      {{selected_emp_data_new?.template_txt[0]?.templatedesc}}
+                    </span>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="row" style="padding: 0px;">
+                      <ng-container *ngFor="let x of selected_emp_data_new.balance_txt">
+                        <div class="col-md-4" style="padding: 0px;">
+                          <label>{{x.typename}}</label>&nbsp;
+                          <span>[{{x.typecode}}] : {{x.prev_bal}} </span>
+                        </div>
+                      </ng-container>
+                      <ng-container *ngIf='selected_emp_data_new.template_txt'>
+                        <label>Weekly Off : </label>&nbsp;
+                        <span>[WO]
+                          <!-- :{{selected_emp_data_new?.template_txt[0]?.leave_details?.weekly_off_days_name?.split(',')}} -->
+                          :
+                          {{display_week_off(selected_emp_data_new?.template_txt[0]?.leave_details?.weekly_off_days_name_txt)}}
+                        </span>
+                        <!-- {{selected_emp_data_new?.template_txt[0]?.leave_details?.weekly_off_days_name_txt |json}} -->
+                      </ng-container>
+
+
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="attendance-btn-inner-box padd-top-5" (click)="remove_selection()"
+                  *ngIf="selected_emp_data_new.lockstatus!='Locked'">
+
+                  <span style="display: inline-block;" (click)="handleInnerClick($event)">
+
+                    <button type="button" class="btn btn-primary btn-design" (click)="present_click()">Present</button>
+                    <button type="button" class="btn btn-primary btn-design wfh-days" (click)="wfh_click()">WFH</button>
+                    <button type="button" class="btn btn-primary btn-design" (click)="onduty_click()"
+                      style="color: #fff;background: #002dd38e;">On
+                      Duty</button>
+                    <button type="button" class="btn btn-danger btn-design" (click)="absent_click()">Absent</button>
+                    <button type="button" class="btn btn-success btn-design" (click)="half_click(i)">Half
+                      Day</button>
+                    <button type="button" class="btn btn-warning btn-design" (click)="leave_click(i)">Leave</button>
+                    <button type="button" class="btn btn-info btn-design" style="color: #fff;background: #c1e309;"
+                      (click)="holiday_click()">Holiday</button>
+                    <button type="button" class="btn btn-info btn-design" (click)="weekoff_click()">Weekly
+                      off</button>
+                    <button type="button" class="btn btn-primary btn-design"
+                      (click)="getOpeningBalance(selected_emp_data_new.emp_id, selected_emp_data_new.leave_bank_id)">Opening
+                      Balance</button>
+                  </span>
+
+                </div> -->
+
+                <!-- <div class="attendance-btn-inner-box padd-top-1" (click)="remove_selection()"
+                  *ngIf="selected_emp_data_new.lockstatus!='Locked'">
+                  <a class="btn btn-success manage-btn myButton-box"
+                    (click)="save_approve_attendance('ApproveBulkAttendance')" style="border-color: black;">Approve
+                    Attendance</a>
+
+                  <a class="btn btn-cancel btn-sm  manage-btn" title="Click for Allowance & deduction"
+                    style="border-color: black;" (click)="openAllowDeductPopup()">
+                    Allowance & Deduction
+                  </a>
+
+                  <a style="width: 18rem;font-weight: 500;color: black;border-color: #0e49ed !important;"
+                    class="btn btn-secondary manage-btn" (click)="clear_click()">
+                    Clear
+                  </a>
+                </div> -->
+
+                <div style="height: 5%;" (click)="remove_selection()">
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel" (click)="closeNewCalendar()">
+          <!-- <input type="submit" class="btn btn-success" value="Submit"> -->
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--====>END-===-->
+
+
+<!---SideBar--->
+<div id="sidebar" class="sidebar bg-dark text-white sidebar-menu_filter-box">
+  <h3 class="filter-menu-header-text-box">Filter</h3>
+  <!-- <button type="button" class="btn btn-user1 btn-round" (click)="resetFilter()">Clear</button>-->
+  <a class="clear-box-btn" title="Clear Filter" (click)="resetFilter()">Clear</a>
+  <button class="close-btn btn btn-danger1" (click)="closeSidebar()"><i class="fa fa-close"></i></button>
+  <div class="sidebar-content-box">
+
+    <div class="col-md-12 col-sm-12">
+      <input type="text" [(ngModel)]="keyword_copy" placeholder="Search with employee(s)" class="form-control wide-width"
+        style="width: 100%;" maxlength="200">
+    </div>
+
+    <div class="col-md-12 ">
+
+      <div id="filterComponent">
+        <div class="panel-group">
+
+          <div class="panel panel-default">
+            <div class="panel-heading panel_heading_gray  card-header" role="tab" id="headingOne2"
+              data-toggle="collapse" data-parent="#accordion2" href="#collapseOne2" aria-expanded="false"
+              aria-controls="collapseOne">
+              <h4>Attendance Filter <i class="fa fa-angle-down"></i></h4>
+            </div>
+            <div id="collapseOne2" class="panel-collapse collapse card-body in" role="tabpane2">
+              <div class="row">
+                <div class="col-sm-12">
+
+
+                  <div class="col-md-12">
+                    <span style="margin: 10px;">Month-Year</span>
+                    <p style="display: inline-flex;">
+                      <select class="form-control" [(ngModel)]="month_copy"
+                        style="width: 15rem;">
+                        <option *ngFor="let ma of monthsArray" [selected]="month==ma.id" [value]="ma.id">{{ma.month}}
+                        </option>
+                      </select>
+                      <select class="form-control" [(ngModel)]="year_copy">
+                        <option *ngFor="let ya of yearsArray" [selected]="year==ya" [value]="ya">{{ya}}</option>
+
+                      </select>
+                    </p>
+                  </div>
+
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-12">Page Size</label>
+                    <div class="col-sm-12 padd-0">
+                      <select class="form-control" style="font-size: 12px;" [(ngModel)]="limit_copy">
+                        <option value="10" [selected]="limit==10">10</option>
+                        <option value="20" [selected]="limit==20">20</option>
+                        <option value="50" [selected]="limit==50">50</option>
+                        <option value="100" [selected]="limit==100">100</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-12">Status</label>
+                    <div class="col-sm-12 padd-0">
+                      <select class="form-control" [(ngModel)]="filter_emp_val_copy">
+                        <option value="All">All</option>
+                        <option value="UnMarked">Yet to Mark</option>
+                        <option value="Marked">Marked</option>
+                        <option value="Verified">Verified</option>
+                      </select>
+                    </div>
+                  </div>
+
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-12">Organization Unit</label>
+                    <div class="col-sm-12 padd-0 userOrgUnit">
+                      <!-- (onSelect)="change_OrgUnit_Dept_Sidebar()" (onDeSelect)="change_OrgUnit_Dept_Sidebar()" -->
+                      <ng-multiselect-dropdown [placeholder]="'Select Organization Units'" [settings]="dropdownSettings"
+                        [data]="orgList" [(ngModel)]="orgName_copy" [ngModelOptions]="{standalone: true}"
+                       >
+                      </ng-multiselect-dropdown>
+                      <!-- (onFilterChange)="getOrgUnitData()" -->
+
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-12">Department</label>
+                    <div class="col-sm-12 padd-0 userOrgUnit">
+                      <!-- (onSelect)="change_OrgUnit_Dept_Sidebar()"  (onDeSelect)="change_OrgUnit_Dept_Sidebar()"-->
+                      <ng-multiselect-dropdown [placeholder]="'Select Department'" [settings]="deptDropdownSettings"
+                        [data]="deptList" [(ngModel)]="deptName_copy" [ngModelOptions]="{standalone: true}"
+                       >
+                      </ng-multiselect-dropdown>
+
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-12">Designation</label>
+                    <div class="col-sm-12 padd-0 userOrgUnit">
+
+                      <ng-multiselect-dropdown [placeholder]="'Select Designation'" [settings]="desgDropdownSettings"
+                        [data]="desgList" [(ngModel)]="desgName_copy" [ngModelOptions]="{standalone: true}"
+                        >
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+
+
+
+
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+
+      <div class="text-center mrg-bot-25">
+        <button type="button" class="btn btn-user1 btn-round btn-primary" (click)="change_sidebar_filter()" id="btnSetFilter">
+          &nbsp;Apply</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!---SideBar--->

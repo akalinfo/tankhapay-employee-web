@@ -1,0 +1,210 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+
+  <div id="wrapper" [ngClass]="{'active': showSidebar}">
+    <div class="fakeLoader"></div>
+    <!-- Navigation -->
+
+    <!-- Sidebar Navigation -->
+
+    <div id="page-wrapper">
+      <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+          <h3 class="text-themecolor">&nbsp;&nbsp;Leave Template Bulk Assign</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item" title="Leave Templates"><a
+                [routerLink]="['/leave-mgmt/leave-settings']">Leave Settings</a></li>
+
+            <li class="breadcrumb-item active">Leave Template Bulk Assign</li>
+          </ol>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <!-- /row -->
+        <div class="row">
+
+          <div class="col-md-12 col-sm-12">
+            <div class="card">
+
+              <div class="card-header">
+                <div class="row">
+
+                  <div class="col-md-4 col-sm-4">
+                    <span style="margin: 10px;font-weight: bold;">Search</span>
+                    <input type="text" class="form-control" placeholder="Search Employee(s)"
+                      (keyup)="search($event.target.value)" maxlength="200" />
+                  </div>
+
+                  <div class="col-md-2">
+                    <span style="margin: 10px;font-weight: bold;">Status</span>
+                    <select class="form-control" (change)="chnageFilter($event.target.value)">
+                      <option value="">All</option>
+                      <option value="Y">Assigned</option>
+                      <option value="N">Not Assigned</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-3">
+                    <span style="margin: 10px;font-weight: bold;">Employee Status</span>
+                    <select class="form-control" (change)="changeEmpFilter($event.target.value)">
+                      <option value="All">All</option>
+                      <option value="Active">Active</option>
+                      <option value="Relieved">Relieved</option>
+                      <option value="Onboarding Pending">Onboarding Pending</option>
+                      <option value="App Link Sent">App Link Sent</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-3" style="font-weight: bold;margin-top: 1rem">
+                    <span style="margin: 10px;font-weight: bold;">&nbsp;</span>
+                    <br>
+                    Total: <span>{{filteredEmployees.length}}</span>
+                  </div>
+                  <div class="col-md-5 col-sm-5" style="margin-bottom: 7px;"><br>
+                    <button class="btn btn-primary" (click)="openChangeTempPopup()">Bulk Assign Template</button>&nbsp;
+                    <button class="btn btn-success" (click)="openOpeningBalance()"  title="Click to Update the Opening Balance in Bulk">Bulk Opening Balance</button>
+                  </div>
+
+                  <div class="row" style="display: none;">
+                    <div class="col-md-4">
+                      <span style="margin: 10px;font-weight: bold;">Month</span>
+                      <select class="form-control" (change)="changeMonth($event)">
+                        <option *ngFor="let ma of monthsArray" [selected]="month==ma.id" [value]="ma.id">{{ma.month}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
+                      <span style="margin: 10px;font-weight: bold;">Year</span>
+                      <select class="form-control" (change)="changeYear($event)">
+                        <option *ngFor="let ya of yearsArray" [selected]="year==ya" [value]="ya">{{ya}}</option>
+                      </select>
+                    </div>
+                    <div class="col-md-2">
+                      <b>&nbsp;</b> <br>
+                      <select class="form-control" (change)="changeProductType($event)" title="Product Type"
+                        *ngIf="this.show_product_type_dropdown">
+                        <option *ngFor="let ya of product_type_array" [selected]="product_type==ya.product_type_id"
+                          [value]="ya.product_type_id">{{ya.product_type}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                </div>
+
+              </div>
+
+              <div class="card-body" style="font-size: 12px;">
+
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th><input type="checkbox" id="empAll" (change)="checkEmpAll($event)"></th>
+                      <th>Name | Mobile</th>
+                      <th>DOJ - DOL</th>
+                      <th>Assigned Template</th>
+                      <th>Effective From</th>
+                      <th>Template Details</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <ng-container *ngFor="let emp_data of filteredEmployees;let i=index">
+                      <tr>
+                        <!-- *ngIf="emp_data.dateofrelieveing ==''" -->
+                        <td><input type="checkbox" name="emp" (change)="checkEmp(emp_data.emp_id)"
+                            ></td>
+                        <td title="Name | Mobile | Employee Code | ORG Employee Code">{{emp_data.emp_name}} |
+                          {{emp_data.mobile}} |
+                          {{emp_data.emp_code}} | {{emp_data.orgempcode}}</td>
+                        <td>{{emp_data.dateofjoining}} <span *ngIf="emp_data.dateofrelieveing">-
+                            {{emp_data.dateofrelieveing}}</span></td>
+                        <td>{{emp_data.leave_template_name}}</td>
+                        <td>{{emp_data.leave_effective_from}}</td>
+                        <td>
+                          <ng-container *ngFor="let item of emp_data.leave_details">
+                            <span><b>{{item.typecode}}</b>:{{item.days}}</span>&nbsp;
+
+                          </ng-container>
+                        </td>
+                        <!-- <td> <ng-container *ngFor="let item of emp_data.prev_bal">
+                           
+                            <b>{{ item.typecode }}</b> : {{ item.prev_bal }} &nbsp;
+                          </ng-container>
+                        </td> -->
+
+                      </tr>
+                    </ng-container>
+
+                    <tr *ngIf="filteredEmployees.length == 0" style="text-align: center;">
+                      <td colspan="4">No Data Found</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /row -->
+    </div>
+  </div>
+  <!-- /#page-wrapper -->
+
+
+
+</section>
+<app-footer></app-footer>
+
+
+
+<!-----------Change Temp Popup-------->
+<div [@grooveState]="showChangeTempPopup?'active':'inactive'" id="leavetemplate" class="modal" style="z-index:1000;">
+  <div [@dongleState]="showChangeTempPopup?'active':'inactive'" class="modal-dialog"
+    style="margin:auto auto auto auto;">
+    <div class="modal-content" style="height:30rem;margin-top:50px;width:75rem;margin-left:-5rem;">
+      <form [formGroup]="leaveTemplateForm">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Change Leave Template</h4>
+          <button type="button" class="close" aria-hidden="true" (click)="closeChangeTempPopup()">&times;</button>
+        </div>
+        <div class="modal-body" style="height:17rem;">
+
+          <ng-container>
+            <div class="row">
+              <div class="col-md-6">
+                <label>Template Name</label>
+                <select class="form-control" (change)="changeLeaveTemplate($event)">
+                  <option value="" [selected]="leaveTemplateForm.value.leavetemplate_text == ''">--- Select ---</option>
+                  <option *ngFor="let leave of leaveTemplateMaster" [value]="leave|json">
+                    {{leave.templatedesc}}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col-sm-6">
+                <label>Effective Date <span class="text-danger">*</span></label>
+                <input type="hidden" id="recdate" (click)="change_effectivedt()">
+                <input type="text" formControlName="effective_dt" id="effective_dt" name="effective_dt"
+                  autocomplete="off" class="form-control" #ed>
+              </div>
+
+            </div>
+
+
+          </ng-container>
+
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" (click)="closeChangeTempPopup()" value="Cancel">
+          <input type="submit" class="btn btn-success" (click)="updateLeaveTemplate()" value="Update">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-----------Change Temp Popup-------->

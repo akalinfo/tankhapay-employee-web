@@ -1,0 +1,125 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<div id="wrapper" [ngClass]="{'active':showSidebar}">
+
+  <div id="page-wrapper" style="min-height: 596px;">
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">FAQs</h3>
+      </div>
+      <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="['/dashboard/welcome']">Home</a></li>
+          <li class="breadcrumb-item active">FAQs</li>
+        </ol>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <!-- /row -->
+      <div class="row">
+
+        <div class="col-md-8 col-md-offset-2 mrg-top-5 mrg-bot-5 signup-accordion-outer-box">
+          <h3 class="com-you-onbor-outer-box">FAQs</h3>
+          <div class="card mrg-bot-10">
+            <div class="card-body padd-bot-0">
+
+              <div class="faq-list">
+                <div class="faq-item">
+                  <div class="question"> 1. How can Tankha Pay help with creating salary structures?</div>
+                  <div class="answer"> -The software calculates the CTC based on the in hand salary you provide. It
+                    takes into account the
+                    minimum wages, PF/ESI compliance and the various components of salary structuring.
+                  </div>
+                </div>
+
+                <div class="faq-item">
+                  <div class="question"> 2.Is the payroll software compliant with legal regulations?<br>
+                  </div>
+                  <div class="answer">-TankhaPay is designed to comply with all regulations, and is regularly updated
+                    based on any changes
+                    in the compliances.</div>
+                </div>
+                <div class="faq-item">
+                  <div class="question"> 3. How can I add new employees to the payroll system?<br>
+                  </div>
+                  <div class="answer">-Employees can be added to TankhaPay either individually or in bulk.
+                    To add the employees individually, click on add employee and simply add their full name, phone
+                    number
+                    and email address (optional). You can also choose to send them the link to download the TankhaPay
+                    app.
+
+                    To add employees in bulk, click on bulk employees under add employees, and download the excel
+                    template. As per the instructions provided, add employees to the excel and upload the same.
+
+                    The employees would need to complete onboarding on the TankhaPay app which includes Profile
+                    updation,
+                    KYC verification, and bank account verification, before you can setup their salaries. Alternatively,
+                    you could complete these steps on the behalf of the employee through the Tankha Pay business login.
+                  </div>
+                </div>
+
+                <div class="faq-item" style="display: none;">
+                  <div class="question"> 4. What are the 3 modes in Payrolling?</div>
+                  <div class="answer"> <strong>Self: </strong> Use our system to calculate your payroll and maintain attendance records. File compliance and process salary payments yourself.
+                    <br> <br>
+                    <strong>Comply Serve:</strong> Streamline your payroll processes, effortlessly track attendance, and let us handle the complexities of compliance. Experience the convenience of disbursing salaries yourself.
+                    <br> <br>
+                    <strong>Pay Serve:</strong> Optimize your payroll process, track attendance without hassle, and maintain statutory compliance. Let us handle the complexities of compliances and easily process salary payments through our platform.</div>
+                </div>
+
+                <div class="faq-item">
+                  <div class="question">4. What should I do if there is an error in payroll processing?<br>
+                  </div>
+                  <div class="answer"> If an error occurs, please contact us on 892-900-0744 and one of our support
+                    executives will be in
+                    touch with you.</div>
+                </div>
+
+                <div class="faq-item">
+                  <div class="question"> 5. How secure is TankhaPay?
+                  </div>
+                  <div class="answer">
+                    - TankhaPay has robust security measures in place to protect sensitive employee information, such as
+                    encryption, secure login protocols, and regular security audits.</div>
+                </div>
+
+                <div class="faq-item">
+                  <div class="question"> 6. Is there customer support available?</div>
+                  <div class="answer">
+                    - Employers can directly contact customer support at 892-900-0744. Employees can raise tickets on
+                    the
+                    TankhaPay app, which will be resolved within 24-48 hrs.</div>
+                </div>
+
+                <div class="faq-item">
+                  <div class="question">
+                    7. What integrations are available for TankhaPay?</div>
+                  <div class="answer">
+                    - TankhaPay can be integrated with biometric, retina and face recognition attendance machines, and
+                    other HR and ERP platforms as well. Please contact customer support at 892-900-0744 for more
+                    information.</div>
+                </div>
+
+                <div class="faq-item">
+                  <div class="question"> 8. How often do I need to update the payroll software?
+
+                  </div>
+                  <div class="answer"> - It's important to update the software regularly to ensure it remains compliant
+                    with the latest
+                    regulations and benefits from the latest features and security enhancements.</div>
+                </div>
+
+                <!-- Add more FAQ items as needed -->
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      <!-- /row -->
+    </div>
+  </div>
+  <footer class="footer"> © 2023 TankhaPay. Akal Information Systems Ltd. All Rights Reserved. </footer>
+</div>

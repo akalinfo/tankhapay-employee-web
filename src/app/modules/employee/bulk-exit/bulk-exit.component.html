@@ -1,0 +1,260 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+    <div id="wrapper" [ngClass]="{'active': showSidebar == false}">
+        <div class="fakeLoader"></div>
+        <div id="page-wrapper">
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor" style="margin-left: 20px;">Exit Employee</h3>
+                </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item" title="Home"><a [routerLink]="['/employees']">Employees</a>
+                        </li>
+                        <li class="breadcrumb-item active">Exit Employee</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="container-fluid">
+                <!-- /row -->
+
+                <!-- <div *ngIf="!isPopupVisible">
+                    <label>
+                      <input type="radio" [(ngModel)]="selectedExitDateOption" (change)="onExitDateOptionChange('same')" /> Exit Date is Same
+                    </label> &nbsp;&nbsp;&nbsp;
+                    <label>
+                      <input type="radio" [(ngModel)]="selectedExitDateOption"  (change)="onExitDateOptionChange('different')" /> Exit Date is Different
+                    </label>
+                  </div> -->
+
+                <!-- *ngIf="isPopupVisible" -->
+                <div class="row">
+
+
+                    <div class="col-md-12 mrg-top-0 mrg-bot-25">
+
+
+                        <div class="card">
+
+
+                            <div class="card-header">
+
+                                <div class="row">
+
+                                    <div class="col-md-6" style="float: left;">
+                                        <span><b>Total Record(s):</b> {{ emp_json_data.length }}</span> &nbsp;&nbsp;
+                                        <span> | <b>Selected Count:</b> {{ selectedCount }}</span>
+                                    </div>                                                                     
+                                    <div class="col-md-4" style="float: right;">
+                                        <div class="dropdown float-right-box">
+                                          <button type="button" class="btn btn-user1 btn-round btn-primary"
+                                          [disabled]="selectedCount <= 1" (click)="open_bulk_exit_popup()">Bulk Exit</button>
+                                        </div>
+                                      </div>
+                                      
+                                </div>
+                                <div class="row" style="float: left;">
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control wide-width" placeholder="Search Employee(s)"
+                                          (keyup)="search($event)" maxlength="200" />
+                                      </div>
+                                </div>
+                          <div class="col-md-12">
+                            <li>For Bulk Exit Functionality on the same date, please select multiple employees from the list and then click on 'Bulk Exit'.</li>
+                          </div>
+                            </div>
+                            <div class="card-body padd-bot-0 padd-top-0">
+                                <div class="row">
+                                    <div class="col-md-12 padd-top-0">
+                                        <div   class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+                                            <form [formGroup]="exit_employee_form">
+
+                                                <table class="table user-list">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th style="text-align: center;">
+                                                                <input type="checkbox" style="transform: scale(1.5)"
+                                                                    name="header_checkbox" [(ngModel)]="header_checkbox"
+                                                                    [ngModelOptions]="{standalone: true}"
+                                                                    (change)="selectAll($event)">
+                                                            </th>
+                                                            <th>Name</th>
+                                                            <th>
+                                                                Employee Code
+                                                                <!---->
+                                                            </th>
+                                                            <th>Mobile</th>
+                                                            <th>
+                                                                Exit Date
+                                                                <!---->
+                                                            </th>
+                                                            <th>Remarks </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody style="background: aliceblue;">
+                                                        <ng-container
+                                                            *ngFor="let employee of filteredEmployees; let i = index">
+                                                            <tr
+                                                                [ngClass]="{'light-skyblue': i % 2 == 0, 'white': i % 2 != 0}">
+                                                                <td>{{i+1}}</td>
+                                                                <td style="text-align: center;">
+                                                                    <input type="checkbox" style="transform: scale(1.5)"
+                                                                        name="yourCheckboxName"
+                                                                        [(ngModel)]="employee.isSelected"
+                                                                        [ngModelOptions]="{standalone: true}"
+                                                                        (change)="onCheckbox_Change($event, employee, i)">
+                                                                </td>
+
+                                                                <td>{{employee.emp_name}}
+                                                                </td>
+                                                                <td>
+                                                                    <span *ngIf="employee.orgempcode; else elseblock;">
+                                                                        {{employee.orgempcode}}</span>
+                                                                    <ng-template #elseblock>
+                                                                        <span>
+                                                                            {{employee.tpcode}}</span>
+                                                                    </ng-template>
+
+
+                                                                </td>
+                                                                <td>{{employee.mobile}}</td>
+                                                                <td>
+                                                                    <input id="FromDate{{i}}" type="text"
+                                                                        style="cursor: pointer;"
+                                                                        class="form-control datepicker-input" #dateInput
+                                                                        formControlName="exit_date"
+                                                                        placeholder="dd-mm-yyyy" autocomplete="off">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control"
+                                                                        [(ngModel)]="employee.exit_remark"
+                                                                        [ngModelOptions]="{standalone: true}"
+                                                                        placeholder="Enter remarks" />
+                                                                </td>
+                                                            </tr>
+
+                                                        </ng-container>
+                                                    </tbody>
+                                                </table>
+                                            </form>
+                                        </div>
+
+
+
+                                    </div>
+
+
+
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12 col-12 padd-top-15 text-center">
+                            <a class="btn btn-primary" 
+                               [class.disabled]="selectedCount === 0" 
+                               data-dismiss="modal"  (click)="open_checkbox_Confirm_popup()">Save</a>
+                          </div>
+
+                    </div>
+
+
+                </div>
+                <!-- /row -->
+            </div>
+
+
+        </div>
+    </div>
+</section>
+<!-- Same Exit Date popup by Arpit -->
+ <div class="modal" [ngStyle]="{'display':open_exit_popup?'block':'none'}" >
+	<div class="modal-dialog ">
+		<div class="modal-content">
+            <form [formGroup]="exit_employee_form">
+                <div class="modal-header theme-bg">
+                    <h4 class="modal-title">Bulk Exit / Relieving Employees For Same Exit Date</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="close_popup()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row text-center">
+                        <div class="col-md-6">
+                            <label>Relieving Date</label>
+                            <input id="date_of_relieveing" #rd class="form-control" type="text"
+                                formControlName="exit_date" placeholder="dd-mm-yyyy" (change)="onDateChange($event)" autocomplete="off" readonly>
+                        </div>
+                    
+                        <div class="col-md-6">
+                            <label>Remarks</label>
+                            <textarea placeholder="Remark" formControlName="exit_remark"
+                                class="form-control same-size-textarea"></textarea>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+
+                    <button class="btn btn-info"
+
+                        data-dismiss="modal" (click)="open_bulk_Confirm_popup()"
+                        data-toggle="modal" data-placement="top" [disabled]="!isRelievingDateSelected">save</button>
+                </div>
+            </form>
+		</div>
+	</div>
+</div> 
+<!--Bulk Confirmation Box -->
+<div class="modal" [ngStyle]="{'display':bulk_Confirm_popup?'block':'none'}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- <form> -->
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title"> Exit Employees</h4>
+          <button type="button" class="close"  (click)="close_bulk_Confirm_popup()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="row text-center">
+            <h3>Exit Employees</h3>
+            <p>Are you sure, you want to exit these employees?.</p>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+
+          <button class="btn btn-primary"  data-dismiss="modal" (click)="submitExitForm()">Yes</button>
+          <button type="button" class="btn btn-info"  (click)="close_bulk_Confirm_popup()">No</button>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+<!-- Single check confirmation box checkbox_Confirm_popup-->
+  <div class="modal" [ngStyle]="{'display':checkbox_Confirm_popup?'block':'none'}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- <form> -->
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title"> Exit Employees</h4>
+          <button type="button" class="close" (click)="close_checkbox_Confirm_popup()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="row text-center">
+            <h3>Exit Employees</h3>
+            <p>Are you sure, you want to exit these employees?.</p>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+
+          <button class="btn btn-primary"  data-dismiss="modal" (click)="Bulk_Exit_Emp()">Yes</button>
+          <button type="button" class="btn btn-info" (click)="close_checkbox_Confirm_popup()">No</button>
+
+        </div>
+
+      </div>
+    </div>
+  </div>

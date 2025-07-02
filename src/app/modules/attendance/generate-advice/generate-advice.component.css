@@ -1,0 +1,83 @@
+
+#sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: #f1f5fa;
+  overflow-x: hidden;
+  transition: 0.5s;
+  z-index: 1000;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 9px -1px, rgba(0, 0, 0, 0.3) -10px 6px 10px 0px, rgba(0, 0, 0, 0.12) -7px 1px 18px 0px;
+}
+
+h3.filter-menu-header-text-box {
+  padding: 21px 15px;
+  margin-bottom: 0;
+}
+
+#sidebar .close-btn {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+}
+
+.sidebar-menu_filter-box label.control-label {
+  font-weight: 500;
+  padding: 0;
+}
+
+.sidebar-menu_filter-box .form-group {
+  margin-bottom: 0px;
+}
+
+.sidebar-content-box .form-group {
+  font-size: 13px;
+}
+
+.sidebar-menu_filter-box .panel-default>.panel-heading h4 {
+  font-size: 14px;
+  color: #000;
+}
+
+.sidebar-menu_filter-box .panel-heading h4 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar-menu_filter-box .panel-default>.panel-heading {
+  color: #333;
+  background-color: #deedff;
+  border-color: #fff;
+  border: 1px solid #fff;
+}
+
+.sidebar-menu_filter-box .panel-heading {
+  cursor: pointer;
+}
+
+
+#sidebar a.clear-box-btn {
+  position: absolute;
+  top: 53px;
+  right: 25px;
+  color: #1372dd;
+  font-size: 14px;
+  cursor: pointer;
+}
+.top-right-outer-box a.btn.btn-round.btn-success.excel-btn-box, .top-right-outer-box .mag-left-5 {
+  margin-right: 5px;
+}
+
+.filter-onlick-btn  {  margin-left: 2px;}
+.top-right-outer-box .mag-left-5 ul  li a:hover {
+  color: #606060;
+  background-color: #8eccf5;
+  border-color: #8eccf5;
+}
+
+.table-responsive.Reimbursements-outer-box tr th {
+    background: #ffffff;
+}

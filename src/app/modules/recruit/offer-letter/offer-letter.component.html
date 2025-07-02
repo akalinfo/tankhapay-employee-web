@@ -1,0 +1,632 @@
+<!-- Sidebar Navigation -->
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<!-- Main hero section -->
+<section>
+    <div id="wrapper" [ngClass]="{'active':showSidebar==false}">
+        <div class="fakeLoader"></div>
+
+        <div id="page-wrapper">
+            <!-- Section Header -->
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Offers</h3>
+                </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a [routerLink]="['/dashboard']">Home</a></li>
+                        <li class="breadcrumb-item active">Offers</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="loader-overlay" *ngIf="!isDataLoaded">
+                <div class="loader"></div>
+            </div>
+            <div class="container-fluid element">
+                <div class="row">
+
+                    <div class="col-md-12 col-sm-12 Offers-outer-box" *ngIf="isOfferlettersExist=='initial'">
+                        <div class="row">
+                        
+                        <div class="col-md-8 col-md-offset-2 mrg-top-25 mrg-bot-25">
+                        
+                        
+                            <div class="card">
+                            
+                                <div class="card-header text-center">
+                                    <h4>Offers </h4>
+                                    
+                                </div>
+                                
+                                <div class="card-body" style="  height: 170px;">
+                                    <div class="row">
+                                    
+                                        <div class="col-md-12 padd-bot-15 padd-top-15">
+                                         
+                                           <div class="col-sm-12 text-center">
+                                               <h4 class="Payment-due-outer-box1 text-center">The Offers generated for the candidate will be listed here.</h4>
+                                                <a (click)="openAddEditCandidateModal('createCandidate')" class="btn btn-primary manage-btn emp-edit-btn-box12">Create Offer  <i aria-hidden="true" class="fa fa-chevron-right"></i></a>
+                                                 
+                                            </div>
+                                            
+                                                        
+                                        </div>
+                                     
+                                    </div>
+                                </div>		
+                            </div>
+                        </div>
+                         
+                        </div>
+                        </div>
+
+                    <div class="col-md-12 col-sm-12 Offers-listing-outer-box" *ngIf="isOfferlettersExist=='hasData'">
+                        <div class="card">
+                            <div class="card-header">
+                                <div style="display: flex;justify-content: end;">
+                                    
+                                        <div style="padding-left: 10px;">
+                                            <button style="height: 42px;" class=" btn btn-primary"
+                                            (click)="openAddEditCandidateModal('createCandidate')">Create Offer </button>
+                                            <a (click)="openSidebar()" class="btn excel-btn-box results filter-onlick-btn" 
+                                            style="padding-top: 9px;">Search<i class="fa fa-filter"></i></a>
+                                        </div>
+                                </div>
+
+                            </div>
+
+
+                            <!-- Candidate List Datatable -->
+                            <div class="card-body">
+                                <div class="card-body-listing-box">
+                                    <div class="table-responsive reports-table-outer-box reports-new-table-outer-box">
+                                        <table
+                                            class="table table-striped table-bordered ng-tns-c2951172048-3 ng-star-inserted">
+                                            <thead style="background: skyblue;">
+                                                <tr>
+                                                    <th>S.No</th>
+                                                    <th> Name</th>
+                                                    <th>File Name</th>
+                                                    <th>Posting Title</th>
+                                                    <th>Department</th>
+                                                    <th>Job Type</th>
+                                                    <th class="fit "> email Id </th>
+                                                    <th class="fit "> Mobile No. </th>
+                                                    <th class="fit "> Expected Joining Date </th>
+                                                    <th class="fit "> Expiry Date </th>
+                                                    <th class="fit "> Status </th>
+                                                    <th class="fit">Action Date</th>
+                                                    <th class="fit "> Action </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody style="background: aliceblue;">
+                                                <tr *ngIf="candidateList.length == 0;">
+                                                    <td colspan="12" class="text-center">No data available</td>
+                                                </tr>
+                                                <tr
+                                                    *ngFor="let candidate of candidateList | paginate: { itemsPerPage: 10, currentPage: p , totalItems: total_count }; let i = index">
+                                                    <td>
+                                                        <p>{{ ((p - 1) * 10) + i + 1 }} </p>
+                                                    </td>
+                                                    
+                                                    <td>{{candidate.candidate_name}}</td>
+                                                    <td *ngIf="candidate.file_name; else fileNameNotExist"><a
+                                                            class="attachment-file-box" [href]='candidate.file_name'
+                                                            target="_blank"><i class="fa fa-file-pdf-o text-danger fa-lg" aria-hidden="true"></i>
+                                                            &nbsp;{{candidate.candidateFileName}}</a></td>
+
+                                                    <ng-template #fileNameNotExist>
+                                                        <td>OL not generated</td>
+                                                    </ng-template>
+
+                                                    <td>{{candidate.posting_title}}</td>
+                                                    <td>{{candidate.department_name}}</td>
+                                                    <td>{{candidate.jobtype}}</td>
+                                                    <td>{{candidate.email_id}}</td>
+                                                    <td>{{candidate.mobile}}</td>
+                                                    <td>{{candidate.expected_doj | date}}</td>
+                                                    <td>{{candidate.expiry_date | date}}</td>
+                                                    <td>
+                                                       
+                                                        <select class="wide form-control" *ngIf="!candidate.tpcode"
+                                                            style=" height: 26px;width: 128px;display: block;font-size: 12px;margin: 0;padding: 4px 2px;"
+                                                            (change)="changeOfferStatus(candidate, $event.target.value,i)">
+                                                            <option *ngFor="let type of offerLetterStatus"
+                                                                value="{{type.code}}" [selected]="candidate.offer_status_cd==type.code">
+                                                                {{ type.name }}
+                                                            </option>
+                                                        </select>
+                                                        {{candidate.tpcode ? candidate.offer_status :''}}
+                                                        <!-- <span (mouseenter)="onHover(i)" *ngIf="!isEditStatus[i]"
+                                                            (mouseleave)="onLeave(i)"
+                                                            style="position: relative;">{{candidate.tpcode ? 'APP LINK SENT' :candidate.offer_status.toUpperCase()}}
+                                                            <i *ngIf="!isEditStatus[i] && hoverIndex === i && !candidate.tpcode"
+                                                            class="fa fa-edit"
+                                                            style="cursor: pointer;"
+                                                            (click)="toggleEditStatus(i)">
+                                                            </i>
+                                                        </span> -->
+                                                    </td>
+                                                    <td>{{candidate.candidate_status_timestamp ? candidate.candidate_status_timestamp :''}}</td>
+                                                    <td class="fit text-center ng-tns-c2951172048-3">
+                                                        <div class="job-buttons action-btn-outer-box" *ngIf="candidate.offer_status_cd!='accepted' && !candidate.tpcode">
+                                                            <a data-toggle="modal" class="btn btn-shortlist manage-btn"
+                                                                data-placement="top" title="Edit"><i
+                                                                    class="ti-pencil-alt"
+                                                                    (click)="openAddEditCandidateModal('editCandidate', candidate)"></i></a>
+
+                                                            <a data-toggle="modal" class="btn btn-shortlist manage-btn"
+                                                                data-placement="top" title="delete"><i
+                                                                    class="fa fa-trash" aria-hidden="true"
+                                                                    (click)="openDeleteModal(candidate.candidate_id)"></i></a>
+                                                        </div>
+                                                        <a class="btn btn-primary" style="font-size: 11px;padding: 3px 10px;" title="App Link Sent"
+                                                        (click)="addEmployee(candidate)" *ngIf="candidate.offer_status_cd=='accepted' && !candidate.tpcode"><i class="fa fa-send-o"></i>
+                                                    </a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <pagination-controls *ngIf="candidateList && candidateList.length > 0"
+                                        (pageChange)="onPageChange($event)"
+                                        style="display: flex; align-items: center; justify-content: center; padding-top: 20px; padding-bottom: 20px;"></pagination-controls>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- #region save Candidate - Create & Edit Modal -->
+    <div id="candidate-modal" class="modal fade add-address-form-box" style="display: none;" data-backdrop="static">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form [formGroup]="candidateForm" (ngSubmit)="onSaveCandidate()">
+                    <div class="modal-header theme-bg">
+                        <h4 class="modal-title">Generate Offer Letter</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                            (click)="closeModal()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <h4 class="top-shif-title-box">Basic Information</h4>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Candidate Name<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" formControlName="candidateName"
+                                        placeholder="Candidate Name" required>
+                                    <span class="input-group-addon">
+                                        <div class="IC-clock"><i class="fa fa-user"></i></div>
+                                    </span>
+                                </div>
+                                <div *ngIf="fc.candidateName.touched && fc.candidateName.invalid" class="text-danger">
+                                    <div *ngIf="fc.candidateName.errors?.required">Candidate name is required.</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Posting Title<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" formControlName="postingTitle"
+                                        placeholder="Posting Title" required>
+                                    <span class="input-group-addon">
+                                        <div class="IC-clock"><i class="fa fa-briefcase" aria-hidden="true"></i></div>
+                                    </span>
+                                </div>
+                                <div *ngIf="fc.postingTitle.touched && fc.postingTitle.invalid" class="text-danger">
+                                    <div *ngIf="fc.postingTitle.errors?.required">Posting title is required.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 19px;">
+                            <label class="control-label col-sm-3">Department Name<span
+                                    class="text-danger">*</span></label> <a class="btn btn-primary" (click)="openInNewTab()"
+                                     title="Add Department"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i></a>
+                            <div class="col-sm-6">
+                                
+                                <ng-select [items]="departments"
+                                bindLabel="departmentname" bindValue="departmentname"
+                                formControlName="departmentName" placeholder="Select Department ">
+                               </ng-select>  
+                                <div *ngIf="fc.departmentName.touched && fc.departmentName.invalid" class="text-danger">
+                                    <div *ngIf="fc.departmentName.errors?.required">Department is required.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Email ID<span class="text-danger">*</span></label>
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <input type="email" class="form-control" formControlName="emailId"
+                                        placeholder="Email ID" required>
+                                    <span class="input-group-addon">
+                                        <div class="IC-clock"><i class="fa fa-envelope"></i></div>
+                                    </span>
+                                </div>
+                                <div *ngIf="fc.emailId.touched && fc.emailId.invalid" class="text-danger">
+                                    <div *ngIf="fc.emailId.errors?.required">Email Id is required.</div>
+                                    <div *ngIf="fc.emailId.errors?.invalidEmail">Invalid email format.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Mobile No<span class="text-danger">*</span></label>
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <input type="number" class="form-control" formControlName="mobileNo" placeholder="Mobile No"
+                                        (keydown)="preventInvalidInput($event)" (wheel)="disableScroll($event)" required
+                                        oninput="if (this.value.length > 10) this.value = this.value.slice(0, 10);" />
+                                    <span class="input-group-addon">
+                                        <div class="IC-clock"><i class="fa fa-phone" aria-hidden="true"></i></div>
+                                    </span>
+                                </div>
+                                <div *ngIf="fc.mobileNo.touched && fc.mobileNo.invalid" class="text-danger">
+                                    <div *ngIf="fc.mobileNo.errors?.required">Mobile Number is required.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Address</label>
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" formControlName="address" placeholder="Address"
+                                        />
+                                    <span class="input-group-addon">
+                                        <div class="IC-clock"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <h4 class="top-shif-title-box">Employment Information</h4>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Job Type<span class="text-danger">*</span></label>
+                            <div class="col-sm-6">
+                                <select class="form-control" formControlName="jobType" required>
+                                    <option value="null" disabled selected>Select Job Type</option>
+                                    <option value="Permanent">Permanent</option>
+                                    <option value="Contractual">Contractual</option>
+                                    <option value="Apprentice">Apprentice</option>
+                                    <option value="Consultant">Consultant</option>
+                                </select>
+                                <div *ngIf="fc.jobType.touched && fc.jobType.invalid" class="text-danger">
+                                    <div *ngIf="fc.jobType.errors?.required">Job type is required.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Expected Joining Date<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-6">
+                                <input type="date" class="form-control" formControlName="joiningDate" [min]="todayDate"
+                                    required />
+                                <div *ngIf="fc.joiningDate.touched && fc.joiningDate.invalid" class="text-danger">
+                                    <div *ngIf="fc.joiningDate.errors?.required">Expected joining date is required.
+                                    </div>
+                                    <div *ngIf="fc.joiningDate.errors?.invalidDate">Joining date should be less than or
+                                        equal to the expiry
+                                        date.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Offer Expiry Date<span class="text-danger">*</span></label>
+                            <div class="col-sm-6">
+                                <input type="date" class="form-control" formControlName="expiryDate" [min]="todayDate"
+                                    required />
+                                <div *ngIf="fc.expiryDate.touched && fc.expiryDate.invalid" class="text-danger">
+                                    <div *ngIf="fc.expiryDate.errors?.required">Offer Expiry date is required.</div>
+                                    <div *ngIf="fc.expiryDate.errors?.invalidDate">Offer Expiry date should be greater than or
+                                        equal to the joining date.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <h4 class="top-shif-title-box">Earning Information</h4>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">CTC<span class="text-danger">*</span></label>
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <input type="number" class="form-control" formControlName="ctc" placeholder="CTC" required
+                                        (keydown)="preventInvalidInput($event)"
+                                        (wheel)="disableScroll($event)" min="0">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-rupee" aria-hidden="true"></i>
+                                    </span>
+                                </div>
+                                <div *ngIf="fc.ctc.touched && fc.ctc.invalid" class="text-danger">
+                                    <div *ngIf="fc.ctc.errors?.required">CTC is required.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <a *ngIf="popupType != 'createCandidate'" class="btn btn-default" data-toggle="modal"
+                            data-placement="top" value="Send Offer"
+                            (click)="openSendOfferLetterModal(candidateForm.get('candidateId').value)">{{candidateDetails?.offer_letter_issued ? 'Resend Offer' :'Send Offer'}}</a>
+
+                        <input *ngIf="popupType == 'createCandidate'" id="save-and-show-btn" type="submit"
+                            [disabled]="candidateForm.invalid" class="btn btn-default" value="Save">
+                        <input *ngIf="popupType !== 'createCandidate'" id="save-and-show-btn" type="submit"
+                            [disabled]="candidateForm.invalid" class="btn btn-default" value="Update">
+
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel" (click)="closeModal()">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- #region Save Email JSON - Create & Edit Modal -->
+    <div id="send-offer-letter" class="modal fade add-address-form-box email_outer_box-design" data-backdrop="static">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form [formGroup]="offerLetterForm">
+                    <div class="modal-header theme-bg">
+                        <h4 class="modal-title">Send Offer Letter</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                            (click)="closeSendOfferLetterModal()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Choose Email Template</label>
+                            <div class="col-sm-6" style="display:flex;">
+                                <select id="emailTemplate" class="form-control" formControlName="emailTemplate"
+                                    (change)="changeEmailTemplate(candidateForm.get('candidateId').value, $event.target.value)">
+                                    <option [value]="null" >Select Email Template</option>
+                                    <option *ngFor="let type of masterTemplateList" [value]="type.row_id">
+                                        {{ type.template_name }}
+                                    </option>
+                                </select>&nbsp;
+                                <button class="btn btn-primary" style="height: 33px;" title="Add Offer Letter Template" (click)="routeToHrLetter()"
+                                ><i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">To<span class="text-danger">*</span></label>
+                            <div class="col-sm-6">
+                                <tag-input [displayBy]="'label'" [identifyBy]="'label'" formControlName="to"
+                                    [theme]="'bootstrap'" name="toEmails" placeholder="+ To" trimTags="true"
+                                    [separatorKeyCodes]="[32, 188]" secondaryPlaceholder="To"  [addOnBlur]="true"
+                                    (onRemove)="onItemRemoved($event)" (onAdd)="onItemAdded($event)" removable="true"
+                                    required>
+                                </tag-input>
+                                <div *ngIf="offerLetterForm.get('to')?.errors?.invalidEmail && offerLetterForm.get('to')?.touched"
+                                    class="text-danger">
+                                    <span class="error-msg">Please enter a valid email address.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Cc</label>
+                            <div class="col-sm-6">
+                                <tag-input [displayBy]="'label'" [identifyBy]="'label'" formControlName="cc"
+                                    [theme]="'bootstrap'" name="toEmails" placeholder="+ Cc"
+                                    [separatorKeyCodes]="[32, 188]" secondaryPlaceholder="cc"
+                                    removable="true"  [addOnBlur]="true"></tag-input>
+                                <div *ngIf="offerLetterForm.get('cc')?.errors?.invalidEmail && offerLetterForm.get('cc')?.touched"
+                                    class="text-danger">
+                                    <span class="error-msg">Please enter a valid email address.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Bcc</label>
+                            <div class="col-sm-6">
+                                <tag-input [displayBy]="'label'" [identifyBy]="'label'" formControlName="bcc"
+                                    [theme]="'bootstrap'" name="toEmails" placeholder="+ Bcc"
+                                    [separatorKeyCodes]="[32, 188]" secondaryPlaceholder="bcc"
+                                    removable="true" [addOnBlur]="true"></tag-input>
+                                <div *ngIf="offerLetterForm.get('bcc')?.errors?.invalidEmail && offerLetterForm.get('bcc')?.touched"
+                                    class="text-danger">
+                                    <span class="error-msg">Please enter a valid email address.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Subject<span class="text-danger">*</span></label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" formControlName="subject" placeholder="Subject"
+                                    required>
+                                <div *ngIf="fol.subject.touched && fol.subject.invalid" class="text-danger">
+                                    <div *ngIf="fol.subject.errors?.required">Subject is required.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-6">Body (This text will appear in Mail Body)<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-12">
+                                <div [ngxSummernote]="config" id="body-editor" formControlName="body" required>
+                                </div>
+                                <div *ngIf="fol.body.touched && fol.body.invalid" class="text-danger">
+                                    <div *ngIf="fol.body.errors?.required">Body is required.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Attachment<span class="text-danger">*</span></label>
+                            <div class="col-sm-12">
+                                <div [ngxSummernote]="config" id="attachment" formControlName="attachment" required>
+                                </div>
+                                <div *ngIf="fol.attachment.touched && fol.attachment.invalid" class="text-danger">
+                                    <div *ngIf="fol.attachment.errors?.required">Attachment is required.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeSendOfferLetterModal()">Cancel</button>
+                        <button type="button" class="btn btn-default" (click)="previewLetter()">Preview</button>
+                        <button type="submit" class="btn btn-primary"
+                            (click)="onSaveEmailJson(candidateForm.get('candidateId').value, false)"
+                            [disabled]="offerLetterForm.invalid">Update</button>
+                        <button type="submit" class="btn btn-primary"
+                            (click)="onSaveEmailJson(candidateForm.get('candidateId').value, true)"
+                            [disabled]="offerLetterForm.invalid">Send Email</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- #region Delete Modal -->
+    <div class="modal fade" id="delete-candidate-modal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalCenterTitle">Delete Candidate</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"
+                        (click)="deleteCandidate()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="add-department" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-cenetered">
+            <div class="modal-content">
+                <div class="modal-header theme-bg">
+                    <h4 class="modal-title">Add Deparment</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                        (click)="closeNewDepartmentModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="addDepartmentForm" (ngSubmit)="savenewDepartment()">
+                        <div class="form-group">
+                            <label for="department">Department Name:</label>
+                            <input type="text" class="form-control" id="department" formControlName="departmentName" 
+                            placeholder="Enter Department Name" required>
+                            <div *ngIf="addDepartmentForm.get('department')?.errors?.required" class="text-danger">
+                                Department name is required.
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" [disabled]="addDepartmentForm.invalid">Add Department</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="sidebar" class="sidebar bg-dark text-white sidebar-menu_filter-box" > 
+        <h3 class="filter-menu-header-text-box">Filter</h3>
+      <button class="close-btn btn btn-danger1" (click)="closeSidebar()"><i class="fa fa-close"></i></button>
+      <a  class="clear-box-btn" title="Clear Filter" (click)="onReset()">Clear</a>
+      <div class="sidebar-content-box">
+          <div class="col-md-12 col-sm-12">
+            <input type="text" value=""
+            [(ngModel)]="searchInput" placeholder="Search Employee(s)" class="form-control wide-width" style="width: 100%;">
+        </div>
+          
+          <div class="col-md-12 ">
+
+        <div id="filterComponent">
+        <div class="panel-group">
+        
+        <div class="panel panel-default">
+            <div class="panel-heading panel_heading_gray  card-header" role="tab" id="headingOne2" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne2" aria-expanded="false" aria-controls="collapseOne">
+                <h4>Employees Filter <i class="fa fa-angle-down"></i></h4>
+            </div>
+            <div id="collapseOne2" class="panel-collapse collapse card-body in" role="tabpane2">
+                <div class="row">
+                    <div class="col-sm-12">
+             
+                    <div class="form-group">
+                        <label class="control-label col-sm-12">Date</label>
+                        <div class="col-sm-12 padd-0">
+                            <input type="date" [(ngModel)]="joiningDate" class="form-control wide-width"
+                              style="width: 100%;" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-12">Status</label>
+                        <div class="col-sm-12 padd-0">
+                            <select class="form-control"
+                                [(ngModel)]="offer_status" >
+                                <option [ngValue]="null" disabled selected>Select Status</option>
+                                <option *ngFor="let type of offerLetterStatus" [value]="type.code">
+                                    {{ type.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                            
+                    <div class="form-group">
+                        <label class="control-label col-sm-12">Department</label>
+                        <div class="col-sm-12 padd-0">
+                            <ng-select [items]="departments" [(ngModel)]="department"
+                            bindLabel="departmentname" bindValue="departmentname"
+                             placeholder="Select Department ">
+                           </ng-select>  
+                                
+                        </div>
+                    </div>
+                    
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        </div>
+        </div>
+    
+        <div class="text-center mrg-bot-25">
+            <button type="button" class="btn btn-user1 btn-round btn-primary" (click)="onSearch();" id="btnSetFilter"> &nbsp;Apply</button>
+            
+        </div>
+        </div>
+          
+          
+      </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<app-footer></app-footer>

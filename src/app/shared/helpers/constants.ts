@@ -898,7 +898,7 @@ export const exit_form_save_url:string = tankhapay_baseurl+"saveExitQuestionnair
 export const full_and_final_get_url:string=  tankhapay_baseurl+"TpCandidate/getExitEmployeeList";
 export const clearance_form_save_url:string= tankhapay_baseurl+ "submitExitClearanceForm";
 
-// 
+//
 export const get_hourly_summary_report_url: string = tankhapay_baseurl + "Report/get_hourly_summary_report";
 
 // add by ak 19-06-2025
@@ -907,8 +907,8 @@ export const updateTDSExemption_url: string = tankhapay_baseurl + "employee/upda
 export const send_email_remainder_url:string = tankhapay_baseurl + "sendEmailExitRemainder"
 export const markExitFormSentToEmployee:string = tankhapay_baseurl + "markExitFormSentToEmployee"
 export const submitApprovalFeedbackForm:string = tankhapay_baseurl + "submitApprovalFeedbackForm"
-// end 
-export const getPdfBtyeCodePortrait_url: string = tankhapay_baseurl + "Report/getPdfBtyeCodePortrait ";
+// end
+export const getPdfBtyeCodePortrait_url: string = tankhapay_baseurl + "Report/getPdfBtyeCodePortrait";
 
 // add sidharth kaul dated. 28.06.2025
 export const GeneralSettingTabData_url: string = tnd_tankhapay_api_URL + "pms/getconfigdata";
@@ -919,3 +919,7 @@ export const GetKraCatlogue_url: string = tnd_tankhapay_api_URL + "pms/getmethod
 export const tagSkillSet_url: string = tnd_tankhapay_api_URL + "pms/createskillsettag";
 export const filePmsUpload_url: string = tnd_tankhapay_api_URL + "pms/uploadpmsfile";
 // end
+
+export const send_employee_otp_url: string = tankhapay_baseurl + "send_employee_otp";
+export const verify_employee_otp_url: string = tankhapay_baseurl + "verify_employee_otp";
+

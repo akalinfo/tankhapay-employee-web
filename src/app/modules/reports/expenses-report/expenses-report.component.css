@@ -1,0 +1,371 @@
+a.job_name_tag {
+    font-weight: 500;
+    color: #0047ab;
+	margin: 4px 0;
+    display: inline-block;
+}
+
+.element:-webkit-full-screen {
+  background-color: #fff;
+  width: 100vw;
+  height: 100vh;
+  padding-top: 20px!important;
+}
+
+.element:-webkit-full-screen p {
+  visibility: visible;
+}
+
+.element:-moz-full-screen {
+  background-color: #fff;
+  width: 100vw;
+  height: 100vh;
+  padding-top: 20px!important;
+}
+
+.element:-moz-full-screen p {
+  visibility: visible;
+}
+
+.element:-ms-fullscreen {
+  background-color: #fff;
+  width: 100vw;
+  height: 100vh;
+  padding-top: 20px!important;
+}
+
+.element:-ms-fullscreen p {
+  visibility: visible;
+}
+
+.element:fullscreen {
+  background-color: #fff;
+  width: 100vw;
+  height: 100vh;
+  padding-top: 20px!important;
+}
+
+.element:fullscreen p {
+  visibility: visible;
+}
+.punchin-Button-job-company-box {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}	
+.punchin-Button-job-company-box .btn.btn-blue.punchin-Button-box, .punchin-Button-job-company-box .btn.btn-blue.punchout-Button-box {
+    font-size: 12px;
+    padding: 2px 10px;
+    width: auto;
+    margin: 0 10px 0 0;
+}
+.location-addre-box {
+    margin: 0 0 0 10px;
+}
+.location-addre-box i {
+    background: #f6f6f6;
+    padding: 5px;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    font-size: 15px;
+    text-align: center;
+    color: #818181;
+    line-height: 21px;
+}	
+span.hover-location-addre-box {
+    display: none;
+}
+.location-addre-box a:hover span.hover-location-addre-box {
+    display: block;
+    position: absolute;
+    background: #ffffff;
+    padding: 10px;
+    font-size: 12px;
+    max-width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px 0 rgb(0 0 0 / 18%);
+    -webkit-box-shadow: 0 5px 10px 0 rgb(0 0 0 / 18%);
+	color: #000;
+}
+
+.table-responsive.Reimbursements-outer-box .table tr td {
+    padding: 0.5rem 1rem!important;
+    font-size: 12px;
+}
+.table-responsive.Reimbursements-outer-box .table tr th {
+    font-weight: 500;
+}
+.table-responsive.Reimbursements-outer-box .table tr td h5 {
+    margin: 2px 0;
+}
+
+.table-responsive.Reimbursements-outer-box tfoot tr th {
+    background: #f6f6f6;
+}
+ 
+.panel-body.Check-In-Check-Out-table-inner-box .box-body {
+    padding: 0;
+}
+.panel-body.Check-In-Check-Out-table-inner-box table.table {
+    margin: 0;
+}
+.panel-body.Check-In-Check-Out-table-inner-box thead tr th {
+    background: #fafdff;
+}
+.panel-body.Check-In-Check-Out-table-inner-box tfoot tr th {
+    background: #fff;
+}
+.panel-body.Check-In-Check-Out-table-inner-box {
+    background: #f8f7f7;
+    padding: 8px;
+	border-left: 4px solid #1194f7;
+	width: 50%;
+ 
+}
+
+
+
+
+/* right filter menu css */
+
+
+.filter-onlick-btn {
+    margin-left: 10px;
+    color: #000 !important;
+    font-size: 15px !important;
+    padding: 10px 15px !important;
+    background-color: #e1e1e1;
+}
+
+ 
+
+#sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: #f1f5fa;
+    overflow-x: hidden;
+    transition: 0.5s;
+    
+    z-index: 1000;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 9px -1px, rgba(0, 0, 0, 0.3) -10px 6px 10px 0px, rgba(0, 0, 0, 0.12) -7px 1px 18px 0px;
+}
+
+#sidebar .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+}
+
+.sidebar-content {
+    padding: 15px;
+}
+h3.filter-menu-header-text-box {
+    padding: 21px 15px;
+	margin-bottom: 0;
+}
+.sidebar-content-box .form-group {
+    font-size: 13px;
+}
+
+
+#sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+#sidebar::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+#sidebar::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+#sidebar::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+.sidebar-menu_filter-box label.control-label {
+    font-weight: 500;
+    padding: 0;
+}
+.sidebar-menu_filter-box select.form-control {
+    height: 35px;
+}
+.sidebar-menu_filter-box .form-group {
+    margin-bottom: 0px;
+}
+
+
+.sidebar-menu_filter-box .panel-default>.panel-heading {
+    color: #333;
+    background-color: #deedff;
+    border-color: #fff;
+    border: 1px solid #fff;
+}
+.sidebar-menu_filter-box .panel-default>.panel-heading h4 {
+    font-size: 14px;
+    color: #000;
+}
+.sidebar-menu_filter-box .panel-heading h4 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.sidebar-menu_filter-box .panel-heading {
+    cursor: pointer;
+}
+
+.card.Statistics-outer-box {
+    background: transparent;
+	border: 0;
+	margin-bottom: 10px;
+}
+.card.Statistics-outer-box i {
+    float: right;
+    position: absolute;
+    right: 20px;
+    font-size: 30px;
+    top: 4px;
+}
+.card.Statistics-outer-box .card-header {
+    cursor: pointer;
+}
+.card.Statistics-outer-box .card-body {
+    padding-bottom: 0;
+}
+
+ .angle-arrow-right-btn:not(.collapsed) h4 {
+     
+	-moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+ 
+.angle-arrow-right-btn h4 {
+    font-size: 28px;
+    line-height: 23px;
+    margin-left: 4px;
+}
+.angle-arrow-right-btn {
+    width: 105px;
+    float: right;
+    background: transparent;
+    margin-top: -25px;
+    cursor: pointer;
+    padding: 5px 10px;
+    -moz-transition: all 700ms linear;
+    -webkit-transition: all 700ms linear;
+    transition: all 200ms linear;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	color: #0c78cb;
+} 
+
+ .img-responsive.img-circle.location-img-box {
+    height: 30px;
+	margin-right: 5px;
+}
+span.location-img-outer-box {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+}
+.punchin-Button-job-company-box strong {
+    min-width: 35px;
+}
+
+.card-header select.form-control, .card-header INPUT.form-control {
+    font-size: 14px;
+    padding: 6px 5px;
+    height: 35px;
+    margin: 0;
+}
+a.btn.btn-round.btn-success.excel-btn-box {
+ 
+    padding: 2px 9px 2px 5px !important;
+ 
+}		
+.filter-onlick-btn {
+ 
+    padding: 5px 15px !important;
+ 
+}	
+
+
+
+.filter-outer-main-box label.control-label {
+    color: #383838;
+    padding: 0;
+}
+.filter-outer-main-box .form-control {
+    height: 40px;
+	margin-bottom: 0;
+}
+.filter-outer-main-box .btn-primary-Add-Roles-btn {
+    border-radius: 0 !important;
+    background-color: #adacac00 !important;
+    border: 1px solid #1194f7;
+    color: #1194f7!important;
+    text-transform: capitalize;
+    font-size: 13px;
+    padding: 8px 17px;
+	    min-width: auto;
+}
+.filter-outer-main-box .btn-primary-Add-Roles-btn:hover {
+    background-color: #ffffff !important;
+    color: #1194f7;
+    border: 1px solid #1194f7;
+}
+.filter-outer-main-box .form-control {
+    height: 40px;
+    font-size: 13px;
+    padding: 6px 5px;
+}
+.filter-outer-main-box .filter-onlick-btn {
+    
+    font-size: 13px !important;
+    padding: 8px 13px !important;
+    background-color: #ffffff;
+    color: #1194f7 !important;
+    border: 1px solid #1194f7;
+	margin: 0;
+}
+.filter-outer-main-box .filter-onlick-btn:hover, .filter-outer-main-box .btn-primary-Add-Roles-btn:hover {
+    background-color: #008ffb0f!important;
+}
+ 
+.filter-outer-main-box .form-group {
+    margin: 0;
+}
+.filter-outer-main-box  .card-body{
+    padding : 5px;
+}
+.card.filter-outer-main-box {
+    margin-bottom: 5px;
+}
+.filter-outer-main-box h3 {
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: capitalize;
+    line-height: 36px;
+    margin: 0;
+}
+
+.form-group select.form-control option:selected{
+    font-weight: bold;
+  }
+
+  .form-control{
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+  .active-right-sidebar{
+    width:381px !important;
+  }

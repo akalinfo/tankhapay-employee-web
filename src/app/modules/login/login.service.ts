@@ -173,11 +173,20 @@ export class LoginService {
   getEmpCompletedCycle_url_fun(Data: any) {
     return this._CallApiService.post_enc(Data, this.getEmpCompletedCycle_url)
   }
-  // end 
+  // end
 
-   private insert_birthday_wishes_url = constants.insert_birthday_wishes_url;
+  private insert_birthday_wishes_url = constants.insert_birthday_wishes_url;
   insert_birthday_wishes(Data: any) {
     return this._CallApiService.post_enc(Data, this.insert_birthday_wishes_url)
+  }
+
+  private send_employee_otp_url = constants.send_employee_otp_url;
+  send_employee_otp(Data: any) {
+    return this._CallApiService.post_enc(Data, this.send_employee_otp_url)
+  }
+  private verify_employee_otp_url = constants.verify_employee_otp_url;
+  verify_employee_otp(Data: any) {
+    return this._CallApiService.post_enc(Data, this.verify_employee_otp_url)
   }
 
 }

@@ -1,0 +1,37 @@
+.table-responsive.reports-new-table-outer-box thead {
+    color: #ffffff !important;
+    background: #6fbbdb !important;
+    vertical-align: top;
+}
+
+.table-bordered {
+    border: 1px solid #e8edef !important;
+}
+
+.table-responsive.Reimbursements-outer-box .table tr td {
+    padding: 0.2rem 1rem !important;
+    font-size: 12px;
+}
+
+.panel-body.Check-In-Check-Out-table-inner-box {
+    background: #f8f7f7;
+    padding: 8px;
+    border-left: 4px solid #1194f7;
+}
+
+.box-shadow-btn {
+    margin: 2px 0;
+    border-radius: 8px;
+    /* Rounded corners */
+    cursor: pointer;
+    /* Pointer on hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+    /* Box shadow */
+    transition: transform 0.2s, box-shadow 0.2s;
+    /* Smooth hover effects */
+}
+
+.box-shadow-btn:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Stronger shadow */
+}

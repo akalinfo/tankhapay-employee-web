@@ -1,0 +1,240 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<div id="wrapper" [ngClass]="{'active':showSidebar}">
+
+  <div id="page-wrapper" style="min-height: 610px;">
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Company details</h3>
+      </div>
+      <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+          <li class="breadcrumb-item active">Company details</li>
+        </ol>
+      </div>
+    </div>
+
+    <!----------------Start GSTIN-------------------------->
+    <div *ngIf="!show_GST_details" class="container-fluid">
+      <!-- /row -->
+      <div class="row">
+
+
+        <div class="col-md-8 col-md-offset-2 mrg-top-25 mrg-bot-25 signup-accordion-outer-box">
+
+          <h3 class="com-you-onbor-outer-box">Let's set up your Company details!</h3>
+
+          <div class="card mrg-bot-0">
+            <div class="card-body padd-bot-0">
+              <div class="row">
+
+                <div class="col-md-12 padd-top-15">
+
+                  <div class="col-sm-12 m-clear mrg-bot-15">
+                    <label>Company GSTIN <span class="text-danger">*</span></label>
+
+                    <input type="text" [(ngModel)]="gstin_number" name="company-gstin" placeholder="Enter GSTIN Number"
+                      class=" form-control Input_Input__mzdN8  border border-primary p-3 rounded" maxlength="15">
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+          <div class="card1">
+            <div class="card-body1">
+              <div class="row">
+
+                <div class="col-md-12 padd-top-15">
+
+                  <div>
+                    <p class=" balance-message-box">Input your company's GST number and automatically fill in your company details. Avail GST credit on your invoices</p>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class=" padd-top-15 flex justify-between align-center">
+            <a routerLink="/dashboard/welcome"  class="btn btn-outline-primary">Back</a>
+            <a (click)="open_gst_details()" class="btn btn-primary">Continue</a>
+          </div>
+
+        </div>
+
+      </div>
+      <!-- /row -->
+    </div>
+    <!-----------------End GSTIN--------------------------->
+
+
+
+
+
+    <!--------------Start Company Details------------------>
+    <div *ngIf="show_GST_details" class="container-fluid">
+      <!-- /row -->
+      <div class="row">
+
+        <form [formGroup]="companyDetailsForm">
+          <div class="col-md-8 col-md-offset-2 mrg-top-25 mrg-bot-25 signup-accordion-outer-box">
+
+            <h3 class="com-you-onbor-outer-box">Let's set up your Company details!</h3>
+
+
+            <div class="card mrg-bot-25">
+              <div class="card-body padd-bot-0">
+                <div class="row">
+
+                  <div class="col-md-12 padd-top-15">
+
+
+
+                    <div class="col-sm-12 m-clear mrg-bot-15">
+
+
+                      <!-- <div class="form-group state-city-box-inner">
+                      <label>Brand Name </label>
+                      <input type="text" class="form-control " placeholder="Enter brand name">
+
+                    </div>
+
+                    <div class="form-group state-city-box-inner">
+                      <label>Organization Type <span class="text-danger">*</span> </label>
+
+                      <select class="mb-0 rounded p-3 form-control">
+                        <option value="1">Private Limited /Public Limited / LLP</option>
+                        <option value="2">Sole Proprietorship</option>
+                        <option value="3">Partnership</option>
+                        <option value="4">Trust / NGO</option>
+                      </select>
+
+                    </div> -->
+
+                      <div class="form-group state-city-box-inner">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label>Company GSTIN </label>
+                            <input type="text" formControlName="acGstinNo" name="company-gstin"
+                              placeholder="Enter your company GSTIN number" class="Input_Input__mzdN8
+                              border border-primary p-3 rounded form-control read-only">
+                          </div>
+                          <div class="col-md-6">
+                            <label class="top-text-box"><span class="text-danger">* </span>City</label>
+                            <input type="text" class="form-control" formControlName="company_town_city"
+                            placeholder="Enter your city name">
+                            <div *ngIf="companySubmitted && cd.company_town_city.errors" class="inline-pos1">
+                              <small *ngIf="cd.company_town_city.errors.required" class="text-danger">City
+                                is required</small>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+
+
+
+            <div class="card mrg-bot-0">
+              <div class="card-body padd-bot-0">
+                <div class="row">
+
+                  <div class="col-md-12 padd-top-15">
+
+
+                    <div class="col-sm-12 m-clear mrg-bot-15">
+
+
+                      <!-- <div class="form-group state-city-box-inner NonEditableField_container-box">
+
+                        <img src="../../../../assets/img/icon_check_circle.svg" alt="" class="NonEditableField-box">
+                        <div class="flex flex-col">
+                          <span class="top-text-box">Company PAN</span>
+                          <span class="bottom-text-box">AAACC1206D</span>
+                        </div>
+
+                      </div> -->
+
+                      <div class="form-group state-city-box-inner NonEditableField_container-box">
+
+                        <img src="../../../../assets/img/icon_check_circle.svg" alt="" class="NonEditableField-box">
+                        <div class="flex flex-col">
+                          <span class="top-text-box">Company Name</span>
+                          <span class="bottom-text-box">{{cd.company_name.value}}</span>
+                        </div>
+
+
+                      </div>
+
+                      <div class="form-group state-city-box-inner NonEditableField_container-box">
+
+                        <img src="../../../../assets/img/icon_check_circle.svg" alt="" class="NonEditableField-box">
+                        <div class="flex flex-col">
+                          <span class="top-text-box">Registered Address</span>
+                          <span class="bottom-text-box">{{cd.company_address.value}}</span>
+                        </div>
+
+
+                      </div>
+
+                      <div class="form-group state-city-box-inner NonEditableField_container-box">
+
+                        <img src="../../../../assets/img/icon_check_circle.svg" alt="" class="NonEditableField-box">
+                        <div class="flex flex-col">
+                          <span class="top-text-box">Pincode</span>
+                          <span class="bottom-text-box">{{cd.company_pincode.value}}</span>
+                        </div>
+
+
+                      </div>
+
+                      <div class="form-group state-city-box-inner NonEditableField_container-box">
+
+                        <img src="../../../../assets/img/icon_check_circle.svg" alt="" class="NonEditableField-box">
+                        <div class="flex flex-col">
+                          <span class="top-text-box">State</span>
+                          <span class="bottom-text-box">{{cd.company_state.value}}</span>
+                        </div>
+
+                      </div>
+
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class=" padd-top-15 flex justify-between align-center">
+              <a (click)="back_to_gstin()" class="btn btn-outline-primary">Back: Edit GSTIN</a>
+              <a (click)="updateEmployerBillingCompany()"  class="btn btn-primary">Continue</a>
+            </div>
+
+
+          </div>
+        </form>
+
+
+      </div>
+      <!-- /row -->
+    </div>
+    <!--------------End Company Details------------------>
+
+
+  </div>
+</div>
+<!-- /#page-wrapper -->

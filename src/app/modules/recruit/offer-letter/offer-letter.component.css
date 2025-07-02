@@ -1,0 +1,255 @@
+/* @import 'ckeditor5/ckeditor5.css'; */
+input.form-control.Required-Balance-input-text {
+    height: 40px;
+    margin: 0 0 0 5px;
+}
+.btn-primary{
+    border-color: #1194f7;
+}
+
+p.please-add-text-box {
+    font-size: 12px;
+    color: #c40000;
+    text-transform: capitalize;
+}
+
+input.form-control.deductionAmountField,
+select.form-control.IsBillable_NonBillable {
+    font-size: 12px;
+    padding: 5px;
+    height: 30px;
+    width: 117px;
+    margin: 0.2rem;
+}
+
+a.btn.btn-danger.removeDeductionBtn {
+    background: #ffb4ba !important;
+    border-color: #ffbfbc;
+    padding: 2px 8px;
+    border-radius: 2px;
+}
+
+.table-responsive.reports-table-outer-box.reports-new-table-outer-box table tr td p {
+    margin: 0;
+    font-size: 12px;
+}
+
+.table-responsive.reports-table-outer-box.reports-new-table-outer-box table tr td {
+    font-size: 12px;
+}
+
+.job-buttons.action-btn-outer-box .btn.manage-btn {
+    padding: 4px 4px;
+    background: #ffffff;
+    color: #000000 !important;
+}
+
+.job-buttons.action-btn-outer-box .btn.manage-btn:hover,
+.job-buttons.action-btn-outer-box .btn.manage-btn:focus {
+
+    background: #ffffff !important;
+
+}
+
+.job-buttons.action-btn-outer-box .btn.manage-btn i {
+    color: #000000 !important;
+}
+
+h4.top-shif-title-box {
+    border-bottom: 1px solid #F6F7F8;
+    padding-bottom: 4px;
+    margin: 15px 0px 20px 0;
+    font-size: 15px;
+    color: #000;
+    font-weight: 500;
+}
+
+.modal-content .modal-body label {
+    font-weight: 400;
+    color: #000;
+}
+
+.hidden {
+    display: none;
+}
+
+a.attachment-file-box {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    width: 149px;
+}
+
+a.attachment-file-box img.img-responsive {
+    width: 20px;
+}
+
+span.name-box-office {
+    padding: 3px 8px;
+    background-color: #ededed;
+    border: 1px solid #ccc;
+    position: relative;
+    float: left;
+    font-size: 12px;
+    word-break: break-all;
+}
+
+.add-bcc-to-btn a {
+    color: #3498db;
+    font-size: 14px;
+    padding-left: 16px;
+    line-height: 28px;
+}
+
+.email_outer_box-design .form-group {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.email_outer_box-design .form-group select.form-control,
+.email_outer_box-design .form-group input.form-control {
+    border: none;
+    background: #fff;
+    margin-bottom: 0;
+}
+
+.email_outer_box-design .form-group label.control-label {
+    margin: 0;
+    line-height: 34px;
+    color: #000;
+    font-weight: 500;
+}
+
+.table-responsive.reports-new-table-outer-box table.table tr th,
+.table-responsive.reports-new-table-outer-box table.table tr td {
+    border-color: #ebebeb;
+    padding: 5px 5px;
+    vertical-align: middle;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+a.btn-primary-Add-Roles-btn {
+    color: #fff;
+    background-color: #1194f7 !important;
+    border-color: #1194f7;
+    border-radius: 10px !important;
+}
+
+
+:host ::ng-deep .ck-editor__editable_inline {
+    min-height: 400px;
+}
+
+div#candidate-modal {
+    overflow-y: scroll;
+}
+
+div#candidate-modal::-webkit-scrollbar {
+    width: 0px;
+}
+
+.loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Optional background for overlay */
+    z-index: 9999; /* Ensure it appears on top */
+    display: flex;
+    justify-content: center; /* Horizontal centering */
+    align-items: center;     /* Vertical centering */
+  }
+  .loader {
+    width: 50px;
+    --b: 8px; 
+    aspect-ratio: 1;
+    border-radius: 50%;
+    padding: 1px;
+    background: conic-gradient(#0000 10%,#3381f0) content-box;
+    -webkit-mask:
+      repeating-conic-gradient(#0000 0deg,#000 1deg 20deg,#0000 21deg 36deg),
+      radial-gradient(farthest-side,#0000 calc(100% - var(--b) - 1px),#000 calc(100% - var(--b)));
+    -webkit-mask-composite: destination-in;
+            mask-composite: intersect;
+    animation:l4 1s infinite steps(10);
+  }
+  @keyframes l4 {to{transform: rotate(1turn)}}
+
+  .filter-onlick-btn {
+    margin-left: 10px;
+    color: #000 !important;
+    font-size: 15px !important;
+    padding: 10px 15px !important;
+    background-color: #e1e1e1;
+  }
+  
+  #sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: #f1f5fa;
+    overflow-x: hidden;
+    transition: 0.5s;
+    z-index: 1000;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 9px -1px, rgba(0, 0, 0, 0.3) -10px 6px 10px 0px, rgba(0, 0, 0, 0.12) -7px 1px 18px 0px;
+  }
+  
+  h3.filter-menu-header-text-box {
+    padding: 21px 15px;
+    margin-bottom: 0;
+  }
+  
+  #sidebar .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+  }
+  
+  .sidebar-menu_filter-box label.control-label {
+    font-weight: 500;
+    padding: 0;
+  }
+  
+  .sidebar-menu_filter-box .form-group {
+    margin-bottom: 0px;
+  }
+  
+  .sidebar-content-box .form-group {
+    font-size: 13px;
+  }
+  
+  .sidebar-menu_filter-box .panel-default>.panel-heading h4 {
+    font-size: 14px;
+    color: #000;
+  }
+  
+  .sidebar-menu_filter-box .panel-heading h4 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .sidebar-menu_filter-box .panel-default>.panel-heading {
+    color: #333;
+    background-color: #deedff;
+    border-color: #fff;
+    border: 1px solid #fff;
+  }
+  
+  .sidebar-menu_filter-box .panel-heading {
+    cursor: pointer;
+  }
+  
+  #sidebar a.clear-box-btn {
+    position: absolute;
+    top: 53px;
+    right: 25px;
+    color: #1372dd;
+    font-size: 14px;
+    cursor: pointer;
+  }

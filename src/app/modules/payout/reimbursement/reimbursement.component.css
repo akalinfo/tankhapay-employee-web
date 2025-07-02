@@ -1,0 +1,337 @@
+[type="radio"] {
+  display: inline !important
+}
+
+
+.light-skyblue {
+  background: lightblue;
+}
+
+.white {
+  background: white;
+}
+.btn.manage-btn {
+margin: 0 2px;
+padding: 10px 15px;
+-webkit-transition: all .3s ease-in-out;
+-moz-transition: all .3s ease-in-out;
+-ms-transition: all .3s ease-in-out;
+-o-transition: all .3s ease-in-out;
+transition: all .3s ease-in-out;
+}
+
+html body .btn-primary {
+background: #1194f7;
+}
+.btn-primary {
+background-color: #0084ff;
+border-color: #0084ff;
+}
+.btn {
+padding: 6px 14px;
+border-radius: 2px;
+}
+html body .btn-success {
+background: #0fb76b;
+}
+.btn {
+padding: 6px 14px;
+border-radius: 2px;
+}
+html body .btn-success:hover, html body .btn-success:focus {
+color: #ffffff !important;
+}
+.export-button {
+  background-color: rgb(114, 238, 116);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.dropdown.float-right-box ul#menu3 {
+  left: -52px;
+}
+.top-right-outer-box {
+  display: flex;
+  justify-content: flex-start;
+}
+.form-check {
+  padding-top: 10px;
+}
+.form-check .form-check-input {
+  height: 20px;
+  width: 20px;
+  vertical-align: text-bottom;
+  margin: 3px 5px 0 0;
+}
+.table-responsive.reports-table-outer-box thead {
+  background: #1669b6 !important;
+  color: #fff;
+}
+
+.Appointment-outer-box table thead th {
+  background: #31869b;
+  color: #fff;
+  font-size: 18px;
+  padding: 12px;
+}
+
+.table>thead>tr>th {
+  padding: 8px;
+  line-height: 1.42857143;
+  vertical-align: top;
+  border-top: 1px solid #ddd;
+}
+.table-responsive.reports-new-table-outer-box thead {
+  color: #ffffff !important;
+  background: #6fbbdb!important;
+  vertical-align: top;
+}
+
+.table-bordered {
+  border: 1px solid #e8edef !important;
+}
+.save-button .btn.btn-primary:hover {
+  background: #87ceeb !important;
+}
+
+.save-button .btn.btn-primary {
+  background: #d1ebfc;
+  color: #000;
+  border: 1px solid #87ceeb;
+  padding: 10px 14px;
+}
+
+html body .btn-primary:hover, html body .btn-primary:focus {
+  color: #ffffff;
+}
+.btn-primary:hover, .btn-primary:focus {
+  color: #fff;
+  background-color: #1194f7 !important;
+  border-color: #1194f7 !important;
+}
+
+
+.Show-Fields-top-outer-box {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.dropdown.btn-group.Show-Fields-outer-box .btn-primary {
+  padding: 10px 15px;
+}
+
+.showhide {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.dropdown-menu {
+  border-color: #e8eef1;
+  padding: 0;
+  box-shadow: none;
+  margin: 0px 0 0;
+}
+
+.Show-Fields-top-outer-box .dropdown.float-right-box .btn-primary:hover {
+  color: #fff;
+  background-color: #1194f7;
+  border-color: #1194f7;
+}
+.Show-Fields-top-outer-box .dropdown.float-right-box .btn-primary {
+  border-radius: 0;
+}
+
+.save-button .btn.btn-primary.Reset-btn-box:hover {
+  background: #dbdbdb;
+  border: 1px solid #c4c6c7;
+}
+
+.save-button .btn.btn-primary.Reset-btn-box {
+  background: #e3e3e3;
+  border: 1px solid #c4c6c7;
+}
+.save-button .btn.btn-primary:hover {
+  background: #87ceeb;
+}
+.save-button .btn.btn-primary {
+  background: #d1ebfc;
+  color: #000;
+  border: 1px solid #87ceeb;
+  padding: 10px 14px;
+}
+html body .btn-primary:hover, html body .btn-primary:focus {
+  color: #ffffff;
+}
+.btn-primary:hover, .btn-primary:focus {
+  color: #fff;
+  background-color: #1194f7;
+  border-color: #1194f7;
+}
+/* .btn.focus, .btn:focus, .btn:hover {
+  color: #67757c;
+  text-decoration: none;
+} */
+
+html body .btn-primary {
+  background: #1194f7;
+}
+
+.dropdown-menu>li:last-child a {
+  border-bottom: none;
+}
+.dropdown-menu>li>a {
+  display: block;
+  padding: 14px 12px 14px 12px;
+  clear: both;
+  font-weight: 400;
+  line-height: 1.42857143;
+  color: #67757c;
+  white-space: nowrap;
+  border-bottom: 1px solid #f1f6f9;
+}
+
+select.form-control.status-btn-box {
+  font-size: 12px;
+  padding: 5px;
+  height: 30px;
+  width: 117px;
+  margin: 0.2rem;
+}
+
+h1.Payment-due-outer-box1 {
+display: flex;
+flex-direction: column; /* Change to column layout */
+justify-content: space-between;
+align-items: center;
+font-size: 24px;
+}
+
+/* h1.Payment-due-outer-box1 span {
+  width: 100px;
+} */
+
+span.payment-due-text-box {
+    font-size: 14px;
+    line-height: 15px;
+    width: 155px!important;
+}
+
+.alert-group.alert-box .alert-success {
+  color: #525252;
+  background-color: #ffffff;
+  border-color: #c5e6d4;
+  text-align: center;
+  font-size: 14px;
+}
+
+.notice {
+  padding: 15px;
+  background-color: #fff;
+  margin-bottom: 10px;
+  border-radius: 2px;
+  border: 1px solid #eaeff5;
+  border-left: 6px solid #838992;
+  box-shadow: 0 0 10px 1px rgba(71, 85, 95, 0.08);
+  -webkit-box-shadow: 0 0 10px 1px rgba(71, 85, 95, 0.08);
+  -moz-box-shadow: 0 0 10px 1px rgba(71, 85, 95, 0.08);
+}
+.notice-warning {
+  border-left-color: #fea911;
+}
+a.Add-balancebtn strong {
+  font-size: 12px;
+  color: #1692df;
+  font-weight: 500;
+  text-decoration: underline;
+}
+.notice.alert-dismissable {
+  font-size: 13px;
+}
+.notice.alert-dismissable button.close {
+  right: -2px !important;
+  color: #000;
+}
+.card.Your-progress-sidebar-menu-box .login-panel .panel-heading h4 {
+  font-size: 15px;
+}
+.notice-success {
+  border-left-color: #74ba28;
+}
+.notice-success > strong {
+  color: #74ba28;
+}
+
+.notice-danger {
+  border-left-color: #eb344f;
+}
+
+.notice-danger > strong {
+  color: #eb344f;
+}
+
+.notice-info {
+  border-left-color: #1db4bd;
+}
+.notice-info > strong {
+  color: #1db4bd;
+}
+
+.notice-primary {
+  border-left-color: #1f1aa3;
+}
+.notice-primary > strong {
+  color: #1f1aa3;
+}
+a.Add-balancebtn strong {
+  font-size: 12px;
+  color: #1692df;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+@media print {
+    qrcode {
+      display: block !important; /* Ensure the QR code is displayed */
+    }
+  }
+
+  .alert {
+    background-color: #ffe6e6;
+    border: 1px solid #ff8080;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .insufficient-balance {
+    color: red;
+    font-weight: bold;
+  }
+  
+  input.form-control.Required-Balance-input-text {
+    height: 40px;
+    margin: 0 0 0 5px;
+}
+p.please-add-text-box {
+    font-size: 12px;
+    color: #c40000;
+    /* text-transform: capitalize; */
+    line-height: 14px;
+}
+.Reimbursement-outer-box .row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.Reimbursement-outer-box .row .col-md-3 {
+  width: 100%;
+} 

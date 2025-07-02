@@ -1,0 +1,202 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<div id="wrapper" [ngClass]="{'active': showSidebar == false}">
+  <div class="fakeLoader"></div>
+  <!-- Navigation -->
+  <div id="page-wrapper">
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor" style="margin-left: 20px;">Leave Type</h3>
+      </div>
+      <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item" title="Home"><a [routerLink]="['/dashboard']">Home</a>
+          </li>
+          <li class="breadcrumb-item active">Leave Type</li>
+        </ol>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <!-- /row -->
+      <div class="row">
+        <div class="col-md-12 mrg-top-0 mrg-bot-25">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="sub-title-inn-box View-Roles-list-outer-box">Leave
+                <a (click)="addNewLeaveType()" data-toggle="modal" data-placement="top" title="Add"
+                  class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn"><i class="fa fa-plus"
+                    aria-hidden="true"></i> Add </a>
+
+              </h4>
+            </div>
+
+            <div class="card-body padd-bot-0 padd-top-0">
+              <div class="row">
+                <div class="col-md-12 padd-top-0">
+                  <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+                    <table class="table user-list">
+                      <tbody>
+                        <ng-container *ngFor="let ltmd of leave_type_master_data; let i=index;">
+                          <tr>
+                            <td class="ZPLRow">
+                              <div class="ZPusrName"><small
+                                  class="{{get_color_class(i)}}"></small><b>{{ltmd.leavetypename | titlecase }} [ <b>
+                                    {{ltmd.leavetype}}</b>]
+                                </b></div>
+                            </td>
+                            <!-- <td class="ZPLRow" title="Leave Code">
+                              <b> {{ltmd.leavetype}}</b>
+                            </td> -->
+                            <td class="CP"><span class="badge FL ML20">{{ltmd.leave_ctg}}</span></td>
+
+                            <td> <span *ngIf="ltmd.leave_days>0"
+                                title="Gender | No of Days">{{ltmd.t_gender=='B'?'Both':ltmd.t_gender=='M'?'Male':'Female'}}
+                                | {{ltmd.leave_days}}</span> <span  title="Half-Pay Leave: When an employee applies for 1 day of leave, 2 half-pay leaves are deducted by default. One half-pay leave is equivalent to half a day" *ngIf="ltmd.is_halfday_leave=='Y'">
+                                Halfday Leave Type
+                              </span>
+                            </td>
+
+                            <td class="CP">
+                              <label class="switch" *ngIf="ltmd.type_account_id != 0">
+                                <input type="checkbox" [checked]="check_is_enable(ltmd.is_enable)"
+                                  (change)="change_enable_disable($event.target.checked, ltmd)">
+                                <span class="slider round"></span>
+                              </label>
+
+                            </td>
+
+                            <td class="roles">
+                              <div id="ember398" class="dropdown float-right ember-view">
+                                <div class="job-buttons action-btn-outer-box">
+
+                                  <a (click)="updateLeaveType(ltmd)" data-toggle="modal" style="color:blue"
+                                   *ngIf="(ltmd.leave_days > 0 || ltmd?.typecode_status == 'N') && ltmd.type_account_id && ltmd.type_account_id !='0'" class="btn btn-shortlist manage-btn"       data-placement="top" title="Edit"><i class="ti-pencil-alt"></i></a>
+                                  <!-- <i class="fa fa-eye fa-lg"  style="color:grey"  *ngIf="ltmd.type_account_id =='0'" disabled></i> -->
+                                  <!-- <a href="https://demo.1akal.in/tpay/tpay_v1/leave_type.html#" data-toggle="modal"
+                                    class="btn btn-shortlist manage-btn" data-placement="top" title="delete"><i
+                                      class="fa fa-trash" aria-hidden="true"></i></a> -->
+                                </div>
+
+                              </div>
+                            </td>
+
+                          </tr>
+                        </ng-container>
+
+
+                      </tbody>
+                    </table>
+
+                  </div>
+
+
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+
+
+          <!-- <div class="col-md-12 col-12 padd-top-15 text-center">
+            <a class="btn btn-primary">Add Break</a>
+          </div> -->
+
+        </div>
+
+
+      </div>
+      <!-- /row -->
+    </div>
+  </div>
+  <!-- /#page-wrapper -->
+  <app-footer></app-footer>
+
+
+  <!---------Add New Leave Type Popup-------->
+  <div [@grooveState]="showLeaveTypePopup?'active':'inactive'" id="addupdateleave" class="modal" style="z-index:1000;">
+    <div [@dongleState]="showLeaveTypePopup?'active':'inactive'" class="modal-dialog"
+      style="margin:auto auto auto auto;">
+      <div class="modal-content" style="height:100%;margin-top:50px;width:75rem;margin-left:-5rem;">
+        <form *ngIf="showLeaveTypePopup" [formGroup]="leaveTypeForm">
+          <div class="modal-header theme-bg">
+            <h4 class="modal-title">{{leavePopupTitle}}</h4>
+            <button type="button" class="close" aria-hidden="true" (click)="closeLeaveTypePopup()">&times;</button>
+          </div>
+
+          <div class="modal-body" style="overflow: auto;height: 25rem;">
+
+            <div class="row">
+              <div class="col-md-3">
+                <label>Leave Code</label><span class="text-danger">*</span>
+              </div>
+              <div class="col-md-8">
+                <input type="text" onkeyup="this.value = this.value.replace(/[^a-zA-Z]/g, '')" class="form-control"
+                  formControlName="leavecode" maxlength="5">
+              </div>
+
+              <div class="col-md-3">
+                <label>Leave Type Name</label><span class="text-danger">*</span>
+              </div>
+              <div class="col-md-8">
+                <input type="text" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9 ]/g, '')" class="form-control"
+                  formControlName="leavetypename" maxlength="20">
+              </div>
+
+              <div class="col-md-3">
+                <label>Leave Category</label> <span class="text-danger">*</span>
+              </div>
+              <div class="col-md-8">
+                <select class="form-control" formControlName="leave_ctg">
+                  <option value="">Select</option>
+                  <option value="Paid">Paid</option>
+                  <option value="Unpaid">Unpaid</option>
+                  <!-- <option value="On Duty">On Duty</option> -->
+                  <!-- <option value="Restricted Holiday">Restricted Holiday</option> -->
+                </select>
+              </div>
+
+              <div class="col-md-3">
+                <label>Leave Days</label>
+              </div>
+              <div class="col-md-8">
+                <input class="form-control" formControlName="leave_days" (keyup)="check_digits($event)">
+              </div>
+
+              <!-- start - half day leave setting -  sidharth kaul dated. 14.05.2025 -->
+              <ng-container *ngIf="!leaveTypeForm.value.leave_days">
+              <div class="col-md-3"></div>
+              <div class="col-md-9 m-clear mrg-bot-15 check-pad-box">
+                <input type="checkbox" name="half_day" id="half_day"
+                  (click)="change_isHalfDayLeave($event.target.checked)"
+                  [checked]="isHalfDayLeave('Y')">
+                <label for="half_day">Consider as Half Day Leave</label>
+              </div>
+              </ng-container>
+              <!-- end - half day leave setting -->
+
+              <ng-container *ngIf="leaveTypeForm.value.leave_days && leaveTypeForm.value.leave_days != 0">
+                <div class="col-md-3">
+                  <label>Gender</label>
+                </div>
+                <div class="col-md-8">
+                  <select class="form-control" formControlName="gender">
+                    <option value="">Select</option>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                    <option value="B">Both</option>
+                  </select>
+                </div>
+              </ng-container>
+              </div>
+            <br>
+
+          </div>
+          <div class="modal-footer">
+            <input type="button" class="btn btn-default" (click)="closeLeaveTypePopup()" value="Cancel">
+            <input type="submit" class="btn btn-success" (click)="add_update_leave_type()" value="Submit">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,363 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<div id="wrapper" [ngClass]="{'active':showSidebar}">
+
+  <div id="page-wrapper-box">
+    <div class="row page-titles mrg-bot-0">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Welcome {{emp_name}}!</h3>
+      </div>
+      <div class="col-md-7 align-self-center">
+
+
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item" *ngIf="this.show_bus_setting_page =='Y'"><a (click)="dont_show_this_again()"
+              style="cursor: pointer;">Don't show the welcome
+              screen anymore</a></li>
+
+        </ol>
+      </div>
+    </div>
+    <div class="container-fluid padd-0 mrg-5">
+      <!-- /row -->
+      <div class="row">
+
+        <div class="col-md-12 col-sm-12" *ngIf="this.show_bus_setting_page =='Y'">
+          <div class="alert-group alert-box">         
+            <div class="alert alert-success alert-dismissable mrg-bot-5 mrg-top-5">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="dont_show_this_again()">×</button>
+              Congratulations! Starting Balance amount of Rs <strong>₹{{intial_pay_amount}}</strong> has been added to
+              your TankhaPay account. Get ready for a seamless payrolling experience!
+            </div>
+
+          </div>
+        </div>
+
+
+        <div class="card welcome-top-outer-box mrg-bot-0">
+          <div class="row">
+            <div class="col-md-8 mrg-top-0 mrg-bot-0 welcome-page-outer-box">
+              <div class="row">
+
+                <div class="col-md-12">
+                  <div class="card border-bottom-add-box">
+
+                    <div class="card-body padd-bot-5">
+
+                      <div class="col-md-3 col-sm-3">
+
+                        <img src="../../../../assets/img/welcome-img.png" class="img-responsive " alt="user">
+
+                      </div>
+
+                      <div class="col-md-9 col-sm-9">
+                        <div class="row">
+
+                          <div class="col-md-12 col-sm-12 mrg-top-10">
+                            <h4 class="sub-title-inn-box ">Let's Get Started! </h4>
+                            <p>Automate payroll processing, streamline attendance management, and ensure social security
+                              compliance with ease.</p>
+                          </div>
+                          <div class="col-md-6 col-sm-6 mrg-top-5 ">
+                            <div class="form-group mrg-bot-0">
+                              <label><strong><i class="fa fa-book" aria-hidden="true"></i> </strong>Guides:</label>
+                              <select class="form-control Guides-Tutorials-btn-box"
+                                (change)="changePage($event.target.value)">
+                                <option value="-1">Select a Guide</option>
+                                <option data-count="EPF Guide" value="https://www.tankhapay.com/epf-guide.html">EPF
+                                  Guide</option>
+                                <option data-count="EPF Glossary" value="https://www.tankhapay.com/epf-glossary.html">
+                                  EPF Glossary</option>
+                                <option data-count="EPF Checklist" value="https://www.tankhapay.com/epf-checklist.html">
+                                  EPF Checklist</option>
+                                <option data-count="ESI Guide" value=" https://www.tankhapay.com/esic-guide.html">ESI
+                                  Guide</option>
+                                <option data-count="ESI Glossary" value="https://www.tankhapay.com/esic-glossary.html">
+                                  ESI Glossary </option>
+                                <option data-count="ESI Checklist"
+                                  value="https://www.tankhapay.com/esic-checklist.html">ESI Checklist </option>
+                              </select>
+                            </div>
+
+                          </div>
+
+                          <div class="col-md-6 col-sm-6 mrg-top-5 ">
+                            <!-- <div class="form-group mrg-bot-0">
+                              <label><strong><i class="fa fa-video-camera" aria-hidden="true"></i>
+                                </strong>Tutorials:</label>
+                              <select class="form-control Guides-Tutorials-btn-box">
+                                <option value="-1">Select a Tutorials</option>
+                                <option data-count="1" value="2">Tutorials Video 1</option>
+                                <option data-count="1" value="2">Tutorials Video 2</option>
+
+                              </select>
+                            </div> -->
+                          </div>
+
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <!-- <div class="col-md-6 ">
+                  <div class="col-md-12 ">
+
+                    <div class="card Request-a-Callback-outer-box mrg-bot-0 border-right-add-box">
+                      <div class="card-header ">
+                        <h4 class="sub-title-inn-box ">Request a demo </h4>
+                      </div>
+                      <div class="card-body ">
+
+                        <div class="row">
+                          <div class="col-md-9 col-sm-9">
+
+                            <p>Get expert guidance on how to use our platform. Request a demo and one of our agents will
+                              connect with you.</p>
+                            <a class="btn btn-primary">Request a demo
+                              now</a>
+
+                          </div>
+
+                          <div class="col-md-3 col-sm-3">
+
+                            <img src="../../../../assets/img/hero-3-img.png" class="img-responsive " alt="user">
+
+                          </div>
+                        </div>
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div> -->
+                <div class="col-md-12 ">
+                  <div class="col-md-12 ">
+
+                    <div class="card Request-a-Callback-outer-box mrg-bot-0">
+                      <div class="card-header ">
+                        <h4 class="sub-title-inn-box ">FAQs</h4>
+                      </div>
+                      <div class="card-body ">
+
+
+                        <div class="row">
+                          <div class="col-md-9 col-sm-9">
+
+                            <p>Explore our Frequently Asked Questions for quick, informative answers to common
+                              inquiries!</p>
+                            <a class="btn btn-primary" [routerLink]="['/dashboard/faq']">Read More</a>
+
+                          </div>
+
+
+                          <div class="col-md-3 col-sm-3">
+
+
+                            <img src="../../../../assets/img/akal-banner.png" class="img-responsive " alt="user">
+
+                          </div>
+                        </div>
+
+
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+
+            <div class="col-md-4  mrg-top-0 mrg-bot-0 signup-accordion-outer-box ">
+
+              <!--<h3 class="com-you-onbor-outer-box">Let's set up your organisation!</h3>-->
+
+
+              <div class="card Your-progress-sidebar-menu-box mrg-bot-0">
+
+                <div class="card Request-a-Callback-outer-box mrg-bot-0">
+                  <div class="card-header ">
+                    <h4 class="sub-title-inn-box processes-outer-box">Your Progress : <span
+                        class="processes-text-box">{{this.progressPercent}}%</span> </h4>
+                  </div>
+                  <div class="card-body padd-bot-5 padd-top-0">
+
+                    <div class="row">
+                      <div class="col-md-12 col-sm-12">
+
+                        <div class="progress mrg-bot-0" style="height: 10px;">
+                          <div class="progress-bar bg-success" role="progressbar" [style.width.%]="progressPercent"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+                <div class="login-panel panel padd-top-0 mrg-top-0 employees-details-outer-box">
+
+
+                  <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+
+
+                    <div class="card12">
+
+
+                      <div id="collapseOne6" class="panel-collapse collapse in card-body  padd-bot-0" role="tabpane6">
+                        <div class="row12">
+                          <div class="padd-top-0">
+
+
+                            <div class="Appointment-outer-box Salary-Details-outer-box">
+                              <div class="table-responsive">
+
+
+                                <div class="CompanyOnboarding--step-children">
+                                  <!-- [ngClass]="{'read-only': (progressData?.company_details == 'Y') ? true : false}" -->
+                                  <a (click)="routeToCompany(progressData?.company_details)" title="{{(progressData?.company_details == 'Y')? 'View':'Start'}}">
+                                    <!-- is-step-selected -->
+                                    <div class="CompanyOnboarding--step-child"
+                                      [ngClass]="{'is-step-child-completed': (progressData?.company_details == 'Y') ? true : false}">
+                                      <div class="CompanyOnboarding--step-child-left">
+                                        <div class="CompanyOnboarding--step-text-wrapper">
+                                          <div>
+                                            <span class="CompanyOnboarding--step-child-count"> 1 </span>
+                                            <span class="CompanyOnboarding--step-child-name"> Company Details </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <!-- <button class="button--cta"
+                                        data-segment-track="start _step_enter company details">
+                                      {{(progressData?.company_details == 'Y')? 'View':'Start'}}   </button> -->
+                                      <i class="fa fa-chevron-right CompanyOnboarding--step-chevron"></i>
+                                    </div>
+                                  </a>
+                                  <!-- [ngClass]="{'read-only': (progressData?.payroll == 'Y' || progressData?.company_details == 'N') ? true : false}" -->
+                                  <a (click)="routeToPayout()" title="{{(progressData?.payroll == 'Y')? 'View':'Start'}}">
+                                    <div class="CompanyOnboarding--step-child"
+                                      [ngClass]="{'is-step-child-completed': (progressData?.payroll == 'Y') ? true : false}">
+                                      <div class="CompanyOnboarding--step-child-left">
+                                        <div class="CompanyOnboarding--step-text-wrapper">
+                                          <div>
+                                            <span class="CompanyOnboarding--step-child-count">
+                                              2 </span>
+                                            <span class="CompanyOnboarding--step-child-name">
+                                              Payout Date </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <!-- <button class="button--cta" data-segment-track="start _step_set payroll date">
+                                        {{(progressData?.payroll == 'Y')? 'View':'Start'}}  </button> -->
+                                      <i class="fa fa-chevron-right CompanyOnboarding--step-chevron"></i>
+                                    </div>
+                                  </a>
+
+                                  <!--  -->
+                                  <a (click)="routeTosalarystructure()" title="{{(progressData?.salary_structure == 'Y')? 'View':'Start'}}">
+                                    <div class="CompanyOnboarding--step-child"
+                                      [ngClass]="{'read-only': (progressData?.salary_structure == 'Y') ? true : false}"
+                                      [ngClass]="{'is-step-child-completed': (progressData?.salary_structure == 'Y') ? true : false}">
+                                      <div class="CompanyOnboarding--step-child-left">
+                                        <div class="CompanyOnboarding--step-text-wrapper">
+                                          <div>
+                                            <span class="CompanyOnboarding--step-child-count">
+                                              3 </span>
+                                            <span class="CompanyOnboarding--step-child-name">
+                                              Salary Components</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <!-- <button class="button--cta"
+                                        data-segment-track="start _step_set salary structure">
+                                        {{(progressData?.salary_structure == 'Y')? 'View':'Start'}}  </button> -->
+
+                                      <i class="fa fa-chevron-right CompanyOnboarding--step-chevron"></i>
+                                    </div>
+                                  </a>
+                                  <!-- [ngClass]="{'read-only': (progressData?.leave_template == 'Y' || progressData?.payroll == 'N') ? true : false}" -->
+                                  <a (click)="routeToLeave()" title="{{(progressData?.leave_template == 'Y')? 'View':'Start'}}">
+                                    <div class="CompanyOnboarding--step-child"
+                                      [ngClass]="{'is-step-child-completed': (progressData?.leave_template == 'Y') ? true : false}">
+                                      <div class="CompanyOnboarding--step-child-left">
+                                        <div class="CompanyOnboarding--step-text-wrapper">
+                                          <div>
+                                            <span class="CompanyOnboarding--step-child-count">
+                                              4 </span>
+                                            <span class="CompanyOnboarding--step-child-name">
+                                              Leave Template </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <!-- <button class="button--cta"
+                                        data-segment-track="start _step_set employee salary structure">
+                                        {{(progressData?.leave_template == 'Y')? 'View':'Start'}} </button> -->
+
+                                      <i class="fa fa-chevron-right CompanyOnboarding--step-chevron"></i>
+                                    </div>
+                                  </a>
+
+                                  <!--  -->
+                                  <a (click)="routeTosalarycompliance()" title="{{(progressData?.setup_compliance == 'Y')? 'View':'Start'}}">
+                                    <div class="CompanyOnboarding--step-child"
+                                      [ngClass]="{'read-only': (progressData?.setup_compliance == 'Y') ? true : false}"
+                                      [ngClass]="{'is-step-child-completed': (progressData?.setup_compliance == 'Y') ? true : false}">
+                                      <div class="CompanyOnboarding--step-child-left">
+                                        <div class="CompanyOnboarding--step-text-wrapper">
+                                          <div>
+                                            <span class="CompanyOnboarding--step-child-count"> 5 </span>
+                                            <span class="CompanyOnboarding--step-child-name"> Setup Compliance </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <!-- <button class="button--cta" data-segment-track="start _step_setup compliance">
+                                        {{(progressData?.setup_compliance == 'Y')? 'View':'Start'}}  </button> -->
+                                      <i class="fa fa-chevron-right CompanyOnboarding--step-chevron"></i>
+                                    </div>
+                                  </a>
+                                  <!-- [ngClass]="{'read-only': (progressData?.add_employees == 'Y' || progressData?.leave_template == 'N') ? true : false}" -->
+                                  <a (click)="routeToAddEmp()" title="{{(progressData?.add_employees == 'Y')? 'View':'Start'}}">
+                                    <div class="CompanyOnboarding--step-child"
+                                      [ngClass]="{'is-step-child-completed': (progressData?.add_employees == 'Y') ? true : false}">
+                                      <div class="CompanyOnboarding--step-child-left">
+                                        <div class="CompanyOnboarding--step-text-wrapper">
+                                          <div>
+                                            <span class="CompanyOnboarding--step-child-count">
+                                              6 </span>
+                                            <span class="CompanyOnboarding--step-child-name">
+                                              Add Employees </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <!-- <button class="button--cta"
+                                        data-segment-track="edit _step_add employees and contractors"> {{(progressData?.setup_compliance == 'Y')? 'View':'Start'}}  </button>
+                                     --> <i class="fa fa-chevron-right CompanyOnboarding--step-chevron"></i>
+                                    </div>
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /row -->
+    </div>
+  </div>
+  <!-- /#page-wrapper -->
+
+  <footer class="footer mrg-top-0"> © 2023 TankhaPay. Akal Information Systems Ltd. All Rights Reserved. </footer>
+</div>

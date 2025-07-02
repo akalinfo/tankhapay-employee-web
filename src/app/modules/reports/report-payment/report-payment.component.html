@@ -1,0 +1,484 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<section>
+	<div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+		<div class="fakeLoader"></div>
+
+		<div id="page-wrapper">
+
+                    <div class=" page-titles row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="col-md-5 align-self-center">
+                                    <h3 class="text-themecolor">Report Payment</h3>
+                                </div>
+                                <div class="col-md-7 align-self-center">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a [routerLink]="['/reports']">Reports</a></li>
+                                        <li class="breadcrumb-item active">Report Payment</li>
+                                    </ol>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                    <div class="row" *ngIf="!paymentStarted">
+
+                    <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                         <div class="login-panel panel panel-default mrg-top-0">
+                            <div class="panel-body">
+
+                                     <form  autocomplete="off" class="Add-Ons-outer-box">
+                                        <div class="form-group">
+
+                                            <div class=" col-md-6 ">
+                                                <input [value]="this.company_name" placeholder="Billing Name/Company Name" class="form-control" type="text" readonly>
+                                            </div>
+                                            <div class=" col-md-6 ">
+                                                <input [value]="this.employer_mobile" placeholder="Phone Number" class="form-control" type="text" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <div class=" col-md-12 ">
+                                                <input [value]="this.registered_address" placeholder="Street Address" class="form-control" type="text" readonly>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <div class=" col-md-6 ">
+                                                <input [value]="this.employer_profile.company_state" placeholder="City" class="form-control" type="text" readonly>
+                                            </div>
+                                            <div class=" col-md-6 ">
+                                                <input [value]="this.employer_profile.company_pincode" placeholder="ZIP" class="form-control" type="text" readonly>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+
+                                        <div class="form-base clearfix walletPart tal col-md-12">
+                                                   <div class="paymentDescription"><span>TankhaPay Subscription Balance is where you can add funds and use them later when you purchase licenses from TankhaPay or for future auto-renewal payments.</span></div>
+                                                   <div class="add-fund">
+                                                      <div class="existingBalDetails">
+                                                         <!-- <div>TankhaPay Subscription Balance ID :<span class="balance-id"> 2004598049855</span></div> -->
+                                                         <div>Your Current Balance :<span class="currencySymbol"> ₹ <span class="cur-amount"> {{(customerSummary!=''? customerSummary.balance:'0.00')}}</span></span></div>
+                                                         <div>Minimum Amount for this transaction :<span class="currencySymbol">₹ <span class="trans-amount">{{this.amount| number:'1.2-2'}}</span></span></div>
+                                                      </div>
+                                                      <div class="add-fund-container" style="display: block;">
+                                                        <div class="mB10">
+                                                            <span class="add-fund-label">Add Funds : </span>
+                                                            <div class="add-fund-inp-div">
+                                                                <span class="currencySymbol">₹ </span>
+                                                                <input class="add-fund-inp not-empty" type="number" [(ngModel)]="amount"
+                                                                    [ngModelOptions]="{ standalone: true }"
+                                                                    (copy)="onAmountChange()" (paste)="onAmountChange()" (blur)="onAmountChange()"
+                                                                    (keypress)="handleKeyPress()" (keyup)="handleKeyPress()" (keydown)="handleKeyPress()"
+                                                                  >
+                                                                  <!-- [readonly]="payoutStatusIsPending()" -->
+                                                            </div>
+                                                        </div>
+                                                        <div class="min-fund mB10 mrg-top-10">Please add an amount of ₹{{ amount | number:'1.2-2' }} to proceed with this transaction.</div>
+                                                        <div class="keep-fund">Keep sufficient funds in your TankhaPay Subscription Balance for uninterrupted transactions.</div>
+                                                    </div>
+
+                                                   </div>
+                                                </div>
+
+                                        </div>
+
+                                     </form>
+
+                            </div>
+
+                         </div>
+                      </div>
+
+
+
+                    </div>
+                    </div>
+
+                    <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- *ngIf="showPaymentSummary" -->
+                         <div class="login-panel panel panel-default mrg-top-0" id="SummarymyHeader">
+                            <div class="panel-body" >
+
+                               <div>
+                                  <div class="form-group" >
+                                     <form autocomplete="off" class="Add-Ons-outer-box">
+                                        <div class="form-group">
+                                            <label class="addon-price-box Summary-title-box col-md-12">Summary</label>
+
+                                        </div>
+
+                                        <div class="form-group Subtotal-title-box">
+                                            <label class="addon-price-box  col-md-6">Amount</label>
+                                            <div class="addon-price-div col-md-6 text-right">
+                                                <span class="currency-symbol">₹</span>
+                                                <span class="addon-price">{{amount| number:'1.2-2' }}</span>
+                                                <!-- <span class="addon-price" >{{ amount }}</span> -->
+                                                <!-- <span class="addon-price" *ngIf="Is_Billable != 'N'">{{ invoicedetail?.netamountreceived }}</span> -->
+                                            </div>
+                                        </div>
+                                        <div class="form-group Subtotal-title-box" [hidden]="amount !== initialAmount">
+                                            <label class="addon-price-box  col-md-6">Payrolling Charge</label>
+                                            <div class="addon-price-div col-md-6 text-right">
+                                                <span class="currency-symbol">₹</span>
+                                                <span class="addon-price">{{ invoicedetail?.payrollingcharges }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group Subtotal-title-box" [hidden]="amount !== initialAmount">
+                                            <label class="addon-price-box col-md-6">CGST @ {{ invoicedetail.cgstrate }}%</label>
+                                            <div class="addon-price-div col-md-6 text-right">
+                                                <span class="currency-symbol">₹</span>
+                                                <span class="addon-price">{{ invoicedetail.cgstamount }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group Subtotal-title-box" [hidden]="amount !== initialAmount">
+                                            <label class="addon-price-box col-md-6">SGST @ {{ invoicedetail.sgstrate }}%</label>
+                                            <div class="addon-price-div col-md-6 text-right">
+                                                <span class="currency-symbol">₹</span>
+                                                <span class="addon-price">{{ invoicedetail.sgstamount }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group Subtotal-title-box" [hidden]="amount !== initialAmount">
+                                            <label class="addon-price-box col-md-6">IGST @ {{ invoicedetail.igstrate }}%</label>
+                                            <div class="addon-price-div col-md-6 text-right">
+                                                <span class="currency-symbol">₹</span>
+                                                <span class="addon-price">{{ invoicedetail.igstamount }}</span>
+                                            </div>
+                                        </div>
+                                        <!-- [hidden]="(amount !== initialAmount || this.payout_status !== 'Pending')" -->
+                                        <div class="form-group Subtotal-title-box" [hidden]="(amount !== initialAmount )">
+                                            <label class="addon-price-box col-md-6">Available Balance </label>
+                                            <div class="addon-price-div col-md-6 text-right">
+                                                <span class="currency-symbol">₹</span>
+                                                <span class="addon-price">{{(customerSummary !== '' ? customerSummary.balance : '0.00')}}</span>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group Total-Amount-title-box">
+                                            <label class="addon-price-box col-md-6">Amount To Pay</label>
+                                            <div class="addon-price-div col-md-6 text-right">
+                                              <span class="currency-symbol">₹</span>
+                                              <ng-container *ngIf="amount !== initialAmount; else originalAmount">
+                                                <!-- Show the current amount if the condition is true -->
+                                                <span class="addon-price">{{ amount| number:'1.2-2' }}</span>
+                                              </ng-container>
+                                              <ng-template #originalAmount>
+                                                <!-- Show the original net amount received if the condition is false -->
+                                                <span class="addon-price">{{ invoicedetail?.netamountreceived }}</span>
+                                              </ng-template>
+                                            </div>
+                                          </div>
+
+                                        <a  class="btn btn-primary btn-lg" style="width: 100%;" (click)="payStart()"
+                                        [ngClass]="{'disabled': ((amount == 0 || amount === '' || amount === undefined) && invoicedetail?.netamountreceived == 0) || !screenClicked }">PROCEED TO PAY</a>
+                                     </form>
+                                  </div>
+                              
+                               </div>
+                            </div>
+
+                         </div>
+                      </div>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+
+
+                    </div>
+
+			<div class="container-fluid">
+				<!-- /row -->
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 ">
+                            <div class="card">
+                            
+                                <div class="col-md-6 col-md-offset-3  mrg-bot-25" [ngStyle]="{'display':calPaymentStatus == '3'?'':'none'}">
+                                    <div class="form-row form-checkbox individual-business-box">
+
+                                      <div class="row" *ngIf="invoicedetail != ''">
+
+
+                                        <div class="col-md-12 col-12">
+                                          <div class="form-group">
+
+                                            <div class="payment-box">
+
+                                              <div class="padd-10">
+                                                <div class="payment-left-box">
+                                                  <img src="assets/img/upi.png" class="fl-left width-30" alt="" style=" max-width: 100%;">
+                                                  <img src="assets/img/fast-forward.png" class="arrow-btn" alt="" (click)="juspayRedirectbtn()"
+                                                    style="cursor: pointer;">
+                                                </div>
+                                                <div class="payment-right-box">
+                                                </div>
+                                              </div>
+
+                                              <div class="pay-box-footer bt-1">
+                                                <a (click)="juspayRedirectbtn()" data-toggle="tooltip" data-original-title="Pay Now"
+                                                  class="theme-cl font-13 fl-right" style="cursor: pointer;">Pay Now</a>
+                                              </div>
+
+                                            </div>
+
+                                          </div>
+                                        </div>
+
+                                        <div class="col-md-12 col-12">
+                                          <div class="form-group">
+
+                                            <div class="payment-box">
+
+                                              <div class="padd-10">
+                                                <div class="payment-left-box">
+                                                  <img src="assets/img/bank-transfer.png" class="fl-left width-30" alt=""
+                                                    style="max-width: 152px;">
+                                                  <img src="assets/img/fast-forward.png" class="arrow-btn" alt="" style="cursor: pointer;"
+                                                    (click)="bankTransferButton()">
+                                                </div>
+                                                <div class="payment-right-box">
+                                                  <h5 class="mb-0">Max Limit Rs. 100000 per day</h5>
+                                                  <small>No Additional Charges</small>
+                                                </div>
+                                              </div>
+
+                                              <div class="pay-box-footer bt-1">
+                                                <a (click)="bankTransferButton()" data-toggle="tooltip" data-original-title="Pay Now"
+                                                  class="theme-cl font-13 fl-right" style="cursor: pointer;">Pay Now</a>
+                                              </div>
+
+                                            </div>
+
+                                          </div>
+                                        </div>
+
+                                      </div>
+
+                                    </div>
+                                  </div>
+
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+			</div>
+		</div>
+	</div>
+
+</section>
+
+<div class="modal" [ngStyle]="{'display':bankDetailModalStatus?'block':'none'}">
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header theme-bg">
+					<h4 class="modal-title">Alert</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="closeBankDetailModal()">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label><b>Please use the following details to complete the bank transfer:</b></label>
+					</div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                          <div class="row text-center">
+                            <div class="col-md-12"> <b> {{ vpaDetails?.company_name }}</b><hr></div>
+                        </div>
+                          
+                            <div class="row">
+                                <div class="col-md-3"> <b>Amount : </b> </div>
+                                <div class="col-md-9"><span> &#8377; {{ invoicedetail?.netamountreceived }}</span></div>
+                                <div class="col-md-12"><hr></div>
+                            </div>
+                      
+                            <div class="row">
+                              <div class="col-md-3"> <b>Account No : </b></div>
+                              <div class="col-md-9"> <span> {{ vpaDetails?.accountnumber }}</span></div>
+                              <div class="col-md-12"><hr></div>
+                          </div>
+                            <div class="row">
+                                <div class="col-md-3"><b>Bank Name : </b> </div>
+                                <div class="col-md-9"> <span> {{ vpaDetails?.bankname }}</span></div>
+                                <div class="col-md-12"><hr></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3"><b>IFSC Code : </b> </div>
+                                <div class="col-md-9"> <span> {{ vpaDetails?.ifsccode }}</span></div>
+                                <div class="col-md-12"><hr></div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-3"><b>Branch Name : </b> </div>
+                              <div class="col-md-9"> <span> {{ vpaDetails?.branch_name }}</span></div>
+                              <div class="col-md-12"><hr></div>
+                          </div>
+                        </div>
+
+
+
+
+
+                    </div>
+
+				</div>
+				<div class="modal-footer text-center">
+					<input type="button" class="btn btn-info" value="Bank Transfer" (click)="submitBankTransfer()">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal" [ngStyle]="{'display':alertManualTransferStatus?'block':'none'}">
+	<div class="modal-dialog modal-md">
+		<div class="modal-content" >
+			<form>
+			
+				<div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <ul>
+                                    <li>Login to your bank via net bankning and click on VAN and VPA.</li>
+                                    <li>Use the provided account number to add beneficiary.</li>
+                                    <li>Depending on your bank, it may take 30 min to 2 hrs before you can transfer amount.</li>
+                                    <li>Transfer to amount</li>
+                                    <li>It may take upto 48 hrs for the amount to reflect, after which your TankhaPay account will be activated.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+
+
+
+                    </div>
+
+				</div>
+				<div class="modal-footer text-center">
+					<input type="button" class="btn btn-info" value="Ok" (click)="submitAlertManualButton()">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
+<!-----QR Code Popup------>
+<div class="modal  scan-and-pay-outer-box" [@grooveState]="isShowQr?'active':'inactive'" (click)="closeQRCode()">
+    <div class="modal-dialog" [@dongleState]="isShowQr?'active':'inactive'" disabled style="pointer-events: auto;"
+      >
+      <!-- (click)="$event.stopPropagation()" -->
+  <!-- (click)="$event.stopPropagation()" -->
+      <div class="modal-content" style="pointer-events: none;" >
+     
+        <div class="modal-body">
+
+
+          <div class="login-panel panel panel-default">
+            <div class="panel-body">
+
+
+              <div class="form-group signup-form-box">
+
+                <div class="form-v10-content">
+                  <div class="logo-panel-heading-box"><img src="assets/img/logo.png" alt="" class="img-responsive"></div>
+                  <form class="form-detail" action="#" method="post" id="myform">
+
+                    <div class="form-right">
+                      <h2>Akal Information Systems Ltd </h2>
+
+                      <div class="form-row form-checkbox individual-business-box">
+
+                        <div class="row">
+
+
+                          <div class="col-md-12 col-12">
+                            <div class="form-group">
+
+                              <div class="payment-box">
+
+                                <div class="padd-10">
+                                  <div class="payment-left-box1">
+
+                                    <canvas #qrcode></canvas>
+                                    <!-- <qrcode [qrdata]="qrUrl" [width]="230" [errorCorrectionLevel]="'M'"
+                                      [allowEmptyString]="true"></qrcode> -->
+                                    <!-- <img src="assets/img/scan-code-pay.jpg" alt="" class="img-responsive"> -->
+                                  </div>
+                                  <div class="payment-right-box">
+                                    <h5 class="Total-Amount-box">₹ {{this.invoicedetail.netamountreceived}}/-</h5>
+                                    <h5 class="mb-0">tankhapay@hdfcbank</h5>
+
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+
+                        </div>
+
+                      </div>
+
+
+
+
+
+                    </div>
+
+                  </form>
+
+                  <p class="Time-Remaining-box"><span class="text-danger custom-time "></span></p>
+                  <div class="pay-footer-box">
+
+                    <img src="assets/img/google-pay.png" alt="" class="img-responsive">
+                    <img src="assets/img/paytm-icon.jpg" alt="" class="img-responsive">
+                    <img src="assets/img/amazon-icon.jpg" alt="" class="img-responsive">
+                    <img src="assets/img/phonepe-icon.jpg" alt="" class="img-responsive">
+                    <img src="assets/img/cred-pay-icon.jpg" alt="" class="img-responsive">
+
+
+
+                  </div>
+                  <p class="bhim-upi-box"><img src="assets/img/bhim-upi-icon.jpg" alt="" class="img-responsive"></p>
+                </div>
+
+
+
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,730 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<div id="wrapper" [ngClass]="{'active': showSidebar}">
+  <div id="page-wrapper">
+
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">General Settings</h3>
+      </div>
+      <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="['/dashboard']">Home</a></li>
+          <li class="breadcrumb-item active">General Settings </li>
+        </ol>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <!-- /row -->
+      <div class="row">
+
+        <form [formGroup]="generalForm">
+
+          <div class="col-md-12 mrg-top-0 mrg-bot-25">
+
+
+            <div class="card">
+
+
+              <div class="card-header">
+                <h4 class="sub-title-inn-box View-Roles-list-outer-box">General Settings
+
+
+                  <!--<a href="#SendMessage" data-toggle="modal"  data-placement="top" title="Add"   class=" btn btn-user btn-round  btn-primary btn-primary-Add-Roles-btn" >Configure Rotation  </a>-->
+
+                </h4>
+              </div>
+
+              <div class="card-body padd-bot-0 padd-top-0">
+
+
+                <div class="row">
+
+                  <div class="col-md-12 padd-top-0">
+
+
+                    <div class="add-address-form-box">
+
+                      <div class="modal-body">
+                        <div class="form-group" style="display: none;">
+                          <h4 class="top-shif-title-box">Inclusion of Weekends or Holidays as Leaves</h4>
+                        </div>
+
+                        <div class="form-group" style="display: none;">
+                          <label class="control-label col-sm-5">Number of consecutive leaves after which weekends or
+                            holidays are to be considered as leaves </label>
+                          <div class="col-sm-2">
+                            <input formControlName="leave_count_for_ho_wk" type="text" class="form-control" onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                          </div>
+                        </div>
+
+
+                        <div class="form-group" style="display: none;">
+                          <label class="control-label col-sm-5">Select applicable leave types</label>
+                          <div class="col-sm-6">
+                            <div class="input-group" style="width:30rem;">
+                              <!-- <select class="form-control" formControlName="applicable_leave_types">
+                                <option value="">Select</option>
+                                <option *ngFor="let ltm of leave_type_master_data;" [value]="ltm.leavetype" [selected]="gf.applicable_leave_types.value=='ltm.leavetype'">{{ltm.leavetypename}}</option>
+                              </select> -->
+                              <!-- [(ngModel)]="selectedLeaveTypes"
+                              [ngModelOptions]="{standalone: true}" -->
+                              <ng-multiselect-dropdown
+                              placeholder="Select Leave Type(s)"
+                              [settings]="dropdownSettings"
+                              [data]="leave_type_master_data"
+                              formControlName="applicable_leave_types"
+                              (onSelect)="onItemSelect($event)"
+                              (onSelectAll)="onSelectAll($event)"
+                              (onDeSelectAll)="onUnselectAll($event)"
+                              (onDeSelect)="onItemUnselect($event)" >
+                            </ng-multiselect-dropdown>
+
+                            </div>
+                          </div>
+
+                        </div>
+
+
+
+                        <div class="form-group">
+                          <h4 class="top-shif-title-box">Compensatory Request</h4>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-5">Is Comp Off Setting Applicable? </label>
+                          <div class="col-sm-7">
+                            <div class="input-group  ">
+
+                              <div class="Search-By-all-box">
+                                &nbsp;&nbsp;
+
+                                <input type="radio" name="is_comp_off_applicable" id="is_comp_off_applicable_y" value="Y"
+                                [checked]="gf.is_comp_off_applicable.value=='Y'" (click)="change_is_comp_off_applicable($event.target.value)">
+                                <label for="is_comp_off_applicable_y">Enable </label>
+                                <input type="radio" name="is_comp_off_applicable" id="is_comp_off_applicable_n" value="N"
+                                [checked]="gf.is_comp_off_applicable.value=='N'" (click)="change_is_comp_off_applicable($event.target.value)">
+                              <label for="is_comp_off_applicable_n">Disable</label>
+
+                              </div>
+                            </div>
+
+
+
+                          </div>
+                        </div>
+                        <div *ngIf="gf.is_comp_off_applicable.value === 'Y'"> 
+                        <div class="form-group">
+                          <label class="control-label col-sm-5">Mode compensatory off</label>
+                          <div class="col-sm-6">
+                            <div class="input-group">
+                              <select class="form-control" formControlName="comp_request_mode_entry" >
+                                <option value="monthly">Monthly</option>
+                                <option value="application">Application Based</option>
+                              </select>
+                            <div *ngIf="gf.comp_request_mode_entry.invalid && (gf.comp_request_mode_entry.dirty || gf.comp_request_mode_entry.touched)" class="text-danger">
+                              Mode is required.
+                            </div>
+
+                            </div>
+                          </div>
+
+                        </div>
+
+                        <div class="form-group"  *ngIf="gf.comp_request_mode_entry.value === 'application'">
+
+
+
+                          <label class="control-label col-sm-5">Comp Off can be applicable when worked on a weekly off day</label>
+
+                          <label class="control-label FL PT4I">
+
+
+                            <label for="FilterByTaxReport-Maximum">1 &nbsp;&nbsp; X </label>&nbsp;&nbsp;
+
+                          </label>
+                          <div class="PL0 FL MR10">
+                            <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr"><input
+                                id="ZPAtt_shiftMarginStarts1" type="text" class="form-control" placeholder=""
+                                formControlName="leave_credit_count_for_wk" style="width: 50px;" >
+
+                            </div>
+                          </div>
+                          <label class="control-label FL PT4I">{{get_show_wk_msg(gf.leave_credit_count_for_wk.value)}}</label>
+
+
+                        </div>
+
+                        <div class="form-group"  *ngIf="gf.comp_request_mode_entry.value === 'application'">
+
+
+
+                          <label class="control-label col-sm-5">Comp Off can be applicable when worked on a holiday</label>
+
+                          <label class="control-label FL PT4I">
+
+
+                            <label for="FilterByTaxReport-Maximum">1 &nbsp;&nbsp; X </label>&nbsp;&nbsp;
+
+                          </label>
+                          <div class="PL0 FL MR10">
+                            <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr"><input
+                                id="ZPAtt_shiftMarginStarts2" type="text" class="form-control" placeholder=""
+                                formControlName="leave_credit_count_for_ho" style="width: 50px;" >
+
+                            </div>
+                          </div>
+                          <label class="control-label FL PT4I">{{get_show_ho_msg(gf.leave_credit_count_for_ho.value)}}</label>
+
+
+                        </div>
+
+
+                        <div class="form-group"  *ngIf="gf.comp_request_mode_entry.value === 'monthly'">
+                          <label style="margin-top: 25px;" class="control-label col-sm-5">Per month maximum Comp Off allowed</label>
+
+                          <div class="col-sm-6">
+                            <div class="input-group  ">
+                              <div class="Search-By-all-box">
+                                &nbsp;&nbsp;
+                                <input type="text" class="form-control" formControlName="per_month_max_comp_off" onkeyup="if(/[^\d.]/g.test(this.value) || (this.value.match(/\./g) || []).length > 1) this.value = this.value.replace(/[^\d.]/g,'').replace(/(\..?)\../g, '$1')" maxlength="4">
+
+                              </div>
+                            </div>
+                          </div>
+
+
+                        </div>
+
+
+                        <div class="form-group" *ngIf="gf.comp_request_mode_entry.value === 'monthly'">
+                          <label class="control-label col-sm-5"> Day(s) on which Comp Off can be applicable </label>
+                          <div class="col-sm-7">
+                            <div class="input-group">
+
+                              <div class="Search-By-all-box">
+                                &nbsp;&nbsp;
+
+
+                                <input type="radio" name="comp_off_applicable_type" id="comp_off_applicable_type_all" value="All"
+                                  [checked]="gf.comp_off_applicable_type.value=='All'" (click)="change_comp_off_applicable_type($event.target.value)">
+                                <label for="comp_off_applicable_type_all">All</label>
+
+                                <input type="radio" name="comp_off_applicable_type" id="comp_off_applicable_type_specific" value="Specific"
+                                [checked]="gf.comp_off_applicable_type.value=='Specific'" (click)="change_comp_off_applicable_type($event.target.value)">
+                                <label for="comp_off_applicable_type_specific">Specific </label>
+
+
+                              </div>
+                            </div>
+
+                          </div>
+
+                          <ng-container *ngIf="gf.comp_off_applicable_type.value=='Specific'">
+                            <div class="col-sm-5">
+
+                            </div>
+
+                            <div class="col-sm-7">
+                              <div class="input-group  ">
+                                <div class="Search-By-all-box">
+                                  &nbsp;&nbsp;
+                                  <input type="checkbox" name="WeekDay11" id="Monday11" value="Monday" [checked]="is_comp_off_applicable_type_dayname_Checked('Monday')" (click)="change_comp_off_applicable_type_dayname($event.target.value, $event.target.checked)">&nbsp;
+                                  <label for="Monday11">Mon</label>&nbsp;&nbsp;
+                                  <input type="checkbox" name="WeekDay11" id="Tuesday11" value="Tuesday" [checked]="is_comp_off_applicable_type_dayname_Checked('Tuesday')" (click)="change_comp_off_applicable_type_dayname($event.target.value, $event.target.checked)">&nbsp;
+                                  <label for="Tuesday11">Tue </label>&nbsp;&nbsp;
+                                  <input type="checkbox" name="WeekDay11" id="Wednesday11" value="Wednesday" [checked]="is_comp_off_applicable_type_dayname_Checked('Wednesday')" (click)="change_comp_off_applicable_type_dayname($event.target.value, $event.target.checked)">&nbsp;
+                                  <label for="Wednesday11">Wed </label>&nbsp;&nbsp;
+                                  <input type="checkbox" name="WeekDay11" id="Thursday11" value="Thursday" [checked]="is_comp_off_applicable_type_dayname_Checked('Thursday')" (click)="change_comp_off_applicable_type_dayname($event.target.value, $event.target.checked)">&nbsp;
+                                  <label for="Thursday11">Thur </label>&nbsp;&nbsp;
+                                  <input type="checkbox" name="WeekDay11" id="Friday11" value="Friday" [checked]="is_comp_off_applicable_type_dayname_Checked('Friday')" (click)="change_comp_off_applicable_type_dayname($event.target.value, $event.target.checked)">&nbsp;
+                                  <label for="Friday11">Fri </label>&nbsp;&nbsp;
+                                  <input type="checkbox" name="WeekDay11" id="Saturday11" value="Saturday" [checked]="is_comp_off_applicable_type_dayname_Checked('Saturday')" (click)="change_comp_off_applicable_type_dayname($event.target.value, $event.target.checked)">&nbsp;
+                                  <label for="Saturday11">Sat </label>&nbsp;&nbsp;
+                                  <input type="checkbox" name="WeekDay11" id="Sunday11" value="Sunday" [checked]="is_comp_off_applicable_type_dayname_Checked('Sunday')" (click)="change_comp_off_applicable_type_dayname($event.target.value, $event.target.checked)">&nbsp;
+                                  <label for="Sunday11">Sun </label>
+                                </div>
+                              </div>
+                            </div>
+                          </ng-container>
+
+                        </div>
+
+
+
+
+                        <!-- <div class="form-group">
+                          <label class="control-label col-sm-5">Mode to add compensatory request entry </label>
+                          <div class="col-sm-6">
+                            <div class="input-group">
+                              <select class="form-control" formControlName="comp_request_mode_entry">
+                                <option value="">Select</option>
+                                <option value="none">None</option>
+                                <option value="manual">Manual </option>
+                              </select>
+
+                            </div>
+                          </div>
+
+                        </div> -->
+
+                        <!-- <div class="form-group">
+                          <label class="control-label col-sm-5">Add compensatory request for future date </label>
+                          <div class="col-sm-7">
+                            <div class="input-group">
+                              <div class="Search-By-all-box">
+                                &nbsp;&nbsp;
+                                <input type="radio" name="filterStatus" id="FilterByTaxReport" value="Y" [checked]="gf.comp_request_for_future_dt_yn.value=='Y'" (click)="change_comp_request_for_future_dt_yn($event.target.value)">
+                                <label for="FilterByTaxReport">Enable</label>
+                                <input type="radio" name="filterStatus" id="FilterByAll" value="N" [checked]="gf.comp_request_for_future_dt_yn.value=='N'" (click)="change_comp_request_for_future_dt_yn($event.target.value)">
+                                <label for="FilterByAll"> Disable </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div> -->
+
+                      <div class="form-group">
+                        <label class="control-label col-sm-5">Maximum Leaves allowed per Comp-Off</label>
+                        <div class="col-sm-7">
+                          <div class="input-group">
+                            <div class="Search-By-all-box" style="display: flex;">
+                              <input
+                                formControlName="max_leaves_per_compoff"
+                                type="text"
+                                class="form-control"
+                                maxlength="3"
+                                onkeyup="let val = this.value.match(/^([0-9](\.\d?)?)?$/);
+                                  this.value = val ? val[0] : '';" />
+                              <div *ngIf="generalForm.get('max_leaves_per_compoff')?.errors && generalForm.get('max_leaves_per_compoff')?.touched"
+                                   class="text-danger" style="margin-left: 10px;">
+                                <p class="text-danger">Maximum leaves per comp off should be less than 10</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+
+                        <!-- TIME PICKER - Start -->
+                         
+                          <!-- <label class="control-label col-sm-5">Minimum Hours required for Half Day</label>
+                          <div class="col-sm-4">
+                          <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr">
+                            <input id="ZPAtt_shiftMarginStarts" type="text" class="form-control" placeholder="00:00"
+                             formControlName="min_halfday_hrs" readonly>
+                            <span class="input-group-addon" (click)="togglePopover(popoverFrom);formatTime(halfDayTime,'min_halfday_hrs')" #popoverFrom="bs-popover"
+                              [popover]="popoverContentFrom" triggers="manual" [outsideClick]="true">
+                              <i class="fa fa-clock-o"></i></span>
+                          </div>
+                          <ng-template #popoverContentFrom>
+                            <timepicker [(ngModel)]="halfDayTime" [hourFormat]="24" (ngModelChange)="formatTime(halfDayTime,'min_halfday_hrs')" [showMeridian]="false"
+                              [ngModelOptions]="{standalone: true}"></timepicker>
+                          </ng-template>
+                          </div>
+
+
+                          <label class="control-label col-sm-5">Minimum Hours required for Full Day</label>
+                          <div class="col-sm-4">
+                          <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr">
+                            <input id="ZPAtt_shiftMarginStarts" type="text" class="form-control" placeholder="00:00"
+                             formControlName="min_fullday_hrs" readonly>
+                            <span class="input-group-addon" (click)="togglePopover(popoverTo);formatTime(fullDayTime,'min_fullday_hrs')" #popoverTo="bs-popover"
+                              [popover]="popoverContentTo" triggers="manual" [outsideClick]="true">
+                              <i class="fa fa-clock-o"></i></span>
+                          </div>
+                          <ng-template #popoverContentTo>
+                            <timepicker [(ngModel)]="fullDayTime" [hourFormat]="24" (ngModelChange)="formatTime(fullDayTime,'min_fullday_hrs')" [showMeridian]="false"
+                              [ngModelOptions]="{standalone: true}"></timepicker>
+                          </ng-template>
+                          </div> -->
+
+                        <!-- TIME PICKER - End -->
+
+                        <div class="form-group" *ngIf="gf.comp_request_mode_entry.value === 'application'">
+                          <label class="control-label col-sm-5">Comp Off expires after </label>
+                          <div class="col-sm-7">
+                            <div class="PL0 FL MR10">
+                              <div class="input-group bootstrap-timepicker timepicker zp_Cust-timpckr"><input maxlength="3"
+                                  id="ZPAtt_shiftMarginStarts3" type="text" class="form-control" placeholder="0"
+                                  formControlName="credited_leave_expires_after" style="width: 7rem;">
+                              </div>
+                            </div>
+                            <div class="input-group">
+                              <select class="form-control" formControlName="credited_leave_expires_after_type">
+                                <!-- <option value="">Select</option> -->
+                                <option value="days">Calendar Day(s)</option>
+                                <!-- <option value="business">Business Day(s)</option> -->
+                                <!-- <option value="months">Months(s)</option> -->
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- <div class="form-group">
+                          <label class="control-label col-sm-5">Unit(s) allowed</label>
+                          <div class="col-sm-2">
+
+
+                            <select class="form-control" formControlName="units_allowed"
+                            (change)="change_unit_allowed($event.target.value)">
+                              <option value="">Select</option>
+                              <option value="day">Day(s)</option>
+                            </select>
+
+
+                          </div>
+                        </div> -->
+
+
+                        <!-- <div *ngIf="gf.units_allowed.value != 'hour'" class="form-group">
+                          <label class="control-label col-sm-5">Duration allowed</label>
+
+                          <div class="col-sm-7">
+                            <div class="input-group  ">
+                              <div class="Search-By-all-box">
+                                &nbsp;&nbsp;
+                                <input type="checkbox" name="WeekendStatus4" id="Include11" value="full-day" (click)="change_durations($event.target.value, $event.target.checked)" [checked]="isDurationChecked('full-day')">&nbsp;
+                                <label for="Include11"> Full Day</label>&nbsp;&nbsp;
+
+                              </div>
+                            </div>
+                          </div>
+
+
+                        </div> -->
+
+
+                        <!-- <div class="form-group">
+                          <label class="control-label col-sm-5">Time Input </label>
+                          <div class="col-sm-7">
+                            <div class="input-group  ">
+
+                              <div class="Search-By-all-box">
+                                &nbsp;&nbsp;
+
+
+                                <input type="radio" name="filterStatus-box" id="FilterByTaxReport-Maximum" value="N"
+                                  [checked]="gf.time_input_yn.value=='N'" (click)="change_time_input_yn($event.target.value)">
+                                <label for="FilterByTaxReport-Maximum">Disable</label>
+
+                                <input type="radio" name="filterStatus-box" id="FilterByAll-Maximum" value="Y"
+                                [checked]="gf.time_input_yn.value=='Y'" (click)="change_time_input_yn($event.target.value)">
+                                <label for="FilterByAll-Maximum">Enable </label>
+
+
+                              </div>
+                            </div>
+
+
+
+                          </div>
+                        </div> -->
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-5">Make reason mandatory</label>
+                          <div class="col-sm-7">
+                            <div class="input-group  ">
+                              <div class="Search-By-all-box">
+                                &nbsp;&nbsp;
+                                <input type="checkbox" name="WeekendStatus4" id="Include11" [checked]="gf.make_reason_mandatory_yn.value=='Y'" (click)="change_make_reason_mandatory_yn($event.target.checked)">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <!-- <div class="form-group">
+                          <h4 class="top-shif-title-box">Permissions</h4>
+                        </div>
+
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-5">Resource availability report access </label>
+                          <div class="col-sm-7">
+                            <select class="form-control" formControlName="resource_report">
+                              <option value="">Select</option>
+                              <option value="1">All data to admin</option>
+                              <option value="2">Department data to department head</option>
+                              <option value="3">Department data to department member</option>
+                              <option value="4">All data to all users</option>
+
+                            </select>
+                          </div>
+                        </div> -->
+
+
+
+                        <!-- <div class="form-group">
+                          <h4 class="top-shif-title-box">Payroll Report Settings</h4>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-sm-5">Enable Payroll Report for Admin</label>
+                          <div class="col-sm-7">
+                            <div class="input-group  ">
+                              <div class="Search-By-all-box">
+                                &nbsp;&nbsp;
+                                <input type="radio" name="WeekendStatus1" id="Include1" checked="checked">
+                                <label for="Include1">Enable</label>
+                                <input type="radio" name="WeekendStatus1" id="Include2" value="all">
+                                <label for="Include2"> Disable </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-5">Include Weekend(s)</label>
+                          <div class="col-sm-7">
+                            <div class="input-group  ">
+                              <div class="Search-By-all-box">
+                                &nbsp;&nbsp;
+                                <input type="radio" name="WeekendStatus2" id="Include3" checked="checked">
+                                <label for="Include3">Enable</label>
+                                <input type="radio" name="WeekendStatus2" id="Include4" value="all">
+                                <label for="Include4"> Disable </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-5">Include Holidays</label>
+                          <div class="col-sm-7">
+                            <div class="input-group  ">
+                              <div class="Search-By-all-box">
+                                &nbsp;&nbsp;
+                                <input type="radio" name="WeekendStatus3" id="Include5" checked="checked">
+                                <label for="Include5">Enable</label>
+                                <input type="radio" name="WeekendStatus3" id="Include6" value="all">
+                                <label for="Include6"> Disable </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div> -->
+
+
+                          </div>
+
+
+                        <div class="form-group">
+                          <h4 class="top-shif-title-box">LOP Report Settings</h4>
+
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-5">Unpaid leave to be marked as</label>
+                          <div class="col-sm-7">
+                            <div class="input-group  ">
+                              <div class="Search-By-all-box">
+                                &nbsp;&nbsp;
+                                <input type="radio" name="WeekendStatus4" id="Include7" [checked]="gf.lrp_unpaid_leave_to_be_marked_as_lop_yn.value=='Y'" (click)="change_lrp_unpaid_leave_to_be_marked_as_lop_yn()">
+                                <label for="Include7">Loss of Pay</label>
+                                <!-- <input type="radio" name="WeekendStatus4" id="Include8" [checked]="gf.lrp_unpaid_leave_to_be_marked_as_lop_yn.value=='N'" value="N" (click)="change_lrp_unpaid_leave_to_be_marked_as_lop_yn($event.target.value)">
+                                <label for="Include8"> Carry Over to next pay period </label> -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group" *ngIf="gf.lrp_unpaid_leave_to_be_marked_as_lop_yn.value=='Y'">
+                          <label class="control-label col-sm-5">Maximum LOP count allowed</label>
+                          <div class="col-sm-7">
+                            <div class="input-group  ">
+                              <div class="Search-By-all-box" style="display:flex;">
+                                <input formControlName="lrp_unpaid_leave_lop_max_allowed_days" type="text" class="form-control" onkeyup="if(/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" maxlength="2"> <span style="margin-left: 1rem;margin-top:6px">day(s)</span>
+                                &nbsp;&nbsp;
+                                <div *ngIf="submitted && gf.lrp_unpaid_leave_lop_max_allowed_days.errors"
+                                class="inline-pos1" style="display: contents;">
+                                <small *ngIf="gf.lrp_unpaid_leave_lop_max_allowed_days.errors.max"
+                                  class="text-danger">Should be less than 31</small>
+                              </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <!-- <div class="form-group">
+                          <h4 class="top-shif-title-box">Export Settings</h4>
+
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-5">Enable Password Protection</label>
+
+                          <div class="col-sm-7">
+                            <div class="input-group  ">
+                              <div class="Search-By-all-box">
+                                &nbsp;&nbsp;
+                                <input type="checkbox" name="WeekendStatus4" id="Include11" checked="checked">
+
+
+                              </div>
+                            </div>
+                          </div>
+
+
+                        </div> -->
+
+                        <div class="form-group">
+                          <h4 class="top-shif-title-box">Leave Request Settings</h4>
+
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-5">Allow Leave requests until the next</label>
+
+                          <div class="col-sm-2">
+                            <select class="form-control" formControlName="allow_leave_requests_until_the_next_no_of_yr">
+                              <option value="">Select</option>
+                              <option value="1">1 Year(s)</option>
+                              <option value="2">2 Year(s)</option>
+                              <option value="3">3 Year(s)</option>
+
+
+                            </select>
+                          </div>
+
+
+                        </div>
+
+
+
+
+                        <div class="form-group" >
+                          <h4 class="top-shif-title-box">Leave Cancellation Settings</h4>
+
+                        </div>
+                        <div class="form-group" style="display: none;">
+                          <label class="control-label col-sm-5">Past leaves within current pay period</label>
+
+                          <div class="col-sm-7">
+                            <div class="input-group  ">
+                              <div class="Search-By-all-box">
+                                &nbsp;&nbsp;
+                                <input type="checkbox" name="WeekendStatus4" id="Include114" value="owner" [checked]="is_lcs_past_leaves_within_current_pay_period_Checked('owner')" (click)="change_lcs_past_leaves_within_current_pay_period($event.target.value, $event.target.checked)">&nbsp;
+                                <label for="Include114">Record Owner</label>&nbsp;&nbsp;
+                                <input type="checkbox" name="WeekendStatus4" id="Include115" value="manager" [checked]="is_lcs_past_leaves_within_current_pay_period_Checked('manager')" (click)="change_lcs_past_leaves_within_current_pay_period($event.target.value, $event.target.checked)">&nbsp;
+                                <label for="Include115"> Reporting Managers </label>&nbsp;&nbsp;
+                                <input type="checkbox" name="WeekendStatus4" id="Include116" value="approver" [checked]="is_lcs_past_leaves_within_current_pay_period_Checked('approver')" (click)="change_lcs_past_leaves_within_current_pay_period($event.target.value, $event.target.checked)">&nbsp;
+                                <label for="Include116"> Approvers </label>
+                              </div>
+                            </div>
+                          </div>
+
+
+                        </div>
+
+                        <div class="form-group" style="display: none;">
+                          <label class="control-label col-sm-5">Current day &amp; upcoming leave requests</label>
+
+                          <div class="col-sm-7">
+                            <div class="input-group  ">
+                              <div class="Search-By-all-box">
+                                &nbsp;&nbsp;
+                                <input type="checkbox" name="WeekendStatus4" id="Include14" value="owner" [checked]="is_lcs_current_day_upcoming_leave_requests_Checked('owner')" (click)="change_lcs_current_day_upcoming_leave_requests($event.target.value, $event.target.checked)">&nbsp;
+                                <label for="Include14">Record Owner</label>&nbsp;&nbsp;
+                                <input type="checkbox" name="WeekendStatus4" id="Include15" value="manager" [checked]="is_lcs_current_day_upcoming_leave_requests_Checked('manager')" (click)="change_lcs_current_day_upcoming_leave_requests($event.target.value, $event.target.checked)">&nbsp;
+                                <label for="Include15"> Reporting Managers </label>&nbsp;&nbsp;
+                                <input type="checkbox" name="WeekendStatus4" id="Include16" value="approver" [checked]="is_lcs_current_day_upcoming_leave_requests_Checked('approver')" (click)="change_lcs_current_day_upcoming_leave_requests($event.target.value, $event.target.checked)">&nbsp;
+                                <label for="Include16"> Approvers </label>
+                              </div>
+                            </div>
+                          </div>
+
+
+                        </div>
+
+                        <div class="form-group" style="display: none;">
+                          <label class="control-label col-sm-5">Allow partial leave cancellation</label>
+
+                          <div class="col-sm-7">
+                            <div class="input-group  ">
+                              <div class="Search-By-all-box">
+                                &nbsp;&nbsp;
+                                <input type="checkbox" name="WeekendStatus4" id="Include214" [checked]="gf.lcs_allow_partial_leave_cancellation_yn.value=='Y'" (click)="change_lcs_allow_partial_leave_cancellation_yn($event.target.checked)">
+
+                              </div>
+                            </div>
+                          </div>
+
+
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-5">Make reason for leave cancellation mandatory</label>
+
+                          <div class="col-sm-7">
+                            <div class="input-group  ">
+                              <div class="Search-By-all-box">
+                                &nbsp;&nbsp;
+                                <input type="checkbox" name="WeekendStatus4" id="Include314" [checked]="gf.lcs_is_leave_cancellation_reason_mandatory_yn.value=='Y'" (click)="change_lcs_is_leave_cancellation_reason_mandatory_yn($event.target.checked)">
+
+                              </div>
+                            </div>
+                          </div>
+
+
+                        </div>
+
+
+
+
+                        <!-- <div class="form-group">
+                          <h4 class="top-shif-title-box">Leave Calendar Sync</h4>
+
+                        </div>
+
+                        <div class="form-group">
+
+                          <label class="control-label col-sm-5">Leave display format in Google/Office365 </label>
+
+                          <div class="col-sm-3">
+
+
+                            <select class="form-control" formControlName="leavedisplayformat">
+                              <option value="">Select</option>
+                              <option value="Id">Employee Id</option>
+                              <option value="Name">Employee Name</option>
+                              <option value="LeaveType">Leave type name</option>
+
+                            </select>
+
+                          </div>
+
+                          <div class="col-sm-3">
+
+
+                            <select class="form-control">
+                              <option value="Monday">Employee Id</option>
+                              <option value="Monday">Employee Name</option>
+                              <option value="Monday">Leave type name</option>
+
+                            </select>
+
+                          </div>
+
+                        </div> -->
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-md-12 col-12 padd-top-15 text-center">
+              <a class="btn btn-primary" (click)="upsert_leave_general_settings()">Submit</a>
+            </div>
+
+          </div>
+        </form>
+
+      </div>
+      <!-- /row -->
+    </div>
+  </div>
+</div>

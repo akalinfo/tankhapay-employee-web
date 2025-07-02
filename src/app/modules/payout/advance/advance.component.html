@@ -1,0 +1,463 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+    <div id="wrapper" [ngClass]="{'active':showSidebar==false}">
+        <div class="fakeLoader"></div>
+
+        <div id="page-wrapper">
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Advance and Loan</h3>
+                </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a [routerLink]="['/payouts']">Payouts</a></li>
+
+                        <li class="breadcrumb-item active">Advance and Loan</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <!-- /row -->
+                <div class="row">
+
+                    <div class="col-md-12 col-sm-12">
+                        <div class="card">
+
+                            <div class="card-header">
+                                <div class="row">
+
+                                    <div class="col-md-8 col-sm-8">
+                                        <div class="top-right-outer-box">
+                                            <span style="margin: 1.5rem; font-weight: bold;">Month -
+                                                Year</span>
+                                            <select class="form-control" style="margin: 0.6rem; width: 150px;"
+                                                (change)="changeMonth($event)">
+                                                <!-- <option value="">Select</option> -->
+                                                <option *ngFor="let ma of monthsArray" [selected]="month == ma.id"
+                                                    [value]="ma.id">
+                                                    {{ma.month}}</option>
+                                            </select>
+                                            <select class="form-control" style="margin: 0.6rem; width: 100px;"
+                                                (change)="changeYear($event)">
+                                                <!-- <option value="">Select</option> -->
+                                                <option *ngFor="let ya of yearsArray" [selected]="year == ya"
+                                                    [value]="ya">{{ya}}</option>
+                                            </select>
+
+                                            <div class="save-button" style="margin:  0.6rem;margin-left: 10px;"><button
+                                                    class="btn btn-primary"
+                                                    (click)="Get_Voucher_Details()">Search</button></div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4">
+                                        <span style="font-weight: bold;">Billable/Non Billable</span>
+                                        <select class="form-control status-btn-box" [(ngModel)]="selectedBillableOption"
+                                            (change)="updateBillableOption()" [disabled]="!isAnyCheckboxChecked()">
+                                            <option value="Y">Yes</option>
+                                            <option value="N">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div class="table-responsive reports-table-outer-box reports-new-table-outer-box">
+                                        <table class="table table-striped table-bordered"
+                                            *ngIf="voucher_data.length !== 0">
+                                            <thead style="background: skyblue;">
+                                                <tr>
+                                                    <th># &nbsp;
+                                                        <input type="checkbox"
+                                                            style="transform: scale(1.2); float: right;"
+                                                            [(ngModel)]="isHeaderCheckboxChecked"
+                                                            (change)="checkAll($event)">
+                                                    </th>
+                                                    <th>Name</th>
+                                                    <th>Sanction Date</th>
+                                                    <th>Amount</th>
+                                                    <th>Ledger Type</th>
+                                                    <!-- <th>Billable/Non Billable</th> -->
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody style="background: aliceblue;">
+                                                <ng-container *ngFor="let advance of voucher_data; let i = index;">
+                                                    <tr [ngClass]="{'light-skyblue': i % 2 == 0, 'white': i % 2 != 0}">
+                                                        <td>{{i + 1}} &nbsp;
+                                                            <input type="checkbox"
+                                                                style="transform: scale(1.2); float: right;"
+                                                                [(ngModel)]="advance.isSelected"
+                                                                (change)="updateSelectedRowsAmount(advance)">
+                                                        </td>
+                                                        <td>{{advance.emp_name}}</td>
+                                                        <td>{{advance.creationdate}}</td>
+                                                        <td>{{advance.amount}}</td>
+                                                        <td>{{advance.masterledgername}}</td>
+                                                        <!-- <td>
+                                                <select class="form-control status-btn-box" [(ngModel)]="selectedBillableOption" >
+                                                    <option value="Y">Yes</option>
+                                                    <option value="N">No</option>
+                                                </select>
+                                            </td> -->
+                                                        <td>
+                                                            <a title="Reject Voucher" (click)="selected_data(advance)"
+                                                                href="#Reject_Voucher" data-toggle="modal"
+                                                                data-placement="top"
+                                                                [ngClass]="{'disabled': !isAnyCheckboxChecked()}">
+                                                                <i class="fa fa-trash fa-lg" aria-hidden="true"
+                                                                    style="color: rgb(75, 40, 40); cursor: pointer;"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </ng-container>
+                                            </tbody>
+                                            <tfoot style="background: #ededed;">
+                                                <tr>
+                                                    <th></th>
+                                                    <th><b>Total Amount:</b></th>
+                                                    <th></th>
+                                                    <th><b>₹ {{ totalSelectedAmount | number:'1.2-2' }}</b></th>
+                                                    <th colspan="2">
+                                                        <!-- Add your other content here if needed -->
+                                                        <a *ngIf="(this.payout_mode_type === 'self' && !button_status ) " [ngClass]="{'disabled': !isAnyCheckboxChecked()}" data-toggle="modal" data-placement="top"
+                                                         class="btn btn-primary manage-btn" data-original-title="" title="" (click)="approve_popup()">Record Payment <i aria-hidden="true" class="fa fa-chevron-right"></i></a>
+
+                                                        <!-- <div class="dropdown float-right-box Download-Report-drop-btn" *ngIf="this.payout_mode_type === 'self' && button_status && report_button ">
+                                                          <ul role="tablist" class="nav nav-pills">
+                                                             <li role="presentation" class="dropdown">
+                                                               <a  data-toggle="dropdown" class="dropdown btn-round btn-primary"  style="cursor: pointer;" aria-expanded="false">Download Reports <span class="caret"></span></a>
+                                                               <ul class="dropdown-menu">
+                                                                 <li><a [routerLink]="['/reports/pre-attendance']" >Salary Advice</a></li>
+                                                                 <li><a [routerLink]="['/reports/disbursement-report']" >Disbursement Report</a></li>
+                                                                 <li> <a [routerLink]="['/reports/pay-summary']" data-toggle="modal" data-placement="top">Pay Slip</a> </li>
+                                                               </ul>
+                                                             </li>
+                                                          </ul>
+                                                        </div> -->
+
+                                                    </th>
+                                               
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+
+
+
+                                        <!-- <alert></alert> -->
+                                        <div class="col-sm-12 text-center" *ngIf="voucher_data.length === 0">
+                                            <p> <strong> No voucher has been created. Please <a
+                                                        [routerLink]="['/approval/voucher']" style="cursor: pointer;">
+                                                        Create Voucher </a></strong></p>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 Reimbursement-outer-box " *ngIf="(voucher_data.length !== 0) && (this.payout_mode_type != 'self')">
+                <div class="row">
+
+                    <div class="col-md-3 mrg-top-25 mrg-bot-25">
+
+
+                        <div class="card">
+
+                            <div class="card-header">
+                                <h4>Current Balance </h4>
+
+                            </div>
+
+                            <div class="card-body" style="  height: 170px;">
+                                <div class="row">
+
+                                    <div class="col-md-12 padd-bot-15 padd-top-15">
+
+                                        <div class="col-sm-12">
+                                            <h1 class="Payment-due-outer-box1">₹{{(customerSummary!=''?
+                                                customerSummary.balance:'0.00')}}</h1>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mrg-top-25 mrg-bot-25">
+
+
+                        <div class="card">
+
+                            <div class="card-header">
+                                <h4>Required Balance </h4>
+
+                            </div>
+
+                            <div class="card-body" style="  height: 170px;">
+                                <div class="row">
+
+                                    <div class="col-md-12 padd-bot-15 padd-top-15">
+
+                                        <div class="col-sm-12">
+                                            <h1 class="Payment-due-outer-box1">₹ {{ totalSelectedAmount | number:'1.2-2'
+                                                }}</h1>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mrg-top-25 mrg-bot-25"
+                        *ngIf="formatAmount(totalSelectedAmount, customerSummary?.balance) !='₹0.00'">
+
+
+                        <div class="card">
+
+                            <div class="card-header">
+                                <h4>Shortfall </h4>
+
+                            </div>
+
+                            <div class="card-body padd-top-0 " style=" height: 170px;">
+                                <div class="row">
+
+                                    <div class="col-md-12 padd-bot-15 padd-top-15">
+
+                                        <div class="col-sm-12">
+                                            <h5 class="Payment-due-outer-box1">
+
+                                                <input type="text" class="form-control Required-Balance-input-text"
+                                                    [value]="formatAmount(totalSelectedAmount, customerSummary?.balance)"
+                                                    readonly>
+                                            </h5>
+                                            <p class="please-add-text-box ">Please add at least
+                                                <strong>{{ formatAmount(totalSelectedAmount, customerSummary?.balance)
+                                                    }}</strong>
+                                                to your account to proceed with your transaction.
+                                            </p>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-3 mrg-top-25 mrg-bot-25">
+
+
+                        <div class="card">
+
+                            <div class="card-header">
+                                <h4>Disburse Now</h4>
+
+                            </div>
+
+                            <div class="card-body" style=" height: 170px;">
+                                <div class="row">
+
+                                    <div class="col-md-12 padd-bot-15 padd-top-0">
+
+                                        <div class="col-sm-12">
+                                            <h5 class=" Payment-due-outer-box1 padd-top-0 text-center">
+                                                <span>
+                                                    <a class="btn btn-primary manage-btn emp-edit-btn-box12"
+                                                        [ngClass]="{'disabled': !isAnyCheckboxChecked()}"
+                                                        (click)="isAnyCheckboxChecked() && pay()">
+                                                        Pay <i aria-hidden="true" class="fa fa-chevron-right"></i>
+                                                    </a>
+                                                </span>
+                                            </h5>
+                                            <p class="please-add-text-box"
+                                                *ngIf="!(totalSelectedAmount < parseFloat(customerSummary !== '' ? customerSummary.balance : '0.00'))">
+                                                Your account balance is insufficient. Please add balance to make the payment.</p>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+            <!-- /row -->
+
+            <!-- Disburse Voucher Popup -->
+            <div class="modal" [ngStyle]="{'display': disburse_popup ? 'block' : 'none'}">
+                <div id="Disburse_Voucher" class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header theme-bg">
+                            <h4 class="modal-title"> Disburse Voucher</h4>
+                            <button type="button" class="close" (click)="closeModal()" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row text-center">
+                                <h3>Disburse Voucher</h3>
+                                <p>Are you sure you want to Disburse this Voucher ?</p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" (click)="disbuse_multiple_voucher()" data-dismiss="modal">Yes</button>
+                            <button type="button" class="btn btn-info" (click)="closeModal()" aria-hidden="true">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <!-- Reject Voucher Popup -->
+            <div id="Reject_Voucher" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- <form> -->
+                        <div class="modal-header theme-bg">
+                            <h4 class="modal-title"> Reject Voucher</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row text-center">
+                                <h3>Reject Voucher</h3>
+                                <p>Are you sure you want to Reject this Voucher ?</p>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+
+                            <button class="btn btn-primary" (click)="Reject_Voucher()" data-dismiss="modal">Yes</button>
+                            <button type="button" class="btn btn-info" data-dismiss="modal"
+                                aria-hidden="true">No</button>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<div class="modal" [ngStyle]="{'display':open_approve_popup?'block':'none'}" style="z-index: 1;">
+	<div class="modal-dialog ">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header theme-bg">
+					<h4 class="modal-title">Approve Payroll</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="close_approve_popup()">&times;</button>
+				</div>
+				<div class="modal-body" >					
+					
+					<p>  You are about to approve this payroll for <strong>{{this.payoutSummary[0].month_name}}</strong>. Once you approve it, you can make payments for all your employees on the paydate <strong>{{this.payoutSummary[0].payoutdate1}}</strong>. </p>
+					
+				</div>
+
+				<div class="modal-footer">
+					<div >
+					<a class="btn btn-success"  (click)="submit_Button()">Submit and Approve</a>
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel" (click)="close_approve_popup()">
+				
+					</div>
+
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+  <!-- Record Payment Popup By Arpit dated 15/05/24-->
+  <div class="modal" [ngStyle]="{'display':record_popup?'block':'none'}">
+	<div class="modal-dialog" style="max-height: 90vh; overflow-y: auto;">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header theme-bg">
+					<h4 class="modal-title">Record Payment</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+						(click)="close_record_popup()">&times;</button>
+				</div>
+				<div class="modal-body col-sm-12">
+					<form [formGroup]="payout_form">
+                    <div class="col-sm-12 mrg-bot-15">
+                        <p>You are about to record payment for this pay run.</p>
+                    </div>
+                    <div class="col-sm-12 mrg-bot-15">
+                        <div class="row">
+                            <label class="col-sm-4">Employee(s) paid on <span class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                                <input id="FromDate2" #rd type="text" style="cursor: pointer;" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 mrg-bot-15">
+                        <div class="table-responsive reports-table-outer-box reports-new-table-outer-box">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Payment Mode</th>
+                                        <th>Employees</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <select class="form-control Payment-Mode-btn" formControlName="selected_payout_mode" style="margin: 0.2rem; width: 133px;">
+                                                <option *ngFor="let mode of payment_mode_type" [value]="mode.id">
+													{{ mode.payment_type }}</option>
+                                            </select>
+                                        </td>
+                                        <td >{{this.payoutSummary[0].totalemployees}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 form-check">
+                    </div>
+					</form>
+
+					<!-- <div class="col-lg-12 form-check">
+						<label class="form-check-label">
+						  <input id="ember695" class="ember-checkbox ember-view form-check-input" type="checkbox">
+							<span class="font-medium"><b>App notification will be sent to the active employees to view the salary slip</b></span> &nbsp;
+						  <span class="mr-1">
+							<span id="ember696" class="tooltip-container ember-view">
+							   <i class="fa fa-info-circle"></i>
+							</span>
+						  </span>
+						</label>
+						
+				  </div> -->
+				  
+				</div>
+				<div class="modal-footer">
+                    <a class="btn btn-success" (click)="RecordVoucher_Payment()">Submit</a>
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel" (click)="close_record_popup()">
+                </div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<app-footer></app-footer>

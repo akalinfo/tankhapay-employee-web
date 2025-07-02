@@ -73,21 +73,12 @@
                                                         <td><a href="javascript:void(0)" (click)="alertsendforrenewal(report)"
                                                                 *ngIf="report.alredaysent ==null">Send
                                                                 To Employee</a>
-                                                            <a *ngIf="report.alredaysent" href="javascript:void(0)" 
-                                                                (click)="generateApprovalPdf(report)">
-                                                                    <i class="fa fa-file-pdf-o" 
-                                                                    aria-hidden="true" style="color: red; 
-                                                                    margin-right: 5px;"></i>
-                                                            </a>
                                                         </td>
                                                         <td><a href="javascript:void(0)"
                                                                 (click)="viewt(report)">View</a>
                                                         </td>
                                                     </tr>
                                                 </ng-container>
-                                                <tr *ngIf="get_employee_list_data.length === 0">
-                                                    <td colspan="11" style="text-align: center;">No Data Found</td>
-                                                </tr>
                                             </tbody>
                                         </table>
                                         <alert></alert>
@@ -108,14 +99,14 @@
             <div class="modal-content ">
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title">Send To Employee</h4>
+                    <h4 class="modal-title">Alert</h4>
                     <button type="button" class="close modal-close-btn" data-dismiss="modal" aria-label="Close"
                         data-bs-dismiss="modal" (click)="closeConfirmModal()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <!-- Modal body -->
-                <div class="modal-body" style="overflow: auto; height: 400px;">
+                <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12" style="min-height:100px;">
                             <p>Are you sure you want to send this to the employee to fill in key accomplishments and
@@ -139,14 +130,14 @@
             <div class="modal-content ">
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title">View</h4>
+                    <h4 class="modal-title"></h4>
                     <button type="button" class="close modal-close-btn" data-dismiss="modal" aria-label="Close"
                         data-bs-dismiss="modal" (click)="closetrackModal()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <!-- Modal body -->
-                <div class="modal-body" style="overflow: auto; max-height: 60vh;">
+                <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12" style="min-height:100px;">
                             <table class="table table-striped table-bordered">
@@ -163,19 +154,14 @@
                                         <tr [ngClass]="{ 'light-skyblue': i % 2 == 0, 'white': i % 2 != 0 }">
                                             <td>{{ i + 1 }}</td>
                                             <td colspan="2">
-                                                <strong *ngIf="report.status === 'senttoreporting'">
-                                                Employee Key Accomplishments and Exceptional Achievements:
+                                                <strong>
+                                                    {{ report.status === 'senttoreporting' ? 'Employee Comment:' :
+                                                    'Reporting Comment:' }}
                                                 </strong>
-                                                <strong *ngIf="report.status === 'senttohr'">
-                                                Reporting Manager's Comments:
-                                                </strong>
-                                                <div style="padding-top: 10px;" [innerHTML]="report.description"></div>
+                                                <div [innerHTML]="report.description"></div>
                                             </td>
                                         </tr>
                                     </ng-container>
-                                    <tr *ngIf="get_desc.length === 0">
-                                        <td colspan="3" style="text-align: center;">No Data Found</td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>

@@ -1,0 +1,303 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+
+  <div id="wrapper" [ngClass]="{'active':showSidebar}">
+
+    <div class="fakeLoader"></div>
+    <!-- Navigation -->
+
+    <!-- Sidebar Navigation -->
+
+    <div id="page-wrapper">
+      <div class="row page-titles padd-0"> </div>
+      <div class="container-fluid">
+
+
+        <!-- <div class="row padd-top-15 pendingTasksBox" >
+
+
+
+          <div class="col-md-12">
+            <div class="card">
+
+              <div class="card-header header-flax-box">
+                <h4>To do list</h4>
+                <a>Total: {{ticketsDetails.length}}</a>
+              </div>
+
+              <div class="card-body leave-scroll-outer-box ">
+                <div class="todo-list todo-list-hover todo-list-divided">
+
+                  <ul>
+                    <ng-container *ngFor="let tdt of ticketsDetails;">
+                      <li>
+                        <div class="todo todo-default">
+
+                          <h5 class="ct-title" (click)="redirect_to_page(tdt.ticket_type)">
+                            <i class="fa fa-angle-double-right">
+                            </i> {{tdt.ticket_comment}}
+                            <span class="ct-designation"></span>
+                          </h5>
+
+                        </div>
+                      </li>
+                    </ng-container>
+                 
+
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+
+        </div> -->
+
+
+        <div class="row">
+
+          <!-- Single Freelancer Employees -->
+          <div [id]="module_ids[0]" class="col-md-4 col-sm-6">
+            <a [routerLink]="['/employee-mgmt/employees']">
+              <div class="freelance-container style-2 Dashboard-outer-box-design">
+                <div class="freelance-box">
+
+                  <div class="freelance-inner-box padd-top-0">
+                    <div class="freelance-box-thumb">
+                      <img src="assets/img/employee.png" class="img-responsive img-circle1" alt="">
+                    </div>
+                    <div class="freelance-box-detail">
+                      <h4>Employee Mgmt </h4>
+
+                    </div>
+
+                  </div>
+
+                  <!-- <a  [routerLink]="['/employees']" class="btn btn-blue manage-btn">Click Employee</a> -->
+
+                </div>
+              </div>
+            </a>
+          </div>
+          <div [id]="module_ids[1]" class="col-md-4 col-sm-6">
+            <a [routerLink]="['/employees']">
+              <div class="freelance-container style-2 Dashboard-outer-box-design">
+                <div class="freelance-box">
+
+                  <div class="freelance-inner-box padd-top-0">
+                    <div class="freelance-box-thumb">
+                      <img src="assets/img/employee.png" class="img-responsive img-circle1" alt="">
+                    </div>
+                    <div class="freelance-box-detail">
+                      <h4>Employees </h4>
+
+                    </div>
+
+                  </div>
+
+                  <!-- <a  [routerLink]="['/employees']" class="btn btn-blue manage-btn">Click Employee</a> -->
+
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <!-- Attendance -->
+          <div [id]="module_ids[2]" class="col-md-4 col-sm-6">
+            <a [routerLink]="['/attendance']">
+              <div class="freelance-container style-2 Dashboard-outer-box-design">
+                <div class="freelance-box">
+
+                  <div class="freelance-inner-box padd-top-0">
+                    <div class="freelance-box-thumb">
+                      <img src="assets/img/attendance.png" class="img-responsive img-circle1" alt="">
+                    </div>
+                    <div class="freelance-box-detail">
+                      <h4>Attendance </h4>
+
+                    </div>
+
+                  </div>
+
+                  <!-- <a  [routerLink]="['/attendance']" class="btn btn-blue manage-btn">Click Attendance</a> -->
+
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <!-- module_ids[2]=Payouts -->
+          <div [id]="module_ids[3]" class="col-md-4 col-sm-6">
+            <a [routerLink]="['/payouts']">
+              <div class="freelance-container style-2 Dashboard-outer-box-design">
+                <div class="freelance-box">
+
+                  <div class="freelance-inner-box padd-top-0">
+                    <div class="freelance-box-thumb">
+                      <img src="assets/img/cash-on-delivery.png" class="img-responsive img-circle1" alt="">
+                    </div>
+                    <div class="freelance-box-detail">
+                      <h4> Payouts </h4>
+
+                    </div>
+
+                  </div>
+
+                  <!-- <a  [routerLink]="['/payouts']" class="btn btn-blue manage-btn">Click Payouts</a> -->
+
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <!-- module_ids[3]=Approvals -->
+          <div [id]="module_ids[4]" class="col-md-4 col-sm-6">
+            <a [routerLink]="['/approval/voucher_report']">
+              <div class="freelance-container style-2 Dashboard-outer-box-design">
+                <div class="freelance-box">
+
+                  <div class="freelance-inner-box padd-top-0">
+                    <div class="freelance-box-thumb">
+                      <img src="assets/img/verified.png" class="img-responsive img-circle1" alt="">
+                    </div>
+                    <div class="freelance-box-detail">
+                      <h4> Approvals </h4>
+
+                    </div>
+
+                  </div>
+
+
+
+                </div>
+              </div>
+            </a>
+          </div>
+
+
+          <!-- module_ids[5] = Accounts -->
+          <!-- [id]="module_ids[6]" -->
+          <div id="accounts" class="col-md-4 col-sm-6" *ngIf="decoded_token.isEmployer=='1'">
+            <a [routerLink]="['/accounts']">
+              <div class="freelance-container style-2 Dashboard-outer-box-design">
+                <div class="freelance-box">
+
+                  <div class="freelance-inner-box padd-top-0">
+                    <div class="freelance-box-thumb">
+                      <img src="assets/img/accounting.png" class="img-responsive img-circle1" alt="">
+                    </div>
+                    <div class="freelance-box-detail">
+                      <h4> Accounts </h4>
+
+                    </div>
+
+                  </div>
+
+                  <!-- <a  [routerLink]="['/accounts']"  class="btn btn-blue manage-btn">Click Accounts</a> -->
+
+                </div>
+              </div>
+            </a>
+          </div>
+          <!-- module_ids[4] = reports -->
+
+          <div [id]="module_ids[5]" class="col-md-4 col-sm-6">
+            <a [routerLink]="['/reports']">
+              <div class="freelance-container style-2 Dashboard-outer-box-design">
+                <div class="freelance-box">
+
+                  <div class="freelance-inner-box padd-top-0">
+                    <div class="freelance-box-thumb">
+                      <img src="assets/img/business-report.png" class="img-responsive img-circle1" alt="">
+                    </div>
+                    <div class="freelance-box-detail">
+                      <h4> Reports </h4>
+
+                    </div>
+
+                  </div>
+
+                  <!-- <a  [routerLink]="['/reports']" class="btn btn-blue manage-btn">Click Reports</a> -->
+
+                </div>
+              </div>
+            </a>
+          </div>
+          <!-- module_ids[7]=Visitor Management  -->
+          <div [id]="module_ids[8]" class="col-md-4 col-sm-6"
+            *ngIf="(this.decoded_token.sso_admin_id!='' || this.is_show_menu)">
+            <a [routerLink]="['/visitor/all_visitor']">
+              <div class="freelance-container style-2 Dashboard-outer-box-design">
+                <div class="freelance-box">
+                  <div class="freelance-inner-box padd-top-0">
+                    <div class="freelance-box-thumb">
+                      <img src="assets/img/manager.png" class="img-responsive img-circle1" alt="">
+                    </div>
+                    <div class="freelance-box-detail">
+                      <h4> Visitor Management </h4>
+
+                    </div>
+
+                  </div>
+
+                  <!--<a href="business-settings.html" class="btn btn-freelance-two bg-default">Click Hire Now</a>-->
+
+                </div>
+              </div>
+            </a>
+          </div>
+          <!-- module_ids[6] business-settings -->
+          <div [id]="module_ids[7]" class="col-md-4 col-sm-6">
+            <a [routerLink]="['/business-settings']">
+              <div class="freelance-container style-2 Dashboard-outer-box-design">
+                <div class="freelance-box">
+
+                  <div class="freelance-inner-box padd-top-0">
+                    <div class="freelance-box-thumb">
+                      <img src="assets/img/time.png" class="img-responsive img-circle1" alt="">
+                    </div>
+                    <div class="freelance-box-detail">
+                      <h4> Business Settings </h4>
+
+                    </div>
+
+                  </div>
+
+                  <!-- <a  [routerLink]="['/reports']"  class="btn btn-blue manage-btn">Click Settings</a> -->
+
+                </div>
+              </div>
+            </a>
+          </div>
+
+
+
+
+        </div>
+      </div>
+
+
+    </div>
+
+
+
+  </div>
+</section>
+<!-- Diwali Popup by Arpit -->
+<div id="mydiwali" class="modal fade add-address-form-box">
+  <div class="modal-dialog">
+
+
+    <div class="modal-body">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <div class="modal-content">
+
+        <img src="assets/img/diwali_offer.png" class="img-responsive" alt="diwali">
+
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

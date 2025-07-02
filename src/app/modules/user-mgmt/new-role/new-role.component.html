@@ -1,0 +1,242 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+
+<div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+  <div class="fakeLoader"></div>
+
+  <div id="page-wrapper">
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">User Management </h3>
+      </div>
+      <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a >Home</a></li>
+          <li class="breadcrumb-item active">New Role </li>
+        </ol>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <!-- /row -->
+      <div class="row">
+
+
+      <div class="col-md-12 mrg-top-0 mrg-bot-25">
+
+
+      <div class="card">
+
+
+
+          <div class="card-header"> <h4 class="sub-title-inn-box View-Roles-outer-box">New Role  <a class="btn btn-gary manage-btn emp-edit-btn-box" [routerLink]="['/mgmt/roles/']" data-original-title="Back"><i class="fa fa-times" aria-hidden="true"></i> </a></h4> </div>
+
+          <div class="card-body padd-bot-10 padd-top-0">
+
+          <div class="row mrg-bot-10 padd-top-10">
+              <div class="col-md-12">
+                <form [formGroup]="editRoleForm">
+                <div class="row form-group inline-fields">
+                  <label class="col-lg-2 col-form-label required">Role Name<span class="mandatory-field">*</span></label>
+                  <div class="col-lg-5">
+                  <input formControlName="roleName"  id="ember788" class="ember-text-field ember-view form-control"  placeholder="Role name " type="text" readonly>
+                  </div>
+                </div>
+
+                <div class="row form-group inline-fields">
+                  <label class="col-lg-2 col-form-label">Description</label>
+                  <div class="col-lg-5">
+                  <textarea formControlName="roledesc" id="ember789" class="ember-text-area ember-view form-control"  placeholder="Max 500 Characters" rows="3" readonly></textarea>
+                  </div>
+                </div>
+              </form>
+              </div>
+            </div>
+
+            <div class="row">
+
+            <div class="col-md-12 padd-top-0 employees-details-outer-box">
+
+
+       <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true" [formGroup]="moduleForm">
+
+         <div formArrayName="module">
+         <div class="card" *ngFor="let mod of moduleArr.controls;let i=index;" [formGroupName]="i">
+                        
+            <div class="panel-heading panel_heading_gray card-header" role="tab" [id]="'headingOne' + i" data-toggle="collapse" data-parent="#accordion6" [attr.data-target]="'#collapseOne' + i"
+             aria-expanded="true" [attr.aria-controls]="'collapseOne' + i" style="z-index: 0;">
+               <h4><span class="module-head">{{mod.value.modulename_display}}</span>
+               <i class="fa fa-angle-down"></i></h4>
+            </div>
+            <div [id]="'collapseOne' + i" class="panel-collapse card-body collapse" role="tabpane6" aria-expanded="true" [attr.aria-labelledby]="'headingOne' + i"
+            [ngClass]="{'in': i==0 }">
+              
+              <div class="row">
+                <div class="text-right col-md-12" *ngIf="mod.value.submodules.length!=0">
+                  <a class="btn btn-primary submodule" *ngIf="token.mobile=='8510013220'"
+                     (click)="$event.stopPropagation();showSubModule(mod.value)">Add Submodule</a>
+                </div>
+               <div class="col-md-12 padd-bot-15 padd-top-15">
+                <div class="col-sm-12 mrg-bot-15" *ngIf="mod.value.submodules.length==0">
+									 
+                  <div class="no-pay-slips-inn-box" style="padding:0">
+                    <p class="text-danger">There are no Submodules for this module.<br> Please contact administrator to add.</p>
+                    <div class="submodule-outerbox col-md-12">
+                      <a class="btn btn-primary"
+                        class="submodule" (click)="$event.stopPropagation();showSubModule(mod.value)">Add Submodule</a>
+                    </div>
+                  </div>
+                 </div>
+                  
+                  <div class="Appointment-outer-box Salary-Details-outer-box" *ngIf="mod.value.submodules.length!=0">
+                    <div class="table-responsive">
+                  
+                      <table class="table role-table" >
+                        <colgroup>
+                        <col>
+                        <col style="background: #F8F9FC;">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th style="width:280px;"></th>
+                            <th style="width:120px;" class="permission users-roles-header">Full Access</th>
+                            <th class="permission users-roles-header">View</th>
+                            <th class="permission users-roles-header">Create</th>
+                            <th class="permission users-roles-header">Edit</th>
+                            <!----><!----><!---->                
+                        </tr>
+                        </thead>
+                        <tbody formArrayName="submodules">
+                          <ng-container *ngFor="let subMod of mod.value.submodules;let j=index;" [formGroupName]="j">
+                            
+                            <tr [ngStyle]="{'display':(mod.value.submodules.length>1 && subMod.submodulename_display==mod.value.modulename_display && j==0) ? 'none':''}">
+                                <td>{{subMod.submodulename_display}}</td>
+                                <td class="permission" style="padding-left:14px;">
+                                <input  class="ember-view sub-module-checkbox" type="checkbox" formControlName="fullaccess"
+                                (change)="toggleAllPermissions($event, i,j)" >
+                                </td>
+                                <td class="permission">
+                                <input class="ember-view sub-module-checkbox" type="checkbox" formControlName="view"
+                                (change)="updateFullAccess(i, j)">
+                                </td>
+                                <td class="permission">
+                                <input  class="ember-view sub-module-checkbox" type="checkbox" formControlName="create"
+                                (change)="updateFullAccess(i, j)">
+                                </td>
+                                <td class="permission">{{subMod.value}}
+                                <input  class="ember-view sub-module-checkbox" type="checkbox" formControlName="edit"
+                                (change)="updateFullAccess(i, j)">
+                                </td>                     
+                            </tr>
+                            <!-- Submodules Level 2 (sub_module_1) -->
+                            <ng-container formArrayName="sub_module_1" *ngIf="subMod.sub_module_1">
+                              <tr [ngStyle]="{'padding-left': '40px'}" *ngFor="let subMod1 of subMod.sub_module_1;let k=index;" [formGroupName]="k"> <!-- Add padding or margin to indicate hierarchy -->
+                                <td style="padding-left: 40px;">{{ subMod1.submodulename_display }}</td>
+                                <td class="permission" style="padding-left:14px;">
+                                  <input type="checkbox" formControlName="fullaccess" (change)="toggleAllPermissions($event, i, j, k)">
+                                </td>
+                                <td class="permission">
+                                  <input type="checkbox" formControlName="view" (change)="updateFullAccess(i, j, k)">
+                                </td>
+                                <td class="permission">
+                                  <input type="checkbox" formControlName="create" (change)="updateFullAccess(i, j, k)">
+                                </td>
+                                <td class="permission">
+                                  <input type="checkbox" formControlName="edit" (change)="updateFullAccess(i, j, k)">
+                                </td>
+                              </tr>
+                            </ng-container>
+                          </ng-container>
+                        <!-- <tr>
+                            <td colspan="6">
+                            <div class="form-check" style="padding-top:0px;min-height:10px;">
+                              <label class="form-check-label">
+                              <input id="ember822" class="ember-view form-check-input" type="checkbox" disabled="" checked=""> Provide access to view and download employee Payslips, TDS worksheets and Forms.
+                              </label>
+                            </div>
+                            </td>
+                        </tr> -->
+                        </tbody>
+                      </table>
+                  
+                    </div>
+                  
+                  </div>
+                  <div class="col-md-12">
+                    <alert *ngIf="index==i"></alert> 
+                    <a class="btn btn-primary submodule" *ngIf="mod.value.submodules.length!=0"
+                    (click)="savePrivilege(i)" style="float: right;">Save</a>
+                  </div>
+               </div>
+                </div>
+            </div>
+            </div>
+         </div>
+
+        </div>
+
+            </div>
+
+
+
+
+            </div>
+          </div>
+        </div>
+
+
+
+
+      </div>
+
+
+      </div>
+      <!-- /row -->
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>
+
+<!-------Submodule modal------------>
+<div [@grooveState]="isSubmodule?'active':'inactive'" class="modal">
+   <div [@dongleState]="isSubmodule?'active':'inactive'"  class="modal-dialog">
+     <div class="modal-content">
+       <form [formGroup]="subModuleForm" (ngSubmit)="addSubModule()">
+         <div class="modal-header theme-bg">
+           <h4 class="modal-title">Add Submodule</h4>
+           <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+           (click)="closeSubModule()">&times;</button>
+         </div>
+         <div class="modal-body" id="add-user-modal" style="overflow: auto;
+         max-height: 71vh;">
+         <alert></alert>
+           <div class="form-group">
+             <label>Sub Module Name <span class="text-danger">*</span></label>
+             
+             <input type="text" class="form-control" placeholder="Sub module" formControlName="subModule">
+           </div>
+
+           <div class="col-md-12 no-padd">
+            <label>Linkname <span class="text-danger">*</span></label>
+            <div class="col-md-12 no-padd">
+               <div class="col-md-3 no-padd">
+                  <input type="text" class="form-control" formControlName="linkname" readonly>
+               </div>
+               <div class="col-md-9 no-padd">
+                  <input type="text" placeholder="Enter Linkname" class="form-control" formControlName="postLink"
+                     autocomplete="off"
+                    >
+               </div>
+            </div>
+         </div>
+ 
+         </div>
+         <div class="modal-footer">
+           <input type="submit" class="btn btn-default" data-dismiss="modal" value="Save">
+ 
+         </div>
+       </form>
+     </div>
+   </div>
+ </div>
+ <!-------Submodule modal ends------------>

@@ -1,0 +1,50 @@
+
+a.job_name_tag {
+    font-weight: 500;
+    color: #0047ab;
+}
+		
+.page-titles h3.text-themecolor {
+    margin-top: 0;
+}
+
+/* [type="radio"] {
+    display: inline !important
+} */
+
+h3.text-themecolor {
+    margin-bottom: 0;
+    font-weight: 500;
+    color: #1a6bb7;
+}
+svg.icon {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+.dropleft .dropdown-menu {
+    left: auto;
+    right: 29px;
+    padding: 10px 0px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    min-width: 100px;
+}
+.dropdown-menu {
+    border-color: #e8eef1;
+    padding: 0;
+    box-shadow: none;
+    margin: 0px 0 0;
+}
+
+.dropleft .dropdown-menu li {
+    padding: 4px 10px;
+    cursor: pointer;
+    color: #000;
+    font-size: 12px;
+}
+
+.table-responsive.bulk-attendance-outer-box.Reimbursements-outer-box {
+    padding-bottom: 100px;
+}
+

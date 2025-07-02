@@ -1,0 +1,1662 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+  <div id="wrapper" [ngClass]="{'active': showSidebar == false}">
+    <div class="fakeLoader"></div>
+
+
+    <div id="page-wrapper">
+
+      <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+          <h3 class="text-themecolor">Liability Report</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="['/reports']">Reports</a></li>
+            <li class="breadcrumb-item active">Liability Report</li>
+          </ol>
+        </div>
+      </div>
+
+
+      <div class="container-fluid">
+
+        <div class="row">
+
+
+          <app-common-filter [filters]="filters" [isSideBar]="isSideBar"
+            (filterChanged)="applyFilters($event)"></app-common-filter>
+
+          <div class="row notification-btns" style="margin-top: .5rem;">
+
+            <div class="col-md-3 col-sm-3">
+
+            </div>
+
+            <div class="col-md-2">
+
+            </div>
+
+            <div class="col-md-7">
+              <div class="top-right-outer-box">
+
+                <!-- <a (click)="openSendNotificationPopup()" class="btn btn-secondary manage-btn" style="padding-top: 9px;border-color: lightblue;" title="Create Ticket"><i class="fa fa-plus"></i> Ticket
+                    </a>  &nbsp;
+                    <div class="header-notification-box">
+                      <a class="dropdown-toggle notification-show" (click)="Get_Tickets()">
+                        <i class="ti-bell"></i>
+                        <span *ngIf="unread_query_cnt_data && unread_query_cnt_data.unread_tickets
+                         && unread_query_cnt_data.unread_tickets!='0'" class="email-notify noti-count">{{unread_query_cnt_data.unread_tickets}}</span>
+                      </a>
+                    </div> -->
+                <!-- <a (click)="Get_Tickets()" class="btn btn-primary" style="padding-top: 9px;"  title="View notification"><i class="fa fa-eye"></i> notification</a> -->
+
+
+              </div>
+            </div>
+
+
+          </div>
+
+
+          <div class="col-md-12 col-sm-12">
+            <div class="card">
+
+              <div class="card-header">
+                <div class="row">
+
+                  <div class="col-md-3">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="flexCheckDefault"
+                        [(ngModel)]="includeEmployeeDetails" (click)="toggleShowFields()">
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Include Employee Details
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="showRoundedVal"
+                        [(ngModel)]="isShowRoundedVal" />
+                      <label class="form-check-label" for="showRoundedVal">&nbsp; Show
+                        rounded
+                        values</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="Show-Fields-top-outer-box" style="margin-left: 10px;">
+                      <div class="dropdown float-right-box">
+
+                        <a href="#deleteLiability" *ngIf="token?.payout_mode_type == 'self'" data-toggle="modal"
+                          data-placement="top" title="Click to delete Liability reports" class="btn btn-danger"
+                          [class.disabled]="selectedEmployees.length === 0"
+                          [attr.aria-disabled]="selectedEmployees.length === 0"
+                          style="padding-top: 9px; border-radius: 5px;">
+                          Delete Liability
+                        </a> &nbsp;
+
+
+                        <a class="btn btn-round btn-success excel-btn-box" style="padding-top: 9px;"
+                          (click)="SaveColumnValues()" title="Click to save reports">&nbsp; <i class="fa fa-save"></i>
+                        </a> &nbsp;
+                        <!-- <a class="btn btn-round btn-success excel-btn-box" style="padding-top: 9px;"
+                          (click)="exportToExcel()">&nbsp;<i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                        </a> -->
+                        <a class="btn btn-round btn-success excel-btn-box" style="padding-top: 9px;"
+                          (click)="exportToExcelTable()">&nbsp;<i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                        </a>
+                      </div>
+
+
+
+                      <div class="dropdown btn-group Show-Fields-outer-box" style="margin-left: 10px;">
+                        <button type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                          aria-expanded="false" class="btn btn-primary dropdown-toggle"> Show Fields <span
+                            class="caret"></span></button>
+
+                        <ul class="dropdown-menu showhide" aria-labelledby="dropdownMenuButton"
+                          style="overflow-y: auto; margin-left: -15rem;max-height: 300px;">
+                          <li *ngFor="let fields of fieldarray; let i = index">
+                            <a class="dropdown-item" (click)="$event.stopPropagation()">
+                              <label>
+                                <input type="checkbox" (click)="hideshowfields($event,fields)"
+                                  [checked]="showfields[fields.value] ? true : null">
+                                <span style="font-size: small;">{{fields.name}}</span>
+                              </label>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                  </div>
+                  <!-- <div class="col-md-2" style="float: right;text-align: right;">
+                              <a (click)="openSidebar()" class="btn excel-btn-box results filter-onlick-btn" style="padding-top: 9px;">Filter<i class="fa fa-filter"></i></a>
+                            </div> -->
+                </div>
+
+                <div class="row">
+
+                </div>
+              </div>
+
+              <div class="card-body">
+
+                <div class="col-lg-12 col-md-12 col-sm-12 no-padd">
+                  <!-- *ngIf="liability_data.length>0"  -->
+                  <div
+                    class="table-responsive reports-table-outer-box reports-new-table-outer-box reports-main-outerbox-table">
+                    <table class="table table-striped table-bordered " id="preAttendaceTable" #preAttendaceTable>
+                      <thead style="background: skyblue;">
+                        <tr>
+                          <th *ngIf="token?.payout_mode_type == 'self'">
+                            <input class="form-check-input" type="checkbox" id="selectAll" [(ngModel)]="selectAll"
+                              (change)="toggleSelectAll()" *ngIf="showSelectionCheckboxes">
+                          </th>
+                          <th *ngIf="includeEmployeeDetails || showfields['S_No']">S.No</th>
+
+                          <th *ngIf="includeEmployeeDetails || showfields['mon']">Month</th>
+                          <th>TP / Org Emp Code</th>
+                          <th>Employee Name</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['email']">Email ID</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['fathername']">Father/Husband Name</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['dateofbirth']">Date Of Birth</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['dateofjoining']">Date of Joining</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['dateofleaving']">Date of Leaving</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['unitparametername']">Organization Unit</th>
+                          <!-- <th *ngIf="includeEmployeeDetails || showfields['subunit']">Subunit</th> -->
+                          <th *ngIf="includeEmployeeDetails || showfields['posting_department']">Department</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['designation']">Designation</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['jobtype']">Job Type</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['pan_number']">PAN Number</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['uannumber']">UAN Number</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['esinumber']">ESI Number</th>
+
+                          <th *ngIf="includeEmployeeDetails || showfields['total_paid_days']">Total Paid Days</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['arrear_days']">Arrear Days</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['loss_off_pay']">Loss of Pay</th>
+
+                          <!-- Rate Fields  -->
+                          <ng-container *ngFor="let header of rate_cols">
+                            <th *ngIf="includeEmployeeDetails && isValueGreaterThanZero(header.reportcolumnname)">
+                              {{ header.reportcomponentname }}
+                            </th>
+                          </ng-container>
+                          <!-- Rate Fields  -->
+                          <!-- towards the end in dynamic cols Arrears comes then allowances  -->
+                          <!-- Requirement = Basic => Rate cols => Arrears => Earning + Allowances => Deductions  -->
+
+
+                          <th *ngIf="includeEmployeeDetails || showfields['fixedallowancestotalrate']">
+                            Fixed Allowances Total Rate</th>
+
+                          <!---10 June 2025--->
+                          <th *ngIf="includeEmployeeDetails || showfields['rate_employerinsuranceamount']">Rate Employer
+                            Insurance Amount</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['rate_employerlwf']">Rate Employer LWF</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['rate_employerepf']">Rate Employer EPF</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['rate_employeresi']">Rate Employer ESI</th>
+                          <!---10 June 2025--->
+
+
+
+                          <th *ngIf="includeEmployeeDetails || showfields['monthctc']">CTC</th>
+
+
+                          <!-- arrear => earnings => allowances cols Fields  -->
+                          <ng-container *ngFor="let header of arrear_earnings_allowances_cols">
+                            <th *ngIf="includeEmployeeDetails && isValueGreaterThanZero(header.reportcolumnname)">
+                              {{ header.reportcomponentname }}
+                            </th>
+                          </ng-container>
+
+                          <!-- arrear => earnings => allowances cols - Fields  -->
+                          <th *ngIf="includeEmployeeDetails || showfields['incentive']">Incentive</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['refund']">Refund</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['monthly_bonus']">Monthly Bonus</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['overtime_allowance']">Overtime Allowance</th>
+                          <th
+                            *ngIf="(includeEmployeeDetails || showfields['tea_allowance']) && (isValueGreaterThanZero('tea_allowance'))">
+                            Tea Allowance</th>
+                          <!-- <th *ngIf="includeEmployeeDetails || showfields['salarystatus']">Salary Status</th> -->
+                          <th *ngIf="includeEmployeeDetails || showfields['voucher_amount']">Voucher Amount</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['bonus']">Bonus</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['otherbonuswithesi']">Other Bonus With ESI
+                          </th>
+                          <th>Gross Earning</th>
+
+                          <!-- Earning and Allowances -->
+                          <th *ngIf="includeEmployeeDetails || showfields['arr_basic']">Arr Basic</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['arr_hra']">Arr HRA</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['arr_conv']">Arr CONV</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['arr_medical']">Arr Medical</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['arr_specialallowance']">Arr Special Allowance
+                          </th>
+<th *ngIf="includeEmployeeDetails || showfields['totalarear']">Total Arrear</th>
+                          <!-- <th *ngIf="includeEmployeeDetails || showfields['arearaddedmonths']">Arrear Months</th> -->
+
+                          <th *ngIf="includeEmployeeDetails || showfields['otherledgerarear']">Other Ledger Arrears</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['otherledgerarearwithoutesi']">Other Ledger
+                            Arrear Without ESI</th>
+                          
+
+                          <!-- <th *ngIf="includeEmployeeDetails || showfields['ratebasic']">Rate Basic</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['ratehra']">Rate HRA</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['rateconv']">Rate CONV</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['ratemedical']">Rate Medical</th> -->
+                          <!-- <th *ngIf="(includeEmployeeDetails || showfields['ratesalarybonus']) && (isValueGreaterThanZero('ratesalarybonus'))">Rate Salary Bonus</th>
+                          <th *ngIf="(includeEmployeeDetails || showfields['ratecommission']) && (isValueGreaterThanZero('ratecommission'))">Rate Commission</th>
+                          <th *ngIf="(includeEmployeeDetails || showfields['ratetransport_allowance']) && (isValueGreaterThanZero('ratetransport_allowance'))">Rate Transport Allowance</th>
+                          <th *ngIf="(includeEmployeeDetails || showfields['ratetravelling_allowance']) && (isValueGreaterThanZero('ratetravelling_allowance')) ">Rate Travelling Allowance</th>
+                          <th *ngIf="(includeEmployeeDetails || showfields['rateleave_encashment']) && (isValueGreaterThanZero('rateleave_encashment'))">Rate Leave Encashment</th>
+                          <th *ngIf="(includeEmployeeDetails || showfields['rateovertime_allowance']) && (isValueGreaterThanZero('rateovertime_allowance'))">Rate Overtime Allowance</th>
+                          <th *ngIf="(includeEmployeeDetails || showfields['ratenotice_pay'])  && (isValueGreaterThanZero('ratenotice_pay'))">Rate Notice Pay</th>
+                          <th *ngIf="(includeEmployeeDetails || showfields['ratehold_salary_non_taxable']) && (isValueGreaterThanZero('ratehold_salary_non_taxable'))">Rate Hold Salary Non Taxable</th>
+                          <th *ngIf="(includeEmployeeDetails || showfields['ratechildren_education_allowance']) && (isValueGreaterThanZero('ratechildren_education_allowance'))">Rate Children Education Allowance</th>
+                          <th *ngIf="(includeEmployeeDetails || showfields['rategratuityinhand']) && (isValueGreaterThanZero('rategratuityinhand'))">Rate Gratuity Inhand</th> -->
+                          <!-- <th *ngIf="includeEmployeeDetails || showfields['ratespecialallowance']">Rate Special Allowance</th> -->
+
+                          <!-- <th *ngIf="includeEmployeeDetails || showfields['basic']">Basic</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['hra']">HRA</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['conv']">CONV</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['medical']">Medical</th> -->
+                          <!-- <th *ngIf="(includeEmployeeDetails || showfields['salarybonus']) && (isValueGreaterThanZero('ratesalarybonus')) ">Salary Bonus</th>
+                          <th *ngIf="(includeEmployeeDetails || showfields['commission']) && (isValueGreaterThanZero('ratecommission')) ">Commission</th>
+                          <th *ngIf="(includeEmployeeDetails || showfields['transport_allowance'])&& (isValueGreaterThanZero('ratetransport_allowance')) ">Transport Allowance</th>
+                          <th *ngIf="(includeEmployeeDetails || showfields['travelling_allowance'])&& (isValueGreaterThanZero('ratetravelling_allowance')) ">Travelling Allowance</th>
+                          <th *ngIf="(includeEmployeeDetails || showfields['leave_encashment'])&& (isValueGreaterThanZero('rateleave_encashment')) ">Leave Encashment</th>
+                          <th *ngIf="(includeEmployeeDetails || showfields['overtime_allowance'])&& (isValueGreaterThanZero('overtime_allowance')) ">Overtime Allowance</th>
+                          <th *ngIf="(includeEmployeeDetails || showfields['notice_pay'])&& (isValueGreaterThanZero('ratenotice_pay')) ">Notice Pay</th>
+                          <th *ngIf="(includeEmployeeDetails || showfields['hold_salary_non_taxable'])&& (isValueGreaterThanZero('ratehold_salary_non_taxable')) ">Hold Salary Non Taxable</th>
+                          <th *ngIf="(includeEmployeeDetails || showfields['children_education_allowance'])&& (isValueGreaterThanZero('ratechildren_education_allowance')) ">Children Education Allowance</th>
+                          <th *ngIf="(includeEmployeeDetails || showfields['gratuityinhand'])&& (isValueGreaterThanZero('rategratuityinhand')) ">Gratuity Inhand</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['specialallowance']">Special Allowance</th> -->
+
+
+
+                          <!-- Deductions  -->
+                          <th *ngIf="includeEmployeeDetails || showfields['epf']">EPF</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['epf_arear']">Arrear EPF</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['vpf']">VPF</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['esi']">ESI</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['tds']">TDS</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['lwf']">LWF</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['insurance']">Insurance</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['mobile']">Mobile</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['other']">Other</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['loan']">Loan</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['loanrecovery']">Loan Recovery</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['advance']">Advance</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['advance-recovery']">Advance Recovery</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['professionaltax']">Professional Tax</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['charity_contribution_amount']">Charity
+                            Contribution</th>
+                          <th>Gross Deduction</th>
+                          <th>Net Pay</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['ac_1']">A/c No.1</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['ac_10']">A/c No.10</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['ac_2']">A/c No.2</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['ac21']">A/c No.21</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['employerepf']">
+                            Employer EPF</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['employerinsuranceamount']">
+                            Employer Insurance</th>
+
+                          <th *ngIf="includeEmployeeDetails || showfields['employer_esi_contr']">Employer ESI Contr</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['lwf_employer']">Employer LWF</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['otherledgerdeductions']">Other Ledger
+                            Deductions</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['othervariables']">Other Variables</th>
+
+
+                          <th *ngIf="includeEmployeeDetails || showfields['ews']">EWS</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['gratuity']">Gratuity</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['employeenps']">Employee NPS</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['insurancetype']">Insurance Excluded From CTC
+                          </th>
+                          <!-- <th *ngIf="includeEmployeeDetails || showfields['attendancemode']">Mode of Attendance </th> -->
+                          <!-- <th *ngIf="includeEmployeeDetails || showfields['contractno1']">Contract No.</th> -->
+                          <th *ngIf="includeEmployeeDetails || showfields['biometricid']">Biometric Id</th>
+
+                          <!-- <th *ngIf="includeEmployeeDetails || showfields['contractstartdate']">Contract Start Date </th>
+                          <th *ngIf="includeEmployeeDetails || showfields['contractenddate']">Contract End Date </th> -->
+
+                          <!-- <th *ngIf="includeEmployeeDetails || showfields['disbursementmode']">Disbursement Mode</th> -->
+                          <th *ngIf="includeEmployeeDetails || showfields['vendor_name']">Vendor Name</th>
+                          <th *ngIf="includeEmployeeDetails || showfields['project_name']">Project Name </th>
+                          <th *ngIf="includeEmployeeDetails || showfields['salary_book_project']">Salary Book Project
+                          </th>
+                        </tr>
+                      </thead>
+
+                      <tbody style="background: aliceblue;">
+                        <ng-container *ngFor="let report of filteredEmployees;let i=index;">
+                          <tr [ngClass]="{'light-skyblue': i % 2 == 0, 'white': i % 2 != 0}">
+                            <td *ngIf="token?.payout_mode_type == 'self'">
+                              <input type="checkbox" [(ngModel)]="report.selected" (change)="onEmployeeCheckboxChange()"
+                                *ngIf="showSelectionCheckboxes && report.emp_name != 'Grand Total'">
+                            </td>
+                            <td *ngIf="includeEmployeeDetails || showfields['S_No']">{{i+1}}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['mon']">{{report.mon}}</td>
+                            <td>
+                              <a href="#liability_report"
+                                (click)="DetailedLiabilityReportByEmpCode(report.emp_code,(report.orgempcode !== '' && report.orgempcode != null && report.orgempcode != undefined) ? report.orgempcode : report.tpcode)"
+                                data-toggle="modal" class="btn-sm manage-btn" data-placement="top"
+                                data-original-title="Exit">
+                                {{ (report.orgempcode !== '' && report.orgempcode != null && report.orgempcode !=
+                                undefined) ? report.orgempcode : report.tpcode }}
+                              </a>
+                            </td>
+                            <td>{{report.employee_name}}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['email']">{{report.email}}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['fathername']">{{report.fathername}}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['dateofbirth']">{{report.dateofbirth}}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['dateofjoining']">{{report.dateofjoining}}
+                            </td>
+                            <td *ngIf="includeEmployeeDetails || showfields['dateofleaving']">{{report.dateofleaving}}
+                            </td>
+                            <td *ngIf="includeEmployeeDetails || showfields['unitparametername']">
+                              {{report.unitparametername}}</td>
+                            <!-- <td *ngIf="includeEmployeeDetails || showfields['subunit']">{{report.subunit}} </td> -->
+
+                            <td *ngIf="includeEmployeeDetails || showfields['posting_department']">
+                              {{report.posting_department?.split('#')[0]}}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['designation']">{{report.designation}}</td>
+
+                            <td *ngIf="includeEmployeeDetails || showfields['jobtype']">{{report.jobtype}}</td>
+
+
+                            <td *ngIf="includeEmployeeDetails || showfields['pan_number']">{{report.pan_number}}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['uannumber']">{{report.uannumber}}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['esinumber']">{{report.esinumber}}</td>
+
+                            <td *ngIf="includeEmployeeDetails || showfields['total_paid_days']">
+                              {{report.total_paid_days}}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['loss_off_pay']">{{report.loss_off_pay}}
+                            </td>
+                            <td *ngIf="includeEmployeeDetails || showfields['arrear_days']">{{report.arrear_days}}</td>
+                            <!-- Rate fields -->
+                            <ng-container *ngFor="let header of rate_cols">
+                              <td *ngIf="includeEmployeeDetails && isValueGreaterThanZero(header.reportcolumnname)">
+                                <span
+                                  [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name === 'Summary' ? 'bold' : 'normal'}">
+                                  {{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(report[header.reportcolumnname]) :
+                                  getRoundedVal(report[header.reportcolumnname]) }}
+                                </span>
+                              </td>
+                            </ng-container>
+                            <!-- Rate fields -->
+
+
+                            <!-- <td>
+                      {{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.rate_employerinsuranceamount) :
+                      getRoundedVal(report.rate_employerinsuranceamount)
+                      }}
+                    </td>
+                    <td>
+                      {{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.rate_employerlwf) :
+                      getRoundedVal(report.rate_employerlwf)
+                      }}
+                    </td>
+                    <td>
+                      {{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.rate_employerepf) :
+                      getRoundedVal(report.rate_employerepf)
+                      }}
+                    </td>
+                    <td>
+                      {{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.rate_employeresi) :
+                      getRoundedVal(report.rate_employeresi)
+                      }}
+                    </td> -->
+
+                            <td *ngIf="includeEmployeeDetails || showfields['fixedallowancestotalrate']">
+                              {{!isShowRoundedVal ? truncateToTwoDecimals(report.fixedallowancestotalrate) :
+                              getRoundedVal(report.fixedallowancestotalrate)}}</td>
+
+
+                            <!---10 June 2025--->
+                            <td *ngIf="includeEmployeeDetails || showfields['rate_employerinsuranceamount']">
+                              {{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.rate_employerinsuranceamount) :
+                              getRoundedVal(report.rate_employerinsuranceamount)
+                              }}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['rate_employerlwf']"> {{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.rate_employerlwf) :
+                              getRoundedVal(report.rate_employerlwf)
+                              }}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['rate_employerepf']">{{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.rate_employerepf) :
+                              getRoundedVal(report.rate_employerepf)
+                              }}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['rate_employeresi']"> {{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.rate_employeresi) :
+                              getRoundedVal(report.rate_employeresi)
+                              }}</td>
+                            <!---10 June 2025--->
+
+
+
+                            <td *ngIf="includeEmployeeDetails || showfields['monthctc']">
+                              {{ !isShowRoundedVal ? truncateToTwoDecimals(report.monthctc):
+                              getRoundedVal(report.monthctc) }}
+                            </td>
+
+
+                            <!-- Earning heard-->
+
+                            <!-- arrear => earnings => allowances cols - Fields  -->
+                            <ng-container *ngFor="let header of arrear_earnings_allowances_cols">
+                              <td *ngIf="includeEmployeeDetails && isValueGreaterThanZero(header.reportcolumnname)">
+                                <span
+                                  [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name === 'Summary' ? 'bold' : 'normal'}">
+                                  {{ !isShowRoundedVal ?
+                                  truncateToTwoDecimals(report[header.reportcolumnname]) :
+                                  getRoundedVal(report[header.reportcolumnname]) }}
+                                </span>
+                              </td>
+                            </ng-container>
+                            <!-- arrear => earnings => allowances cols - Fields  -->
+
+                            <td *ngIf="includeEmployeeDetails || showfields['incentive']">{{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.incentive) :
+                              getRoundedVal(report.incentive)
+                              }}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['refund']">{{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.refund) :
+                              getRoundedVal(report.refund)
+                              }}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['monthly_bonus']">{{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.monthly_bonus) :
+                              getRoundedVal(report.monthly_bonus)
+                              }}
+                            </td>
+                            <td *ngIf="includeEmployeeDetails || showfields['overtime_allowance']">
+                              {{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.overtime_allowance) :
+                              getRoundedVal(report.overtime_allowance)
+                              }} </td>
+                            <td
+                              *ngIf="(includeEmployeeDetails || showfields['tea_allowance']) && (isValueGreaterThanZero('tea_allowance'))">
+                              {{!isShowRoundedVal ? truncateToTwoDecimals(report.tea_allowance) :
+                              getRoundedVal(report.tea_allowance) }}
+                            </td>
+                            <!-- <td *ngIf="includeEmployeeDetails || showfields['salarystatus']">{{report.salarystatus}}
+                            </td> -->
+                            <td *ngIf="includeEmployeeDetails || showfields['voucher_amount']">
+                              {{!isShowRoundedVal ? truncateToTwoDecimals(report.voucher_amount) :
+                              getRoundedVal(report.voucher_amount)}}
+                            </td>
+                            <td *ngIf="includeEmployeeDetails || showfields['bonus']">
+                              {{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.bonus) :
+                              getRoundedVal(report.bonus)
+                              }}
+                            </td>
+                            <td *ngIf="includeEmployeeDetails || showfields['otherbonuswithesi']">
+                              {{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.otherbonuswithesi) :
+                              getRoundedVal(report.otherbonuswithesi)
+                              }}
+                            </td>
+                            <td> {{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.grossearning) :
+                              getRoundedVal(report.grossearning)
+                              }}</td>
+                            <!-- Eaning Head-->
+
+                            <td *ngIf="includeEmployeeDetails || showfields['arr_basic']">{{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.arr_basic) :
+                              getRoundedVal(report.arr_basic)
+                              }}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['arr_hra']">{{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.arr_hra) :
+                              getRoundedVal(report.arr_hra)
+                              }}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['arr_conv']">{{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.arr_conv) :
+                              getRoundedVal(report.arr_conv)
+                              }}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['arr_medical']">{{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.arr_medical) :
+                              getRoundedVal(report.arr_medical)
+                              }}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['arr_specialallowance']">
+                              {{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.arr_specialallowance) :
+                              getRoundedVal(report.arr_specialallowance)
+                              }} </td>
+
+                            <!-- <td *ngIf="includeEmployeeDetails || showfields['arearaddedmonths']">
+                              {{report.arearaddedmonths}}</td> -->
+
+                            <td *ngIf="includeEmployeeDetails || showfields['totalarear']">
+                              {{!isShowRoundedVal ? truncateToTwoDecimals(report.totalarear) :
+                              getRoundedVal(report.totalarear) }} </td>
+                            <td *ngIf="includeEmployeeDetails || showfields['otherledgerarear']">
+                              {{!isShowRoundedVal ? truncateToTwoDecimals(report.otherledgerarears) :
+                              getRoundedVal(report.otherledgerarears) }}
+                            </td>
+                            <td *ngIf="includeEmployeeDetails || showfields['otherledgerarearwithoutesi']">
+                              {{!isShowRoundedVal ? truncateToTwoDecimals(report.otherledgerarearwithoutesi) :
+                              getRoundedVal(report.otherledgerarearwithoutesi) }}
+                            </td>
+                           
+
+                            <!-- <td *ngIf="includeEmployeeDetails || showfields['ratebasic']">{{report.ratebasic | number:'1.2-2'}}</td>
+                                                        <td *ngIf="includeEmployeeDetails || showfields['ratehra']">{{report.ratehra | number:'1.2-2'}}</td>
+                                                        <td *ngIf="includeEmployeeDetails || showfields['rateconv']">{{report.rateconv | number:'1.2-2'}}</td>
+                                                        <td *ngIf="includeEmployeeDetails || showfields['ratemedical']">{{report.ratemedical}}</td> -->
+
+                            <!-- <td *ngIf="(includeEmployeeDetails || showfields['ratesalarybonus']) && (isValueGreaterThanZero('ratesalarybonus'))">
+                                                          <span [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name === 'Summary' ? 'bold' : 'normal'}">{{ report.ratesalarybonus }}</span>
+                                                        </td>
+                                                        <td *ngIf="(includeEmployeeDetails || showfields['ratecommission']) && (isValueGreaterThanZero('ratecommission'))">
+                                                          <span [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name == 'Summary' ? 'bold' : 'normal'}">{{report.ratecommission}}</span>
+                                                        </td>
+                                                        <td *ngIf="(includeEmployeeDetails || showfields['ratetransport_allowance']) && (isValueGreaterThanZero('ratetransport_allowance'))">
+                                                          <span [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name == 'Summary' ? 'bold' : 'normal'}">{{report.ratetransport_allowance}}</span>
+                                                        </td>
+                                                        <td *ngIf="(includeEmployeeDetails || showfields['ratetravelling_allowance']) && (isValueGreaterThanZero('ratetravelling_allowance'))">
+                                                          <span [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name == 'Summary' ? 'bold' : 'normal'}">{{report.ratetravelling_allowance}}</span>
+                                                        </td>
+                                                        <td *ngIf="(includeEmployeeDetails || showfields['rateleave_encashment']) && (isValueGreaterThanZero('rateleave_encashment'))">
+                                                          <span [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name == 'Summary' ? 'bold' : 'normal'}">{{report.rateleave_encashment}}</span>
+                                                        </td>
+                                                        <td *ngIf="(includeEmployeeDetails || showfields['rateovertime_allowance']) && (isValueGreaterThanZero('rateovertime_allowance'))">
+                                                          <span [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name == 'Summary' ? 'bold' : 'normal'}">{{report.rateovertime_allowance}}</span>
+                                                        </td>
+                                                        <td *ngIf="(includeEmployeeDetails || showfields['ratenotice_pay']) && (isValueGreaterThanZero('ratenotice_pay'))">
+                                                          <span [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name == 'Summary' ? 'bold' : 'normal'}">{{report.ratenotice_pay}}</span>
+                                                        </td>
+                                                        <td *ngIf="(includeEmployeeDetails || showfields['ratehold_salary_non_taxable']) && (isValueGreaterThanZero('ratehold_salary_non_taxable'))">
+                                                          <span [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name == 'Summary' ? 'bold' : 'normal'}">{{report.ratehold_salary_non_taxable}}</span>
+                                                        </td>
+                                                        <td *ngIf="(includeEmployeeDetails || showfields['ratechildren_education_allowance']) && (isValueGreaterThanZero('ratechildren_education_allowance'))">
+                                                          <span [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name == 'Summary' ? 'bold' : 'normal'}">{{report.ratechildren_education_allowance}}</span>
+                                                        </td>
+                                                        <td *ngIf="(includeEmployeeDetails || showfields['rategratuityinhand']) && (isValueGreaterThanZero('rategratuityinhand'))">
+                                                          <span [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name == 'Summary' ? 'bold' : 'normal'}">{{report.rategratuityinhand}}</span>
+                                                        </td> -->
+
+                            <!-- <td *ngIf="includeEmployeeDetails || showfields['ratespecialallowance']">{{report.ratespecialallowance}}</td> -->
+
+                            <!-- <td *ngIf="includeEmployeeDetails || showfields['basic']">{{report.basic | number:'1.0-0'}}</td>
+                                                        <td *ngIf="includeEmployeeDetails || showfields['hra']">{{report.hra | number:'1.2-2'}}</td>
+                                                        <td *ngIf="includeEmployeeDetails || showfields['conv']">{{report.conv | number:'1.2-2'}}</td>
+                                                        <td *ngIf="includeEmployeeDetails || showfields['medical']">{{report.medical | number:'1.2-2'}}</td> -->
+                            <!-- <td *ngIf="(includeEmployeeDetails || showfields['salarybonus']) && (isValueGreaterThanZero('ratesalarybonus')) ">
+                                                          <span [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name == 'Summary' ? 'bold' : 'normal'}">{{report.salarybonus}}</span>
+                                                        </td>
+
+                                                          <td *ngIf="(includeEmployeeDetails || showfields['commission'])&& (isValueGreaterThanZero('ratecommission'))">
+                                                            <span [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name == 'Summary' ? 'bold' : 'normal'}">{{report.commission}}</span>
+                                                          </td>
+
+                                                          <td *ngIf="(includeEmployeeDetails || showfields['transport_allowance']) && (isValueGreaterThanZero('ratetransport_allowance'))">
+                                                            <span [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name == 'Summary' ? 'bold' : 'normal'}">{{report.transport_allowance}}</span>
+                                                          </td>
+
+                                                          <td *ngIf="(includeEmployeeDetails || showfields['travelling_allowance']) && (isValueGreaterThanZero('ratetravelling_allowance'))">
+                                                            <span [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name == 'Summary' ? 'bold' : 'normal'}">{{report.travelling_allowance}}</span>
+                                                          </td>
+
+                                                          <td *ngIf="(includeEmployeeDetails || showfields['leave_encashment']) && (isValueGreaterThanZero('rateleave_encashment'))">
+                                                            <span [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name == 'Summary' ? 'bold' : 'normal'}">{{report.leave_encashment}}</span>
+                                                          </td>
+
+                                                          <td *ngIf="(includeEmployeeDetails || showfields['overtime_allowance']) && (isValueGreaterThanZero('overtime_allowance'))">
+                                                            <span [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name == 'Summary' ? 'bold' : 'normal'}">{{report.overtime_allowance}}</span>
+                                                          </td>
+
+                                                          <td *ngIf="(includeEmployeeDetails || showfields['notice_pay']) && (isValueGreaterThanZero('ratenotice_pay'))">
+                                                            <span [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name == 'Summary' ? 'bold' : 'normal'}">{{report.notice_pay}}</span>
+                                                          </td>
+
+                                                          <td *ngIf="(includeEmployeeDetails || showfields['hold_salary_non_taxable']) && (isValueGreaterThanZero('ratehold_salary_non_taxable'))">
+                                                            <span [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name == 'Summary' ? 'bold' : 'normal'}">{{report.hold_salary_non_taxable}}</span>
+                                                          </td>
+                                                          <td *ngIf="(includeEmployeeDetails || showfields['children_education_allowance']) && (isValueGreaterThanZero('ratechildren_education_allowance'))">
+                                                            <span [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name == 'Summary' ? 'bold' : 'normal'}">{{report.children_education_allowance}}</span>
+                                                          </td>
+                                                          <td *ngIf="(includeEmployeeDetails || showfields['gratuityinhand']) && (isValueGreaterThanZero('rategratuityinhand'))">
+                                                            <span [ngStyle]="{'font-weight': i === filteredEmployees.length - 1 && report.emp_name == 'Summary' ? 'bold' : 'normal'}">{{report.gratuityinhand}}</span>
+                                                          </td> -->
+                            <!-- <td *ngIf="includeEmployeeDetails || showfields['specialallowance']">{{report.specialallowance | number:'1.2-2'}}</td> -->
+
+                            <td *ngIf="includeEmployeeDetails || showfields['epf']"> {{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.epf) :
+                              getRoundedVal(report.epf)
+                              }}
+                            </td>
+                            <td *ngIf="includeEmployeeDetails || showfields['epf_arear']">
+                              {{report.epf_arear}}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['vpf']"> {{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.vpf) :
+                              getRoundedVal(report.vpf)
+                              }}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['esi']"> {{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.esi) :
+                              getRoundedVal(report.esi)
+                              }}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['tds']"> {{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.tds) :
+                              getRoundedVal(report.tds)
+                              }}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['lwf']"> {{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.lwf) :
+                              getRoundedVal(report.lwf)
+                              }}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['insurance']"> {{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.insurance) :
+                              getRoundedVal(report.insurance)
+                              }}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['mobile']">{{report.mobile}}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['other']"> {{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.other) :
+                              getRoundedVal(report.other)
+                              }}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['loan']">{{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.loan) :
+                              getRoundedVal(report.loan)
+                              }}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['loanrecovery']">{{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.loanrecovery) :
+                              getRoundedVal(report.loanrecovery)
+                              }}
+                            </td>
+                            <td *ngIf="includeEmployeeDetails || showfields['advance']">{{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.advance) :
+                              getRoundedVal(report.advance)
+                              }}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['advancerecovery']">
+                              {{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.advancerecovery) :
+                              getRoundedVal(report.advancerecovery)
+                              }} </td>
+                            <td *ngIf="includeEmployeeDetails || showfields['professionaltax']">
+                              {{report.professionaltax}}</td>
+                            <!-- start - new param -->
+                            <td *ngIf="includeEmployeeDetails || showfields['charity_contribution_amount']">
+                              {{report.charity_contribution_amount}}</td>
+                            <!--  end  -->
+                            <td>{{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.grossdeduction):
+                              getRoundedVal(report.grossdeduction)
+                              }}</td>
+
+                            <td>{{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.netpay):
+                              getRoundedVal(report.netpay)
+                              }}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['ac_1']">{{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.ac_1):
+                              getRoundedVal(report.ac_1)
+                              }}
+                            </td>
+                            <td *ngIf="includeEmployeeDetails || showfields['ac_10']">{{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.ac_10):
+                              getRoundedVal(report.ac_10)
+                              }}
+                            </td>
+                            <td *ngIf="includeEmployeeDetails || showfields['ac_2']">{{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.ac_2):
+                              getRoundedVal(report.ac_2)
+                              }}
+                            </td>
+                            <td *ngIf="includeEmployeeDetails || showfields['ac21']">{{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.ac21):
+                              getRoundedVal(report.ac21)
+                              }}
+                            </td>
+
+                            <td *ngIf="includeEmployeeDetails || showfields['employerepf']">
+                              {{ report.employerepf }}
+                            </td>
+                            <td *ngIf="includeEmployeeDetails || showfields['employerinsuranceamount']">
+                              {{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.employerinsuranceamount) :
+                              getRoundedVal(report.employerinsuranceamount)
+                              }}
+                            </td>
+                            <td *ngIf="includeEmployeeDetails || showfields['employer_esi_contr']">
+                              {{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.employer_esi_contr) :
+                              getRoundedVal(report.employer_esi_contr)
+                              }}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['lwf_employer']">{{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.lwf_employer) :
+                              getRoundedVal(report.lwf_employer)
+                              }}
+                            </td>
+
+                            <td *ngIf="includeEmployeeDetails || showfields['otherledgerdeductions']">
+                              {{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.otherledgerdeductions) :
+                              getRoundedVal(report.otherledgerdeductions) }}
+                            </td>
+                            <td *ngIf="includeEmployeeDetails || showfields['othervariables']">
+                              {{!isShowRoundedVal ? truncateToTwoDecimals(report.othervariables) :
+                              getRoundedVal(report.othervariables)}}
+                            </td>
+
+                            <td *ngIf="includeEmployeeDetails || showfields['ews']">{{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.ews) :
+                              getRoundedVal(report.ews)
+                              }}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['gratuity']">{{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.gratuity) :
+                              getRoundedVal(report.gratuity)
+                              }}
+                            </td>
+
+
+                            <td *ngIf="includeEmployeeDetails || showfields['employeenps']">{{!isShowRoundedVal ?
+                              truncateToTwoDecimals(report.employeenps) :
+                              getRoundedVal(report.employeenps)
+                              }}</td>
+
+
+                            <td *ngIf="includeEmployeeDetails || showfields['insurancetype']">
+                              {{report.insurancetype}}
+                            </td>
+
+                            <!-- <td *ngIf="includeEmployeeDetails || showfields['attendancemode']">{{report.attendancemode}}
+                            </td>-->
+                            <!-- <td *ngIf="includeEmployeeDetails || showfields['contractno1']">{{report.contractno1}}</td> -->
+                            <td *ngIf="includeEmployeeDetails || showfields['biometricid']">{{report.biometricid}}</td>
+
+                            <!-- <td *ngIf="includeEmployeeDetails || showfields['contractstartdate']">{{report.contractstartdate}}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['contractenddate']">{{report.contractenddate}}</td> -->
+
+
+                            <!-- <td *ngIf="includeEmployeeDetails || showfields['disbursementmode']">
+                              {{report.disbursementmode}}</td> -->
+                            <td *ngIf="includeEmployeeDetails || showfields['vendor_name']">{{report.vendor_name}}</td>
+                            <td *ngIf="includeEmployeeDetails || showfields['project_name']">{{report.project_name}}
+                            </td>
+                            <td *ngIf="includeEmployeeDetails || showfields['salary_book_project']">
+                              {{report.salary_book_project}}</td>
+
+                          </tr>
+                        </ng-container>
+                      </tbody>
+                    </table>
+                    <alert></alert>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div *ngIf="liability_data.length == 0 && !show_label" class="alert alert-danger text-center">
+                            No Record Found.
+                        </div>
+                        <div *ngIf="liability_data.length==0 && show_label" class="alert alert-success text-center">
+                            Please filter to view records.
+                        </div>
+                                </div> -->
+
+          </div>
+
+          <div *ngIf="loading || !(data)" class="please-wait">
+            <i class="fa fa-spinner fa-spin fa-3x"></i>
+            <b>Please wait...</b>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Liability Popup Made by Arpit on click of Emp_code -->
+
+    <div id="liability_report" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content" style="width: 100% !important; height: 100% !important;">
+
+          <div class="modal-header theme-bg">
+            <h4 class="modal-title">Detailed Liability Report For -{{ this.tpcode}}</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+
+          <div class="table-responsive reports-table-outer-box">
+            <table class="table table-striped table-bordered">
+              <thead style="background: skyblue;">
+
+                <tr>
+                  <th>S.No</th>
+                  <th>Month</th>
+                  <th>TP / Org Emp Code</th>
+                  <th>Employee Name</th>
+                  <th>Father/Husband Name</th>
+                  <th>Designation</th>
+                  <th>Department</th>
+                  <!-- <th>Subunit</th> -->
+                  <th>Date of Joining</th>
+                  <th>Date Of Birth</th>
+                  <th>ESI Number</th>
+                  <th>Pan Number</th>
+                  <th>UAN</th>
+                  <th>Email ID</th>
+                  <th>Date of Leaving</th>
+                  <th>Arrear Days</th>
+                  <th>Loss of Pay</th>
+                  <th>Total Paid Days</th>
+                  <th>Rate Basic</th>
+                  <th>Rate HRA</th>
+                  <th>Rate CONV</th>
+                  <th>Rate Medical</th>
+                  <th>Rate Special Allowance</th>
+
+                  <!---10 June 2025--->
+                  <th>Rate Employer Insurance Amount</th>
+                  <th>Rate Employer LWF</th>
+                  <th>Rate Employer EPF</th>
+                  <th>Rate Employer ESI</th>
+                  <!---10 June 2025--->
+
+
+                  <th>Fixed Allowances Total Rate</th>
+                  <th>Basic</th>
+                  <th>HRA</th>
+                  <th>CONV</th>
+                  <th>Medical</th>
+                  <th>Special Allowance</th>
+                  <th>Arr Basic</th>
+                  <th>Arr HRA</th>
+                  <th>Arr CONV</th>
+                  <th>Arr Medical</th>
+                  <th>Arr Special Allowance</th>
+                  <th>Incentive</th>
+                  <th>Refund</th>
+                  <th>Monthly Bonus</th>
+                  <th>Overtime Allowance</th>
+                  <th>Gross Earning</th>
+
+                  <th>EPF</th>
+                  <th>VPF</th>
+                  <th>ESI</th>
+                  <th>TDS</th>
+                  <th>Loan</th>
+                  <!-- <th >Loan Recovery</th> -->
+                  <th>LWF</th>
+                  <th>Employer LWF</th>
+                  <th>Insurance</th>
+                  <th>Mobile</th>
+                  <th>Other</th>
+                  <th>Professional Tax</th>
+                  <th>Gross Deduction</th>
+                  <th>Net Pay</th>
+                  <th>A/c No.1</th>
+                  <th>A/c No.10</th>
+                  <th>A/c No.2</th>
+                  <th>A/c No.21</th>
+                  <th>Employer ESI Contr</th>
+                  <th>Employer LWF</th>
+                  <th>Salary Status</th>
+                  <th>Arrear Months</th>
+                  <th>Total Arrear</th>
+                  <th>Voucher Amount</th>
+                  <th>EWS</th>
+                  <th>Gratuity</th>
+                  <th>Bonus</th>
+                  <th>Employee NPS</th>
+                  <th>Other Ledger Arrears</th>
+                  <th>Other Ledger Deductions</th>
+                  <th>Other Variables</th>
+                  <th>Other Ledger Arrear Without ESI</th>
+                  <th>Other Bonus With ESI</th>
+                  <th>Insurance Excluded From CTC</th>
+                  <th>Mode of Attendance </th>
+                  <th>CTC</th>
+                </tr>
+
+              </thead>
+
+              <tbody style="background: aliceblue;">
+                <ng-container *ngFor="let report of data;let i=index;">
+                  <tr [ngClass]="{'light-skyblue': i % 2 == 0, 'white': i % 2 != 0}">
+                    <td>{{i+1}}</td>
+                    <td>{{report.mon}}</td>
+                    <td> {{ (report.orgempcode !== '' && report.orgempcode != null && report.orgempcode != undefined) ?
+                      report.orgempcode : report.tpcode }}</td>
+                    <td>{{report.employee_name}}</td>
+                    <td>{{report.father_husband_name}}</td>
+                    <td>{{report.designation}}</td>
+                    <td>{{report.department}}</td>
+                    <!-- <td>{{report.subunit}} </td> -->
+                    <td>{{report.dateofjoining}}</td>
+                    <td>{{report.dateofbirth}}</td>
+                    <td>{{report.esinumber}}</td>
+                    <td>{{report.pan_number}}</td>
+                    <td>{{report.uannumber}}</td>
+                    <td>{{report.email}}</td>
+                    <td>{{report.dateofleaving}}</td>
+                    <td>{{report.arrear_days}}</td>
+                    <td>{{report.loss_off_pay}}</td>
+                    <td>{{report.total_paid_days}}</td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.ratebasic ):
+                      getRoundedVal(report.ratebasic)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.ratehra ):
+                      getRoundedVal(report.ratehra)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.rateconv ):
+                      getRoundedVal(report.rateconv)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.ratemedical) :
+                      getRoundedVal(report.ratemedical)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.ratespecialallowance) :
+                      getRoundedVal(report.ratespecialallowance)
+                      }}
+                    </td>
+
+                    <!---10 June 2025--->
+                    <td>
+                      {{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.rate_employerinsuranceamount) :
+                      getRoundedVal(report.rate_employerinsuranceamount)
+                      }}
+                    </td>
+                    <td>
+                      {{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.rate_employerlwf) :
+                      getRoundedVal(report.rate_employerlwf)
+                      }}
+                    </td>
+                    <td>
+                      {{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.rate_employerepf) :
+                      getRoundedVal(report.rate_employerepf)
+                      }}
+                    </td>
+                    <td>
+                      {{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.rate_employeresi) :
+                      getRoundedVal(report.rate_employeresi)
+                      }}
+                    </td>
+                    <!---10 June 2025--->
+
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.fixedallowancestotalrate) :
+                      getRoundedVal(report.fixedallowancestotalrate)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.basic ):
+                      getRoundedVal(report.basic)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.hra ) :
+                      getRoundedVal(report.hra)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.conv):
+                      getRoundedVal(report.conv)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.medical ):
+                      getRoundedVal(report.medical)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.specialallowance):
+                      getRoundedVal(report.specialallowance)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.arr_basic) :
+                      getRoundedVal(report.arr_basic)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.arr_hra) :
+                      getRoundedVal(report.arr_hra)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals( report.arr_conv) :
+                      getRoundedVal(report.arr_conv)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.arr_medical) :
+                      getRoundedVal(report.arr_medical)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals( report.arr_specialallowance ) :
+                      getRoundedVal(report.arr_specialallowance)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.incentive) :
+                      getRoundedVal(report.incentive)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.refund ) :
+                      getRoundedVal(report.refund)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.monthly_bonus) :
+                      getRoundedVal(report.monthly_bonus)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.overtime_allowance ):
+                      getRoundedVal(report.overtime_allowance)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.grossearning ):
+                      getRoundedVal(report.grossearning)
+                      }}
+                    </td>
+
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.epf ):
+                      getRoundedVal(report.epf)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.vpf) :
+                      getRoundedVal(report.vpf)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.esi) :
+                      getRoundedVal(report.esi)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.tds) :
+                      getRoundedVal(report.tds)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.lwf) :
+                      getRoundedVal(report.lwf)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.insurance) :
+                      getRoundedVal(report.insurance)
+                      }}
+                    </td>
+                    <td>{{report.mobile}}</td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.other) :
+                      getRoundedVal(report.other)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.loan) :
+                      getRoundedVal(report.loan)
+                      }}
+                    </td>
+                    <!-- <td >{{report.loanrecovery}}</td> -->
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.advance) :
+                      getRoundedVal(report.advance)
+                      }}
+                    </td>
+                    <!-- <td >{{report.advancerecovery}}</td> -->
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals( report.professionaltax) :
+                      getRoundedVal(report.professionaltax)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.grossdeduction ):
+                      getRoundedVal(report.grossdeduction)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.netpay):
+                      getRoundedVal(report.netpay)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.ac_1 ):
+                      getRoundedVal(report.ac_1)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.ac_10 ):
+                      getRoundedVal(report.ac_10)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.ac_2) :
+                      getRoundedVal(report.ac_2)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.ac21) :
+                      getRoundedVal(report.ac21)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.employer_esi_contr) :
+                      getRoundedVal(report.employer_esi_contr)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.lwf_employer) :
+                      getRoundedVal(report.lwf_employer)
+                      }}
+                    </td>
+
+                    <td>{{report.salarystatus}}</td>
+                    <td>{{report.arearaddedmonths}}</td>
+
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.totalarear) :
+                      getRoundedVal(report.totalarear)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.voucher_amount) :
+                      getRoundedVal(report.voucher_amount)
+                      }}
+                    </td>
+
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.ews) :
+                      getRoundedVal(report.ews)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.gratuity) :
+                      getRoundedVal(report.gratuity)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.bonus) :
+                      getRoundedVal(report.bonus)
+                      }}
+                    </td>
+
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.employeenps) :
+                      getRoundedVal(report.employeenps)
+                      }}
+                    </td>
+
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.otherledgerarears) :
+                      getRoundedVal(report.otherledgerarears)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.otherledgerdeductions) :
+                      getRoundedVal(report.otherledgerdeductions)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.othervariables) :
+                      getRoundedVal(report.othervariables)
+                      }}
+                    </td>
+
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.otherledgerarearwithoutesi) :
+                      getRoundedVal(report.otherledgerarearwithoutesi)
+                      }}
+                    </td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.otherbonuswithesi) :
+                      getRoundedVal(report.otherbonuswithesi)
+                      }}
+                    </td>
+
+                    <td>{{report.insurancetype}}</td>
+
+                    <td>{{report.attendancemode}}</td>
+                    <td>{{!isShowRoundedVal ?
+                      truncateToTwoDecimals(report.monthctc) :
+                      getRoundedVal(report.monthctc )
+                      }}
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+            <alert></alert>
+          </div>
+          <!-- </div> -->
+          <!-- </div> -->
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Search Filter Code  -->
+    <div id="sidebar" class="sidebar bg-dark text-white sidebar-menu_filter-box" [style.width]="sidebarWidth">
+      <h3 class="filter-menu-header-text-box">Filter</h3>
+      <a class="clear-box-btn" title="Clear Filter" style="float: right; cursor: pointer;" (click)="reset()">Clear</a>
+      <button class="close-btn btn btn-danger1" (click)="closeSidebar()"><i class="fa fa-close"></i></button>
+      <div class="sidebar-content-box">
+        <div class="col-md-12 col-sm-12">
+          <input type="text" [(ngModel)]="invKey" value="" placeholder="Search Employee(s)"
+            class="form-control wide-width" style="width: 100%;" (keyup)="search($event)" />
+          <!-- <input type="text" value="" placeholder="Search with employee / mobile no." class="form-control wide-width" style="width: 100%;"> -->
+        </div>
+
+        <div class="col-md-12 ">
+
+          <div id="filterComponent">
+            <div class="panel-group">
+
+              <div class="panel panel-default">
+                <div class="panel-heading panel_heading_gray  card-header" role="tab" id="headingOne2"
+                  data-toggle="collapse" data-parent="#accordion2" href="#collapseOne2" aria-expanded="false"
+                  aria-controls="collapseOne">
+                  <h4>Employees Filter <i class="fa fa-angle-down"></i></h4>
+                </div>
+                <div id="collapseOne2" class="panel-collapse collapse card-body in" role="tabpane2">
+                  <div class="row">
+                    <div class="col-sm-12">
+
+                      <div class="form-group">
+                        <label class="control-label col-sm-12">Organization Unit</label>
+                        <div class="col-sm-12 padd-0 ">
+                          <ng-multiselect-dropdown [placeholder]="'Select Organization Units'"
+                            [data]="unit_master_list_data" [(ngModel)]="selectedUnitId" [settings]="dropdownSettings">
+                          </ng-multiselect-dropdown>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="control-label col-sm-12">Department</label>
+                        <div class="col-sm-12 padd-0">
+                          <ng-multiselect-dropdown [placeholder]="'Select Departments'"
+                            [data]="department_master_list_data" [(ngModel)]="selectedDepartmentId"
+                            [settings]="dropdownSettings_department">
+                          </ng-multiselect-dropdown>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="control-label col-sm-12">Designation</label>
+                        <div class="col-sm-12 padd-0">
+                          <ng-multiselect-dropdown [placeholder]="'Select Designations'" [data]="role_master_list_data"
+                            [(ngModel)]="selectedDesignationId" [settings]="dropdownSettings_designation">
+                          </ng-multiselect-dropdown>
+                        </div>
+                      </div>
+
+
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="text-center mrg-bot-25">
+            <button type="button" class="btn btn-user2 btn-round btn-primary" style="color: #fff !important;"
+              (click)="Apply_new_filter()"> &nbsp;Apply</button>
+            <!-- <button type="button" class="btn btn-user1 btn-round" (click)="reset()">Reset</button> -->
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    <!-- End of search filter code  -->
+
+  </div>
+
+</section>
+
+<app-footer></app-footer>
+
+
+
+<!-----------Send Notification Popup-------->
+<div [@grooveState]="showNotificationPopup?'active':'inactive'" id="sendNotification" class="modal"
+  style="z-index:1000;">
+  <div [@dongleState]="showNotificationPopup?'active':'inactive'" class="modal-dialog"
+    style="margin:auto auto auto auto;">
+    <div class="modal-content" style="height:100%;margin-top:100px;">
+      <form [formGroup]="notificationForm">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Send Notification
+          </h4>
+          <button type="button" class="close" aria-hidden="true" (click)="closeSendNotificationPopup()">&times;</button>
+        </div>
+        <div class="modal-body" style="height:25rem;">
+
+          <div class="row" style="display: none;">
+            <div class="col-md-4">
+              <label>Subject :</label>
+            </div>
+            <div class="col-md-8">
+              <select class="form-control" formControlName="subject_id">
+                <option value="">Select</option>
+                <option value="{{rmd.id}}" *ngFor="let rmd of ticketMasterData;">{{rmd?.tickettypename}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <label>Role</label>
+            </div>
+            <div class="col-md-8">
+              <select class="form-control" formControlName="team" (change)="get_users_master()">
+                <option value="">Select</option>
+                <option value="{{rmd.role_id}}" *ngFor="let rmd of roles_master_data;">{{rmd.role_name}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <label>Users :</label>
+            </div>
+            <div class="col-md-8">
+              <select class="form-control" formControlName="user_id">
+                <option value="">Select</option>
+                <option value="{{rmd.user_id}}" *ngFor="let rmd of user_by_role_id_data;">{{rmd.user_fullname}}
+                </option>
+
+              </select>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-md-4">
+              <label>Message :</label>
+            </div>
+            <div class="col-md-8">
+              <textarea style="width: 100%;" formControlName="query_comment"></textarea>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" (click)="closeSendNotificationPopup()" value="Cancel">
+          <!-- <input type="submit" class="btn btn-success" (click)="createSupportRequest()" value="Confirm"> -->
+          <input type="submit" class="btn btn-success" (click)="createTicket()" value="Confirm">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-----------Send Notification Popup-------->
+
+
+<!--Tickets Table-->
+<div [@grooveState]="showTicketsTable?'active':'inactive'" id="ticketsTbl" class="modal" style="z-index:1000;">
+  <div [@dongleState]="showTicketsTable?'active':'inactive'" class="modal-dialog"
+    style="margin:auto auto auto auto;width: 800px;">
+    <div class="modal-content" style="height:100%;margin-top:100px;">
+      <form>
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Notification
+          </h4>
+          <button type="button" class="close" aria-hidden="true" (click)="closeTicketsTable()">&times;</button>
+        </div>
+        <div class="modal-body" style="height:25rem;overflow: auto;">
+
+          <table class="table" id="otherDeductionTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th id="ember1089" class="sortable ember-view">
+                  Ticket Id
+
+                </th>
+                <th id="ember1089" class="sortable ember-view">
+                  Message
+
+                </th>
+                <th id="ember1089" class="sortable ember-view">
+                  From User
+                </th>
+                <th id="ember1089" class="sortable ember-view">
+                  To User
+                </th>
+                <!-- // <th id="ember1089" class="sortable ember-view">
+         //   Name
+
+         // </th>
+
+
+
+         // <th id="ember1090" class="sortable header-role ember-view">
+         //   Ticket Type
+
+         // </th> -->
+                <th id="ember1090" class="sortable header-role ember-view">
+                  Created Date
+                  <!---->
+                </th>
+                <th id="ember1090" class="sortable header-role ember-view">
+                  Closing Date
+                  <!---->
+                </th>
+
+                <th id="ember1090" class="sortable header-role ember-view">
+                  Help & Support
+                </th>
+
+                <th id="ember1091" class="sortable ember-view">
+                  Status
+                  <!---->
+                </th>
+                <th id="ember1091" class="sortable ember-view">
+                  Action
+                  <!---->
+                </th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let ticket of ticketsDetails; let i = index">
+                <tr [ngStyle]="ticket.read_flag == 'N' ? {'font-weight': 'bold'} : {}">
+                  <td>{{i+1}}</td>
+                  <td>{{ticket.ticket_id}}</td>
+
+                  <td>{{ticket.ticket_comment}}</td>
+                  <td> {{ticket.created_by_user}}</td>
+                  <td> {{ticket.emp_name}}</td>
+
+                  <!-- <td>{{ticket.emp_name}}</td>
+           <td>
+             {{ (ticket.orgempcode !== '' && ticket.orgempcode != null && ticket.orgempcode != undefined) ?
+             ticket.orgempcode : ticket.tp_code }}
+           </td>
+           <td>{{ticket.ticket_type}}</td> -->
+                  <td>{{ticket.ticket_created_date}}</td>
+                  <td>{{ticket.ticket_closure_date}}</td>
+                  <td><a href="#SendMessage" data-toggle="modal" data-placement="top" class=" btn comment-btn "
+                      (click)="help_support_popup(ticket)"><i class="fa fa-commenting" aria-hidden="true"></i></a>
+                  </td>
+                  <td>{{ticket.status}}</td>
+
+                  <td>
+                    <div class="dropdown float-right ember-view dropleft">
+                      <a class="dropdown-toggle no-caret text-muted cursor-pointer ember-view" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <svg width="20" height="20" viewBox="0 0 512 512" class="icon"
+                          style="height: 20px;height: 20px;">
+                          <path
+                            d="M162 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32M256 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32M350 224c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32"
+                            id="Path"></path>
+                          <path
+                            d="M256 480c123.712 0 224-100.288 224-224S379.712 32 256 32 32 132.288 32 256s100.288 224 224 224zm0 32C114.615 512 0 397.385 0 256S114.615 0 256 0s256 114.615 256 256-114.615 256-256 256z"
+                            id="Oval-1"></path>
+                        </svg>
+                      </a>
+                      <ul class="dropdown-menu ember-view" aria-labelledby="dropdownMenuButton">
+                        <li *ngFor="let status of filtered_ticket_status" class="dropdown-item"
+                          (click)="UpdateTicketstatus(ticket,status)">{{status.Description}}</li>
+                      </ul>
+                    </div>
+                  </td>
+
+                </tr>
+
+              </ng-container>
+
+            </tbody>
+          </table>
+
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" (click)="closeTicketsTable()" value="Cancel">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--Tickets Table-->
+
+
+<!----View Notification Popup // id="viewNotification"----->
+
+<div id="SendMessage" class="modal fade add-address-form-box singal-help-box">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <form>
+        <div class="modal-body">
+
+
+          <div id="frame">
+
+            <div class="content">
+              <div class="contact-profile">
+                <img src="assets/img/user-5.jpg" alt="">
+                <p>{{this.emp_name}} ({{this.emp_code}})</p>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onClose()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="messages">
+                <ul>
+                  <li *ngFor="let item of ticket_trail_data"
+                    [ngClass]="{'sent': item.ticket_created_by === 'Employee', 'replies': item.ticket_created_by === 'Employer'}">
+                    <img src="assets/img/No img.png" alt="No img"
+                      *ngIf="item.ticket_created_by === 'Employee' || item.ticket_created_by === 'Employer'">
+                    <div class="message-content">
+                      <p *ngIf="item.ticket_comment">{{ item.ticket_comment }}</p>
+                      <p *ngIf="!item.ticket_comment && item.ticket_created_by === 'Employee'">No Conversation From
+                        Employee End</p>
+                      <p *ngIf="!item.ticket_comment && item.ticket_created_by === 'Employer'">No Conversation From
+                        Employer End</p>
+                      <div *ngIf="item.document_name" class="document-link"
+                        [ngClass]="{'left-side': item.ticket_created_by === 'Employee', 'right-side': item.ticket_created_by === 'Employer'}">
+                        <a [href]="item.document_path" target="_blank">
+                          <i [ngClass]="getIconForDocumentType(item.document_type)" style="font-size:14px;"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+
+
+              <div class="message-input" *ngIf="status !== 'Closed' && status !== 'On-hold'">
+                <form [formGroup]="Create_Ticket_Form">
+                  <div class="wrap">
+                    <input type="text" placeholder="Write your message..." formControlName="ticketComment">
+                    <input type="file" #fileInput accept=".jpeg,.jpg,.png" (change)="onFileSelected($event)"
+                      style="display: none;">
+                    <i class="fa fa-paperclip attachment" aria-hidden="true" (click)="fileInput.click()"
+                      style="display:none"></i>
+                    <button class="submit" type="button" (click)="CreateTicket_Trail()"><i class="fa fa-paper-plane"
+                        aria-hidden="true"></i></button>
+                  </div>
+                  <div class="attached-image-container" *ngIf="base64Data">
+                    <div class="attached-image">
+                      <img [src]="'data:image/' + documentType + ';base64,' + base64Data" alt="Attachment">
+                      <i class="fa fa-times remove" (click)="removeImage()"></i>
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+
+
+            </div>
+          </div>
+
+
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+<!----View Notification Popup----->
+
+
+<!---- Delete Liability  ----->
+<div id="deleteLiability" class="modal fade add-address-form-box main" data-backdrop="static">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <form [formGroup]="deleteLiabilityForm">
+        <div class="modal-header theme-bg">
+          <h4 class="modal-title">Reject Liability</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelForm()">×</button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <h5>Are you sure you want to reject liability for all the selected employees ?</h5>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-3" for="exampleFormControlTextarea1">Reason</label>
+            <div class="col-sm-10">
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" style="height:80px"
+                formControlName="reason"></textarea>
+              <ng-container
+                *ngIf="deleteLiabilityForm.get('reason').errors && deleteLiabilityForm.get('reason').touched"
+                class="text-danger">
+                <p class="text-danger">Reason is required</p>
+              </ng-container>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <ng-container>
+            <input type="button" class="btn btn-danger" value="Delete"
+              [attr.data-dismiss]="(deleteLiabilityForm.valid) ? 'modal' : 'null'" (click)="deleteLiability()">
+          </ng-container>
+
+          <input type="button" class="btn btn-default" data-dismiss="modal" (click)="cancelForm()" value="Cancel">
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

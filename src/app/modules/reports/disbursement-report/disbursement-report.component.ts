@@ -107,7 +107,7 @@ export class DisbursementReportComponent {
     // { name: 'Arr Medical', value: 'arr_medical' },
     { name: 'Arr Special Allowance', value: 'arr_specialallowance' },
     { name: 'Total Arrear', value: 'totalarear' },
-    
+
     // Earnings & Allowances
     { name: 'Basic', value: 'basic' },
     { name: 'HRA', value: 'hra' },
@@ -122,7 +122,7 @@ export class DisbursementReportComponent {
     { name: 'Employer LWF', value: 'lwf_employer' },
     { name: 'Gratuity', value: 'gratuity' },
     { name: 'Insurance Excluded From CTC', value: 'insurancetype' },
-    
+
     // Deductions
     { name: 'EPF', value: 'epf' },
     { name: 'VPF', value: 'vpf' },
@@ -144,7 +144,7 @@ export class DisbursementReportComponent {
     { name: 'A/c No.21', value: 'ac21' },
     { name: 'EWS', value: 'ews' },
     { name: 'Employee NPS', value: 'employeenps' }
-   
+
   ];
 
   selectedOption: string = 'summary';
@@ -643,7 +643,7 @@ export class DisbursementReportComponent {
     }
     return value; // Already in UI format
   }
-  // end - new export excel updated logic 
+  // end - new export excel updated logic
 
   // exportToExcel() {
     //   const table = document.getElementById('reportTable');
@@ -651,21 +651,21 @@ export class DisbursementReportComponent {
     //     console.error('Table not found!');
     //     return;
     //   }
-  
+
     //   const clonedTable = table.cloneNode(true) as HTMLTableElement;
-  
+
     //   // Remove the first column from the header
     //   const headerRow = clonedTable.querySelector('thead tr');
     //   if (headerRow) {
     //     (headerRow as HTMLTableRowElement).deleteCell(0);
     //   }
-  
+
     //   // Remove the first column from each body row
     //   const bodyRows = clonedTable.querySelectorAll('tbody tr');
     //   bodyRows.forEach(row => {
     //     (row as HTMLTableRowElement).deleteCell(0);
     //   });
-  
+
     //   const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(clonedTable);
     //   const workbook: XLSX.WorkBook = XLSX.utils.book_new();
     //   XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
@@ -813,7 +813,7 @@ export class DisbursementReportComponent {
   border: 1px solid black;
   border-collapse: collapse;
 }
-.table th, 
+.table th,
 .table td {
   border: 1px solid black;
   padding: 8px;

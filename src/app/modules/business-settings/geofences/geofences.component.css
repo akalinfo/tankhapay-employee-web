@@ -1,0 +1,77 @@
+.table-responsive.reports-new-table-outer-box thead {
+  color: #ffffff;
+  background: #6fbbdb !important;
+  vertical-align: top;
+}
+
+#map {
+  height: 600px;
+  width: 100%;
+}
+
+.header-search-form.input-group.map-searchbar-box {
+  border: 1px solid #dde6ef;
+  box-shadow: none;
+  border-radius: 0;
+  background: #ffffff;
+  font-size: 15px;
+  color: #6b7c8a;
+  font-weight: 400;
+  max-width: 100%;
+}
+.selected {
+  background-color: #3498db !important; 
+  color: #fff; 
+}
+.right{
+  text-align: right;
+}
+
+.map-suggestions-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.map-suggestions-item {
+  padding: 5px;
+  border: 1px solid #ddd;
+  margin-bottom: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.map-suggestions-item:hover {
+  background-color: #f5f5f5;
+}
+.tooltip-earchbar-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.tooltip-earchbar-box span.btn.btn-secondary {
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+.panel-heading.fa-fa-search-icon-info-box {
+  border: none!important;
+  width: auto;
+  position: absolute;
+  top: -55px;
+    left: 60%;
+    display: none;
+}
+.panel-heading.fa-fa-search-icon-info-box .panel-title a {
+  padding: 2px 10px!important;
+  border: none!important;
+}
+.panel-heading.fa-fa-search-icon-info-box .panel-title a i {
+  font-size: 30px;
+}
+.panel-heading.fa-fa-search-icon-info-box .panel-title a:before{display:none;}
+.panel-body.panel-body-coordinates-box {
+  background: #fbfbfb;
+}
+.or-pa-mar-box.ng-tns-c578876685-0 {
+  margin: 0;
+  padding: 0;
+  line-height: 29px;
+}

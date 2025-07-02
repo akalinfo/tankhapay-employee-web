@@ -1,0 +1,901 @@
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+<section>
+  <div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+        <div class="fakeLoader"></div>
+
+        <div id="page-wrapper">
+                <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Unit Parameter Settings</h3>
+                </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a [routerLink]="['/business-settings/unit-parameter-listing']">Unit Parameter Listing</a></li>
+                        <li class="breadcrumb-item active">Unit Parameter Settings</li>
+                    </ol>
+                </div>
+                </div>
+                <div class="container-fluid">
+                <!-- /row -->
+                <div class="row">
+                    <div class="col-md-12 col-md-offset-0 mrg-top-2512 mrg-bot-25 employees-details-outer-box">
+                    
+            
+                        <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                            <div class="row">
+                            
+                                <div class="col-md-8 col-md-offset-2 mrg-top-25 mrg-bot-25">
+                                
+                                    <div id="outer-Company-Details-box" >
+                                    
+                                        <div class="card">
+                                        
+                                                <div class="card-header company-head collapsed" role="tab" id="headingOne20"
+                                                data-toggle="collapse" data-parent="#accordion20" href="#collapseOne20" aria-expanded="false"
+                                                aria-controls="collapseOne02">
+                                                    <h4>Company Details <i class="fa fa-angle-down"></i></h4>
+                                                </div>
+                                                
+                                                <div class="card-body collapse" id="collapseOne20" role="tabpane8">
+                                                    <div class="col-md-12">
+                                                        <a id="Company-Details-btn" class="btn update-btn" (click)="saveCompanyDetails()"
+                                                        *ngIf="orgid!=''" style="margin-top:0;float: right;">Update</a>
+                                                    </div>
+                                                    
+                                                <div class="row" [formGroup]="companyDetailForm">
+                                                
+                                                <div class="col-md-12 padd-top-15">
+                                                
+                                                    <div class="col-sm-12 mrg-bot-15">
+                                                        <label>Company Name <span class="text-danger">*</span></label>
+                                                        <input type="text" placeholder="Enter Company Name" autocomplete="chrome-off" maxlength="100" class="form-control"
+                                                        formControlName="org_unit_name">
+                                                    </div>
+                                                    
+                                                    <div class="col-sm-12 mrg-bot-15">
+                                                        <label>Address <span class="text-danger">*</span></label>
+                                                        <input type="text" placeholder="Enter Company Address" autocomplete="chrome-off" class="form-control"
+                                                        formControlName="address">
+                                                    </div>
+                                                    
+                                                    
+                                                    <div class="col-sm-4 m-clear mrg-bot-15">
+                                                        <label>State <span class="text-danger">*</span></label>
+                                                        <select formControlName="state" id="" class="form-control">
+                                                            <option value="">--Select State--</option>
+                                                            <option [value]="state.state" *ngFor="let state of allState">{{state.state}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-4 m-clear mrg-bot-15">
+                                                        <label>Pincode <span class="text-danger">*</span></label>
+                                                        <input type="text" placeholder="Enter Pincode"   autocomplete="chrome-off" class="form-control"
+                                                        formControlName="pin_code" maxlength="6">
+                                                    </div>
+                                                    
+                                                    <div class="col-sm-4 m-clear mrg-bot-15">
+                                                        <label>GSTIN</label>
+                                                        <input type="text" placeholder="Enter GSTIN" autocomplete="chrome-off" class="form-control"
+                                                        formControlName="gstno">
+                                                    </div>
+                                                    <div class="col-sm-4 m-clear mrg-bot-15">
+                                                        <label>Contractor EPF Number</label>
+                                                        <input type="text" placeholder="Enter EPF Number" autocomplete="chrome-off" class="form-control"
+                                                        formControlName="ou_epf_registration_number">
+                                                    </div>
+                                                    <div class="col-sm-4 m-clear mrg-bot-15">
+                                                        <label>Contractor ESI Number</label>
+                                                        <input type="text" placeholder="Enter ESI Number" autocomplete="chrome-off" class="form-control"
+                                                        formControlName="ou_esic_registration_number">
+                                                    </div>
+                                                
+                                            
+                                                
+                                                </div>
+                                                
+                                                </div>		
+                                            </div>
+                                        </div>
+                                
+                                
+                                        <div class="row" *ngIf="orgid=='' || (orgid!='' && organzationUnit?.department.length== 0 && divisionForm.controls.length==0)">
+                                                    
+                                                    <div class="col-md-12 padd-bot-15 ">
+                                                    
+                                                        <div class="col-md-12 col-12  text-center">
+                                                                <a id="Company-Details-btn" class="btn btn-primary" (click)="saveCompanyDetails()"
+                                                                *ngIf="orgid==''">Save & Next</a>
+                                                                
+                                                                
+                                                                <a id="Add-division-Unit-btn" class="btn btn-primary btn-sm" (click)="addDiv()"
+                                                                *ngIf="orgid!='' && organzationUnit?.department.length== 0 && divisionForm.controls.length==0">Add Department</a>
+                                                            </div>
+                                                    
+                                                    </div>
+                                                    
+                                        </div>
+                                
+                                    </div>
+                                    
+                                    
+                                    
+                                    <div id="outer-Division_Unit-box" [ngStyle]="{'display':(isOrganizationSaved || orgid!='') && divisionForm.controls.length!=0?'block':'none'}">
+                                    
+                                        <div class="card " [formGroup]="subUnitForm"
+                                       >
+                                            <div class="card-header collapsed"  role="tab" id="headingOne21"
+                                            data-toggle="collapse" data-parent="#accordion21" href="#collapseOne21" aria-expanded="false"
+                                            aria-controls="collapseOne21">
+                                                <h4>Department <i class="fa fa-angle-down"></i></h4>
+                                                
+                                            </div>
+                                            
+                                            <div class="card-body collapse" formArrayName="divisions" id="collapseOne21" role="tabpane8">
+                                                <div class="row" >
+                                                
+                                                    <div class="col-md-12 padd-top-15">
+                                                    
+                                                        <div class="Division_Unit-outer-box" *ngFor="let division of divisionForm.controls;let i=index;" [formGroupName]="i">
+                                                        
+                                                            <div class="col-sm-12 mrg-bot-15 company-head">
+                                                                <label class="checkbox divi-unit-box">
+                                                                    <input type="checkbox" (click)="setAddress($event.target.checked,i)"><span>Unit details are the same as company details
+                                                                    </span> 
+                                                                </label>
+                                                                <a id="Company-Details-btn" class="btn update-btn" (click)="updateDepartment(i)" *ngIf="division.value.id!=''" style="float: right;">Update</a>
+                                                                <button type="button" class="btn btn-danger" style="float:right; margin-right: 10px;font-size: 11px;" (click)="removeDivision(i)"
+                                                                *ngIf="division.value.id==''">X</button>
+                                                            </div>
+                                                        
+                                                            <div class="col-sm-12 mrg-bot-15">
+                                                                <label>Department<span class="text-danger">*</span></label>
+                                                                <input type="text" placeholder=" " autocomplete="chrome-off" maxlength="100" class="form-control"
+                                                                formControlName="departmentName">
+                                                            </div>
+                                                            
+                                                            <div class="col-sm-12 mrg-bot-15">
+                                                                <label>Address <span class="text-danger">*</span></label>
+                                                                <input type="text" placeholder=" " autocomplete="chrome-off" class="form-control"
+                                                                formControlName="address">
+                                                            </div>
+                                                            
+                                                            
+                                                            <div class="col-sm-4 m-clear mrg-bot-15">
+                                                                <label>State <span class="text-danger">*</span></label>
+                                                                <select formControlName="state" id="" class="form-control">
+                                                                    <option value="">--Select State--</option>
+                                                                    <option [value]="state.state" *ngFor="let state of allState">{{state.state}}</option>
+                                                                </select>
+                                                                
+                                                            </div>
+                                                            <div class="col-sm-4 m-clear mrg-bot-15">
+                                                                <label>Pincode <span class="text-danger">*</span></label>
+                                                                <input type="text" placeholder="" autocomplete="chrome-off" class="form-control" maxlength="6"
+                                                                formControlName="pin_code">
+                                                            </div>
+                                                            
+                                                            <div class="col-sm-4 m-clear mrg-bot-15">
+                                                                <label>GSTIN</label>
+                                                                <input type="text" placeholder="" autocomplete="chrome-off" class="form-control"
+                                                                formControlName="gstno">
+                                                            </div>
+                                                            <div class="col-sm-4 m-clear mrg-bot-15">
+                                                                <label>Contractor EPF Number</label>
+                                                                <input type="text" placeholder="Enter EPF Number" autocomplete="chrome-off" class="form-control"
+                                                                formControlName="ou_epf_registration_number">
+                                                            </div>
+                                                            <div class="col-sm-4 m-clear mrg-bot-15">
+                                                                <label>Contractor ESI Number</label>
+                                                                <input type="text" placeholder="Enter ESI Number" autocomplete="chrome-off" class="form-control"
+                                                                formControlName="ou_esic_registration_number">
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    
+                                                    </div>
+                                                
+                                                    <div class="col-sm-12 ">
+                                                        <div class="col-md-12 col-12 padd-top-15 text-right">
+                                                            <a id="Add-division-Unit-btn" class="btn btn-primary btn-sm" (click)="addDiv()"
+                                                            >Add Department</a>
+                                                        </div>
+                                                
+                                                    </div>	
+                                                </div>									
+                                            </div>
+                                        </div>
+                                
+                                
+                                        <div class="row" *ngIf="(orgid=='' || organzationUnit?.department.length!=divisionForm.controls.length) || (divisionForm.controls.length!=0 && organzationUnit?.department.length!= 0 && organzationUnit?.role.length ==0 &&  rolesFormArray.controls.length==0)">
+                                                    
+                                            <div class="col-md-12 padd-bot-15  ">
+                                            
+                                                <div class="col-md-12 col-12  text-center">
+                                                    <a id="Division-Unit-btn" (click)="saveDepartmentUnits()" class="btn btn-primary" *ngIf="orgid=='' || organzationUnit?.department.length!=divisionForm.controls.length;">Save & Next</a>
+                                                    <a id="Add-Unit-roll-btn" (click)="addRoleForm()" class="btn btn-primary btn-sm"
+                                                    *ngIf="divisionForm.controls.length!=0 && organzationUnit?.department.length!= 0 && organzationUnit?.role.length ==0 &&  rolesFormArray.controls.length==0">Add Unit Roll</a>  
+                                                </div>
+                                            
+                                            </div>
+                                                    
+                                        </div>
+                                
+                                    </div>
+                                    
+                                    <div id="outer-Designation-Details-box accordion"  [ngStyle]="{'display': rolesFormArray.controls.length!=0 ?'block':'none'}"
+                                    >
+                                    
+                                        <div class="card" [formGroup]="roleSalaryForm">
+                                        
+                                            <div class="card-header collapsed" id="heading"
+                                            data-toggle="collapse" data-target="#collapse22" aria-expanded="true" aria-controls="collapse"
+                                            >
+                                                <h4>Designation <i class="fa fa-angle-down"></i></h4>
+                                                    
+                                                </div>
+                                            
+                                                <div class="card-body collapse" formArrayName="roles" id="collapse22">
+                                                <div class="row">
+                                                    <div class="col-md-12 padd-bot-15 ">
+                                                    
+                                                        <div  class="Division_Unit-outer-box add-unit-roll-out-box "
+                                                        *ngFor="let roles of rolesFormArray.controls;let i=index;" [formGroupName]="i">	
+                                                            <div class="col-md-12 padd-top-15">
+                                                                <div class="col-md-12" >
+                                                                    <a id="Company-Details-btn" class="btn update-btn" (click)="updateDesignation(i)" 
+                                                                    style="float:right;" *ngIf="roles.controls.id.value!=''">Update</a>
+                                                                    <button type="button" class="btn btn-danger" style="float:right; margin-right: 10px;font-size: 11px;" (click)="removeRole(i)"
+                                                                    *ngIf="roles.controls.id.value==''">X</button>
+                                                                </div>
+                                                                <div class="col-sm-12 ">
+                                                                    <label>Designation Name<span class="text-danger">*</span></label>
+                                                                    <input type="text" placeholder=" " autocomplete="chrome-off" maxlength="100" class="form-control"
+                                                                    formControlName="roleName">
+                                                                </div>
+                                                                <div class="col-md-12 no-padd">
+                                                                    <div class="col-md-6">
+                                                                        <label >Department</label>
+                                                                        <select formControlName="dept" id="" class="form-control">
+                                                                            <option value="">-- Select Department --</option>
+                                                                            <option [value]="division.value.id" *ngFor="let division of divisionForm.controls">{{division.value.departmentName}}</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-6" *ngIf="roles.controls.id.value!=''">
+                                                                        <button (click)="showMapEmployee(i,'map')" class="btn update-btn"
+                                                                        >Map Employee</button>&nbsp;&nbsp;
+                                                                        <button (click)="showMapEmployee(i,'show')" class="btn update-btn"
+                                                                        >View Mapped Employee</button>
+                                                                    </div>
+                                                                </div>
+                                                                <div  class="col-md-6">
+                                                                    <label >Annually Offered Package<span  class="text-danger">*</span></label>
+                                                                    <div  class="input-group">
+                                                                    <div  class="input-group-addon">₹</div>
+                                                                    <input  type="number" placeholder="Enter AOP" autocomplete="off" formControlName="mop" class="form-control"
+                                                                    (blur)="calculateSal(i);isShowSalaryTable=true;isCustomInputTrigger[i]=true;">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group12">
+                                                                        <label>
+                                                                        <span class="com-tagline">
+                                                                            <label>Enable Salary:&nbsp; </label>
+                                                                            <label class="switch">
+                                                                            <input type="checkbox" id="salary-toggle{{i}}">
+                                                                            <span class="slider round"></span>
+                                                                            </label>
+                                                                        </span>
+                                                                     </label>
+                                                                     </div>
+                                                                </div>
+                                                                <div class="col-md-3" *ngIf="roles.value.salaryid">
+                                                                    <p>&nbsp; </p>
+                                                                    <button class="btn update-btn" style="margin-top:0;float:right;"
+                                                                            (click)="getSalaryStructure(i)">View Salary</button>
+                                                                </div>
+                                                                <!-- <div class="col-md-12 padd-bot-15 padd-top-15">
+                                                                    <div class="card">
+                                                                        <div class="card-body">
+                                                                            <label for="">Other Variables :</label>
+                                                                            <select name="" id="" class="form-control">
+                                                                                <option value="">-- Select --</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div> -->
+                                                                <div class="col-md-12 padd-top-15" id="Salary-Details-inn-box-upper{{i}}" style="display: none;">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <strong class="col-md-3 no-padd">Setup Salary: </strong>
+                                                                            <div class="col-md-9 checkbox-box " style="bottom: 4px;text-align: right;">
+                                                                                <label>Employer part excluded from the CTC :</label>
+                                                                                <input type="checkbox" [checked]="isEmployerPartExcluded=='Y'" style="top: 3px;left: 13px;"
+                                                                                    (change)="getIsEmployerPart($event.target.checked,i)"/>
+                                                                            </div>
+                                                                        </div> 
+                                                                        
+                                                                        <div class="col-md-12 padd-bot-15 padd-top-15">
+                                                        
+                                                                            <div class="card Salary-Details-outer-box cu-Salary-outer-box checkbox-box" style="margin-bottom: 10px !important;">
+                                                                                <div class="card-body">
+                                                                                    <div class="row">
+                                                                                        
+                                                                                    <div class="col-md-12">
+                                                                                        <div class="col-md-6" style="padding-left: 0;">
+                                                                                            <label> Minimum Wage State<span class="text-danger">*</span></label>
+                                                                                            <div class="input-group" style="width: 100%;">
+                                                                                                <select (change)="getMinWagesState($event.target)" class="form-control"
+                                                                                                formControlName="minWageState">
+                                                                                                    <option value="">-- Select State --</option>
+                                                                                                    <option [value]="state.state" *ngFor="let state of allState">{{state.state}}</option>
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-6" style="padding: 0;">
+                                                                                            <label> Minimum Wage Category<span class="text-danger">*</span></label>
+                                                                                            <div class="input-group" style="width: 100%;">
+                                                                                                <select formControlName="minWagesCtg" class="form-control">
+                                                                                                    <option value="">-- Select Category</option>
+                                                                                                    <option [value]="ctg.minwagecategoryid" *ngFor="let ctg of minWagesCtg">{{ctg.wagesctgname}}</option>
+                                                                                                </select>
+                                                                                                
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-12">
+                                                                                        <div class="col-md-6 no-padd"><label>Salary Days<span class="text-danger">*</span>&nbsp;&nbsp; 
+                                                                                                </label><input type="radio" [value]="'Y'" formControlName="salaryDaysOpted" id="salDayOptionYes"
+                                                                                                (click)="salaryInDays('Y',i)">
+                                                                                                <label for="salDayOptionYes" style="font-weight: normal;">Yes</label>&nbsp;&nbsp;&nbsp; 
+                                                                                                <input type="radio" [value]="'N'" formControlName="salaryDaysOpted" id="salDayOptionNo"
+                                                                                                (click)="salaryInDays('N',i)">
+                                                                                                <label for="salDayOptionNo" style="font-weight: normal;">No</label>
+                                                                                            </div>
+                                                                                            <div class="input-group col-md-6">
+                                                                                                <select formControlName="salaryDays" class="form-control" (change)="setSalDaysReq($event.target,i)">
+                                                                                                    <option value="">-- Select Days</option>
+                                                                                                    <option [value]="days.mdays" *ngFor="let days of minWageDays">{{days.mdays}}</option>
+                                                                                                </select>
+                                                                                            </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-6" *ngIf="this.pf_details.is_epf_registered=='Y'">
+                                                                                        <div class="col-md-10 no-padd"><label>PF Opted :</label></div>
+                                                                                        <div class="col-md-2 no-padd">
+                                                                                        <input type="checkbox" [checked]="roles.controls.pfOpted.value=='Y'"
+                                                                                            (change)="getEpfVal($event.target.checked,i)" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-6 no-padd padd-right" *ngIf="this.esi_details.is_esi_registered=='Y'">
+                                                                                        <div class="col-md-10 no-padd"><label>ESI Opted :</label></div>
+                                                                                        <div class="col-md-2 no-padd">
+                                                                                        <input type="checkbox" [checked]="roles.controls.esiOpted.value=='Y'"
+                                                                                            (change)="getEsiVal($event.target.checked,i)"/>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="col-md-10 no-padd"><label>LWF Opted :</label></div>
+                                                                                        <div class="col-md-2 no-padd">
+                                                                                        <input type="checkbox" (change)="getLwfOnchange($event.target.checked,i)" [checked]="roles.controls.lwfOpted.value=='Y'"/>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-6 no-padd padd-right">
+                                                                                        <div class="col-md-10 no-padd"><label>PF Cap Applied :</label></div>
+                                                                                        <div class="col-md-2 no-padd">
+                                                                                        <input type="checkbox" (change)="getPfCapOnChange($event.target.checked,i)" [checked]="roles.controls.pfCapApplied.value=='Y'"/>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="col-md-10 no-padd"><label>Professional Tax :</label></div>
+                                                                                        <div class="col-md-2 no-padd">
+                                                                                        <input type="checkbox" (change)="getPtOnChange($event.target.checked,i)" [checked]="roles.controls.ptApplied.value=='Y'" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-6 no-padd padd-right">
+                                                                                        <div class="col-md-10 no-padd"><label>Gratuity (Employer) : </label></div>
+                                                                                        <div class="col-md-2 no-padd">
+                                                                                        <input type="checkbox" (change)="getEmployerGratuity($event.target.checked,i)" [checked]="roles.controls.employerGratuity.value=='Y'" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="col-md-10 no-padd"><label>Gratuity (Employee) : </label></div>
+                                                                                        <div class="col-md-2 no-padd">
+                                                                                        <input type="checkbox" (change)="getGratuity($event.target.checked,i)" [checked]="roles.controls.gratuityopted.value=='Y'" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row" style="margin: 0 auto;" *ngIf="customSalaryMsg!=''">
+                                                                                    <p style="text-align: center;
+                                                                                    background: #ff9191;
+                                                                                    color: #fff;
+                                                                                    width: 100%;">{{customSalaryMsg}}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                        
+                                                                    </div>
+                                                                    <div class="col-md-12 checkbox-box no-padd" *ngIf="customSalaryMsg==''">
+                                                                
+                                                                    <div class="card " *ngIf="roles.controls.salarystructure.controls.length>0">
+                                                                        <div class="card-body custom-salary-table Custom-Salary-inn-box padd-bot-0">
+                                                                        <table class="table" >
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>Salary Components</th>
+                                                                                    <th>Calculation Type</th>
+                                                                                    <th>Monthly Amount</th>
+                                                                                    <th>Annual Amount</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                        
+                                                                            <tbody formArrayName="salarystructure">
+                                                                                <tr style="background-color: hsl(202, 100%, 90%) !important;">
+                                                                                <td colspan="3" *ngIf="salaryCalcType == 'flat'"><strong>Earnings</strong></td>
+                                                                                <td colspan="4" *ngIf="salaryCalcType != 'flat'"><strong>Earnings</strong></td>
+                                                                                </tr>
+                                                                                <ng-container *ngFor="let salaryControl of getSalaryControls(i).controls; let j = index;">
+                                                                                <tr [formGroupName]="j">
+                                                                                    <td>
+                                                                                    {{ salaryControl.get('earningType').value }} &nbsp;&nbsp;
+                                                                                    <div style="display:inline-block" *ngIf="salaryControl.get('salary_component_name').value == 'Gratuity In Hand'">
+                                                                                        <input type="checkbox" (change)="getIsGratuityInHand($event.target.checked,i)" />
+                                                                                    </div>
+                                                                                    </td>
+                                                                                    <td *ngIf="salaryCalcType != 'flat'">
+                                                                                    <div class="input-group" style="width: 150px;">
+                                                                                        <input type="text" placeholder="Basic" class="form-control component-input" formControlName="percentage_ctc" (blur)="calculateSal(i)"
+                                                                                        onkeyup="if (/[^0-9.]/g.test(this.value)) this.value = this.value.replace(/[^0-9.]/g, '')" *ngIf="salaryControl.get('percentage_fixed').value != 'Flat' && salaryControl.get('salary_component_name').value != 'Special Allowance'"
+                                                                                        [ngClass]="{'no-click': salaryControl.get('salary_component_name').value == 'Gratuity In Hand' }"
+                                                                                        [readonly]="salaryControl.get('salary_component_name').value == 'Gratuity In Hand'" />
+                                                                                        {{ salaryControl.get('percentage_fixed').value == 'Flat' ? salaryControl.get('percentage_fixed').value : salaryControl.get('salary_component_name').value == 'Special Allowance' ? 'Flat' : '' }}
+                                                                                        <div class="input-group-addon" *ngIf="salaryControl.get('percentage_fixed').value != 'Flat' && salaryControl.get('salary_component_name').value != 'HRA' && salaryControl.get('salary_component_name').value != 'Gratuity In Hand' && salaryControl.get('salary_component_name').value != 'Special Allowance'">% of CTC</div>
+                                                                                        <div class="input-group-addon" *ngIf="salaryControl.get('percentage_fixed').value != 'Flat' && (salaryControl.get('salary_component_name').value == 'HRA' || salaryControl.get('salary_component_name').value == 'Gratuity In Hand')">% of Basic</div>
+                                                                                    </div>
+                                                                                    </td> 
+                                                                                    <td>
+                                                                                    <input type="number" *ngIf="salaryControl.get('percentage_fixed').value != 'Flat'" placeholder="Monthly Amount" class="form-control" formControlName="salary_component_amount" (blur)="clearCalculatedData(i, j, $event.target.value)"
+                                                                                        onkeyup="if (/[^0-9.]/g.test(this.value)) this.value = this.value.replace(/[^0-9.]/g, '')" [readonly]="((salaryControl.get('salary_component_name').value == 'BASIC SALARY' || salaryControl.get('salary_component_name').value == 'HRA' || salaryControl.get('salary_component_name').value == 'Special Allowance') && salaryCalcType == 'percent') ||
+                                                                                        salaryControl.get('salary_component_name').value == 'Gratuity In Hand'"
+                                                                                        [ngClass]="{'no-click': ((salaryControl.get('salary_component_name').value == 'BASIC SALARY' || salaryControl.get('salary_component_name').value == 'HRA' || salaryControl.get('salary_component_name').value == 'Special Allowance') && salaryCalcType == 'percent') || salaryControl.get('salary_component_name').value == 'Gratuity In Hand'}" />
+                                                                                    <input type="number" *ngIf="salaryControl.get('percentage_fixed').value == 'Flat'" placeholder="Monthly Amount" class="form-control" formControlName="percentage_ctc" (blur)="clearCalculatedData(i, j, $event.target.value)"
+                                                                                        onkeyup="if (/[^0-9.]/g.test(this.value)) this.value = this.value.replace(/[^0-9.]/g, '')"
+                                                                                        [readonly]="salaryControl.get('salary_component_name').value == 'Special Allowance'"
+                                                                                        [ngClass]="{'no-click': salaryControl.get('salary_component_name').value == 'Special Allowance'}">
+                                                                                    </td>
+                                                                                    <td>
+                                                                                    <span>{{ salaryControl.get('percentage_fixed').value != 'Flat' ? (salaryControl.get('salary_component_amount').value * 12).toFixed(2) : (salaryControl.get('percentage_ctc').value * 12).toFixed(2) }}</span>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                </ng-container>
+                                                                                <tr *ngIf="grossSalary[i]">
+                                                                                    <td colspan="2" *ngIf="salaryCalcType=='percent'">Gross Salary</td>
+                                                                                    <td colspan="1" *ngIf="salaryCalcType=='flat'">Gross Salary</td>
+                                                                                    <td colspan="1" *ngIf="salaryCalcType!='flat'">{{grossSalary[i]}}</td>
+                                                                                    <td colspan="1" *ngIf="salaryCalcType!='flat'"></td>
+                                                                                    <td colspan="2" *ngIf="salaryCalcType=='flat'">{{grossSalary[i]}}</td>
+                                                                                </tr>
+                                                                                <tr style="background-color: #ceedff !important;" *ngIf="customCalculatedData[i]">
+                                                                                    <td colspan="4" *ngIf="salaryCalcType!='flat'"> <strong>Deductions</strong></td>
+                                                                                    <td colspan="3" *ngIf="salaryCalcType=='flat'"> <strong>Deductions</strong></td>
+                                                                                </tr>
+                                                                                    <tr *ngIf="customCalculatedData[i]">
+                                                                                    <td>ESI - Employer Contribution</td>
+                                                                                    <td *ngIf="salaryCalcType!='flat'"></td>
+                                                                                    <td>{{customCalculatedData[i].esi_employer.toFixed(2)}}</td>
+                                                                                    <td><span></span></td>
+                                                                                    </tr>
+                                                                                    <tr *ngIf="customCalculatedData[i]">
+                                                                                    <td>ESI - Employee Contribution</td>
+                                                                                    <td *ngIf="salaryCalcType!='flat'"></td>
+                                                                                    <td >{{customCalculatedData[i].esi_employee.toFixed(2)}}</td>
+                                                                                    <td><span></span></td>
+                                                                                    </tr>
+                                                                                    <tr *ngIf="customCalculatedData[i]">
+                                                                                    <td>PF - Employer Contribution</td>
+                                                                                    <td *ngIf="salaryCalcType!='flat'"></td>
+                                                                                    <td>{{customCalculatedData[i].epf_employer}}</td>
+                                                                                    <td ><span></span></td>
+                                                                                    </tr>
+                                                                                    <tr *ngIf="customCalculatedData[i]">
+                                                                                    <td>PF - Employee Contribution</td>
+                                                                                    <td *ngIf="salaryCalcType!='flat'"></td>
+                                                                                    <td>{{customCalculatedData[i].epf_employee}}</td>
+                                                                                    <td ><span></span></td>
+                                                                                    </tr>
+                                                                                    <tr *ngIf="customCalculatedData[i]">
+                                                                                    <td>LWF - Employer Contribution</td>
+                                                                                    <td *ngIf="salaryCalcType!='flat'"></td>
+                                                                                    <td>{{customCalculatedData[i].employerlwf}}</td>
+                                                                                    <td ><span></span></td>
+                                                                                    </tr>
+                                                                                    <tr *ngIf="customCalculatedData[i]">
+                                                                                    <td>LWF - Employee Contribution</td>
+                                                                                    <td *ngIf="salaryCalcType!='flat'"></td>
+                                                                                    <td>{{customCalculatedData[i].employeelwf}}</td>
+                                                                                    <td><span></span></td>
+                                                                                    </tr>
+                                                                                    <tr *ngIf="customCalculatedData[i] && (customCalculatedData[i].employergratuityopted=='Y' || customCalculatedData[i].gratuityopted=='Y')">
+                                                                                    <td>Gratuity</td>
+                                                                                    <td *ngIf="salaryCalcType!='flat'"></td>
+                                                                                    <td>{{customCalculatedData[i].employergratuityopted=='Y' ?customCalculatedData[i].employerGratuityRound:customCalculatedData[i].gratuityRound}}</td>
+                                                                                    <td ><span></span></td>
+                                                                                    </tr>
+                                                                                
+                                                                                </tbody>
+                                                                                <tfoot *ngIf="customCalculatedData[i]">
+                                                                                    <tr style="background-color: #ceedff !important;">
+                                                                                    <td colspan="2" *ngIf="salaryCalcType!='flat'"><strong>Salary In hand</strong></td>
+                                                                                    <td colspan="1" *ngIf="salaryCalcType=='flat'"><strong>Salary In hand</strong></td>
+                                                                                    <td>₹ {{customCalculatedData[i].salary_in_hand.toFixed(2)}}</td>
+                                                                                    <td>₹ {{(customCalculatedData[i].salary_in_hand*12).toFixed(2)}}</td>
+                                                                                    </tr>
+                                                                                    <tr style="background-color: #ceedff !important;">
+                                                                                    <td colspan="2" *ngIf="salaryCalcType!='flat'"><strong>Cost to Company</strong></td>
+                                                                                    <td colspan="1" *ngIf="salaryCalcType=='flat'"><strong>Cost to Company</strong></td>
+                                                                                    <td>₹ {{customCalculatedData[i].ctc.toFixed(2)}}</td>
+                                                                                    <td>₹ {{(customCalculatedData[i].ctc*12).toFixed(2)}}</td>
+                                                                                    </tr>
+                                                                                </tfoot>
+                                                                            
+                                                                        </table>
+                                                                    </div>
+                                                                    </div>
+                                                            
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        
+                                                            <div class="col-md-12 padd-bot-15 padd-top-15">
+                                                
+                                                                <div id="Salary-Details-inn-box{{i}}" class="Salary-Details-outer-box"  style="display: none;">
+                                                                
+                                                                    <div class="col-md-12">
+                                                                        <div  class="card" ng-reflect-ng-style="[object Object]">
+                                                                        <div  class="card-header" style="border-bottom: none;">
+                                                                            <h4  class="card-title">Payout Preferences</h4>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-md-12">
+                                                                                <div class="col-md-6 payout-preference">
+                                                                                    <label for="">Effective Date</label>
+                                                                                    <input  id="customEffectiveDate{{i}}" formControlName="effectiveDate" type="text" autocomplete="off" placeholder="dd-mm-yy" class="form-control effectiveDate"
+                                                                                    readonly>
+                                                                                </div>
+                                                                                <!-- <div class="col-md-6 payout-preference">
+                                                                                    <label for="">Deputed Date</label>
+                                                                                    <input  id="customDeputedDate{{i}}" formControlName="deputedDate" type="text" autocomplete="off" placeholder="dd-mm-yy" class="form-control deputedDate">
+                                                                                </div> -->
+                                                                            </div>
+                                                                        </div>
+                                                                        </div>
+                                                                        
+                                                                        <div  class="col-md-12 col-12 text-left">
+                                                                            <button  type="button" id="Submitform" name="Submitform" class="btn btn-primary btn-sm"
+                                                                            (click)="calculateCustomSal(i)" *ngIf="!customCalculatedData[i] && isCustomInputTrigger[i]"> Calculate </button>
+                                                                            <button  type="button" id="Submitform" name="Submitform" class="btn btn-primary btn-sm"
+                                                                            (click)="showMapEmployee(i,'affectedEmp')" *ngIf="customCalculatedData[i] && (roles.value.id=='' || !roles.value.salaryid)"> Save Salary</button>  
+                                                                            <a class="btn update-btn" (click)="updateDesignation(i)" style="margin-top:0px"
+                                                                            *ngIf="customCalculatedData[i] && roles.controls.id.value!='' && roles.value.salaryid">Update Salary</a>
+                                                                        </div>
+                                                                        
+                                                                        
+                                                                        
+                                                                    </div>
+                                                                
+                                                                </div>
+                                                        
+                                                            </div>
+                                                        </div>
+                                                    
+                                                    </div>	
+                                                    <div  class="col-md-12 col-12 text-right" *ngIf="!isRoleAdded">
+                                                        <a id="Add-Unit-roll-btn" (click)="addRoleForm()" class="btn btn-primary btn-sm">Add Designation</a>  
+                                                    </div>
+                                                </div>									
+                                            </div>
+                                        </div>
+                                
+                                        <div class="row">
+                                                    
+                                            <div class="col-md-12 padd-bot-15 ">
+                                            
+                                                <div class="col-md-12 col-12  text-center">
+                                                        <a (click)="saveRole()" class="btn btn-primary"
+                                                        *ngIf="organzationUnit?.role.length != rolesFormArray.controls.length">Save Designation 
+                                                        </a>
+                                                </div>
+                                            
+                                            </div>
+                                                    
+                                        </div>
+                                
+                                    </div>
+
+                                </div>
+                            
+                            </div> 
+                        </div>
+                        
+                    </div>
+                </div>
+                <!-- /row -->
+                </div>
+        </div>
+    </div>
+</section>
+
+<!-------------------Salary Structure Modal------------------------->
+
+<div class="modal" [@grooveState]="isShowSalaryStructure?'active':'inactive'">
+    <div class="modal-dialog" [@dongleState]="isShowSalaryStructure?'active':'inactive'">
+        <div class="modal-content">
+            <div class="modal-header theme-bg">
+                <h4 class="modal-title">Salary Structure</h4>
+                <button type="button" class="close" (click)="closeSalaryStructure();">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                            
+                    <div class="card">
+                        
+                        <div class="card-body">
+                
+                            <div class="col-md-12 employees-details-outer-box">
+                                <div class="table-responsive" *ngIf="salaryStructure != ''" >
+                                   <table class="table">
+                                     <thead>
+                                       <tr>
+                                         <th>Salary Bucket</th>
+                                         <th>Monthly</th>
+                                         <th>Annually</th>
+                                       </tr>
+                                     </thead>
+                                     <tbody id="roundedValues">
+                                       <tr class="danger1">
+                                         <th colspan="3">1. GROSS SALARY</th>
+                                       </tr>
+                                       <tr class="danger1">
+                                         <td scope="col">Basic</td>
+                                         <td>{{ salaryStructure.basic }}</td>
+                                         <td>{{salaryStructure.basic*12}}</td>
+                                       </tr>
+                                       <tr class="danger1">
+                                         <td scope="col">HRA</td>
+                                         <td>{{ salaryStructure.hra }}</td>
+                                         <td>{{salaryStructure.hra*12}}</td>
+                                       </tr>
+                                       <tr class="danger1" *ngIf="salaryStructure.allowances!='' && salaryStructure.allowances!='0' && salaryStructure.allowances!='0.0000' ">
+                                         <td scope="col">Special Allowance</td>
+                                         <td>{{ salaryStructure.allowances }}</td>
+                                         <td>{{salaryStructure.allowances*12}}</td>
+                                       </tr>
+                                       <tr class="danger1" *ngIf="salaryStructure?.conveyance_allowance!='' && salaryStructure?.conveyance_allowance!='0.0000' && salaryStructure?.conveyance_allowance!='0'">
+                                         <td scope="col">Conveyance Allowance</td>
+                                         <td>{{ salaryStructure.conveyance_allowance }}</td>
+                                         <td>{{salaryStructure.conveyance_allowance*12}}</td>
+                                       </tr>
+                                       <tr class="danger1" *ngIf="salaryStructure?.medical_allowance!='' && salaryStructure?.medical_allowance!='0.0000' && salaryStructure?.medical_allowance!='0'">
+                                         <td scope="col">Medical Allowance</td>
+                                         <td>{{ salaryStructure.medical_allowance }} </td>
+                                         <td>{{salaryStructure.medical_allowance*12}}</td>
+                                       </tr>
+                                       
+                                       <tr class="danger1" *ngFor="
+                                           let deduction of salaryStructure.OtherDeductions
+                                         " [ngStyle]="{'display':deduction.deduction_amount==0 ? 'none':''}">
+                                         <td scope="col">
+                                           {{ deduction.deduction_name }} 
+                                         </td>
+                                         <td>{{ deduction.deduction_amount }}</td>
+                                         <td>{{ deduction.deduction_amount*12 }}</td>
+                                       </tr>
+                                       <tr *ngIf="salaryStructure.gross!='' && salaryStructure.gross!='0' && salaryStructure.gross!='0.0000'">
+                                         <th scope="col">Gross Salary</th>
+                                         <th>{{ salaryStructure.gross }}</th>
+                                         <th>{{ salaryStructure.grossAnnual }}</th>
+                                       </tr>
+                                       
+                                       <tr class="danger1" *ngIf="salaryStructure.bonus!='' && salaryStructure.bonus!='0' && salaryStructure.bonus!='0.0000'">
+                                         <td scope="col">Regular Bonus</td>
+                                         <td>{{ salaryStructure.bonus }}</td>
+                                         <td>{{ salaryStructure.bonus*12 }}</td>
+                                       </tr>
+                                       <tr class="danger1" *ngIf="salaryStructure.employerepfrate!='' && salaryStructure.employerepfrate!='0' && salaryStructure.employerepfrate!='0.0000'">
+                                         <td scope="col">Employer EPF Part</td>
+                                         <td>{{ salaryStructure.employerepfrate }}</td>
+                                         <td>{{ salaryStructure.employerepfrate*12 }}</td>
+                                       </tr>
+                                       <tr class="danger1" *ngIf="salaryStructure.employeresirate!='' && salaryStructure.employeresirate!='0' && salaryStructure.employeresirate!='0.0000'">
+                                         <td scope="col">Employer ESIC Part</td>
+                                         <td>{{ salaryStructure.employeresirate }}</td>
+                                         <td>{{ salaryStructure.employeresirate*12 }}</td>
+                                       </tr>
+                                       <tr class="danger1" *ngIf="salaryStructure.employerlwf!='' && salaryStructure.employerlwf!='0' && salaryStructure.employerlwf!='0.0000'">
+                                         <td scope="col">Employer LWF</td>
+                                         <td>
+                                           {{salaryStructure.employerlwf}}</td>
+                                           <td>{{salaryStructure.employerlwf*12}}
+                                         </td>
+                                       </tr>
+                                       <tr class="danger1" *ngIf="salaryStructure.employergratuity!='' && salaryStructure.employergratuity!='0' && salaryStructure.employergratuity!='0.0000'">
+                                         <td scope="col">Employer Gratuity</td>
+                                         <td>
+                                           {{salaryStructure.employergratuity}}
+                                         </td>
+                                           <td>{{salaryStructure.employergratuity*12}}</td>
+                                       </tr>
+                                       <tr class="danger1" *ngIf="salaryStructure.total!='' && salaryStructure.total!='0' && salaryStructure.total!='0.0000'">
+                                         <th scope="col">GRAND TOTAL</th>
+                                         <th>
+                                           {{ salaryStructure.total }}
+                                         </th>
+                                           <th>{{ salaryStructure.totalAnnual}}</th>
+                                       </tr>
+                                       
+                                       <tr class="danger1">
+                                         <th colspan="3">3. DEDUCTION</th>
+                                       </tr>
+                                      
+                                       <tr class="danger1" *ngIf="salaryStructure.taxes!='' && salaryStructure.taxes!='0' && salaryStructure.taxes!='0.0000'">
+                                         <td scope="col">Tax</td>
+                                         <td>
+                                           {{salaryStructure.taxes}}
+                                         </td>
+                                         <td>
+                                           {{salaryStructure.taxes*12}}
+                                         </td>
+                                       </tr>
+                                       <tr class="danger1" *ngIf="salaryStructure.employeeepfrate!='' && salaryStructure.employeeepfrate!='0' && salaryStructure.employeeepfrate!='0.0000'">
+                                         <td scope="col">Employee EPF</td>
+                                         <td>
+                                           {{salaryStructure.employeeepfrate}}
+                                         </td>
+                                         <td>
+                                           {{salaryStructure.employeeepfrate*12}}
+                                         </td>
+                                       </tr>
+                                       <tr class="danger1" *ngIf="salaryStructure.vpfemployee!='' && salaryStructure.vpfemployee!='0' && salaryStructure.vpfemployee!='0.0000'">
+                                         <td scope="col">Employee VPF</td>
+                                         <td>
+                                           {{salaryStructure.vpfemployee}}</td>
+                                           <td>{{salaryStructure.vpfemployee*12}}
+                                         </td>
+                                       </tr>
+                                   
+                                       <tr class="danger1" *ngIf="salaryStructure.employeeesirate!='' && salaryStructure.employeeesirate!='0' && salaryStructure.employeeesirate!='0.0000'">
+                                         <td scope="col">Employee ESIC</td>
+                                         <td>{{ salaryStructure.employeeesirate }}</td>
+                                         <td>{{ salaryStructure.employeeesirate*12 }}</td>
+                                       </tr>
+                                       
+                                       <tr class="danger1" *ngIf="salaryStructure.employeelwf!='' && salaryStructure.employeelwf!='0' && salaryStructure.employeelwf!='0.0000'">
+                                         <td scope="col">Employee LWF</td>
+                                         <td>
+                                           {{salaryStructure.employeelwf }}</td>
+                                          <td> {{salaryStructure.employeelwf*12 }}
+                                         </td>
+                                       </tr>
+                                       <tr class="danger1" *ngIf="salaryStructure.gratuity!='' && salaryStructure.gratuity!='0' && salaryStructure.gratuity!='0.0000'">
+                                         <td scope="col">Gratuity</td>
+                                         <td>
+                                           {{salaryStructure.gratuity}}</td>
+                                           <td>{{salaryStructure.gratuity*12}}
+                                         </td>
+                                       </tr>
+                                       
+                                       <tr class="danger3">
+                                         <td>Salary Bucket Total</td>
+                                         <td>{{ salaryStructure.ctc }}</td>
+                                         <td>{{ salaryStructure.ctcAnnual }}</td>
+                                       </tr>
+                                       <tr class="danger3">
+                                         <td>Salary In Hand</td>
+                                         <td>{{ salaryStructure.salaryinhand }}</td>
+                                         <td>{{ salaryStructure.inHandAnnual }}</td>
+                                       </tr>
+                                     </tbody>
+                                   </table>
+                                   
+                                 </div>
+                             </div>
+                            </div>
+                    </div>
+               
+            </div>
+        </div>
+    </div>
+</div>
+<!-------------------Salary Structure Modal Ends------------------------->
+
+<!-----------------Mapped employee List Modal-------------------->
+
+<div class="modal" [@grooveState]="isShowMapEmp?'active':'inactive'">
+    <div class="modal-dialog" [@dongleState]="isShowMapEmp?'active':'inactive'">
+        <div class="modal-content">
+            <!-- <form> -->
+            <div class="modal-header theme-bg">
+                <h4 class="modal-title">Map Employee</h4>
+                <button type="button" class="close" (click)="hideMapModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12" *ngIf="mapEmpAction=='map'">
+                        <div class="map-container">
+                            <ng-multiselect-dropdown
+                                      [placeholder]="'Select users'"
+                                      [settings]="dropdownSettings"
+                                      [data]="emp_list"
+                                      [(ngModel)]="selectedval" 
+                                      (onFilterChange)="onFilterChange($event)">
+                              </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="col-md-12" *ngIf="mapEmpAction=='affectedEmp'">
+                        <small class="text-danger">Note : These employees salary will be affected with the salary changes.</small>
+                    </div>
+                    <div class="col-md-12" style="max-height: 300px;overflow: auto;">
+
+                        <table class="table table-hovered">
+                            <thead>
+                                <tr style="position: sticky;top:0;background-color: #fff;">
+                                    <th>#</th>
+                                    <th>Employee</th>
+                                    <th *ngIf="mapEmpAction!='affectedEmp'">Deputed Date</th>
+                                    <th *ngIf="mapEmpAction=='affectedEmp'">TP Code</th>
+                                    <th *ngIf="mapEmpAction=='show'">Relieved Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="mapEmpAction=='map'">
+                                    <td>
+                                        <span *ngFor="let emp of selectedval;let i=index;">{{i+1}}<br></span></td>
+                                    <td>
+                                        <span *ngFor="let emp of selectedval">{{emp.disp_name}}<br></span></td>
+                                    <td>
+                                        <input *ngIf="selectedval.length>0"  [id]="'customDeputedDate'" type="text" autocomplete="off" placeholder="dd-mm-yy" class="form-control deputedDate">
+                                    </td>
+                                </tr>
+                                <ng-container *ngIf="mapEmpAction=='show'">
+                                    <tr *ngFor="let emp of currentDesg.employee | paginate: {itemsPerPage: 5, currentPage: p, totalItems :currentDesg.employee.length};let j=index;">
+                                        <td>{{(p-1)*5+j+1}}</td>
+                                        <td>{{emp.name}}</td>
+                                        <td>                                                                                
+                                            {{emp.deputedDate}}
+                                        </td>
+                                        <td>{{emp.relievedDate}}</td>
+                                    </tr>
+
+                                </ng-container>
+                                
+                                <ng-container *ngIf="mapEmpAction=='affectedEmp'">
+                                    <tr *ngFor="let emp of affectedEmp;let j=index;">
+                                        <td>{{j+1}}</td>
+                                        <td>{{emp.emp_name}}</td>
+                                        <td>                                                                                
+                                            {{emp.cjcode}}
+                                        </td>
+                                        <td>{{emp.relievedDate}}</td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                        <div class="col-md-12" *ngIf="mapEmpAction=='show' && currentDesg.employee.length >0">    
+                            <pagination-controls (pageChange)="get_page($event)"
+                              style="font-size: 1.5rem;padding: 6px;font-weight: bold" class="float-right"></pagination-controls>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" *ngIf="mapEmpAction=='map'">
+                <button type="button" class="btn btn-info" (click)="saveMapEmployee()"
+                >Save</button>
+            </div>
+            <div class="modal-footer" *ngIf="mapEmpAction=='affectedEmp'">
+                <button type="button" class="btn btn-info" (click)="saveCustomSal(currentIdx)"
+                >Proceed</button>
+            </div>
+            <!-- </form> -->
+        </div>
+    </div>
+</div>
+<!-----------------Mapped employee List Modal Ends-------------------->

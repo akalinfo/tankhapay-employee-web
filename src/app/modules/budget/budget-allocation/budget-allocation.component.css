@@ -1,0 +1,35 @@
+.card-header .form-control, .card-body .form-control {
+    height: 40px;
+}
+
+.filter-outer-main-box .form-control {
+    font-size: 15px;
+}
+
+.top-right-outer-box{
+    align-items: center;
+}
+
+.SalaryBU-outer-box {
+    background: #f9f9f9;
+    border-bottom: 1px solid #d7d7d7;
+    margin-bottom: -6px;
+    padding-top: 12px;
+}
+
+.form-group.budgetBox {
+    background: #f9f9f9;
+    border-bottom: 1px solid #d7d7d7;
+    margin-bottom: -6px;
+}
+
+.AddMoreBudgetMinBox .form-control {
+    background: #ffffff;
+}
+.card-header .form-control, .card-body .form-control {
+    height: 40px;
+}
+
+.fa-trash{
+    color: rgb(214, 30, 30);
+}

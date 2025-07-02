@@ -1,0 +1,37 @@
+
+a.job_name_tag {
+    font-weight: 500;
+    color: #0047ab;
+}
+		
+.page-titles h3.text-themecolor {
+    margin-top: 0;
+}
+
+[type="radio"] {
+    display: inline !important
+}
+
+h3.text-themecolor {
+    margin-bottom: 0;
+    font-weight: 500;
+    color: #1a6bb7;
+}
+.table-responsive.Reimbursements-outer-box .table tr td {
+    padding: 0.5rem 1rem !important;
+    font-size: 12px;
+}
+.table-responsive.Reimbursements-outer-box tr th {
+    background: #fafcfd;
+    font-weight: 600;
+}
+
+.table-responsive.reports-new-table-outer-box thead {
+    color: #ffffff !important;
+    background: #6fbbdb!important;
+    vertical-align: top;
+  }
+  
+  .table-bordered {
+    border: 1px solid #e8edef !important;
+  }

@@ -1,0 +1,246 @@
+
+<app-sidebar (toggleEmitter)="toggle()"></app-sidebar>
+
+<section>
+  <div id="wrapper" [ngClass]="{'active': showSidebar==false}">
+      <div class="fakeLoader"></div>
+      <div id="page-wrapper">
+         <div class="row page-titles">
+            <div class="col-md-5 align-self-center">
+               <h3 class="text-themecolor" style="margin-left: 15px;">Employee Shift Mapping</h3>
+            </div>
+            <div class="col-md-7 align-self-center">
+               <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                  <li class="breadcrumb-item active">Employee Shift Mapping </li>
+               </ol>
+            </div>
+         </div>
+         <div class="container-fluid">
+            <div class="row">
+            <div class="col-md-12 mrg-top-0 mrg-bot-25">
+            <div class="card">
+                  <div class="card-header"> <h4 class="sub-title-inn-box View-Roles-list-outer-box shiftTitleMain">List View
+                  <a href="#SendMessage" data-toggle="modal" data-placement="top" title="Add" class="btn btn-primary" (click)="checkPopupType('addEmployeeShiftMapping')">Assign Shift  </a>
+                  
+                  </h4> </div>	
+                  
+                  <div class="card-body padd-bot-0 padd-top-0">
+                     <div class="row">
+                     
+                     <div class="col-md-12 padd-top-0">
+                     <div class="table-responsive bulk-attendance-outer-box Reimbursements-outer-box">
+
+
+
+                 <table class="table user-list">
+                  <thead>
+                      <tr>
+                          <th class="sortable header-user-role">Employee</th>
+                          <th class="sortable header-user-role">Shift(s)</th>
+                          <th class="sortable header-user-role">Modified On</th>
+                          <th class="header-actions text-center">Action</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <ng-container *ngFor="let item of shiftmappingList">
+                          <ng-container *ngIf="item.shift_json && item.shift_json.length > 0">
+                              <tr *ngFor="let data of item.shift_json; let first = first">
+                                  <!-- Check if it's the first shift, if yes, rowspan should be set to the length of shift_json -->
+                                  <td *ngIf="first" [attr.rowspan]="item.shift_json.length" class="ZPLRow" style="vertical-align: middle;">
+                                      <div><span>{{item.emp_name}} </span></div>                                      
+                                  </td>
+                                  <td class="CP">
+                                      <div>{{data.shift_name}}</div>
+                                      <span class="ZSdte">{{ formatDateDisplay(data.dt_from) }}  To  {{ formatDateDisplay(data.dt_to) }}</span>
+                                  </td>
+                                  <td class="CP">
+                                      <span class="ZSdte">{{data.created_date}}</span>
+                                  </td>
+                                  <!-- Display action buttons for each shift -->
+                                  <td>
+                                      <div class="dropdown float-right">
+                                          <div class="job-buttons action-btn-outer-box">
+                                              <a href="#SendMessage" data-toggle="modal" class="btn btn-shortlist manage-btn" data-placement="top" title="Edit" (click)="checkPopupType('editEmployeeShiftMapping'); patchData(item, data)"><i class="ti-pencil-alt"></i></a>
+                                              <a class="btn btn-shortlist manage-btn" title="delete" data-toggle="modal" data-target="#exampleModalCenter" (click)="openDeleteModal(data?.shiftmapping_id)"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                          </div>
+                                      </div>
+                                  </td>
+                              </tr>
+                          </ng-container>
+                      </ng-container>
+                  </tbody>
+              </table>
+              
+                 
+
+
+
+                     </div>	
+
+                     </div>
+
+                     </div>		
+                  </div>
+               </div>
+            
+            
+               <!-- <div class="col-md-12 col-12 padd-top-15 text-center">
+               <a class="btn btn-primary" (click)="checkPopupType('addShiftMap')">Assign Shift</a>
+               </div> -->
+            
+               </div>
+            
+            
+            </div>
+            <!-- /row -->
+         </div>	
+      </div>
+
+  </div>
+</section>
+<app-footer></app-footer>
+
+
+<!-- /////////////////open popup //////////////////////// -->
+
+	<!-- Send Message -->
+   <div id="SendMessage" class="modal fade add-address-form-box" data-backdrop="static">
+      <div class="modal-dialog modal-lg">
+         <div class="modal-content">
+            <form [formGroup]="addEmployeeShiftMappingForm">
+               <div class="modal-header theme-bg">						
+                  <h4  *ngIf="popupType =='addEmployeeShiftMapping'" class="modal-title">Add Employee Shift Mapping</h4>
+                  <h4  *ngIf="popupType =='editEmployeeShiftMapping'" class="modal-title">Edit Employee Shift Mapping</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelForm()">×</button>
+               </div>
+               <div class="modal-body">
+                 
+                  <!-- <div class="form-group">
+                   <label class="control-label col-sm-3">Applicable For</label>
+                     <div class="col-sm-6">
+                            <input type="text" class="form-control" placeholder="Enter applicable for" formControlName="applicable_for">
+                            <ng-container *ngIf="addEmployeeShiftMappingForm.get('applicable_for').errors && addEmployeeShiftMappingForm.get('applicable_for').touched" class="text-danger">
+                              <p class="text-danger">Applicable for is required</p>
+                             </ng-container>
+                       </div>
+                  </div> -->
+
+
+                  <div class="form-group">
+                  <label class="control-label col-sm-3">Applicable For</label>
+                  <div class="col-sm-6" [ngClass]="{'disabled-dropdown': popupType === 'editEmployeeShiftMapping'}">
+                  <ng-multiselect-dropdown
+                    [placeholder]="'Select Users'"
+                    [settings]="dropdownSettings"
+                    [disabled]="popupType == 'editEmployeeShiftMapping'"
+                    formControlName="applicable_for"
+                    [data]="userList"
+                    (onSelect)="onItemSelect($event)"
+                    (onSelectAll)="onSelectAll($event)"
+                    (onDeSelectAll)="onUnselectAll($event)"
+                    (onDeSelect)="onItemUnselect($event)">
+                  </ng-multiselect-dropdown>
+                  <ng-container *ngIf="addEmployeeShiftMappingForm.get('applicable_for').errors && addEmployeeShiftMappingForm.get('applicable_for').touched" class="text-danger">
+                     <p class="text-danger">Applicable for is required</p>
+                   </ng-container>
+                  </div>
+                  </div>
+
+                  
+                  <div class="form-group">
+                       <label class="control-label col-sm-3">Shifts</label>
+                     <div class="col-sm-6">
+
+                              <select class=" form-control" formControlName="shift_id">
+                               <option *ngFor="let item of shiftDetails" value="{{item.shift_id}}" checked="">{{item.shift_name}}</option>
+                              </select>
+
+                              <ng-container *ngIf="addEmployeeShiftMappingForm.get('shift_id').errors && addEmployeeShiftMappingForm.get('shift_id').touched" class="text-danger">
+                                 <p class="text-danger">Shifts is required</p>
+                              </ng-container>
+                       </div>
+                  </div>
+
+                  <div class="form-group">
+                   <label class="control-label col-sm-3">Date</label>
+                     <div class="col-sm-3">
+                           <div class="input-group">
+                              <input type="date" class="form-control" placeholder="09:30 AM" formControlName="from_date" >
+                              <ng-container *ngIf="addEmployeeShiftMappingForm.get('from_date').errors && addEmployeeShiftMappingForm.get('from_date').touched" class="text-danger">
+                                 <p class="text-danger">From date is required</p>
+                              </ng-container>
+                           </div>
+                       </div>
+
+                       <div class="col-sm-3">
+                           <div class="input-group">
+                              <input type="date" class="form-control" placeholder="09:30 AM" formControlName="to_date">
+                              <ng-container *ngIf="addEmployeeShiftMappingForm.get('to_date').errors && addEmployeeShiftMappingForm.get('to_date').touched" class="text-danger">
+                                 <p class="text-danger">To date is required</p>
+                              </ng-container>
+                            
+                           </div>
+                       </div>                  
+                  </div>
+
+                 <div class="form-group marginLeft">
+                  <ng-container *ngIf="!isFromDateLessThanToDate() && addEmployeeShiftMappingForm.get('to_date').touched" class="text-danger">
+                     <p class="text-danger">From date must be less than To date</p>
+                   </ng-container>
+                   </div>
+
+                  <div class="form-group">
+                       <label class="control-label col-sm-3">Reason</label>
+                     <div class="col-sm-6">
+                           <textarea class="form-control-box" rows="5" formControlName="reason">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,</textarea>
+                           <ng-container *ngIf="addEmployeeShiftMappingForm.get('reason').errors && addEmployeeShiftMappingForm.get('reason').touched" class="text-danger">
+                              <p class="text-danger">Reason is required</p>
+                           </ng-container>
+                       </div>
+                  </div>
+               
+                  <div class="form-group" style="display: none;">
+                     <div class="col-sm-12">
+                           <div class="PL15">
+                              <p><b>Update past attendance entries</b></p>
+                              <p class="MT25">You have selected past dates. By enabling the checkbox below, settings of the selected shift will overwrite settings of the previous shift including overtime, present/absence status, payable hours, grace period policy, compensatory off credit and absent schedule.</p>
+                              <div class="MB10 MT20 "><label class="checkbox  DIBI VM">
+                                 <input type="checkbox" formControlName="update_past_attendance"><span>Update past attendance entries</span> </label></div>
+                           
+                           </div>
+                       </div>
+                  </div>
+               </div>
+               <div class="modal-footer">
+               <input *ngIf="popupType =='addEmployeeShiftMapping'" type="button" class="btn btn-default" [attr.data-dismiss]="addEmployeeShiftMappingForm.valid ? 'modal' : 'null'" value="Submit" (click)="submitShiftMapping()">
+               <input  *ngIf="popupType =='editEmployeeShiftMapping'" type="button" class="btn btn-default" [attr.data-dismiss]="addEmployeeShiftMappingForm.valid ? 'modal' : 'null'" value="Update" (click)="submitShiftMapping()">
+               <input type="button" class="btn btn-default"  data-dismiss="modal" value="Cancel" (click)="cancelForm()">
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+
+
+   
+     <!-- Modal -->
+     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalCenterTitle">Delete Shift Details</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">cancel</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deleteShiftMapping()">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>

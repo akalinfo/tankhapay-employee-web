@@ -1,0 +1,40 @@
+<!-- If URL is invalid -->
+<h4 *ngIf="invalidLink" class="text-danger">The link you are trying to access is invalid.</h4>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 col-md-offset-212">
+
+            <!-- Page is valid(expiry date) -->
+            <div *ngIf="isPageValid" class="login-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title text-left">Offer Letter : {{candidateData?.['candidateFileName']}}</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-9">
+                        <iframe id="serviceFrameSend" [src]="candidateData?.['file_name'] | safeUrl" width="100%"
+                            height="600" frameborder="0"></iframe>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div
+                            *ngIf="candidateData?.['candidate_status'] === true || candidateData?.['candidate_status'] === false">
+                            <h4>You {{candidateData?.['candidate_status'] === true ? 'accepted' : 'declined'}} the offer
+                                on {{candidateData?.['candidate_status_timestamp'] | date:'dd/MM/yyyy'}}</h4>
+                        </div>
+                        <div *ngIf="candidateData?.['candidate_status'] == null">
+                            <a class="btn btn-danger" (click)="onStatusAction(false)">Decline</a>
+                            <a class="btn btn-primary" (click)="onStatusAction(true,candidateData)">Accept</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Page in invalid(expiry date) -->
+            <div *ngIf="!isPageValid && candidateData" class="login-panel panel panel-default">
+                <h4 class="text-danger text-center">This Link is expired.</h4>
+            </div>
+        </div>
+    </div>
+</div>
