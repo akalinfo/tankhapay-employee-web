@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   inputElement!: ElementRef;
   otpForm!: FormGroup;
   isShown = false;
-  isEmailLogin: boolean = true;
+  isEmailLogin: boolean = false;
   loginForm_Email!: FormGroup;
   loginForm_otp!: FormGroup;
   resetForm!: FormGroup;
@@ -456,86 +456,7 @@ export class LoginComponent implements OnInit {
             }
             if(localStorage.getItem('employer_type')=='Employee'){
               return this.router.navigate(['/profile']);
-            }
-            if (signup_flag == 'SU') {
-              this.router.navigate(['/login/signup'], { state: { mobile: token.mobile } });
-
-            } else if (signup_flag == 'BI') {
-              this.router.navigate(['/login/registration-approved']);
-
-            } else if (signup_flag == 'AV' || signup_flag == 'PT' || signup_flag == 'CD' || signup_flag == 'EA' || signup_flag == 'SPI') {
-              this.router.navigate(['/login/onboarding'], { state: { mobile: token.mobile } });
-
-            } else if (signup_flag == 'SP') {
-
-              if (user_type == 'Business') {
-                // if (gstin_no_isverify_y_n != 'Y') {
-                //   this.router.navigate(['/dashboard/welcome']);
-                // } else if (gstin_no_isverify_y_n == 'Y') {
-                //   this.router.navigate(['/dashboard']);
-                // }
-
-                if (this.get_show_bus_setting_page == 'Y') {
-                  this.router.navigate(['/dashboard/welcome']);
-                } else {
-                  this.router.navigate(['/dashboard']);
-                }
-
-                // this.get_dashboard_status(token.tp_account_id).then((result: boolean) => {
-                //   if (result) {
-                //     // localStorage.setItem('assistant_status', 'N');
-                //     localStorage.setItem('default_url', '/dashboard');
-                //     this.router.navigate(['/dashboard']);
-                //   } else {
-                //     // localStorage.setItem('assistant_status', 'Y');
-                //     localStorage.setItem('default_url', '/dashboard/welcome');
-                //     this.router.navigate(['/dashboard/welcome']);
-                //   }
-                // }).catch((error: any) => {
-                //   console.error('Error: ', error);
-                // });
-
-
-              } else if (user_type == 'Individual') { // For user-type Individual direct to Dashboard.
-                localStorage.setItem('default_url', '/dashboard');
-                this.router.navigate(['/dashboard']);
-              }
-
-            } else if (signup_flag == 'KYC_PAN' || signup_flag == 'KYC_AADHAR'
-              || signup_flag == 'KYC_GST' || signup_flag == 'CD' || signup_flag == 'RJ' || signup_flag == 'Training') {
-              // this.router.navigate(['/dashboard']);
-
-              if (user_type == 'Business') {
-
-                localStorage.setItem('product_type', token.product_type);
-                this.get_show_bus_setting_page = token.show_bus_setting_page;
-
-                if (this.get_show_bus_setting_page == 'Y') {
-                  this.router.navigate(['/dashboard/welcome']);
-                } else {
-                  this.router.navigate(['/dashboard']);
-                }
-
-                // this.get_dashboard_status(token.tp_account_id).then((result: boolean) => {
-                //   if (result) {
-                //     // localStorage.setItem('assistant_status', 'N');
-                //     localStorage.setItem('default_url', '/dashboard');
-                //     this.router.navigate(['/dashboard']);
-
-                //   } else {
-                //     // localStorage.setItem('assistant_status', 'Y');
-                //     localStorage.setItem('default_url', '/dashboard/welcome');
-                //     this.router.navigate(['/dashboard/welcome']);
-                //   }
-                // }).catch((error: any) => {
-                //   console.error('Error: ', error);
-                // });
-
-              } else if (user_type == 'Individual') { // For user-type Individual direct to Dashboard.
-                localStorage.setItem('default_url', '/dashboard');
-                this.router.navigate(['/dashboard']);
-              }
-            }
+            }  
           })
         }
       } else {
