@@ -41,7 +41,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   decoded_token: any;
   disp_image_txt: string = '';
   show_toggle_buttions: boolean = true;
-  default_dashboard_url: string = '/dashboard';
+  default_dashboard_url: string = '/profile/employee-detail';
   // dashboard/welcome
   show_right_logo: any = true;
   left_logo_path: any = '';

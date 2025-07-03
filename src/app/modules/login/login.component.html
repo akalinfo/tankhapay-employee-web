@@ -33,7 +33,7 @@
 
             </div>
             <div>
-              <div class="form-group" *ngIf="isEmailLogin">
+              <!-- <div class="form-group" *ngIf="isEmailLogin">
                 <form [formGroup]="loginForm_Email" autocomplete="off">
                   <div class="form-group">
                     <label for="email">Username:</label>
@@ -41,9 +41,7 @@
                       placeholder="Enter your registered email / mobile number"
                       (keyup)="checkUsername($event.target.value)" (keydown)="checkUsername($event.target.value)"
                       (blur)="checkUsername($event.target.value)">
-                    <!-- (keypress)="keyPress($event)" -->
-                    <!-- <input type="email"  formControlName="email" class="form-control" maxlength="100"
-                      placeholder="Enter your registered email address"> -->
+                  
                   </div>
 
                   <div class="form-group">
@@ -68,31 +66,20 @@
                   <button class="btn btn-primary btn-lg" style="width: 100%;" (click)="login()"
                     [disabled]="!loginForm_Email.valid">Login</button>
 
-                  <!-- <div class="combined-container">
-
-                    <p class="Signup-now-text-box">Not a Member? <a [routerLink]="['/login/signup']">Signup now</a></p>
-
-                    <p class="Signup-now-text-box text-right">  <a (click)="toggleLoginMethod()" style="cursor: pointer;"
-                    [ngClass]="{'active-button': isActiveButton === 'button2', 'active': !isEmailLogin}"
-                    (click)="setActiveButton('button2')">Login with OTP</a>
-                    </p>
-                  </div> -->
+               
 
                   <div class="Signup_login-password-box">
-                    <!-- <p class="Signup-now-text-box">Not a Member? <a [routerLink]="['/login/signup']">Signup now</a></p> -->
-                    <!-- <p class="Login-with-OTP-text-box"> <a (click)="toggleLoginMethod()" style="cursor: pointer;"
-                        [ngClass]="{'active-button': isActiveButton === 'button2', 'active': !isEmailLogin}"
-                        (click)="setActiveButton('button2')">Login with OTP</a></p> -->
+                  
                   </div>
 
                 </form>
-              </div>
+              </div> -->
 
 
               <div class="form-group" *ngIf="!isEmailLogin">
                 <form [formGroup]="loginForm_otp" autocomplete="off">
                   <div class="form-group">
-                    <label for="mobile">Registered Mobile:</label>
+                    <label for="mobile">Employee Registered Mobile:</label>
                     <input type="text" formControlName="mobile" class="form-control" maxlength="10"
                       placeholder="Enter your registered Mobile number (10 digit)" pattern="^[6-9]{1}[0-9]{9}$"
                       (input)="sanitizeInput()" (keypress)="keyPress($event)">
