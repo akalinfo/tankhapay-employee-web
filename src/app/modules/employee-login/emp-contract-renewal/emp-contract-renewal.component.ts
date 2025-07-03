@@ -184,6 +184,10 @@ export class EmpContractRenewalComponent {
     this.confirmationModal = true;
   }
   sendtoreporting() {
+    if(this.myForm.value.description.replace(/<[^>]+>/g, '') == '' || this.myForm.value.description.replace(/<[^>]+>/g, '') == null){
+       this.toastr.error('Please enter description');
+       return;
+    }
     if (this.selectedEmployee) {
       let postData = {
         p_action_for_contract: 'save_contractrenewal_transaction',
@@ -263,7 +267,7 @@ export class EmpContractRenewalComponent {
       .trim();
   }
 
-  generateApprovalPdf(reportData: any) {
+   generateApprovalPdf(reportData: any) {
     // console.log(reportData)
     const dateOfJoining = this.getFormatDateToDDMMYYYY(reportData?.dateofjoining);
     const endOfContractDate = this.getFormatDateToDDMMYYYY(reportData?.end_of_contract_date);
@@ -272,7 +276,7 @@ export class EmpContractRenewalComponent {
     const employeeRemark = this.sanitizeHtmlForPdf(reportData?.user_remarks);
     const reportingRemarks = this.sanitizeHtmlForPdf(reportData?.remoprting_remarks);
     
-    console.log(employeeRemark)
+   // console.log(employeeRemark)
     let htmlContent = `
       <style>
         .para {
@@ -321,30 +325,13 @@ export class EmpContractRenewalComponent {
           margin-bottom: 5px;
         }
         .table {
-          border: 1px solid #000;
+          border: 1px solid black;
           border-collapse: collapse;
-          width: 100%;
         }
-        .table th, .table td {
-          border: 1px solid #000;
-          padding: 6px 10px;
-          text-align: left;
-          vertical-align: middle;
-          font-size: 11px;
-        }
-        .table th {
-          font-weight: bold;
-          background-color: #e0e0e0;
-          width: 30%;
-        }
+        .table th,
         .table td {
-          width: 70%;
-        }
-        .table tbody tr:nth-child(odd) {
-          background-color: #F5F5F5;
-        }
-        .table tbody tr:nth-child(even) {
-          background-color: #FFFFFF;
+          border: 1px solid black;
+          padding: 8px;
         }
         .label {
           font-weight: bold;
@@ -414,15 +401,31 @@ export class EmpContractRenewalComponent {
         <p class="date">Dated: ${formattedToday}</p>
 
         <div class="section">
-          <table class="table" border="1" cellpadding="3" cellspacing="0" width="98%">
-            <tbody>
-              <tr><th>Employee Name</th><td>${reportData.empnameforrenewal ? reportData.empnameforrenewal : ''}</td></tr>
-              <tr><th>Employee Code</th><td>${reportData.emp_code ? reportData.emp_code : ''}</td></tr>
-              <tr><th>Designation</th><td>${reportData.post_offered ? reportData.post_offered : ''} </td></tr>
-              <tr><th>Date of Joining</th><td>${dateOfJoining ? dateOfJoining : ''}</td></tr>
-              <tr><th>Contract End Date</th><td>${endOfContractDate ? endOfContractDate : ''}</td></tr>
-              <tr><th>Head of Department (HOD) / Reporting Officer</th><td>${reportData.reportingmanagername ? reportData.reportingmanagername : ''}</td></tr>
-            </tbody>
+          <table class="table" style="border: 1px solid black; border-collapse: collapse; width: 100%;">
+            <tr>
+              <th style="border-top: 2px solid #000; border-left: 2px solid #000;">Employee Name</th>
+              <td style="border-top: 2x solid #000;">${reportData.empnameforrenewal || ''}</td>
+            </tr>
+            <tr>
+              <th style="border: 1px solid black; border-left: 1px solid black;">Emp. Code</th>
+              <td style="border: 1px solid black;">${reportData.orgempcode || ''}</td>
+            </tr>
+            <tr>
+              <th style="border: 1px solid black; border-left: 1px solid black;">Designation</th>
+              <td style="border: 1px solid black;">${reportData.post_offered || ''}</td>
+            </tr>
+            <tr>
+              <th style="border: 1px solid black; border-left: 1px solid black;">Date of Joining</th>
+              <td style="border: 1px solid black;">${dateOfJoining || ''}</td>
+            </tr>
+            <tr>
+              <th style="border: 1px solid black; border-left: 1px solid black;">Contract End Date</th>
+              <td style="border: 1px solid black;">${endOfContractDate || ''}</td>
+            </tr>
+            <tr>
+              <th style="border: 1px solid black; border-left: 1px solid black;">Head of Department (HOD) / Reporting Officer</th>
+              <td style="border: 1px solid black;">${reportData.reportingmanagername || ''}</td>
+            </tr>
           </table>
           
           <p class="label">&nbsp;&nbsp; Key accomplishments and exceptional achievements:</p>
@@ -437,9 +440,7 @@ export class EmpContractRenewalComponent {
           <p class="label">&nbsp;&nbsp; Recommendation of regarding Contract Renewal:</p>
           <p class="label">&nbsp;&nbsp; Comments of Reporting Head:</p>
           <table cellpadding="3" cellspacing="0" width="98%" style="border-collapse: collapse; font-size: 12px;">
-            <tbody>
               <tr><th>&nbsp;&nbsp; ${reportingRemarks ?  reportingRemarks : ' No comments provided.'}</th></tr>
-            </tbody>
           </table>
 
           <p class="label">&nbsp;&nbsp; Head of Department (HoD)/ Reporting officer Recommendations::</p>
@@ -449,9 +450,7 @@ export class EmpContractRenewalComponent {
           ${reportData.is_role_change === 'Y' ? `
             <p class="label">&nbsp;&nbsp; Brief of New Role and Responsibility:</p>
             <table cellpadding="3" cellspacing="0" width="98%" style="border-collapse: collapse; font-size: 12px;">
-            <tbody>
               <tr><th>&nbsp;&nbsp; ${reportData.role_brief ?  reportData.role_brief : ' No comments provided.'}</th></tr>
-            </tbody>
           </table>
           ` : ''}
           
@@ -477,7 +476,7 @@ export class EmpContractRenewalComponent {
           const fileURL = URL.createObjectURL(file);
           const a = document.createElement('a');
           a.href = fileURL;
-          a.download = `contract-renewal-form-${reportData.emp_code}.pdf`;
+          a.download = `contract-renewal-form-${reportData.orgempcode}.pdf`;
           a.click();
           URL.revokeObjectURL(fileURL);
         }
@@ -488,6 +487,4 @@ export class EmpContractRenewalComponent {
     );
 
   }
-
-
 }

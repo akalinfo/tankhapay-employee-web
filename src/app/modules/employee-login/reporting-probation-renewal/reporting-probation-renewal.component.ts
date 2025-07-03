@@ -506,15 +506,13 @@ export class ReportingProbationRenewalComponent {
 
         <div class="section">
           <table class="table" border="1" cellpadding="6" cellspacing="0" width="98%" style="border-collapse: collapse; font-size: 12px;">
-            <tbody>
-              <tr><th>Name of the Employee :</th><td>${reportData.empnameforrenewal ? reportData.empnameforrenewal : ''}</td></tr>
-              <tr><th>Designation :</th><td>Not Provided</td></tr>
+              <tr><th style="border-top: 2px solid #000; border-left: 2px solid #000;">Name of the Employee :</th><td style="border-top: 2px solid #000;">${reportData.empnameforrenewal ? reportData.empnameforrenewal : ''}</td></tr>
+              <tr><th>Designation :</th><td>${reportData.post_offered ? reportData.post_offered : ''}</td></tr>
               <tr><th>Division / Department :</th><td>${reportData.posting_department ? reportData.posting_department : ''}</td></tr>
-              <tr><th>Employee Code :</th><td>${reportData.emp_code ? reportData.emp_code : ''}</td></tr>
+              <tr><th>Employee Code :</th><td>${reportData.orgempcode ? reportData.orgempcode : ''}</td></tr>
               <tr><th>Date of Joining :</th><td>${dateOfJoining ? dateOfJoining : ''}</td></tr>
               <tr><th>Name of Reporting Officer :</th><td>${reportData.reportingmanagername ? reportData.reportingmanagername : ''}</td></tr>
               <tr><th>Brief Work Report :</th><td>${employeeRemark || 'No report provided.'} </td></tr>
-            </tbody>
           </table>
         </div>
 
@@ -545,9 +543,7 @@ export class ReportingProbationRenewalComponent {
           <p>&nbsp;&nbsp; Date : ${approvalStatusDate ?  approvalStatusDate : ' '}</p>
           <p class="label" >&nbsp;&nbsp; Comments :</p>
           <table cellpadding="6" cellspacing="0" width="98%" style="border-collapse: collapse; font-size: 12px;">
-            <tbody>
               <tr><th>${reportingRemarks ?  reportingRemarks : ' No comments provided.'}</th></tr>
-            </tbody>
           </table>
         </div>
 
@@ -577,7 +573,7 @@ export class ReportingProbationRenewalComponent {
         const fileURL = URL.createObjectURL(file);
         const a = document.createElement('a');
         a.href = fileURL;
-        a.download = `probation-completion-form-${reportData.emp_code}.pdf`;
+        a.download = `probation-completion-form-${reportData.orgempcode}.pdf`;
         a.click();
         URL.revokeObjectURL(fileURL);
       }
