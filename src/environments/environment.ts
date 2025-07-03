@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-   tankhapay_api: 'http://localhost:8080/api/',
-  // tankhapay_api: 'https://tpaywfmstagapi.azurewebsites.net/api/',
+  //  tankhapay_api: 'http://localhost:8080/api/',
+  tankhapay_api: 'https://tpaywfmstagapi.azurewebsites.net/api/',
   contract_api: 'https://cjcms.azurewebsites.net/api/',
   crm_node_api: 'https://cjcrmapi.azurewebsites.net/api/',
   tp_employer_api: "https://crmemployer.azurewebsites.net/api/",
