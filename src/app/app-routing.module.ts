@@ -152,11 +152,7 @@ const routes: Routes = [
     loadChildren: () => import('../app/modules/employee-login/employee-login.module').then(m => m.EmployeeLoginModule),
     canActivate: [AuthguardService, FlagCheckService]
   }
-  , {
-    path: 'budget',
-    loadChildren: () => import('../app/modules/budget/budget.module').then(m => m.BudgetModule),
-    canActivate: [AuthguardService, FlagCheckService]
-  },
+  ,
   {
     path: 'income-tax-calculator',
     component: IncomeTaxCalculatorComponent
