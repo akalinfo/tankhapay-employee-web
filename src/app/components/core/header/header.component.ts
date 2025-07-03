@@ -58,7 +58,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     private helpAndSupportService: HelpAndSupportService,
     private _sessionService: SessionService,
     private _EncrypterService: EncrypterService,
-    private _PayoutService: PayoutService,
+    // private _PayoutService: PayoutService,
     private router: Router,
     private _masterService: MasterServiceService,
     private _BusinesSettingsService: BusinesSettingsService,
@@ -230,22 +230,22 @@ export class HeaderComponent implements OnInit, AfterViewInit {
         "productTypeId": this.product_type
       }
     }
-    this._PayoutService
-      .CustomerPayoutSummary(reqq)
-      .subscribe((resData: any) => {
-        if (resData.statusCode) {
-          this.payout_data = this._EncrypterService.aesDecrypt(resData.commonData);
-          if (JSON.parse(this.payout_data)[0]?.status == 'Low Balance') {
-            this.is_insufficient_fund = true;
+    // this._PayoutService
+    //   .CustomerPayoutSummary(reqq)
+    //   .subscribe((resData: any) => {
+    //     if (resData.statusCode) {
+    //       this.payout_data = this._EncrypterService.aesDecrypt(resData.commonData);
+    //       if (JSON.parse(this.payout_data)[0]?.status == 'Low Balance') {
+    //         this.is_insufficient_fund = true;
 
-          } else {
-            this.is_insufficient_fund = false;
-          }
-        }
+    //       } else {
+    //         this.is_insufficient_fund = false;
+    //       }
+    //     }
 
-      }, (error: any) => {
-        console.error(error);
-      });
+    //   }, (error: any) => {
+    //     console.error(error);
+    //   });
   }
 
   // getTpAlerts
