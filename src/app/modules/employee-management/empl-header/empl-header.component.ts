@@ -364,6 +364,9 @@ export class EmplHeaderComponent {
     } else if (this.currentUrl.includes('compoff')) {
       this.pageTitle = 'Comp-Off Eligibility';
     }
+    else if (this.currentUrl.includes('view-declaration')) {
+      this.pageTitle = 'Investment Declaration';
+    }
     else {
       this.pageTitle = 'Employee Profile'; // Default header
     }

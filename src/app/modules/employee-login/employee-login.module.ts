@@ -56,6 +56,7 @@ import { ImprestRequestComponent } from './imprest-request/imprest-request.compo
 // rekha
 import { ExitInterviewQuestionnaireComponent } from './exit-interview-questionnaire/exit-interview-questionnaire.component';
 import { ExitClearanceFormComponent } from './exit-clearance-form/exit-clearance-form.component';
+import { ViewInvestmentDeclarationComponent } from './view-investment-declaration/view-investment-declaration.component';
 // rekha
 @NgModule({
   declarations: [
@@ -98,7 +99,8 @@ import { ExitClearanceFormComponent } from './exit-clearance-form/exit-clearance
     EmpProbationRenewalComponent,
     FeedbackComponent,
     ExitInterviewQuestionnaireComponent,
-    ExitClearanceFormComponent
+    ExitClearanceFormComponent,
+    ViewInvestmentDeclarationComponent
   ],
   imports: [
     CommonModule,
@@ -142,7 +144,8 @@ import { ExitClearanceFormComponent } from './exit-clearance-form/exit-clearance
     FeedbackComponent,
     ImprestRequestComponent,    
     ExitInterviewQuestionnaireComponent,
-    ExitClearanceFormComponent
+    ExitClearanceFormComponent,
+    ViewInvestmentDeclarationComponent
 
   ]
 })
