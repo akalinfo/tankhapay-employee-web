@@ -2,16 +2,16 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EmployeesComponent } from './employees/employees.component';
 import { SingleEmployeeComponent } from './single-employee/single-employee.component';
-import { BulkEmployeeComponent } from './bulk-employee/bulk-employee.component';
+// import { BulkEmployeeComponent } from './bulk-employee/bulk-employee.component';
 import { ViewEmployeeDetailComponent } from './view-employee-detail/view-employee-detail.component';
 import { ReviseSalaryComponent } from './revise-salary/revise-salary.component';
-import { EditEmployeeDetailComponent } from './edit-employee-detail/edit-employee-detail.component';
+// import { EditEmployeeDetailComponent } from './edit-employee-detail/edit-employee-detail.component';
 import { SetupSalaryComponent } from './setup-salary/setup-salary.component';
 import { EmployeeLogComponent } from './employee-log/employee-log.component';
-import { BulkExitComponent } from './bulk-exit/bulk-exit.component';
-import { BulkSuspendComponent } from './bulk-suspend/bulk-suspend.component';
-import { BulkSalaryComponent } from './bulk-salary/bulk-salary.component';
-import { BulkCustomSalaryComponent } from './bulk-custom-salary/bulk-custom-salary.component';
+// import { BulkExitComponent } from './bulk-exit/bulk-exit.component';
+// import { BulkSuspendComponent } from './bulk-suspend/bulk-suspend.component';
+// import { BulkSalaryComponent } from './bulk-salary/bulk-salary.component';
+// import { BulkCustomSalaryComponent } from './bulk-custom-salary/bulk-custom-salary.component';
 
 
 const routes: Routes = [
@@ -22,11 +22,11 @@ const routes: Routes = [
     path: 'single-employee',
     component: SingleEmployeeComponent
   },
-  {
-    path: 'bulk-employee',
-    component: BulkEmployeeComponent
-  }
-  ,
+  // {
+  //   path: 'bulk-employee',
+  //   component: BulkEmployeeComponent
+  // }
+  // ,
   // {
   //   path: 'view-employee-detail',
   //   component: ViewEmployeeDetailComponent
@@ -39,10 +39,10 @@ const routes: Routes = [
     path:'revise-salary/:id',
     component: ReviseSalaryComponent
   },
-  {
-    path: 'edit-employee',
-    component: EditEmployeeDetailComponent
-  },
+  // {
+  //   path: 'edit-employee',
+  //   component: EditEmployeeDetailComponent
+  // },
   {
     path: 'setup-salary',
     component : SetupSalaryComponent
@@ -51,22 +51,22 @@ const routes: Routes = [
     path: 'employee-log',
     component: EmployeeLogComponent
   },
-  {
-    path: 'bulk-exit',
-    component: BulkExitComponent
-  },
-  {
-    path: 'bulk-suspend',
-    component: BulkSuspendComponent
-  },
-  {
-    path: 'bulk-salary',
-    component: BulkSalaryComponent
-  },
-  {
-    path: 'bulk-salary-custom',
-    component : BulkCustomSalaryComponent
-  } 
+  // {
+  //   path: 'bulk-exit',
+  //   component: BulkExitComponent
+  // },
+  // {
+  //   path: 'bulk-suspend',
+  //   component: BulkSuspendComponent
+  // },
+  // {
+  //   path: 'bulk-salary',
+  //   component: BulkSalaryComponent
+  // },
+  // {
+  //   path: 'bulk-salary-custom',
+  //   component : BulkCustomSalaryComponent
+  // } 
 ];
 
 @NgModule({
