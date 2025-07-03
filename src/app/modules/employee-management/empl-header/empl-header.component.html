@@ -664,6 +664,9 @@
                                             [empDataFromParent]="empData"></app-hr-policy>
                                         <app-compoff-eligibility *ngIf="currentUrl.includes('compoff') && empData"
                                             [empDataFromParent]="empData"></app-compoff-eligibility>
+                                        
+                                        <app-view-investment-declaration *ngIf="currentUrl.includes('view-declaration') && empData"
+                                            [empDataFromParent]="empData"></app-view-investment-declaration>    
                                     </div>
                                 </div>
                             </div>
