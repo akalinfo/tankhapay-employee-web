@@ -263,3 +263,11 @@
   transform: none; /* Prevents the button from scaling up on hover */
   box-shadow: none; /* Removes any hover shadow */
 }
+
+
+.pdf-icon {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  cursor: pointer;
+}

@@ -156,3 +156,10 @@
 .text-center {
   padding: 20px;
 }
+
+.pdf-icon {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  cursor: pointer;
+}

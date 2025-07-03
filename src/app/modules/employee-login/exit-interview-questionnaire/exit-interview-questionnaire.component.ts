@@ -5,7 +5,13 @@ import { SessionService } from 'src/app/shared/services/session.service';
 import decode from 'jwt-decode';
 import { EncrypterService } from 'src/app/shared/services/encrypter.service';
 import { ToastrService } from 'ngx-toastr';
-import { formatDate } from '@angular/common';
+// import { formatDate } from '@angular/common';
+// import jsPDF from 'jspdf';
+// import html2canvas from 'html2canvas';
+import * as pdfMake from "pdfmake/build/pdfmake";
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+
+(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 @Component({
   selector: 'app-exit-questionnaire',
   templateUrl: './exit-interview-questionnaire.component.html',
@@ -41,6 +47,7 @@ export class ExitInterviewQuestionnaireComponent implements OnInit {
   employeename: string;
   neworgDetails: any;
   basic_details: any;
+  organizationName: string = 'NeGD';
   toggleEmployeeInfo() {
     this.showEmployeeInfo = !this.showEmployeeInfo;
   }
@@ -59,7 +66,7 @@ export class ExitInterviewQuestionnaireComponent implements OnInit {
   toggleRemarks() {
     this.showRemarks = !this.showRemarks;
   }
-scores = Array.from({ length: 11 }, (_, i) => i); // [0, 1, 2, ..., 10]
+  scores = Array.from({ length: 11 }, (_, i) => i); // [0, 1, 2, ..., 10]
 
   constructor(
     private fb: FormBuilder,
@@ -72,7 +79,7 @@ scores = Array.from({ length: 11 }, (_, i) => i); // [0, 1, 2, ..., 10]
   ngOnInit(): void {
     const session_obj_d: any = JSON.parse(this._sessionService.get_user_session());
     this.token = decode(session_obj_d.token);
-
+    console.log(this.token);
     const empLocalData = localStorage.getItem("empDataFromParent");
     this.emp_code = empLocalData ? JSON.parse(empLocalData).emp_code : null;
 
@@ -80,7 +87,9 @@ scores = Array.from({ length: 11 }, (_, i) => i); // [0, 1, 2, ..., 10]
     this.product_type = this.token.product_type;
     this.emp_id = this.token.id;
     this.loadInitialDataAndBuildForm();
+
   }
+
 
   get reasonsControlsArray(): FormArray {
     return this.questionnaireForm.get('reasonsControls') as FormArray;
@@ -131,7 +140,7 @@ scores = Array.from({ length: 11 }, (_, i) => i); // [0, 1, 2, ..., 10]
           this.employee = employeeData || {};
           this.is_submitted = data[0].submit_status || false;
           this.canAccessForm = data[0].is_feedback_link_status || false;
-          this.basic_details=data[0]?.basic_details || " "
+          this.basic_details = data[0]?.basic_details || " "
           // this.canAccessForm =true;
           if (this.canAccessForm) {
             this.contactAddressParsed = employeeData?.contact_address ? JSON.parse(employeeData.contact_address) : {};
@@ -215,7 +224,7 @@ scores = Array.from({ length: 11 }, (_, i) => i); // [0, 1, 2, ..., 10]
       }),
 
 
-      remarks: [this.basic_details.remarks ||'']
+      remarks: [this.basic_details.remarks || '']
     }, {
       validators: this.atLeastOneReasonValidator()
     });
@@ -276,23 +285,23 @@ scores = Array.from({ length: 11 }, (_, i) => i); // [0, 1, 2, ..., 10]
       return hasOneResponse ? null : { atLeastOneResponseRequired: true };
     };
   }
-toggleRank(group: AbstractControl, score: number): void {
-  // Find the 'rank_assigned' control within the provided group
-  const rankControl = group.get('rank_assigned');
+  toggleRank(group: AbstractControl, score: number): void {
+    // Find the 'rank_assigned' control within the provided group
+    const rankControl = group.get('rank_assigned');
 
-  if (rankControl) {
-    // Check if the clicked score is the same as the current value
-    if (rankControl.value === score) {
-      // If it is, unselect it by setting the value to null
-      rankControl.setValue(null);
-    } else {
-      // Otherwise, set the new score as the value
-      rankControl.setValue(score);
+    if (rankControl) {
+      // Check if the clicked score is the same as the current value
+      if (rankControl.value === score) {
+        // If it is, unselect it by setting the value to null
+        rankControl.setValue(null);
+      } else {
+        // Otherwise, set the new score as the value
+        rankControl.setValue(score);
+      }
+      // Mark the control as touched to trigger validation messages if needed
+      rankControl.markAsTouched();
     }
-    // Mark the control as touched to trigger validation messages if needed
-    rankControl.markAsTouched(); 
   }
-}
 
   onSubmit(): void {
     //   for (const controlName in this.questionnaireForm.controls) {
@@ -366,4 +375,417 @@ toggleRank(group: AbstractControl, score: number): void {
       }
     });
   }
+
+
+
+  // public generatePdf(): void {
+  //   // Ensure form data is available
+  //   if (!this.questionnaireForm) {
+  //     console.error('Form not initialized.');
+  //     return;
+  //   }
+  //   const formValue = this.questionnaireForm.getRawValue();
+
+  //   const today = new Date().toLocaleDateString('en-GB'); // DD/MM/YYYY
+
+  //   // Helper to create a row in the main info table
+  //   const createInfoRow = (label: string, value: any): [string, any] => {
+  //     return [label, value || 'N/A'];
+  //   };
+
+  //   // ========================= UPDATED TO MATCH THE IMAGE =========================
+  //   // Helper to build the "Reasons" section as a 4-column table
+  //   const buildReasonsChecklist = () => {
+  //     // Use [X] and [ ] to perfectly match the image's style
+  //     const checkedBox = '[X]';
+  //     const uncheckedBox = '[ ]';
+  //     const otherReasonIdentifier = 'any other reason';
+
+  //     const allReasonItems = this.resignationReasons.map((reason: any, index: number) => {
+  //       const control = formValue.reasonsControls[index];
+  //       const isSelected = control ? control.selected : false;
+  //       let reasonText = reason.reason_resignation_name || 'Unknown Reason';
+
+  //       // Handle the "Other" reason text and state
+  //       if (reasonText.toLowerCase().includes(otherReasonIdentifier)) {
+  //         if (formValue.reasonOtherSpecify) {
+  //           return { state: checkedBox, text: `${reasonText}: ${formValue.reasonOtherSpecify}` };
+  //         } else {
+  //           return { state: uncheckedBox, text: reasonText };
+  //         }
+  //       }
+  //       // For all standard reasons
+  //       return { state: isSelected ? checkedBox : uncheckedBox, text: reasonText };
+  //     });
+
+  //     const tableBody: any[][] = [];
+  //     const midPoint = Math.ceil(allReasonItems.length / 2);
+
+  //     for (let i = 0; i < midPoint; i++) {
+  //       const leftItem = allReasonItems[i];
+  //       const rightItem = allReasonItems[i + midPoint];
+
+  //       const row = [
+  //         // Left Column
+  //         { text: leftItem.state, alignment: 'center' },
+  //         leftItem.text,
+  //         // Right Column (check if it exists)
+  //         rightItem ? { text: rightItem.state, alignment: 'center' } : '',
+  //         rightItem ? rightItem.text : ''
+  //       ];
+  //       tableBody.push(row);
+  //     }
+
+  //     return {
+  //       table: {
+  //         widths: ['auto', '*', 'auto', '*'], // [ ] | Text | [ ] | Text
+  //         body: tableBody
+  //       },
+  //       // Default layout provides the full borders shown in the image
+  //     };
+  //   };
+
+  //   // ========================= UPDATED TO MATCH THE IMAGE =========================
+  //   // Helper to build the "Ranks" section as a single 4-column table
+  //   const buildRankingsTable = () => {
+  //     const rankings = formValue.rankingsControls.map((control: any, index: number) => ({
+  //       name: this.rankingAspects[index]?.aspect_name || 'Unknown Aspect',
+  //       rank: control.rank_assigned || '',
+  //     }));
+
+  //     const tableBody: any[][] = [];
+  //     const midPoint = Math.ceil(rankings.length / 2);
+  //     const rankingsLeft = rankings.slice(0, midPoint);
+  //     const rankingsRight = rankings.slice(midPoint);
+
+  //     // Add the header row that matches the image
+  //     const header = [
+  //       {}, // Empty cell for the first aspect column header
+  //       { text: 'Rank', style: 'tableHeader' },
+  //       {}, // Empty cell for the second aspect column header
+  //       { text: 'Rank', style: 'tableHeader' }
+  //     ];
+  //     tableBody.push(header);
+
+  //     // Build the data rows with 4 cells each
+  //     for (let i = 0; i < midPoint; i++) {
+  //       const row = [
+  //         // Left column data
+  //         rankingsLeft[i].name,
+  //         { text: rankingsLeft[i].rank, alignment: 'center' },
+  //         // Right column data (check if it exists)
+  //         rankingsRight[i] ? rankingsRight[i].name : '',
+  //         rankingsRight[i] ? { text: rankingsRight[i].rank, alignment: 'center' } : ''
+  //       ];
+  //       tableBody.push(row);
+  //     }
+
+  //     return {
+  //       table: {
+  //         widths: ['*', 50, '*', 50], // Aspect | Rank | Aspect | Rank
+  //         body: tableBody,
+  //       },
+  //       // Default layout provides the full borders shown in the image
+  //     };
+  //   };
+
+  //   // Helper to create the dynamic question & answer blocks
+  //   const buildFeedbackBlocks = () => {
+  //     return formValue.additionalFeedback.flatMap((feedback: any) => [
+  //       { text: feedback.label || 'Unnamed Question', style: 'question' },
+  //       { text: feedback.questionnaire_response || '__________________________________________________________________________________', style: 'answer' },
+  //     ]);
+  //   };
+
+  //   // =================================================================
+  //   // PDF DOCUMENT DEFINITION (No changes needed here)
+  //   // =================================================================
+  //   const docDefinition: any = {
+  //     pageSize: 'A4',
+  //     pageMargins: [40, 60, 40, 60],
+  //     content: [
+  //       { text: 'Exit Interview Questionnaire', style: 'header' },
+  //       {
+  //         style: 'infoTable',
+  //         table: {
+  //           widths: ['auto', '*'],
+  //           body: [ /* ... info rows ... */ ],
+  //         },
+  //         layout: 'compactTableBorder',
+  //       },
+  //       { text: 'The exit interview feedback will be maintained strictly confidential...', style: 'paragraph' },
+
+  //       { text: 'i. Reason(s) for resignation:', style: 'subHeader' },
+  //       buildReasonsChecklist(), // Renders the new 4-column table
+
+  //       { text: 'ii. Kindly assign ranks to the following aspects of your experience in working with us:', style: 'subHeader' },
+  //       { text: 'Use ranks from 1 to 10; where 10 indicates “The Best” and 1 indicates “The Worst”...', style: 'paragraph', italics: true },
+  //       buildRankingsTable(), // Renders the new 4-column ranks table
+
+  //       { text: '', pageBreak: 'before' },
+  //       ...buildFeedbackBlocks(),
+
+  //       // ... Rest of the document definition is the same ...
+  //     ],
+  //     styles: { /* ... styles ... */ },
+  //     layouts: { /* ... layouts ... */ }
+  //   };
+
+  //   // Fill in the dynamic parts that were omitted for brevity
+  //   (docDefinition.content[1] as any).table.body = [
+  //       createInfoRow('Name of Employee:', formValue.employeeName),
+  //       createInfoRow('Employee ID:', formValue.employeeId),
+  //       createInfoRow('Function/ Department/ Project:', formValue.department),
+  //       createInfoRow('Current Designation:', formValue.designation),
+  //       createInfoRow('Current Annual Salary:', formValue.annualSalary),
+  //       createInfoRow('Date of Joining:', formValue.dateOfJoining),
+  //       createInfoRow('Designation at the time of Joining:', formValue.designationAtJoining),
+  //       createInfoRow('Salary at the time of joining:', formValue.salaryAtJoining),
+  //       createInfoRow('Payroll (NISG/BSN/DIC etc.):', formValue.payroll),
+  //       createInfoRow('Last working day at the organization:', formValue.lastWorkingDay),
+  //       createInfoRow('Contact Address, Phone No. & Email Id:', `${formValue.contactAddress}\n${formValue.phoneNo}\n${formValue.emailId}`),
+  //   ];
+
+  //   const certificationIndex = docDefinition.content.findIndex((item: any) => item.pageBreak === 'before') + 2;
+  //   docDefinition.content.splice(certificationIndex, 0, 
+  //     {
+  //       text: [
+  //         'I certify that I am joining ',
+  //         { text: formValue.newOrganizationDetails.neworganizationname || '____________________', bold: true },
+  //         ' (organization name) as ',
+  //         { text: formValue.newOrganizationDetails.newdesignation || '____________________', bold: true },
+  //         ' (designation) [Optional]'
+  //       ],
+  //       style: 'paragraph', margin: [0, 20, 0, 20]
+  //     },
+  //     { text: 'Thank you very much for taking the time to complete this questionnaire.\nWe wish you all the best in your future endeavor!', style: 'paragraph' },
+  //     {
+  //       columns: [
+  //         { stack: [{ text: 'Exiting Employee', bold: true }, '\n\n\n\n', 'Signature: ________________', { text: `Date: ${today}`, margin: [0, 5, 0, 0] }] },
+  //         { stack: [{ text: 'NeGD HR Representative', bold: true }, '\n\n\n\n', 'Signature: ________________', { text: 'Date: ________________', margin: [0, 5, 0, 0] }] }
+  //       ],
+  //       margin: [0, 40, 0, 0]
+  //     }
+  //   );
+
+  //   docDefinition.styles = {
+  //       header: { fontSize: 18, bold: true, alignment: 'center', margin: [0, 0, 0, 20] },
+  //       subHeader: { fontSize: 12, bold: true, margin: [0, 15, 0, 5] },
+  //       paragraph: { fontSize: 10, margin: [0, 5, 0, 15] },
+  //       infoTable: { margin: [0, 5, 0, 15], fontSize: 10 },
+  //       tableHeader: { bold: true, fontSize: 11, color: 'black', alignment: 'center' },
+  //       question: { fontSize: 10, bold: true, margin: [0, 15, 0, 5] },
+  //       answer: { fontSize: 10, italics: true, color: '#444', margin: [0, 0, 0, 10] },
+  //   };
+
+  //   docDefinition.layouts = {
+  //       compactTableBorder: {
+  //         hLineWidth: (i: number, node: any) => (i === 0 || i === node.table.body.length) ? 0 : 1,
+  //         vLineWidth: (i: number, node: any) => (i === 0 || i === node.table.widths.length) ? 1 : 0,
+  //         hLineColor: () => 'black', vLineColor: () => 'black',
+  //         paddingLeft: () => 5, paddingRight: () => 5,
+  //         paddingTop: () => 5, paddingBottom: () => 5,
+  //       }
+  //   };
+
+
+  //   const fileName = `Exit-Interview-${formValue.employeeId || 'Employee'}.pdf`;
+  //   pdfMake.createPdf(docDefinition).download(fileName);
+  // }
+
+  // In your component.ts
+
+
+  // In your-component.ts
+
+  // Make sure you have the correct imports at the top of your file
+
+
+  public generatePdf(): void {
+    // Ensure form data is available
+    if (!this.questionnaireForm) {
+      console.error('Form not initialized.');
+      return;
+    }
+    const formValue = this.questionnaireForm.getRawValue();
+
+    const today = new Date().toLocaleDateString('en-GB'); // DD/MM/YYYY
+
+    // Helper function to create a row in the main info table
+    const createInfoRow = (label: string, value: any): [string, any] => {
+      return [label, value || 'N/A'];
+    };
+
+    // Helper to build the "Reasons" section as a 4-column table
+    const buildReasonsChecklist = () => {
+      // const checkedBox = '[X]';
+      // const uncheckedBox = '[ ]';
+      // const checkedBox = '\u25A0';  
+      // const uncheckedBox = '\u25A1';
+      const checkedBox = '■';     // Filled square
+const uncheckedBox = '□'; 
+     
+      const otherReasonIdentifier = 'any other reason';
+
+      const allReasonItems = this.resignationReasons.map((reason: any, index: number) => {
+        const control = formValue.reasonsControls[index];
+        const isSelected = control ? control.selected : false;
+        let reasonText = reason.reason_resignation_name || 'Unknown Reason';
+
+        if (reasonText.toLowerCase().includes(otherReasonIdentifier)) {
+          if (formValue.reasonOtherSpecify) {
+            return { state: checkedBox, text: `${reasonText}: ${formValue.reasonOtherSpecify}` };
+          } else {
+            return { state: uncheckedBox, text: reasonText };
+          }
+        }
+        return { state: isSelected ? checkedBox : uncheckedBox, text: reasonText };
+      });
+
+      const tableBody: any[][] = [];
+      const midPoint = Math.ceil(allReasonItems.length / 2);
+
+      for (let i = 0; i < midPoint; i++) {
+        const leftItem = allReasonItems[i];
+        const rightItem = allReasonItems[i + midPoint];
+        const row = [
+          { text: leftItem.state, alignment: 'center' }, leftItem.text,
+          rightItem ? { text: rightItem.state, alignment: 'center' } : '', rightItem ? rightItem.text : ''
+        ];
+        tableBody.push(row);
+      }
+      return {
+        table: {
+          widths: ['auto', '*', 'auto', '*'],
+          body: tableBody
+        },
+      };
+    };
+
+    // Helper to build the "Ranks" section as a single 4-column table
+    const buildRankingsTable = () => {
+      const rankings = formValue.rankingsControls.map((control: any, index: number) => ({
+        name: this.rankingAspects[index]?.aspect_name || 'Unknown Aspect',
+        rank: control.rank_assigned || '',
+      }));
+
+      const tableBody: any[][] = [];
+      const midPoint = Math.ceil(rankings.length / 2);
+      const rankingsLeft = rankings.slice(0, midPoint);
+      const rankingsRight = rankings.slice(midPoint);
+
+      const header = [
+        { text: 'Aspect', style: 'tableHeader' }, { text: 'Rank', style: 'tableHeader' },
+        { text: 'Aspect', style: 'tableHeader' }, { text: 'Rank', style: 'tableHeader' }
+      ];
+      tableBody.push(header);
+
+      for (let i = 0; i < midPoint; i++) {
+        const row = [
+          rankingsLeft[i].name, { text: rankingsLeft[i].rank, alignment: 'center' },
+          rankingsRight[i] ? rankingsRight[i].name : '', rankingsRight[i] ? { text: rankingsRight[i].rank, alignment: 'center' } : ''
+        ];
+        tableBody.push(row);
+      }
+      return {
+        table: {
+          widths: ['*', 50, '*', 50],
+          body: tableBody,
+        },
+      };
+    };
+
+    // Helper to create the dynamic question & answer blocks
+    const buildFeedbackBlocks = () => {
+      return formValue.additionalFeedback.flatMap((feedback: any) => [
+        { text: feedback.label || 'Unnamed Question', style: 'question' },
+        { text: feedback.questionnaire_response || '__________________________________________________________________________________', style: 'answer' },
+      ]);
+    };
+
+    // =================================================================
+    // PDF DOCUMENT DEFINITION - BUILT DECLARATIVELY
+    // =================================================================
+    const docDefinition: any = {
+      pageSize: 'A4',
+      pageMargins: [40, 60, 40, 60],
+      content: [
+        // ---------- PAGE 1 ----------
+        { text: 'Exit Interview Questionnaire', style: 'header' },
+        {
+          style: 'infoTable',
+          table: {
+            widths: ['auto', '*'],
+            body: [
+              createInfoRow('Name of Employee:', formValue.employeeName),
+              createInfoRow('Employee ID:', formValue.employeeId),
+              createInfoRow('Function/ Department/ Project:', formValue.department),
+              createInfoRow('Current Designation:', formValue.designation),
+              createInfoRow('Current Annual Salary:', formValue.annualSalary),
+              createInfoRow('Date of Joining:', formValue.dateOfJoining),
+              createInfoRow('Designation at the time of Joining:', formValue.designationAtJoining),
+              createInfoRow('Salary at the time of joining:', formValue.salaryAtJoining),
+              createInfoRow('Payroll (NISG/BSN/DIC etc.):', formValue.payroll),
+              createInfoRow('Last working day at the organization:', formValue.lastWorkingDay),
+              createInfoRow('Contact Address, Phone No. & Email Id:', `${formValue.contactAddress}\n${formValue.phoneNo}\n${formValue.emailId}`),
+            ],
+          },
+          layout: 'compactTableBorder',
+        },
+        { text: `The exit interview feedback will be maintained strictly confidential and will be shared only with the Senior Management of ${this.organizationName} / DIC. The information so gathered will help us change or improve the organization as relevant and necessary. In your feedback, please also include areas / items that may not have been covered in the questionnaire.`, style: 'paragraph' },
+        { text: 'i. Reason(s) for resignation:', style: 'subHeader' },
+        buildReasonsChecklist(),
+        { text: 'ii. Kindly assign ranks to the following aspects of your experience in working with us:', style: 'subHeader' },
+        { text: `Use ranks from 1 to 10; where 10 indicates “The Best” and 1 indicates “The Worst” aspects of your experience in the work environment at ${this.organizationName}/SeMT:`, style: 'paragraph', italics: true },
+        buildRankingsTable(),
+
+        // ---------- PAGE 2 ----------
+        { text: '', pageBreak: 'before' },
+        ...buildFeedbackBlocks(),
+
+        // --- Certification & Signature Block at the end ---
+        {
+          text: [
+            'I certify that I am joining ',
+            { text: formValue.newOrganizationDetails.neworganizationname || '____________________', bold: true },
+            ' (organization name) as ',
+            { text: formValue.newOrganizationDetails.newdesignation || '____________________', bold: true },
+            ' (designation) [Optional]'
+          ],
+          style: 'paragraph', margin: [0, 20, 0, 20]
+        },
+        { text: 'Thank you very much for taking the time to complete this questionnaire.\nWe wish you all the best in your future endeavor!', style: 'paragraph' },
+        {
+          columns: [
+            { stack: [{ text: 'Exiting Employee', bold: true }, '\n\n\n\n', 'Signature: ________________', { text: `Date: ${today}`, margin: [0, 5, 0, 0] }] },
+            { stack: [{ text: `${this.organizationName} HR Representative`, bold: true }, '\n\n\n\n', 'Signature: ________________', { text: 'Date: ________________', margin: [0, 5, 0, 0] }] }
+          ],
+          margin: [0, 40, 0, 0]
+        },
+      ],
+      styles: {
+        header: { fontSize: 18, bold: true, alignment: 'center', margin: [0, 0, 0, 20] },
+        subHeader: { fontSize: 12, bold: true, margin: [0, 15, 0, 5] },
+        paragraph: { fontSize: 10, margin: [0, 5, 0, 15] },
+        infoTable: { margin: [0, 5, 0, 15], fontSize: 10 },
+        tableHeader: { bold: true, fontSize: 11, color: 'black', alignment: 'center' },
+        question: { fontSize: 10, bold: true, margin: [0, 15, 0, 5] },
+        answer: { fontSize: 10, italics: true, color: '#444', margin: [0, 0, 0, 10] },
+      },
+      layouts: {
+        compactTableBorder: {
+          hLineWidth: (i: number, node: any) => (i === 0 || i === node.table.body.length) ? 0 : 1,
+          vLineWidth: (i: number, node: any) => (i === 0 || i === node.table.widths.length) ? 1 : 0,
+          hLineColor: () => 'black', vLineColor: () => 'black',
+          paddingLeft: () => 5, paddingRight: () => 5,
+          paddingTop: () => 5, paddingBottom: () => 5,
+        }
+      }
+    };
+
+    const fileName = `Exit-Interview-${formValue.employeeId || 'Employee'}.pdf`;
+    pdfMake.createPdf(docDefinition).download(fileName);
+  }
+
 }
+
