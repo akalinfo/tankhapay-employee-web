@@ -17,10 +17,10 @@ import { LogoutComponent } from './components/logout/logout.component';
 
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 import { environment } from '../environments/environment';
-import { JuspayresComponent } from './modules/juspayres/juspayres.component';
+// import { JuspayresComponent } from './modules/juspayres/juspayres.component';
 import { StoreModule } from '@ngrx/store';
 import { menuReducer } from './modules/employee-management/state-mgmt/employee.reducer';
-import { JuspyMakePaymentComponent } from './modules/juspay-make-payment/juspay-make-payment.component';
+// import { JuspyMakePaymentComponent } from './modules/juspay-make-payment/juspay-make-payment.component';
 import { filtersReducer } from './modules/employee/store/filter.reducer';
 import { SsoRedirectComponent } from './modules/sso-redirect/sso-redirect.component';
 import { AppInitializerService } from './shared/services/app-intializer.service';
@@ -36,8 +36,8 @@ export function appInitializerFactory(appInitializer: AppInitializerService) {
     // LoginComponent,
     UserChangePasswordComponent,
     LogoutComponent,
-    JuspayresComponent,
-    JuspyMakePaymentComponent,
+    // JuspayresComponent,
+    // JuspyMakePaymentComponent,
     SsoRedirectComponent,
     IncomeTaxCalculatorComponent,
     // IstToGermanTimePipe

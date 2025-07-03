@@ -6,8 +6,6 @@ import { LogoutComponent } from './components/logout/logout.component';
 import { UserChangePasswordComponent } from './modules/user-change-password/user-change-password.component';
 import { AuthguardService } from './shared/services/authguard.service';
 import { FlagCheckService } from './shared/services/flag-check.service';
-import { JuspayresComponent } from './modules/juspayres/juspayres.component';
-import { JuspyMakePaymentComponent } from './modules/juspay-make-payment/juspay-make-payment.component';
 import { IncomeTaxCalculatorComponent } from './modules/income-tax-calculator/income-tax-calculator.component';
 import { EmployeeSsoComponent } from './modules/sso-login/employee-sso/employee-sso.component';
 
@@ -20,11 +18,7 @@ const routes: Routes = [
     path: 'logout',
     component: LogoutComponent
   }
-  ,
-  {
-    path: 'juspayres',
-    component: JuspayresComponent
-  }
+ 
   ,
   {
     path: 'change-password',
@@ -104,16 +98,8 @@ const routes: Routes = [
     loadChildren: () => import('../app/modules/broadcaster/broadcaster.module').then(m => m.BroadcasterModule),
     canActivate: [AuthguardService, FlagCheckService]
   },
-  // {
-  //   path: 'live-tracking-list',
-  //   loadChildren: () => import('../app/modules/live-tracking/live-tracking.module').then(m => m.LiveTrackingModule),
-  //   canActivate: [AuthguardService, FlagCheckService]
-  // },
-  {
-    path: 'live',
-    loadChildren: () => import('../app/modules/livetracking/livetracking.modules').then(m => m.LiveTrackingModules),
-    canActivate: [AuthguardService, FlagCheckService]
-  },
+ 
+ 
   {
     path: 'help-and-support',
     loadChildren: () => import('../app/modules/help-and-support/help-and-support.module').then(m => m.HelpAndSupportModule),
@@ -123,10 +109,7 @@ const routes: Routes = [
     loadChildren: () => import('../app/modules/employee-management/employee-management.module').then(m => m.EmployeeManagementModule),
     canActivate: [AuthguardService, FlagCheckService]
   },
-  {
-    path: 'make-payment',
-    component: JuspyMakePaymentComponent,
-  },
+ 
   {
     path: 'recruit',
     loadChildren: () => import('../app/modules/sso-redirect/sso-redirect.module').then(m => m.SsoRedirectModule)
