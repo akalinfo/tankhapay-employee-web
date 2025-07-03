@@ -43,11 +43,11 @@ const routes: Routes = [
   //   loadChildren: () => import('../app/modules/products/products.module').then(m => m.ProductsModule),
   //   canActivate: [AuthguardService, FlagCheckService]
   // },
-  // {
-  //   path: 'payouts',
-  //   loadChildren: () => import('../app/modules/payout/payout.module').then(m => m.PayoutModule),
-  //   canActivate: [AuthguardService, FlagCheckService]
-  // },
+  {
+    path: 'payouts',
+    loadChildren: () => import('../app/modules/payout/payout.module').then(m => m.PayoutModule),
+    canActivate: [AuthguardService, FlagCheckService]
+  },
   {
     path: 'employees',
     loadChildren: () => import('../app/modules/employee/employee.module').then(m => m.EmployeeModule),
@@ -59,11 +59,11 @@ const routes: Routes = [
   //   canActivate: [AuthguardService, FlagCheckService]
 
   // },
-  // {
-  //   path: 'reports',
-  //   loadChildren: () => import('../app/modules/reports/reports.module').then(m => m.ReportsModule),
-  //   canActivate: [AuthguardService, FlagCheckService]
-  // },
+  {
+    path: 'reports',
+    loadChildren: () => import('../app/modules/reports/reports.module').then(m => m.ReportsModule),
+    canActivate: [AuthguardService, FlagCheckService]
+  },
   // {
   //   path: 'accounts',
   //   loadChildren: () => import('../app/modules/accounts/accounts.module').then(m => m.AccountsModule),
