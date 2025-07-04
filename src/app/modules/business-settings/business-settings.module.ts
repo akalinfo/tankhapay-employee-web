@@ -13,8 +13,8 @@ import { EpfComponent } from './epf/epf.component';
 import { EsiComponent } from './esi/esi.component';
 // import { LeaveSettingsComponent } from '../leave-mgmt/leave-settings/leave-settings.component';
 // import { AddNewTemplateComponent } from '../leave-mgmt/add-new-template/add-new-template.component';
-import { DeviceSettingsComponent } from './device-settings/device-settings.component';
-import { HolidayMasterComponent } from './holiday-master/holiday-master.component';
+// import { DeviceSettingsComponent } from './device-settings/device-settings.component';
+// import { HolidayMasterComponent } from './holiday-master/holiday-master.component';
 import { GeofencesComponent } from './geofences/geofences.component';
 import { OrganizationUnitComponent } from './organization-unit/organization-unit.component';
 import { AlertModule } from 'src/app/shared/_alert';
@@ -27,7 +27,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 declare var google: any;
 import { NotificationsSettingsComponent } from './notifications-settings/notifications-settings.component';
 import { UnitParameterListDetailsComponent } from './unit-parameter-list-details/unit-parameter-list-details.component';
-import { PayoutSettingComponent } from './payout-setting/payout-setting.component';
+// import { PayoutSettingComponent } from './payout-setting/payout-setting.component';
 import { ApprovalWorkflowComponent } from './approval-workflow/approval-workflow.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 // import { GroupEmployerComponent } from './group-employer/group-employer.component';
@@ -44,8 +44,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     EsiComponent,
     // LeaveSettingsComponent,
     // AddNewTemplateComponent,
-    DeviceSettingsComponent,
-    HolidayMasterComponent,
+    // DeviceSettingsComponent,
+    // HolidayMasterComponent,
     GeofencesComponent,
     OrganizationUnitComponent,
     GeofencesComponent,
@@ -56,7 +56,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     // SetupSalaryComponent
     NotificationsSettingsComponent,
     UnitParameterListDetailsComponent,
-    PayoutSettingComponent,
+    // PayoutSettingComponent,
     ApprovalWorkflowComponent,
     // GroupEmployerComponent
   ],

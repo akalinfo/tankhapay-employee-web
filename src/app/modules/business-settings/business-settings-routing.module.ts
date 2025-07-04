@@ -9,8 +9,8 @@ import { EpfComponent } from './epf/epf.component';
 import { EsiComponent } from './esi/esi.component';
 // import { LeaveSettingsComponent } from '../leave-mgmt/leave-settings/leave-settings.component';
 // import { AddNewTemplateComponent } from '../leave-mgmt/add-new-template/add-new-template.component';
-import { DeviceSettingsComponent } from './device-settings/device-settings.component';
-import { HolidayMasterComponent } from './holiday-master/holiday-master.component';
+// import { DeviceSettingsComponent } from './device-settings/device-settings.component';
+// import { HolidayMasterComponent } from './holiday-master/holiday-master.component';
 import { GeofencesComponent } from './geofences/geofences.component';
 import { OrganizationUnitComponent } from './organization-unit/organization-unit.component';
 import { SetupSalaryComponent } from '../employee/setup-salary/setup-salary.component';
@@ -20,7 +20,7 @@ import { UnitParameterListComponent } from './unit-parameter-list/unit-parameter
 //import { BulkLeaveComponent } from '../leave-mgmt/bulk-leave/bulk-leave.component';
 import { NotificationsSettingsComponent } from './notifications-settings/notifications-settings.component';
 import { UnitParameterListDetailsComponent } from './unit-parameter-list-details/unit-parameter-list-details.component';
-import { PayoutSettingComponent } from './payout-setting/payout-setting.component';
+// import { PayoutSettingComponent } from './payout-setting/payout-setting.component';
 import { ApprovalWorkflowComponent } from './approval-workflow/approval-workflow.component';
 // import { GroupEmployerComponent } from './group-employer/group-employer.component';
 
@@ -52,15 +52,15 @@ const routes: Routes = [
   // {
   //   path: 'bulk-leave', component: BulkLeaveComponent
   // },
-  {
-    path: 'device-settings', component: DeviceSettingsComponent
-  },
+  // {
+  //   path: 'device-settings', component: DeviceSettingsComponent
+  // },
   // {
   //   path: 'add-new-template', component: AddNewTemplateComponent
   // },
-  {
-    path: 'holiday-settings', component: HolidayMasterComponent
-  },
+  // {
+  //   path: 'holiday-settings', component: HolidayMasterComponent
+  // },
   {
     path: 'organization-unit', component: OrganizationUnitComponent
   },
@@ -92,9 +92,9 @@ const routes: Routes = [
   {
     path:'unit-parameter-listing/:id',component: UnitParameterListDetailsComponent
   },
-  {
-    path: 'payout', component: PayoutSettingComponent
-  },
+  // {
+  //   path: 'payout', component: PayoutSettingComponent
+  // },
   {
     path: 'approval-workflow', component: ApprovalWorkflowComponent
   },
