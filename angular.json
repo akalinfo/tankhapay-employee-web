@@ -33,7 +33,7 @@
               "moment",
               "file-saver"
             ],
-            "outputPath": "dist/employee-business-login-staging-build",
+            "outputPath": "dist/employee-login-build",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
