@@ -43,11 +43,11 @@ const routes: Routes = [
   //   loadChildren: () => import('../app/modules/products/products.module').then(m => m.ProductsModule),
   //   canActivate: [AuthguardService, FlagCheckService]
   // },
-  {
-    path: 'payouts',
-    loadChildren: () => import('../app/modules/payout/payout.module').then(m => m.PayoutModule),
-    canActivate: [AuthguardService, FlagCheckService]
-  },
+  // {
+  //   path: 'payouts',
+  //   loadChildren: () => import('../app/modules/payout/payout.module').then(m => m.PayoutModule),
+  //   canActivate: [AuthguardService, FlagCheckService]
+  // },
   {
     path: 'employees',
     loadChildren: () => import('../app/modules/employee/employee.module').then(m => m.EmployeeModule),
@@ -81,11 +81,11 @@ const routes: Routes = [
   //   loadChildren: () => import('../app/modules/approvals/approvals.module').then(m => m.ApprovalsModule),
   //   canActivate: [AuthguardService, FlagCheckService]
   // },
-  {
-    path: 'mgmt',
-    loadChildren: () => import('../app/modules/user-mgmt/user-mgmt.module').then(m => m.UserMgmtModule),
-    canActivate: [AuthguardService, FlagCheckService]
-  },
+  // {
+  //   path: 'mgmt',
+  //   loadChildren: () => import('../app/modules/user-mgmt/user-mgmt.module').then(m => m.UserMgmtModule),
+  //   canActivate: [AuthguardService, FlagCheckService]
+  // },
   // {
   //   path: 'visitor',
   //   loadChildren: () => import('../app/modules/visitor/visitor.module').then(m => m.VisitorModule),
