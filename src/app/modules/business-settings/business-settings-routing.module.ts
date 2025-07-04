@@ -22,7 +22,7 @@ import { NotificationsSettingsComponent } from './notifications-settings/notific
 import { UnitParameterListDetailsComponent } from './unit-parameter-list-details/unit-parameter-list-details.component';
 import { PayoutSettingComponent } from './payout-setting/payout-setting.component';
 import { ApprovalWorkflowComponent } from './approval-workflow/approval-workflow.component';
-import { GroupEmployerComponent } from './group-employer/group-employer.component';
+// import { GroupEmployerComponent } from './group-employer/group-employer.component';
 
 const routes: Routes = [
   {
@@ -98,9 +98,9 @@ const routes: Routes = [
   {
     path: 'approval-workflow', component: ApprovalWorkflowComponent
   },
-  {
-    path: 'group-employer', component: GroupEmployerComponent
-  }
+  // {
+  //   path: 'group-employer', component: GroupEmployerComponent
+  // }
 ];
 
 

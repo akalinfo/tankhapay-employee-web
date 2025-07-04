@@ -784,7 +784,7 @@ const uncheckedBox = '□';
     };
 
     const fileName = `Exit-Interview-${formValue.employeeId || 'Employee'}.pdf`;
-    pdfMake.createPdf(docDefinition).download(fileName);
+    pdfMake.createPdf(docDefinition).open();
   }
 
 }

@@ -30,7 +30,7 @@ import { UnitParameterListDetailsComponent } from './unit-parameter-list-details
 import { PayoutSettingComponent } from './payout-setting/payout-setting.component';
 import { ApprovalWorkflowComponent } from './approval-workflow/approval-workflow.component';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { GroupEmployerComponent } from './group-employer/group-employer.component';
+// import { GroupEmployerComponent } from './group-employer/group-employer.component';
 
 
 @NgModule({
@@ -58,7 +58,7 @@ import { GroupEmployerComponent } from './group-employer/group-employer.componen
     UnitParameterListDetailsComponent,
     PayoutSettingComponent,
     ApprovalWorkflowComponent,
-    GroupEmployerComponent
+    // GroupEmployerComponent
   ],
   imports: [
     CommonModule,
