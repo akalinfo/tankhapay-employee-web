@@ -28,15 +28,11 @@ const routes: Routes = [
   {
     path: '', component: BusinessSettingComponent
   },
-  // {
-  //   path: 'business-info', component: BusinessInfoComponent
-  // },
+ 
   {
     path: 'billing', component: BillingComponent
   },
-  // {
-  //   path: 'payout', component: PayoutComponent
-  // },
+ 
   {
     path: 'kyc-details', component: KycDetailsComponent
   },
@@ -46,21 +42,7 @@ const routes: Routes = [
   {
     path: 'ESI', component: EsiComponent
   },
-  // {
-  //   path: 'leave-settings', component: LeaveSettingsComponent
-  // },
-  // {
-  //   path: 'bulk-leave', component: BulkLeaveComponent
-  // },
-  // {
-  //   path: 'device-settings', component: DeviceSettingsComponent
-  // },
-  // {
-  //   path: 'add-new-template', component: AddNewTemplateComponent
-  // },
-  // {
-  //   path: 'holiday-settings', component: HolidayMasterComponent
-  // },
+  
   {
     path: 'organization-unit', component: OrganizationUnitComponent
   },
@@ -92,15 +74,11 @@ const routes: Routes = [
   {
     path:'unit-parameter-listing/:id',component: UnitParameterListDetailsComponent
   },
-  // {
-  //   path: 'payout', component: PayoutSettingComponent
-  // },
+ 
   {
     path: 'approval-workflow', component: ApprovalWorkflowComponent
   },
-  // {
-  //   path: 'group-employer', component: GroupEmployerComponent
-  // }
+
 ];
 
 
