@@ -13,7 +13,6 @@ import { EmployeeLogComponent } from './employee-log/employee-log.component';
 // import { BulkSalaryComponent } from './bulk-salary/bulk-salary.component';
 // import { BulkCustomSalaryComponent } from './bulk-custom-salary/bulk-custom-salary.component';
 
-
 const routes: Routes = [
   {
     path: '', component: EmployeesComponent

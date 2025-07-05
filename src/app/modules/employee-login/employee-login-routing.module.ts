@@ -193,8 +193,11 @@ const routes: Routes = [
    {
     path: 'exit-clearance-form',
     component: ExitClearanceFormComponent
-  }
-
+  },
+{
+    path: 'view-declaration',
+    component: EmplHeaderComponent
+}
 ];
 
 @NgModule({
