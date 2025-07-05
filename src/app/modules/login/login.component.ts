@@ -6,7 +6,7 @@ import { LoginService } from './login.service';
 import { Md5 } from 'ts-md5/dist/esm/md5';
 import { ToastrService } from 'ngx-toastr';
 import { GlobalConstants } from 'src/app/shared/global-constants'
-import { ReCaptchaV3Service } from 'ng-recaptcha';
+// import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { SessionService } from 'src/app/shared/services/session.service';
 import decode from 'jwt-decode';
 import { AlertService } from 'src/app/shared/_alert';
@@ -77,7 +77,8 @@ export class LoginComponent implements OnInit {
     private _LoginService: LoginService,
     private router: Router,
     public toastr: ToastrService,
-    private recaptchaV3Service: ReCaptchaV3Service,
+    // private recaptchaV3Service: ReCaptchaV3Service,
+
     private _SessionService: SessionService,
     private _alertservice: AlertService,
     private _masterService: MasterServiceService,
@@ -153,7 +154,7 @@ export class LoginComponent implements OnInit {
           // Validators.maxLength(10)
         ]],
       password: ['', Validators.required],
-      recaptcha: [''],
+      // recaptcha: [''],
       //,Validators.required
     });
 
@@ -162,7 +163,7 @@ export class LoginComponent implements OnInit {
       Validators.pattern('^[6-9]{1}[0-9]{9}$'), Validators.minLength(10),
       Validators.maxLength(10)]],
       mobile_otp: ['', [Validators.minLength(4), Validators.maxLength(4)]],
-      recaptcha: [''],
+      // recaptcha: [''],
     });
     localStorage.setItem('default_url', '/dashboard');
   }
@@ -194,168 +195,168 @@ export class LoginComponent implements OnInit {
     this.showOTPInput = !this.showOTPInput;
   }
 
-  login() {
-    this.submitted = true;
-    if (this.loginForm_Email.invalid) {
-      return;
-    }
-    let mobilepattern = /^[6-9]{1}[0-9]{9}/;
-    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!this.loginForm_Email.controls.email.value.match(mobilepattern) && !this.loginForm_Email.controls.email.value.match(emailRegex)) {
-      return this._alertservice.error('Invalid Username', GlobalConstants.alert_options_autoClose);
-    }
+  // login() {
+  //   this.submitted = true;
+  //   if (this.loginForm_Email.invalid) {
+  //     return;
+  //   }
+  //   let mobilepattern = /^[6-9]{1}[0-9]{9}/;
+  //   let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   if (!this.loginForm_Email.controls.email.value.match(mobilepattern) && !this.loginForm_Email.controls.email.value.match(emailRegex)) {
+  //     return this._alertservice.error('Invalid Username', GlobalConstants.alert_options_autoClose);
+  //   }
 
-    let action = '';
-    if (this.loginForm_Email.controls.email.value.match(mobilepattern)) {
-      action = 'check_login_by_emailid';
-    } else if (this.loginForm_Email.controls.email.value.match(emailRegex)) {
-      action = 'check_login_by_emailid1';
-    }
+  //   let action = '';
+  //   if (this.loginForm_Email.controls.email.value.match(mobilepattern)) {
+  //     action = 'check_login_by_emailid';
+  //   } else if (this.loginForm_Email.controls.email.value.match(emailRegex)) {
+  //     action = 'check_login_by_emailid1';
+  //   }
 
-    let postData = this.loginForm_Email.value;
-    let password = postData.password;
-    let password_enc = Md5.hashStr(password);
-    let localhost = window.location.hostname == 'localhost' || window.location.hostname == 'tankhapaystag.z13.web.core.windows.net' ? true : false;
+  //   let postData = this.loginForm_Email.value;
+  //   let password = postData.password;
+  //   let password_enc = Md5.hashStr(password);
+  //   let localhost = window.location.hostname == 'localhost' || window.location.hostname == 'tankhapaystag.z13.web.core.windows.net' ? true : false;
 
-    if (localhost) {
-      this.login_code(postData.email, password_enc, '', localhost, action);
-    } else {
-      this.recaptchaV3Service.execute('tpayRecaptcha')
-        .subscribe((recaptchaToken: string) => {
-          this.login_code(postData.email, password_enc, recaptchaToken, localhost, action);
-        });
-    }
+  //   if (localhost) {
+  //     this.login_code(postData.email, password_enc, '', localhost, action);
+  //   } else {
+  //     this.recaptchaV3Service.execute('tpayRecaptcha')
+  //       .subscribe((recaptchaToken: string) => {
+  //         this.login_code(postData.email, password_enc, recaptchaToken, localhost, action);
+  //       });
+  //   }
 
-  }
+  // }
 
-  login_code(email: any, password_enc: any, recaptchaToken: any, localhost: any, action: any) {
-    this._LoginService.user_login({
-      'email': email, 'password': password_enc,
-      'recaptchaToken': recaptchaToken, 'localhost': localhost,
-      'action': action
-    }).subscribe(
-      (resData: any):any => {
-        // console.log(resData);
-        if (resData.status == 'True') {
-          localStorage.setItem('activeUser', JSON.stringify(resData));
-          if (resData.token) {
-            const badgeElement = document.querySelector('.grecaptcha-badge') as HTMLInputElement;
-            if (badgeElement) {
-              badgeElement.style.display = 'none';
-            }
+  // login_code(email: any, password_enc: any, recaptchaToken: any, localhost: any, action: any) {
+  //   this._LoginService.user_login({
+  //     'email': email, 'password': password_enc,
+  //     'recaptchaToken': recaptchaToken, 'localhost': localhost,
+  //     'action': action
+  //   }).subscribe(
+  //     (resData: any):any => {
+  //       // console.log(resData);
+  //       if (resData.status == 'True') {
+  //         localStorage.setItem('activeUser', JSON.stringify(resData));
+  //         if (resData.token) {
+  //           const badgeElement = document.querySelector('.grecaptcha-badge') as HTMLInputElement;
+  //           if (badgeElement) {
+  //             badgeElement.style.display = 'none';
+  //           }
 
-            // let session_obj_d: any = JSON.parse(this._SessionService.get_user_session());
-            let token: any = decode(resData.token);
-            let signup_flag = token.signup_flag;
-            let gstin_no_isverify_y_n = token.gstin_no_isverify_y_n;
-            let user_type = token.user_type;
-            localStorage.setItem('product_type', token.product_type);
+  //           // let session_obj_d: any = JSON.parse(this._SessionService.get_user_session());
+  //           let token: any = decode(resData.token);
+  //           let signup_flag = token.signup_flag;
+  //           let gstin_no_isverify_y_n = token.gstin_no_isverify_y_n;
+  //           let user_type = token.user_type;
+  //           localStorage.setItem('product_type', token.product_type);
 
-            // Activity Log
-            this.activityLogsService.insertActivityLog(token,'Login',this.router?.url);
+  //           // Activity Log
+  //           this.activityLogsService.insertActivityLog(token,'Login',this.router?.url);
 
-            this.get_show_bus_setting_page = token.show_bus_setting_page;
+  //           this.get_show_bus_setting_page = token.show_bus_setting_page;
 
-            localStorage.setItem('show_bus_setting_page', token.show_bus_setting_page);
-            this._AppinitalizerService.setSession();
-            this._masterService.get_url_access_right_global({ roleid: token.role }).subscribe((resData1: any) => {
-              if (resData1.statusCode) {
-                let access_data = (this._EncrypterService.aesDecrypt(resData1.commonData));
-                localStorage.setItem('access_rights', access_data);
-                // console.log(access_data);
-              }
+  //           localStorage.setItem('show_bus_setting_page', token.show_bus_setting_page);
+  //           this._AppinitalizerService.setSession();
+  //           this._masterService.get_url_access_right_global({ roleid: token.role }).subscribe((resData1: any) => {
+  //             if (resData1.statusCode) {
+  //               let access_data = (this._EncrypterService.aesDecrypt(resData1.commonData));
+  //               localStorage.setItem('access_rights', access_data);
+  //               // console.log(access_data);
+  //             }
 
-              // console.log(signup_flag);
+  //             // console.log(signup_flag);
 
-              if (signup_flag == 'SU') {
-                this.router.navigate(['/login/signup'], { state: { mobile: token.mobile } });
+  //             if (signup_flag == 'SU') {
+  //               this.router.navigate(['/login/signup'], { state: { mobile: token.mobile } });
 
-              } else if (signup_flag == 'BI') {
-                this.router.navigate(['/login/registration-approved']);
+  //             } else if (signup_flag == 'BI') {
+  //               this.router.navigate(['/login/registration-approved']);
 
-              } else if (signup_flag == 'AV' || signup_flag == 'PT' || signup_flag == 'CD' || signup_flag == 'EA' || signup_flag == 'SPI') {
-                this.router.navigate(['/login/onboarding'], { state: { mobile: token.mobile } });
+  //             } else if (signup_flag == 'AV' || signup_flag == 'PT' || signup_flag == 'CD' || signup_flag == 'EA' || signup_flag == 'SPI') {
+  //               this.router.navigate(['/login/onboarding'], { state: { mobile: token.mobile } });
 
-              } else if (signup_flag == 'SP') {
-                if (user_type == 'Business') {
+  //             } else if (signup_flag == 'SP') {
+  //               if (user_type == 'Business') {
 
-                  // let get_show_bus_setting_page = (localStorage.getItem('show_bus_setting_page') == null
-                  //   || localStorage.getItem('show_bus_setting_page') == null) ? 'N' : localStorage.getItem('show_bus_setting_page').toString();
+  //                 // let get_show_bus_setting_page = (localStorage.getItem('show_bus_setting_page') == null
+  //                 //   || localStorage.getItem('show_bus_setting_page') == null) ? 'N' : localStorage.getItem('show_bus_setting_page').toString();
 
-                  if (this.get_show_bus_setting_page == 'Y') {
-                    this.router.navigate(['/dashboard/welcome']);
-                  } else {
-                    this.router.navigate(['/dashboard']);
-                  }
+  //                 if (this.get_show_bus_setting_page == 'Y') {
+  //                   this.router.navigate(['/dashboard/welcome']);
+  //                 } else {
+  //                   this.router.navigate(['/dashboard']);
+  //                 }
 
-                  // localStorage.setItem('default_url', '/dashboard');
+  //                 // localStorage.setItem('default_url', '/dashboard');
 
-                  /*   this.get_dashboard_status(token.tp_account_id).then((result: boolean) => {
-                      if (result) {
-                        // localStorage.setItem('assistant_status', 'N');
-                        localStorage.setItem('default_url', '/dashboard');
-                        this.router.navigate(['/dashboard']);
-                      } else {
-                        // localStorage.setItem('assistant_status', 'Y');
-                        localStorage.setItem('default_url', '/dashboard/welcome');
-                        this.router.navigate(['/dashboard/welcome']);
-                      }
-                    }).catch((error: any) => {
-                      console.error('Error: ', error);
-                    });
-                    */
+  //                 /*   this.get_dashboard_status(token.tp_account_id).then((result: boolean) => {
+  //                     if (result) {
+  //                       // localStorage.setItem('assistant_status', 'N');
+  //                       localStorage.setItem('default_url', '/dashboard');
+  //                       this.router.navigate(['/dashboard']);
+  //                     } else {
+  //                       // localStorage.setItem('assistant_status', 'Y');
+  //                       localStorage.setItem('default_url', '/dashboard/welcome');
+  //                       this.router.navigate(['/dashboard/welcome']);
+  //                     }
+  //                   }).catch((error: any) => {
+  //                     console.error('Error: ', error);
+  //                   });
+  //                   */
 
-                } else if (user_type == 'Individual') { // For user-type Individual direct to Dashboard.
-                  localStorage.setItem('default_url', '/dashboard');
-                  this.router.navigate(['/dashboard']);
-                }
+  //               } else if (user_type == 'Individual') { // For user-type Individual direct to Dashboard.
+  //                 localStorage.setItem('default_url', '/dashboard');
+  //                 this.router.navigate(['/dashboard']);
+  //               }
 
-              } else if (signup_flag == 'KYC_PAN' || signup_flag == 'KYC_AADHAR'
-                || signup_flag == 'KYC_GST' || signup_flag == 'CD' || signup_flag == 'RJ' || signup_flag == 'Training') {
-                // this.router.navigate(['/dashboard']);
+  //             } else if (signup_flag == 'KYC_PAN' || signup_flag == 'KYC_AADHAR'
+  //               || signup_flag == 'KYC_GST' || signup_flag == 'CD' || signup_flag == 'RJ' || signup_flag == 'Training') {
+  //               // this.router.navigate(['/dashboard']);
 
-                if (user_type == 'Business') {
+  //               if (user_type == 'Business') {
 
-                  if (this.get_show_bus_setting_page == 'Y') {
-                    this.router.navigate(['/dashboard/welcome']);
-                  } else {
-                    this.router.navigate(['/dashboard']);
-                  }
+  //                 if (this.get_show_bus_setting_page == 'Y') {
+  //                   this.router.navigate(['/dashboard/welcome']);
+  //                 } else {
+  //                   this.router.navigate(['/dashboard']);
+  //                 }
 
-                  // this.get_dashboard_status(token.tp_account_id).then((result: boolean) => {
-                  //   if (result) {
-                  //     // localStorage.setItem('assistant_status', 'N');
-                  //     localStorage.setItem('default_url', '/dashboard');
-                  //     this.router.navigate(['/dashboard']);
+  //                 // this.get_dashboard_status(token.tp_account_id).then((result: boolean) => {
+  //                 //   if (result) {
+  //                 //     // localStorage.setItem('assistant_status', 'N');
+  //                 //     localStorage.setItem('default_url', '/dashboard');
+  //                 //     this.router.navigate(['/dashboard']);
 
-                  //   } else {
-                  //     // localStorage.setItem('assistant_status', 'Y');
-                  //     localStorage.setItem('default_url', '/dashboard/welcome');
-                  //     this.router.navigate(['/dashboard/welcome']);
-                  //   }
-                  // }).catch((error: any) => {
-                  //   console.error('Error: ', error);
-                  // });
+  //                 //   } else {
+  //                 //     // localStorage.setItem('assistant_status', 'Y');
+  //                 //     localStorage.setItem('default_url', '/dashboard/welcome');
+  //                 //     this.router.navigate(['/dashboard/welcome']);
+  //                 //   }
+  //                 // }).catch((error: any) => {
+  //                 //   console.error('Error: ', error);
+  //                 // });
 
-                } else if (user_type == 'Individual') { // For user-type Individual direct to Dashboard.
-                  localStorage.setItem('default_url', '/dashboard');
-                  this.router.navigate(['/dashboard']);
-                }
-              }
+  //               } else if (user_type == 'Individual') { // For user-type Individual direct to Dashboard.
+  //                 localStorage.setItem('default_url', '/dashboard');
+  //                 this.router.navigate(['/dashboard']);
+  //               }
+  //             }
 
-            })
+  //           })
 
-          }
-        } else {
-          //  console.log(resData);
-          localStorage.clear();
+  //         }
+  //       } else {
+  //         //  console.log(resData);
+  //         localStorage.clear();
 
-          // this.toastr.error(resData.msg, 'Oops!');
-          this._alertservice.error(resData.msg, GlobalConstants.alert_options);
-          // this.toastr.error('Invalid login credentials. please try again', 'Oops!');
-        }
-      });
-  }
+  //         // this.toastr.error(resData.msg, 'Oops!');
+  //         this._alertservice.error(resData.msg, GlobalConstants.alert_options);
+  //         // this.toastr.error('Invalid login credentials. please try again', 'Oops!');
+  //       }
+  //     });
+  // }
 
 
   keyPress(event: any) {

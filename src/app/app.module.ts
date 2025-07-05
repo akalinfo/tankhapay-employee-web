@@ -15,7 +15,7 @@ import { UserChangePasswordComponent }
   from './modules/user-change-password/user-change-password.component';
 import { LogoutComponent } from './components/logout/logout.component';
 
-import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
+// import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 import { environment } from '../environments/environment';
 // import { JuspayresComponent } from './modules/juspayres/juspayres.component';
 import { StoreModule } from '@ngrx/store';
@@ -51,8 +51,8 @@ export function appInitializerFactory(appInitializer: AppInitializerService) {
     },
     { provide: HTTP_INTERCEPTORS, useClass: httpInterceptor, multi: true },
     {
-      provide: RECAPTCHA_V3_SITE_KEY,
-      useValue: environment.recaptcha.siteKey,
+      // provide: RECAPTCHA_V3_SITE_KEY,
+      // useValue: environment.recaptcha.siteKey,
     },
   ],
   bootstrap: [AppComponent],
@@ -64,7 +64,7 @@ export function appInitializerFactory(appInitializer: AppInitializerService) {
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    RecaptchaV3Module,
+    // RecaptchaV3Module,
 
     ToastrModule.forRoot({
       maxOpened: 1,

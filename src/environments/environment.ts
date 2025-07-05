@@ -21,9 +21,9 @@ export const environment = {
   GOGOGLE_API_KEY_SELF: 'AIzaSyD-Ef4-DN62NTpKPxk0w4rwtF75heDatA8',
   GOGOGLE_API_KEY_SELF_MAP: 'AIzaSyD-Ef4-DN62NTpKPxk0w4rwtF75heDatA8',
   googleMaps_ApiKey_For_LiveTracking: 'AIzaSyDeYKThTSupy7Zo0Av1A-jfW-eo-GhMaIg',
-  recaptcha: {
-    siteKey: '6LfBzAgpAAAAAL61hNQkprJ6_015ZG3sTzoYvlUo',
-  },
+  // recaptcha: {
+  //   siteKey: '6LfBzAgpAAAAAL61hNQkprJ6_015ZG3sTzoYvlUo',
+  // },
   business_sso_route_url: "https://tankhapaystag.z13.web.core.windows.net/sso-login"
 
 };
