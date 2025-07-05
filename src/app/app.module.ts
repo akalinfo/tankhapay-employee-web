@@ -50,10 +50,10 @@ export function appInitializerFactory(appInitializer: AppInitializerService) {
       multi: true,
     },
     { provide: HTTP_INTERCEPTORS, useClass: httpInterceptor, multi: true },
-    {
-      // provide: RECAPTCHA_V3_SITE_KEY,
-      // useValue: environment.recaptcha.siteKey,
-    },
+    // {
+    //   // provide: RECAPTCHA_V3_SITE_KEY,
+    //   // useValue: environment.recaptcha.siteKey,
+    // },
   ],
   bootstrap: [AppComponent],
   imports: [
